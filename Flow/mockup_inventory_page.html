@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup — Inventori (Tabel Batch Aktif & Riwayat)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    body{font-family:'Inter',sans-serif;background:#f8fafc;}
+    .table-row-enter { animation: fadeIn 0.3s ease-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' } } } } }
+  </script>
+</head>
+<body class="p-8">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Manajemen Inventori</h1>
+        <p class="text-gray-500 text-sm mt-1">Kelola stok batch, penerimaan barang, dan tanggal kadaluarsa.</p>
+      </div>
+      <button class="px-4 py-2.5 bg-blue-600 text-white rounded-xl font-semibold shadow-sm flex items-center gap-2 hover:bg-blue-700 text-sm transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Penerimaan Barang (Restock)
+      </button>
+    </div>
+
+    <!-- STAT CARDS (HANYA BATCH AKTIF) -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        </div>
+        <div><p class="text-xs text-gray-500">Batch Aktif</p><p class="font-bold text-gray-800 text-lg" id="statActiveBatches">0</p></div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        </div>
+        <div><p class="text-xs text-gray-500">Total Stok Riil</p><p class="font-bold text-gray-800 text-lg" id="statTotalStock">0</p></div>
+      </div>
+    </div>
+
+    <!-- TABEL BATCH AKTIF -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
+        <h3 class="font-bold text-gray-800 flex items-center gap-2">
+          <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+          Batch Aktif
+        </h3>
+        <span class="text-xs text-gray-400 bg-white px-2 py-1 rounded border border-gray-200">Hanya batch yang bisa dijual di Kasir</span>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-50 text-gray-500 text-xs uppercase font-semibold">
+            <tr>
+              <th class="px-6 py-3">Kode Batch</th>
+              <th class="px-6 py-3">Produk</th>
+              <th class="px-6 py-3 text-center">Qty</th>
+              <th class="px-6 py-3">Tgl Beli</th>
+              <th class="px-6 py-3">Kadaluarsa</th>
+              <th class="px-6 py-3 text-right">Modal / pcs</th>
+              <th class="px-6 py-3 text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="activeTableBody" class="divide-y divide-gray-50">
+            <!-- Data rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="px-6 py-3 bg-blue-50/50 border-t border-blue-100 text-xs text-blue-700 flex items-center gap-2">
+        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Batch bersifat permanen dan tidak bisa diedit. Untuk koreksi stok fisik, gunakan menu <strong class="ml-1">Stock Opname</strong>.
+      </div>
+
+      <!-- Pagination Footer Batch Aktif -->
+      <div class="p-5 border-t border-gray-50 bg-white flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-sm text-gray-500 w-full md:w-1/3">
+          Menampilkan <span class="font-semibold text-gray-700" id="activePageIndicator"></span> dari <span class="font-semibold text-gray-700" id="activeTotalIndicator"></span> batch aktif
+        </div>
+        <div class="flex items-center justify-center gap-1.5 w-full md:w-1/3" id="activePaginationContainer">
+          <!-- Numbered Pagination injected here -->
+        </div>
+        <div class="w-full md:w-1/3 flex justify-end items-center gap-2 text-sm text-gray-500">
+          <span>Tampilkan</span>
+          <select id="activePageSizeSelect" class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 bg-gray-50 hover:bg-white hover:border-brand-500 focus:outline-none transition-all cursor-pointer font-medium">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+          </select>
+          <span>baris</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL RIWAYAT (DEPLETED/EXPIRED) -->
+    <div class="mt-8">
+      <h3 class="font-bold text-gray-400 mb-3 ml-1 text-sm flex items-center gap-2">
+        <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+        Riwayat Batch (Habis / Kadaluarsa)
+      </h3>
+      <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden opacity-70 hover:opacity-100 transition-opacity duration-300">
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-100 text-gray-400 text-xs uppercase font-semibold">
+              <tr>
+                <th class="px-6 py-3">Kode Batch</th>
+                <th class="px-6 py-3">Produk</th>
+                <th class="px-6 py-3 text-center">Qty Sisa</th>
+                <th class="px-6 py-3">Kadaluarsa</th>
+                <th class="px-6 py-3 text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="archivedTableBody" class="divide-y divide-gray-100">
+              <!-- Data rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Footer Riwayat -->
+        <div class="p-5 border-t border-gray-100 bg-gray-50 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="text-sm text-gray-500 w-full md:w-1/3">
+            Menampilkan <span class="font-semibold text-gray-700" id="archivedPageIndicator"></span> dari <span class="font-semibold text-gray-700" id="archivedTotalIndicator"></span> riwayat
+          </div>
+          <div class="flex items-center justify-center gap-1.5 w-full md:w-1/3" id="archivedPaginationContainer">
+            <!-- Numbered Pagination injected here -->
+          </div>
+          <div class="w-full md:w-1/3 flex justify-end items-center gap-2 text-sm text-gray-500">
+            <span>Tampilkan</span>
+            <select id="archivedPageSizeSelect" class="border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition-all cursor-pointer font-medium">
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+            </select>
+            <span>baris</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // GENERATE 300 DUMMY DATA POINTS
+    const generateData = () => {
+        const data = [];
+        const products = [
+            'Beras SPHP 5Kg', 'Le Minerale 600ml', 'Gas LPG 5Kg', 'Bimoli 2L', 'Indomie Goreng',
+            'Sari Roti Gandum', 'Chitato Sapi Panggang', 'Milo UHT 200ml', 'Taro Snack Net', 'Lifebuoy Sabun Cair',
+            'Sunlight Sabun Cuci', 'Pepsodent Herbal', 'Kopi Kapal Api', 'Teh Pucuk Harum', 'Aqua Botol 1.5L'
+        ];
+        for(let i=1; i<=300; i++) {
+            const isExpired = i % 8 === 0;
+            const isLowStock = i % 12 === 0;
+            const isZeroStock = i % 6 === 0;
+            
+            const expDate = new Date();
+            if (isExpired) {
+                expDate.setDate(expDate.getDate() - (Math.floor(Math.random() * 30)));
+            } else {
+                expDate.setDate(expDate.getDate() + (Math.floor(Math.random() * 365) + 30));
+            }
+
+            const buyDate = new Date();
+            buyDate.setDate(buyDate.getDate() - (Math.floor(Math.random() * 60) + 1));
+
+            const qty = isZeroStock ? 0 : (isLowStock ? Math.floor(Math.random() * 5) + 1 : Math.floor(Math.random() * 150) + 20);
+            
+            let status = 'ACTIVE';
+            if (qty === 0) status = 'DEPLETED';
+            else if (isExpired) status = 'EXPIRED';
+
+            const cost = (Math.floor(Math.random() * 50) + 2) * 1000;
+
+            const formatDate = (d) => {
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return \`\${year}-\${month}-\${day}\`;
+            };
+
+            data.push({
+                id: i,
+                code: \`BTH-\${Math.random().toString(36).substring(2, 8).toUpperCase()}\`,
+                product: products[i % products.length],
+                buyDate: formatDate(buyDate),
+                expDate: formatDate(expDate),
+                isExpired: isExpired,
+                qty: qty,
+                cost: cost,
+                status: status
+            });
+        }
+        return data;
+    };
+
+    const allData = generateData();
+    
+    // Separate into Active and Archived
+    const activeData = allData.filter(b => b.status === 'ACTIVE');
+    const archivedData = allData.filter(b => b.status !== 'ACTIVE');
+
+    // Update Stats on UI
+    document.getElementById('statActiveBatches').textContent = activeData.length;
+    const totalQty = activeData.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('statTotalStock').textContent = totalQty;
+
+    // States for both tables
+    let stateActive = { data: [...activeData], filtered: [...activeData], page: 1, size: 5 };
+    let stateArchived = { data: [...archivedData], filtered: [...archivedData], page: 1, size: 5 };
+
+    function formatCurrency(num) {
+        return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    // --- ACTIVE TABLE LOGIC ---
+    const activeTableBody = document.getElementById('activeTableBody');
+    const activePaginationContainer = document.getElementById('activePaginationContainer');
+    const activePageIndicator = document.getElementById('activePageIndicator');
+    const activeTotalIndicator = document.getElementById('activeTotalIndicator');
+    const activePageSizeSelect = document.getElementById('activePageSizeSelect');
+
+    activePageSizeSelect.addEventListener('change', (e) => {
+        stateActive.size = parseInt(e.target.value);
+        stateActive.page = 1;
+        renderActiveTable();
+    });
+
+    function renderActiveTable() {
+        const start = (stateActive.page - 1) * stateActive.size;
+        const end = start + stateActive.size;
+        const paginatedData = stateActive.filtered.slice(start, end);
+
+        activeTableBody.innerHTML = '';
+        if (paginatedData.length === 0) {
+            activeTableBody.innerHTML = \`<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">Tidak ada batch aktif</td></tr>\`;
+        }
+
+        paginatedData.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.className = \`hover:bg-blue-50/30 transition-colors table-row-enter\`;
+            tr.style.animationDelay = \`\${index * 0.03}s\`;
+            
+            tr.innerHTML = \`
+              <td class="px-6 py-4 font-mono text-gray-500 text-xs">\${item.code}</td>
+              <td class="px-6 py-4 font-medium text-gray-900">\${item.product}</td>
+              <td class="px-6 py-4 text-center font-bold">\${item.qty}</td>
+              <td class="px-6 py-4 text-gray-500">\${item.buyDate}</td>
+              <td class="px-6 py-4 text-gray-500">\${item.expDate}</td>
+              <td class="px-6 py-4 text-right text-gray-600">\${formatCurrency(item.cost)}</td>
+              <td class="px-6 py-4 text-center">
+                 <button class="text-red-500 hover:text-red-700 text-xs font-medium px-2 py-1 bg-red-50 rounded hover:bg-red-100 transition-colors">Hapus</button>
+              </td>
+            \`;
+            activeTableBody.appendChild(tr);
+        });
+
+        const totalPages = Math.ceil(stateActive.filtered.length / stateActive.size);
+        renderPagination(totalPages, stateActive.page, activePaginationContainer, (newPage) => {
+            stateActive.page = newPage;
+            renderActiveTable();
+        });
+        
+        const showStart = stateActive.filtered.length === 0 ? 0 : start + 1;
+        const showEnd = Math.min(end, stateActive.filtered.length);
+        activePageIndicator.textContent = \`\${showStart}-\${showEnd}\`;
+        activeTotalIndicator.textContent = stateActive.filtered.length;
+    }
+
+
+    // --- ARCHIVED TABLE LOGIC ---
+    const archivedTableBody = document.getElementById('archivedTableBody');
+    const archivedPaginationContainer = document.getElementById('archivedPaginationContainer');
+    const archivedPageIndicator = document.getElementById('archivedPageIndicator');
+    const archivedTotalIndicator = document.getElementById('archivedTotalIndicator');
+    const archivedPageSizeSelect = document.getElementById('archivedPageSizeSelect');
+
+    archivedPageSizeSelect.addEventListener('change', (e) => {
+        stateArchived.size = parseInt(e.target.value);
+        stateArchived.page = 1;
+        renderArchivedTable();
+    });
+
+    function renderArchivedTable() {
+        const start = (stateArchived.page - 1) * stateArchived.size;
+        const end = start + stateArchived.size;
+        const paginatedData = stateArchived.filtered.slice(start, end);
+
+        archivedTableBody.innerHTML = '';
+        if (paginatedData.length === 0) {
+            archivedTableBody.innerHTML = \`<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Tidak ada riwayat</td></tr>\`;
+        }
+
+        paginatedData.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.className = \`hover:bg-gray-50 transition-colors table-row-enter\`;
+            tr.style.animationDelay = \`\${index * 0.03}s\`;
+            
+            let statusBadge = '';
+            if (item.status === 'EXPIRED') statusBadge = '<span class="bg-red-50 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold border border-red-200">EXPIRED</span>';
+            else if (item.status === 'DEPLETED') statusBadge = '<span class="bg-gray-100 text-gray-500 px-2 py-0.5 rounded text-[10px] font-bold">DEPLETED</span>';
+
+            const isExpiredStyle = item.status === 'EXPIRED' ? 'text-red-400' : 'text-gray-400';
+
+            tr.innerHTML = \`
+              <td class="px-6 py-3 font-mono text-gray-400 text-xs">\${item.code}</td>
+              <td class="px-6 py-3 text-gray-500">\${item.product}</td>
+              <td class="px-6 py-3 text-center font-bold \${isExpiredStyle}">\${item.qty}</td>
+              <td class="px-6 py-3 \${isExpiredStyle} \${item.status === 'EXPIRED' ? 'font-medium text-red-500' : ''}">\${item.expDate}</td>
+              <td class="px-6 py-3 text-center">\${statusBadge}</td>
+            \`;
+            archivedTableBody.appendChild(tr);
+        });
+
+        const totalPages = Math.ceil(stateArchived.filtered.length / stateArchived.size);
+        renderPagination(totalPages, stateArchived.page, archivedPaginationContainer, (newPage) => {
+            stateArchived.page = newPage;
+            renderArchivedTable();
+        });
+        
+        const showStart = stateArchived.filtered.length === 0 ? 0 : start + 1;
+        const showEnd = Math.min(end, stateArchived.filtered.length);
+        archivedPageIndicator.textContent = \`\${showStart}-\${showEnd}\`;
+        archivedTotalIndicator.textContent = stateArchived.filtered.length;
+    }
+
+
+    // --- COMMON PAGINATION RENDERER (Hybrid: Outline Accent + Classic Numbered) ---
+    function renderPagination(totalPages, current, container, onPageChange) {
+        container.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        const prevBtn = document.createElement('button');
+        prevBtn.className = \`w-10 h-10 rounded-xl border-2 border-transparent text-gray-400 hover:text-gray-700 hover:bg-gray-50 flex items-center justify-center transition-all \${current === 1 ? 'opacity-40 cursor-not-allowed' : ''}\`;
+        prevBtn.innerHTML = '<i class="ri-arrow-left-s-line text-xl"></i>';
+        prevBtn.onclick = () => { if (current > 1) onPageChange(current - 1); };
+        container.appendChild(prevBtn);
+
+        let startPage = Math.max(1, current - 1);
+        let endPage = Math.min(totalPages, current + 1);
+
+        if (current === 1) endPage = Math.min(3, totalPages);
+        if (current === totalPages) startPage = Math.max(1, totalPages - 2);
+
+        const createPageBtn = (page) => {
+            const btn = document.createElement('button');
+            if (page === current) {
+                // Outline Accent Design for Active Page
+                btn.className = 'w-10 h-10 rounded-xl border-2 border-brand-500 text-brand-600 font-bold bg-brand-50 shadow-sm flex items-center justify-center';
+            } else {
+                // Classic Numbered Design for Inactive Pages
+                btn.className = 'w-10 h-10 rounded-xl border-2 border-transparent text-gray-500 font-medium hover:border-gray-200 hover:bg-gray-50 flex items-center justify-center transition-all';
+            }
+            btn.textContent = page;
+            btn.onclick = () => onPageChange(page);
+            return btn;
+        };
+
+        const createEllipsis = () => {
+            const span = document.createElement('span');
+            span.className = 'w-10 h-10 flex items-center justify-center text-gray-300 font-medium tracking-widest';
+            span.textContent = '...';
+            return span;
+        };
+
+        if (startPage > 1) {
+            container.appendChild(createPageBtn(1));
+            if (startPage > 2) container.appendChild(createEllipsis());
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            container.appendChild(createPageBtn(i));
+        }
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) container.appendChild(createEllipsis());
+            container.appendChild(createPageBtn(totalPages));
+        }
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = \`w-10 h-10 rounded-xl border-2 border-transparent text-brand-600 hover:text-brand-800 hover:bg-brand-50 flex items-center justify-center transition-all shadow-sm \${current === totalPages || totalPages === 0 ? 'opacity-40 cursor-not-allowed' : ''}\`;
+        nextBtn.innerHTML = '<i class="ri-arrow-right-s-line text-xl"></i>';
+        nextBtn.onclick = () => { if (current < totalPages) onPageChange(current + 1); };
+        container.appendChild(nextBtn);
+    }
+
+    // Init First Render
+    renderActiveTable();
+    renderArchivedTable();
+
+  </script>
+</body>
+</html>

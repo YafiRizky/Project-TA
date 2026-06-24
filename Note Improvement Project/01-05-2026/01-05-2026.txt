@@ -1,0 +1,7 @@
+1. pada halaman login saya menemukan tidak sesuai atau tidak rapi , jadi pada halaman form/field register bisnis pada step 3 , field alamat itu ada titik nya dan titik nya itu teralu naik posisi nya 
+2. pada halaman login step 2 yaitu no telfon itu menurut saya dapat di improve dengan pakai kyk dropdown pilihan nomor depan negara seperti +62, +1, seperti lain lain , kyk kode telfon negara. 
+   "Phone Input with Country Code" agar jauh lebih formal dan kesan nya orang dari luar negara misal nya itu dapat juga register 
+   tapi jawab dulu pertanyaan saya ini: kira kira ini ngaruh ga ya ke project ? kan nanti regiter nya ini dikirim kode otp lewat email ?? tapi kan itu nanti saat tahap testing 
+
+3. ada masaalah pada transaksi yaitu ada typo huruf saat dorpdown produk lihat pada gambar field section tambah produk di menu transaksi
+4. masih pada transkaksi saat saya masukan jumlah produk yang dibeli kan "quantity" itu dapat melebihi jumlah batch produk dan ini prone terhadap eror dan saat di klik sampai transaski berhasil itu malah quantity nya ke 0 , jadi berikan kyk protection jika batch nya jumlah kyk 500 maka nanti saat masukan input data jumlah di quantity di transakasi itu gabisa dan muncul kyk teks warning di bawah field nya bahwa jumlah stok hanya "x" dan jumlah quantity jauh lebih banyak dari pada stok (logic eror)

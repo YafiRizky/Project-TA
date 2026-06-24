@@ -1,0 +1,2 @@
+1. field nomor telfon itu seharusnya placeholder masing masing kode negara muncul selalu bahkan saat awal user milih negara setelah itu baru muncul kode negara tersebut, jadi tidak kosong misal nih saya user itu milih indonesia baru placeholder +62 muncul otomatis bahkan setelah di isi data nomor telfon atau belum itu tetap muncul kode masing masing negara 
+2. field kecamatan itu harusnya dropdown bukan tulis dari user sendiri , hanya field alamat,nama bisnis,kode pos yang di isi oleh user pada registrasi step3

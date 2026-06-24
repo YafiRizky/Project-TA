@@ -1,0 +1,10 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "pythonVersion": "3.14",
+  "include": ["pos-backend"],
+  "extraPaths": [
+    "pos-backend",
+    ".venv/Lib/site-packages"
+  ]
+}

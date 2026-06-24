@@ -1,0 +1,460 @@
+===============================================================================
+IDE TUGAS AKHIR: WEB APPLICATION + MACHINE LEARNING
+Tanggal: 28 Januari 2026
+===============================================================================
+
+## 1. BISNIS & UMKM
+
+### A. Sistem POS dengan Prediksi Demand & Optimasi Stok
+Deskripsi: Web app kasir untuk UMKM dengan ML prediksi permintaan produk
+
+Fitur Web:
+- Manajemen transaksi penjualan
+- Manajemen inventaris real-time
+- Dashboard analytics penjualan
+- Notifikasi stok menipis
+- Laporan keuangan otomatis
+
+Komponen ML:
+- Time Series Forecasting untuk prediksi demand (ARIMA, LSTM, Prophet)
+- Clustering produk berdasarkan pola penjualan
+- Rekomendasi optimal reorder point
+- Prediksi revenue bulanan
+
+Dataset: Data transaksi historis (bisa simulasi atau ambil dari UMKM riil)
+Dasar Penelitian: Banyak UMKM kesulitan manage stok, sering overstok/understok. 
+ML bisa otomasi prediksi kebutuhan.
+
+-------------------------------------------------------------------------------
+
+### B. Sistem CRM dengan Lead Scoring & Churn Prediction
+Deskripsi: Web app manajemen customer dengan ML untuk prioritas pelanggan
+
+Fitur Web:
+- Database pelanggan
+- Tracking interaksi & komunikasi
+- Pipeline sales management
+- Email/notifikasi otomatis
+- Dashboard customer behavior
+
+Komponen ML:
+- Lead Scoring: prediksi probabilitas closing deal (Random Forest, XGBoost)
+- Customer Churn Prediction: deteksi pelanggan berisiko kabur
+- Customer Lifetime Value prediction
+- Rekomendasi next best action untuk sales
+
+Dataset: Data customer behavior, purchase history, interaction logs
+Dasar Penelitian: Sales perlu prioritas lead mana yang paling potensial. 
+ML bisa automate scoring.
+
+-------------------------------------------------------------------------------
+
+### C. Sistem Pengajuan Kredit/Pinjaman Mikro dengan Risk Assessment
+Deskripsi: Platform pinjaman online dengan ML credit scoring
+
+Fitur Web:
+- Form pengajuan pinjaman
+- Upload dokumen KYC
+- Tracking status pengajuan
+- Dashboard admin approval
+- Sistem pembayaran cicilan
+- Notifikasi reminder
+
+Komponen ML:
+- Credit Risk Scoring (Logistic Regression, XGBoost)
+- Fraud Detection
+- Default Prediction
+- Optimal loan amount recommendation
+
+Dataset: Historical loan data dengan status repayment 
+(bisa pakai dataset Kaggle: "Give Me Some Credit")
+Dasar Penelitian: Fintech butuh otomasi approval dengan risk assessment 
+akurat tanpa bias manual.
+
+===============================================================================
+
+## 2. PENDIDIKAN
+
+### D. Learning Management System dengan Personalized Learning Path
+Deskripsi: Platform e-learning dengan rekomendasi materi personal
+
+Fitur Web:
+- Course management
+- Quiz & assignment system
+- Progress tracking
+- Discussion forum
+- Video streaming
+- Sertifikat digital
+
+Komponen ML:
+- Collaborative Filtering untuk rekomendasi course
+- Student Performance Prediction
+- Learning style classification
+- Adaptive difficulty adjustment
+- Dropout risk prediction
+
+Dataset: Student activity logs, quiz scores, completion rates
+Dasar Penelitian: One-size-fits-all learning tidak efektif. 
+ML bisa personalisasi path belajar tiap siswa.
+
+-------------------------------------------------------------------------------
+
+### E. Sistem Deteksi Plagiarisme & Auto-Grading Tugas
+Deskripsi: Platform submission tugas dengan deteksi plagiat otomatis
+
+Fitur Web:
+- Upload tugas mahasiswa
+- Batch grading interface
+- Plagiarism report visualization
+- Rubric management
+- Feedback system
+- Statistical dashboard
+
+Komponen ML:
+- Text Similarity Detection (TF-IDF, Cosine Similarity)
+- NLP untuk auto-grading essay (BERT, GPT-based)
+- Code plagiarism detection (AST-based)
+- Sentiment analysis untuk feedback
+
+Dataset: Essay/code submissions dengan manual grades
+Dasar Penelitian: Dosen kesulitan check plagiat manual. 
+ML bisa automate dengan akurasi tinggi.
+
+===============================================================================
+
+## 3. KESEHATAN
+
+### F. Sistem Manajemen Klinik dengan Prediksi No-Show Pasien
+Deskripsi: Web app booking klinik dengan ML prediksi ketidakhadiran
+
+Fitur Web:
+- Appointment booking system
+- Medical record management
+- Queue management real-time
+- Resep digital
+- Payment & billing
+- SMS/email reminder
+
+Komponen ML:
+- No-Show Prediction (Classification models)
+- Appointment scheduling optimization
+- Disease prediction dari symptom checker
+- Drug interaction checker
+
+Dataset: Historical appointment data dengan status attendance
+Dasar Penelitian: 20-30% pasien no-show tanpa konfirmasi. 
+ML bisa prediksi & optimalkan jadwal.
+
+-------------------------------------------------------------------------------
+
+### G. Aplikasi Diet & Nutrisi dengan Meal Planning
+Deskripsi: Web app tracking nutrisi dengan rekomendasi menu AI
+
+Fitur Web:
+- Food diary logging
+- Calorie & macro tracking
+- Progress monitoring (weight, foto)
+- Recipe database
+- Shopping list generator
+- Community social features
+
+Komponen ML:
+- Image Recognition untuk food detection (CNN, YOLO)
+- Personalized meal recommendation (Collaborative Filtering)
+- Nutrition calculation dari foto
+- Weight trend prediction
+
+Dataset: Food images + nutritional data (Food-101, Nutrition5k)
+Dasar Penelitian: Manual logging nutrisi menyusahkan. 
+ML bisa auto-detect makanan dari foto.
+
+===============================================================================
+
+## 4. PERTANIAN & AGRIKULTUR
+
+### H. Smart Farming Dashboard dengan Crop Yield Prediction
+Deskripsi: Platform monitoring pertanian IoT dengan prediksi panen
+
+Fitur Web:
+- Real-time sensor dashboard (suhu, kelembaban, pH tanah)
+- Farm management (area mapping, planting schedule)
+- Pest/disease alert system
+- Harvest planning & tracking
+- Market price tracking
+- Weather integration
+
+Komponen ML:
+- Crop Yield Prediction (Regression models)
+- Pest/Disease classification dari foto daun (CNN)
+- Optimal planting time recommendation
+- Irrigation scheduling optimization
+- Price prediction untuk harvest timing
+
+Dataset: Agricultural data (soil, weather, yield), 
+plant disease images (PlantVillage dataset)
+Dasar Penelitian: Petani butuh data-driven decision making. 
+ML bisa prediksi hasil panen untuk planning.
+
+===============================================================================
+
+## 5. E-COMMERCE & MARKETPLACE
+
+### I. Marketplace dengan Dynamic Pricing & Demand Forecasting
+Deskripsi: Platform jual-beli dengan pricing otomatis berbasis ML
+
+Fitur Web:
+- Product catalog
+- Shopping cart & checkout
+- Seller dashboard
+- Review & rating system
+- Order tracking
+- Payment gateway integration
+
+Komponen ML:
+- Dynamic Pricing Engine (Reinforcement Learning)
+- Demand Forecasting per product
+- Product recommendation (Matrix Factorization)
+- Review sentiment analysis
+- Fraud transaction detection
+- Image-based product search
+
+Dataset: E-commerce transaction data, product images
+Dasar Penelitian: Static pricing tidak optimal. 
+ML bisa adjust harga real-time based on demand/competition.
+
+-------------------------------------------------------------------------------
+
+### J. Fashion Recommendation dengan Virtual Try-On
+Deskripsi: E-commerce fashion dengan visual recommendation
+
+Fitur Web:
+- Product catalog dengan filter advanced
+- Virtual wardrobe
+- Size recommendation
+- Style quiz
+- Social sharing
+- AR try-on interface
+
+Komponen ML:
+- Visual similarity search (Siamese Networks)
+- Size recommendation dari user measurements
+- Style compatibility prediction
+- Trend forecasting dari social media
+- Virtual try-on (GAN-based)
+
+Dataset: Fashion images (DeepFashion dataset), user purchase history
+Dasar Penelitian: High return rate karena size/style mismatch. 
+ML bisa prediksi fit & recommend better.
+
+===============================================================================
+
+## 6. TRANSPORTASI & LOGISTIK
+
+### K. Sistem Manajemen Armada dengan Route Optimization
+Deskripsi: Web app fleet management dengan ML routing
+
+Fitur Web:
+- Real-time vehicle tracking (GPS)
+- Driver management
+- Delivery order management
+- Fuel consumption monitoring
+- Maintenance scheduling
+- Customer portal
+
+Komponen ML:
+- Route Optimization (Genetic Algorithm, Ant Colony)
+- Delivery Time Prediction
+- Fuel consumption prediction
+- Maintenance prediction (predictive maintenance)
+- Driver behavior scoring
+
+Dataset: GPS tracking data, delivery records, maintenance logs
+Dasar Penelitian: Manual routing tidak efisien. 
+ML bisa optimize route untuk cost & time saving.
+
+===============================================================================
+
+## 7. PROPERTI & REAL ESTATE
+
+### L. Platform Properti dengan Price Prediction & Investment Analysis
+Deskripsi: Marketplace properti dengan valuasi otomatis
+
+Fitur Web:
+- Listing management
+- Advanced search & filter
+- Virtual tour integration
+- Mortgage calculator
+- Agent dashboard
+- Lead management
+
+Komponen ML:
+- Property Price Prediction (Regression models)
+- Investment ROI calculator
+- Area growth prediction
+- Price trend analysis
+- Image quality scoring untuk listing
+- Fraud listing detection
+
+Dataset: Historical property sales data dengan features (lokasi, luas, fasilitas)
+Dasar Penelitian: Valuasi properti subjektif & bias. 
+ML bisa memberikan fair market value objective.
+
+===============================================================================
+
+## 8. HUMAN RESOURCES
+
+### M. Recruitment Platform dengan Resume Screening & Candidate Matching
+Deskripsi: ATS (Applicant Tracking System) dengan AI screening
+
+Fitur Web:
+- Job posting management
+- Resume upload & parsing
+- Candidate pipeline tracking
+- Interview scheduling
+- Assessment test integration
+- Offer letter generation
+
+Komponen ML:
+- Resume parsing & information extraction (NLP)
+- Job-Candidate matching score (NLP similarity)
+- Resume ranking
+- Candidate success prediction
+- Skill gap analysis
+- Bias detection dalam hiring
+
+Dataset: Resumes + job descriptions + hiring outcomes
+Dasar Penelitian: HR spend banyak waktu screening manual. 
+ML bisa automate initial screening objectively.
+
+-------------------------------------------------------------------------------
+
+### N. Employee Attrition Prediction & Engagement System
+Deskripsi: HR analytics platform dengan churn prediction
+
+Fitur Web:
+- Employee database
+- Performance review tracking
+- Attendance & leave management
+- Survey & feedback system
+- Training management
+- Analytics dashboard
+
+Komponen ML:
+- Employee Attrition Prediction (Classification)
+- Engagement score calculation
+- Performance prediction
+- Skill development recommendation
+- Compensation fairness analysis
+
+Dataset: HR data (tenure, salary, performance, satisfaction surveys)
+Dasar Penelitian: High turnover cost expensive. 
+ML bisa early warning & retention strategy.
+
+===============================================================================
+
+## 9. KEAMANAN & MONITORING
+
+### O. Smart Security System dengan Anomaly Detection
+Deskripsi: Web-based security monitoring dengan deteksi anomali
+
+Fitur Web:
+- Real-time camera feed monitoring
+- Alert notification system
+- Incident logging & reporting
+- Access control management
+- Visitor management
+- Analytics dashboard
+
+Komponen ML:
+- Object Detection (YOLO, Faster R-CNN)
+- Face Recognition untuk access control
+- Anomaly behavior detection
+- Crowd counting & density estimation
+- License plate recognition
+- Violence detection
+
+Dataset: Video surveillance data, CCTV datasets (COCO, UCF Crime)
+Dasar Penelitian: Manual monitoring CCTV tidak efektif 24/7. 
+ML bisa auto-detect suspicious activity.
+
+===============================================================================
+
+## 10. LINGKUNGAN & SUSTAINABILITY
+
+### P. Waste Management System dengan Classification & Tracking
+Deskripsi: Platform pengelolaan sampah dengan klasifikasi otomatis
+
+Fitur Web:
+- Waste collection scheduling
+- Pickup request system
+- Recycling center locator
+- Reward point system
+- Educational content
+- Impact dashboard (CO2 saved, etc)
+
+Komponen ML:
+- Waste Classification dari foto (organik/anorganik/B3)
+- Collection route optimization
+- Waste volume prediction
+- Recycling market price prediction
+- Carbon footprint calculation
+
+Dataset: Waste images dataset, collection data
+Dasar Penelitian: Waste sorting manual tidak efisien. 
+ML bisa edukasi & classify automatically.
+
+===============================================================================
+
+## 11. SOCIAL GOOD
+
+### Q. Disaster Response Coordination dengan Damage Assessment
+Deskripsi: Platform koordinasi bencana dengan analisis kerusakan AI
+
+Fitur Web:
+- Emergency report submission
+- Resource allocation tracking
+- Volunteer coordination
+- Donation management
+- Real-time map visualization
+- Communication hub
+
+Komponen ML:
+- Satellite/Drone Image Analysis untuk damage assessment
+- Resource demand prediction
+- Optimal distribution routing
+- Missing person matching (face recognition)
+- Fake news detection
+
+Dataset: Disaster imagery (xBD dataset), social media data
+Dasar Penelitian: Response bencana butuh koordinasi cepat. 
+ML bisa automate damage assessment.
+
+===============================================================================
+
+## REKOMENDASI PEMILIHAN
+
+Kriteria Pilih Ide:
+1. Data Availability: Apakah bisa dapat dataset real/simulasi?
+2. Complexity Level: Sesuai waktu & skill level?
+3. Impact & Novelty: Ada kontribusi baru atau improvement significant?
+4. Implementation Feasibility: Tech stack realistic untuk dikerjakan solo/tim kecil?
+5. Stakeholder Access: Ada akses ke user/domain expert untuk validasi?
+
+Tech Stack Umum:
+- Backend: Laravel/Django/FastAPI
+- Frontend: React/Vue/Blade + Tailwind
+- ML: Python (scikit-learn, TensorFlow, PyTorch)
+- Database: MySQL/PostgreSQL
+- Deployment: Docker, AWS/GCP/Azure
+
+Rekomendasi Top 3 untuk TA (balance feasibility & impact):
+1. Sistem POS + Demand Forecasting 
+   - Clear use case, data bisa simulasi, high business value
+   
+2. LMS dengan Personalized Learning 
+   - Education domain always relevant, banyak dataset public
+   
+3. Recruitment Platform + Resume Screening 
+   - NLP application, clear automation benefit, feasible scope
+
+===============================================================================

@@ -1,0 +1,231 @@
+# 📋 PHASE DEVELOPMENT & FITUR PER ROLE
+
+## 🚀 PHASE DEVELOPMENT (6 Bulan / 24 Sessions)
+
+### **PHASE 1: Setup & Core (Month 1-2) - Session 4-11**
+- Session 4: Project structure (Django + React)
+- Session 5: Database (PostgreSQL + models)
+- Session 6-7: Authentication (register, login, password)
+- Session 8-9: Master Data (katalog, kategori, supplier)
+- Session 10-11: Basic CRUD API + Frontend integration
+
+### **PHASE 2: Features (Month 3-4) - Session 12-19**
+- Session 12-13: Input Stok + Barcode generator
+- Session 14-15: Transaksi POS (scan, cart, payment)
+- Session 16-17: Laporan (daily, periodic, product sales)
+- Session 18-19: Dashboard + Monitoring real-time
+
+### **PHASE 3: ML Integration (Month 5-6) - Session 20-24**
+- Session 20-21: ML Models training (5 predictions)
+- Session 22: ML API integration
+- Session 23: Testing & bug fixes
+- Session 24: Deployment & documentation
+
+---
+
+## 👥 FITUR PER ROLE
+
+### **🔵 ADMIN/OWNER (Full Access)**
+
+#### **A. Authentication & Setup**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **1. Registrasi** | 6 langkah: email → verify → password → data usaha → onboarding | Admin | Create business + admin user, generate business_code |
+| **2. Login** | Email + password | Admin | Session auth, redirect dashboard admin |
+| **3. Lupa Password** | Reset via email | Admin | Token reset, email notification |
+| **4. Edit Password** | Change password dengan verify old | Admin | Update password_hash |
+
+#### **B. Master Data**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **5. Katalog Barang** | CRUD produk master (code, nama, harga jual, min stok) | Admin | Used by: Input Stok (dropdown), Kasir (search produk) |
+| **6. Kategori** | CRUD kategori produk | Admin | Used by: Katalog (dropdown), Filter di kasir |
+| **7. Supplier** | CRUD data supplier | Admin | Used by: Katalog, Input Stok (dropdown) |
+
+#### **C. Inventory Management**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **8. Input Stok** | Input batch baru → generate barcode → print sticker | Admin | Create ProductBatch, StockMovementLog. Impact: Kasir bisa scan barcode baru |
+| **9. Monitoring Stok** | View stok per batch (FIFO order), warning low stock | Admin | Query real-time stock aggregate |
+| **10. Riwayat Stok** | Log semua perubahan stok (in/out/adjustment) | Admin | Display StockMovementLog |
+
+#### **D. Transaction Monitoring**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **11. Monitoring Transaksi** | View ALL transactions (semua kasir), filter by kasir/date/payment | Admin | Query Sale JOIN User (kasir). Impact: Admin track performance kasir |
+| **12. Detail Transaksi** | View full detail: items, batch used, payment info | Admin | Query Sale + SaleItem + ProductBatch |
+
+#### **E. ML Predictions (AI-Powered)**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **13. Stockout Prediction** | Prediksi produk habis kapan (days until stockout) | Admin | ML cron job daily, save to MLPrediction table |
+| **14. Restock Recommendation** | Berapa qty harus beli (optimal calculation) | Admin | ML compute based on velocity & lead time |
+| **15. Expiry Risk** | Batch mana yang berisiko expired sebelum laku | Admin | ML analyze (stock vs velocity). Impact: Admin bisa diskon batch |
+| **16. Revenue Forecast** | Prediksi revenue 7-30 hari ke depan | Admin | ML time-series forecasting |
+| **17. Product Classification** | Fast/Slow/Dead stock analysis | Admin | ML clustering (ABC analysis) |
+
+#### **F. Reporting**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **18. Laporan Harian** | Sales today, total transaksi, top products | Admin | Query Sale WHERE DATE(created_at) = today |
+| **19. Laporan Periode** | Sales by date range, trend chart | Admin | Query Sale + aggregate by date |
+| **20. Laporan Per Produk** | Product performance (qty sold, revenue, profit) | Admin | Query SaleItem JOIN Product, calculate profit |
+
+#### **G. Settings & Management**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **21. Kelola Kasir** | CRUD user kasir (username, password, schedule) | Admin | Create User role='kasir'. Impact: Kasir bisa login |
+| **22. Payment Setup** | Setup QRIS (upload QR), Bank (add rekening), E-Wallet | Admin | Create PaymentMethod. Impact: Kasir lihat payment options ini |
+| **23. Business Code Rotation** | Generate business_code baru (security) | Admin | Update business.business_code. Impact: Kasir harus pakai code baru |
+| **24. Profil Usaha** | Edit nama usaha, alamat, telepon | Admin | Update business info |
+
+---
+
+### **🟢 KASIR (Limited Access)**
+
+#### **A. Authentication**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **1. Login** | Business code + username + password | Kasir | Session auth, redirect dashboard kasir |
+| **2. Logout** | End session | Kasir | Clear session |
+
+#### **B. Dashboard**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **3. Dashboard Shift** | Stats shift sendiri (sales hari ini, transaksi count) | Kasir | Query Sale WHERE kasir_id=current_user |
+
+#### **C. Transaction**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **4. Transaksi POS** | Scan barcode → add cart → payment → print struk | Kasir | Create Sale + SaleItem, Update ProductBatch stock (FIFO), Log StockMovementLog. Impact: Admin lihat transaksi ini |
+
+#### **D. Tools**
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **5. Cek Stok** | Search produk → view stok available | Kasir (read-only) | Query ProductBatch aggregate |
+| **6. Riwayat Transaksi** | View transaksi SENDIRI only (shift history) | Kasir | Query Sale WHERE kasir_id=current_user |
+
+---
+
+### **🟡 SYSTEM (Auto Background)**
+
+| Fitur | Deskripsi | Dampak ke Role | Dampak Sistem |
+|-------|-----------|----------------|---------------|
+| **1. FIFO Automatic** | Saat transaksi, sistem auto pilih batch paling lama | - | Query ProductBatch ORDER BY created_at ASC. Impact: Batch lama keluar duluan |
+| **2. ML Training Cron** | Jalankan ML models setiap hari jam 00:00 | - | Background job, save predictions to MLPrediction table |
+| **3. Stock Alert** | Auto notification jika stok < min_stock | Admin | Check stock daily, send alert |
+| **4. Expiry Alert** | Auto notification batch expires dalam 7 hari | Admin | Check expired_date daily, send alert |
+| **5. Code Generation** | Auto-generate business_code saat registrasi | - | Unique constraint validation, retry if collision |
+
+---
+
+## 🔗 RELASI ANTAR FITUR & ROLE
+
+### **Chain Effect 1: Admin Setup → Kasir Operasional**
+```
+Admin: Registrasi 
+  → Generate business_code (AB12CD)
+  → Admin: Buat Katalog (50 produk)
+  → Admin: Input Stok (generate barcode)
+  → Admin: Buat User Kasir (username: kasir1)
+  → Kasir: Login (business_code + kasir1)
+  → Kasir: Transaksi POS (scan barcode)
+  → Sistem: FIFO automatic (update batch lama)
+  → Admin: Monitoring transaksi kasir
+```
+
+### **Chain Effect 2: Input Stok → Transaksi → ML Prediction**
+```
+Admin: Input Stok Batch A (200 pcs, tgl 15 Mar)
+  → Sistem: Generate barcode 02150326001
+  → Admin: Print & tempel sticker
+  
+Admin: Input Stok Batch B (250 pcs, tgl 20 Mar)
+  → Sistem: Generate barcode 02200326001
+  
+Kasir: Scan barcode 02200326001 (customer ambil batch baru)
+  → Sistem: FIFO auto pilih Batch A (tgl 15 Mar, lebih lama)
+  → Update: Batch A stock 200→199, Batch B tetap 250
+  
+After 3 months transactions:
+  → Sistem: ML Training cron (jam 00:00)
+  → Analyze: Sales velocity product 02
+  → Predict: Stockout dalam 7 hari (confidence 85%)
+  → Admin: Lihat prediction → Action: Restock now!
+```
+
+### **Chain Effect 3: Payment Setup → Kasir Payment Flow**
+```
+Admin: Setup Payment QRIS (upload QR image merchant.png)
+  → Sistem: Save to PaymentMethod table
+  
+Admin: Setup Payment Bank BCA (1234567890, A/N Sara)
+  → Sistem: Save to PaymentMethod table
+  
+Kasir: Transaksi POS → Customer pilih "QRIS"
+  → Sistem: Query PaymentMethod WHERE business_id=1 AND method_type='qris'
+  → Display: Modal dengan QR image merchant.png
+  → Customer: Scan QR → Bayar
+  → Kasir: Klik "Sudah Bayar" → Transaksi complete
+  
+Admin: Monitoring transaksi
+  → View: 18 transaksi QRIS hari ini (Rp 450.000)
+  → Insight: QRIS payment populer (60% dari total)
+```
+
+### **Chain Effect 4: Business Code Rotation → Security**
+```
+Admin: Curiga code bocor (ex-kasir tahu AB12CD)
+  → Admin: Generate business_code baru
+  → Sistem: Update business.business_code = "XY89PQ"
+  → Old code "AB12CD" = INVALID instantly
+  
+Kasir (active session): Tetap bisa kerja (session persist)
+  
+Kasir (logout): Coba login dengan "AB12CD"
+  → Sistem: Business not found (code invalid)
+  → Login GAGAL ✅
+  
+Kasir: Login dengan "XY89PQ" (code baru dari admin)
+  → Sistem: Business found, auth success
+  → Login SUCCESS ✅
+  
+Ex-kasir: Coba login dengan "AB12CD" (code lama)
+  → Sistem: Business not found
+  → BLOCKED ✅ (security achieved!)
+```
+
+---
+
+## 📊 DAMPAK ANTAR ROLE (Summary)
+
+| Aksi Admin | Dampak ke Kasir | Dampak ke Sistem |
+|------------|-----------------|------------------|
+| Buat Katalog | Kasir bisa search produk di POS | Product table bertambah |
+| Input Stok | Kasir bisa scan barcode baru | ProductBatch + barcode baru |
+| Buat User Kasir | Kasir bisa login | User table bertambah |
+| Setup Payment | Kasir lihat opsi payment ini | PaymentMethod table bertambah |
+| Generate Code Baru | Kasir harus pakai code baru (offline/WhatsApp) | Business code updated |
+| Diskon Batch | Kasir auto apply discount saat scan | ProductBatch.discount_percent updated |
+
+| Aksi Kasir | Dampak ke Admin | Dampak ke Sistem |
+|------------|-----------------|------------------|
+| Transaksi POS | Admin lihat transaksi real-time | Sale + SaleItem created, Stock updated (FIFO) |
+| Jual Produk | Admin: Stock berkurang, Sales naik | ProductBatch.stock_qty decrease |
+| Logout | - | Session cleared |
+
+| Aksi System | Dampak ke Admin | Dampak ke Kasir |
+|-------------|-----------------|-----------------|
+| FIFO Auto | Admin lihat batch lama keluar duluan | Transparent (kasir tidak perlu tahu) |
+| ML Prediction | Admin dapat insight actionable | - |
+| Stock Alert | Admin dapat notifikasi | - |
+| Expiry Alert | Admin dapat notifikasi → Bisa diskon batch | Kasir auto apply discount saat scan |
+
+---
+
+**Kesimpulan:**  
+- **Admin = Setup & Control** (master data, monitoring, ML insights)
+- **Kasir = Execution** (transaksi operasional harian)
+- **System = Intelligence** (FIFO auto, ML predictions, alerts)
+
+Setiap role punya **clear responsibility** dan **saling terhubung** melalui database & business logic! 🎯

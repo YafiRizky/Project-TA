@@ -1,0 +1,10 @@
+1. pada portal admin itu saat buat cabang baru itu dia tidaklah sama persis saat registrasi pertama kali, sama kan ui ux nya jadi match dan familliarity nya dapat
+mksd saya itu seperti step step isi data usaha pertama kali admin registrasi
+
+2. itu kenapa ya admin kok tidak pakai kode unik lagi , padahal kode unik adalah pembeda , takutnya itu ada misal username yg sama atau identitas yang mirip
+
+3. saat saya menambahkan kasir di dalam bisnis itu tidak muncul padahal di database itu ada 
+
+4. sidebar menu "Manajemen Diskon" pada "Promosi" itu salah seharusnya ga ada menu promosi dan diskon itu langsung masuk pada master data dan dropdown produk tidak muncul apa apa padahal saaya sudah isi data-data produk
+
+5. Stock opname itu kyk gajelas msk cuman kyk yes or no aja seharusnya diberikan sesuatu yang bonafit yang berhbungan dengan fitur lain

@@ -1,0 +1,249 @@
+
+v 
+ 
+ 
+vi 
+ 
+2 
+ 
+1. LATAR BELAKANG 
+Kalori  yang  tepat  berdampak  sangat  penting  bagi  kelangsungan  hidup 
+manusia.  Kalori  dapat  dikontrol  dengan  pola  makan  yang  teratur.  Banyak 
+masyarakat  tidak memperhatikan pola  makan, sehingga berdampak pada 
+gangguan  kesehatan.  Kalori  yang  masuk  ke  dalam  tubuh,  harus  disesuaikan 
+dengan kebutuhan sehari - hari. Kekurangan kalori akan mengakibatkan tubuh 
+lemas dan menurunkan tingkat imun tubuh. Di lain sisi, tubuh yang kelebihan 
+kalori dapat menyebabkan penumpukan lemak pada tubuh sehingga 
+meningkatkan  risiko  obesitas  dan  penyakit  kronis  lainnya  (Afika,  Henny, 
+2021). 
+Jumlah angka obesitas di dunia mengalami peningkatan signifikan. 
+Berdasarkan  data  Riskesdas  (Badan  Litbangkes  Kementerian  Kesehatan  RI, 
+2020),  sebesar  1,4%  remaja    mengalami kelebihan  berat  badan  dan  obesitas. 
+Menurut  penelitian  Giuseppe  (Grosso,  Giuseppe,  2021),  kenaikan  obesitas 
+mencapai  5%  selama  pandemi  pada  tahun  2021.    Hal  tersebut  disebabkan 
+karena pola makan masyarakat yang kurang sehat, sehingga asupan kalori yang 
+masuk pada tubuh tidak terkontrol. 
+ 
+2. PERUMUSAN MASALAH 
+Berdasarkan uraian diatas, penulis menemukan permasalahan yang ada, yaitu: 
+2.1. Bagaimana cara  untuk  mengatur  pola  makanan  pada  masyarakat agar 
+tercegah dari berbagai penyakit? 
+2.2. Bagaimana membuat sistem untuk memprediksi jumlah kalori 
+berdasarkan citra makanan? 
+ 
+3. BATASAN MASALAH 
+Dalam pembuatan Tugas Akhir ini, masalah yang akan dibahas dibatasi oleh 
+beberapa faktor, antara lain: 
+3.1. Pengguna  harus  menginputkan  makanan  agar  dapat  dihitung  total 
+kalorinya. 
+3.2. Alat dan sistem pendeteksi kalori makanan harus terkoneksi agar bisa 
+mendeteksi jumlah kalori yang masuk secara realtime. 
+4 
+ 
+c. Desain Perangkat Keras  
+Setelah  diketahui  kebutuhan  fungsi  dari  sistem,  maka  metode 
+selanjutnya  adalah  melakukan  perancangan  perangkat  keras.  Hal 
+ini diawali dengan pemilihan komponen alat yang akan digunakan, 
+perancangan rangkaian sistem perangkat keras yang akan 
+digunakan kelak. 
+d. Pengujian 
+Pada  metode  ini,  sistem  yang  telah  dibuat  akan  diujikan  secara 
+langsung pada objek penelitian. Sistem pendeteksi kalori makanan 
+dan Alat yang berupa sendok dipakai oleh manusia. Sistem 
+pendeteksi kalori makanan tersebut mampu memotret makanan dan 
+menghitung kalori makanan berdasarkan data pada server. 
+Sedangkan, sendok tersebut berisikan sensor pengukur berat yang 
+digunakan untuk menghitung berat saat makanan diangkat. 
+e. Analisa Hasil Pengujian 
+Metode  ini melakukan analisa  terhadap  hasil  pengujian alat  yang 
+telah dilakukan. Maka jika ada error dapat ditelusuri penyebabnya 
+lalu dapat dilakukan perbaikan.  
+f. Penerapan Alat 
+Sistem ini dapat diterapkan oleh pengguna saat hendak memakan 
+makanan  dengan  tujuan  untuk  mengetahui  total  kalori  yang  akan 
+dimakannya.  Pengguna  dapat  mengambil  tindakan  lebih  lanjut 
+berdasarkan  jumlah  kalori  yang  telah  dimakan.  Pengguna  juga 
+diwajibkan  untuk  menginputkan  berat  badan,  tinggi,  dan  usia 
+mereka  untuk  mendapatkan  rekomendasi total  kalori  harian  yang 
+dibutuhkan.  Selain  itu,  pengguna  akan  diberikan  pilihan  dalam 
+penghitungan kalori nantinya. Mereka dapat memilih perhitungan 
+kalori  menggunakan  Sistem  pendeteksi  kalori  makanan  saja  atau 
+juga  dengan  menggunakan  sendok.  Dengan  ini,  pengguna  bisa 
+mengetahui  kalori  pada  makanan  dan  yang  harus  dimakannya 
+dalam hariannya. 
+ 
+5 
+ 
+6.2. Cara kerja 
+Sistem  yang  dibangun  terdiri  dari  dua  bagian,  yang  pertama  yaitu 
+aplikasi pendeteksi kalori makanan per 100 gram dan sistem Internet of 
+Things guna menghitung berat makanan yang ada pada sendok. 
+Aplikasi  pendeteksi  kalori,  dibangun  menggunakan  platform  android 
+yang digunakan oleh pengguna. Pertama, pengguna memasukkan jenis 
+kelamin, tinggi badan, berat badan, dan usia. Data tersebut akan diolah 
+oleh  aplikasi  untuk  memberikan  informasi  seputar  kalori  harian  yang 
+dibutuhkan.  Setelah  itu,  pengguna memasuki  tampilan  utama aplikasi 
+penghitung kalori. Sistem akan menampilkan jumlah kalori secara real 
+time dan batas kalori harian yang dibutuhkan.  
+Untuk mengetahui informasi kalori yang terdapat pada makanan, 
+pengguna  dapat  memotret  berbagai  makanan  menggunakan  aplikasi 
+pendeteksi kalori. Nantinya sistem akan memunculkan estimasi kalori 
+yang ada pada makanan setiap 100 gram dari hasil potretnya. Estimasi 
+kalori  yang  ditampilkan  tersebut  nantinya  akan  membantu  pengguna 
+untuk memperkirakan total kalori yang hendak diambil sebelum 
+menuju proses berikutnya.  
+Setelah itu, pengguna dapat melakukan perhitungan kalori pada setiap 
+jenis makanan menggunakan SPOONYCAL. Pengguna harus 
+mengkoneksikan  terlebih  dahulu  sendok  menuju  aplikasi.  Kemudian, 
+pengguna  memilih  jenis  makanan  pada  search  bar  yang  ada  pada 
+aplikasi. Setelah dipilih, pengguna mengambil makanan agar dihitung 
+total  beratnya.  Jika  perhitungan  berat  sudah  selesai  maka  pengguna 
+akan mendapatkan total kalori dari jenis makanan yang telah dihitung 
+beratnya.  Selanjutnya,  pengguna  dapat  mengulangi  proses  ini  sampai 
+isi  makanan  sudah  lengkap  dan  total  kalori  yang  dibutuhkan  sudah 
+tercukupi.  
+Selanjutnya, kebutuhan kalori harian akan berkurang berdasarkan 
+jumlah kalori yang telah dihitung. Data ini akan masuk pada tab laporan 
+pada aplikasi. Aplikasi juga dapat memberikan warning guna 
+6 
+ 
+memperingatkan  pengguna  untuk  tidak  membatasi  asupan  makanan 
+yang dimakan.  
+Komponen  yang  digunakan  untuk  merancang  sistem  ini  sebagai 
+berikut : 
+• Mikrokontroler NodeMCU Wemos R1 
+• Sensor Berat 
+• RF Transmitter and Receiver 
+• Baterai Rechargeable 
+• Kabel Jumper 
+Berikut merupakan gambar rancang bangun yang akan dibuat :  
+ 
+ 
+7. TINJAUAN PUSTAKA 
+Berikut ini merupakan beberapa penelitian yang sebelumnya telah dibuat dan 
+berhubungan  dengan  topik  pembahasan,  kemudian  dijadikan  bahan  untuk 
+melakukan pengembangan ini adalah sebagai berikut: 
+1)  Pada  penelitian  yang  dikembangkan  di  Universitas  Widya  Dharma  oleh 
+Soebandi  dkk  pada  tahun  2019,  merancang  sistem  aplikasi  perhitungan 
+jumlah kebutuhan kalori harian berbasis mobile berdasarkan makanan yang 
+dimakan setiap harinya. Pengguna akan dianalisis kebutuhan kalori 
+hariannya berdasarkan tinggi, berat badan, dan usia. Setelah itu menginput 
+data makanan yang dimakan secara manual ke aplikasi agar dapat dihitung 
+jumlah kalori yang masuk. 
+2)  Penelitian yang dikembangkan oleh Mochamad Dandi dkk pada tahun 2021 
+di Universitas Telkom Bandung dengan menerapkan metode CNN 
+(Convolutional  Neural  Network)  untuk  menghitung  nutrisi  pada  makanan 
+7 
+ 
+berbasis  android.  Sistem  tersebut  memungkinakan  pengguna  untuk  dapat 
+mengetahui jumlah gizi, kalori, dan kalori melalui foto  makanan. TIngkat 
+akurasi yang dihasilkan sebesar 66%. 
+3)  Penelitian yang dikembangkan di Universitas Putera Batam oleh Teddy dkk 
+pada tahun 2019, membuat sebuah sistem pakar dalam menentukan 
+maksimal  kalori  harian  berbasis  mobile  untuk  memberikan  peringatan 
+kepada  pengguna  saat  asupan  yang  dimakan  melebihi  batas  kebutuhan, 
+sehingga membantu orang - orang dalam menjaga kesehatan dengan 
+mencegah penimbunan lemak dan gula pada tubuh. 
+4)  Penelitian yang dilakukan P. Kamakshi Priyaa dkk pada  tahun 2019 
+memberikan solusi sistem yang dikembangkan berbasis  Internet of Things 
+(IoT)  menggunakan  sensor  berat  dan  pemancar  sinyal  untuk  menyimpan 
+asupan kalori yang didapatkan tubuh setiap harinya. Memanfaatkan 
+arsitektur  Arduino  Uno  sebagai  basis  alat,  dan  menggunakan  Machine 
+Learning  untuk  menganalisis  data  yang  didapatkan.  Alat  tersebut  akan 
+menghitung berat makanan yang akan dimakan, lalu mengirimkan data yang 
+didapat  oleh  sensor  menuju  cloud  untuk  diolah  lebih  lanjut  agar  dapat 
+ditampilkan  di  aplikasi  mobile.  Mengkombinasikannya  dengan  metode 
+Convutional Neural Network (CNN) agar dapat mengidentifikasi makanan 
+berdasarkan foto, lalu mengkalkulasikannya terhadap berat makanan 
+tersebut. 
+5)  Penelitian yang dilakukan oleh Jean-Claude dkk.pada tahun 2021 
+mengemukakan bahwa asupan kalori yang diterima tubuh sangat 
+berpengaruh terhadap bentuk badan dan kondisi imun seseorang. 
+Berdasarkan uji sampel dari berbagai jenis kelamin dan usia, menunjukkan 
+bahwa orang yang memiliki asupan kalori di bawah standar normal 
+cenderung mudah terkena penyakit. 
+ 
+ 
+8. JADWAL KEGIATAN 
+Jadwal kegiatan berlangsung kurang lebih selama 6 bulan yakni bulan Maret 
+2022 s.d. Agustus 2022, dalam tahapan sebagai berikut : 
+8 
+ 
+ 
+No 
+ 
+Jenis Kegiatan 
+ 
+Bulan 
+  1 2 3 4 5 6 
+1 Observasi        
+2 Studi Pustaka       
+3 Penyediaan Alat dan Bahan       
+4 Desain Sistem dan Perangkat 
+Keras 
+      
+5 Penulisan Kode Program       
+6 Perakitan Alat       
+7 Pengujian Alat       
+8 Analisa Hasil Pengujian Alat       
+9 Penerapan Alat dan Evaluasi       
+10 Pembuatan Laporan       
+ 
+ : Pelaksanaan 
+ 
+ 
+  
+9 
+ 
+9. RINCIAN BIAYA 
+ 
+No Uraian Jumlah Harga Satuan Jumlah Harga 
+A.  Pembuatan Alat 
+1 Arduino Advance Kit 1 Set Rp. 500.000 Rp.500.000 
+ 2 Obeng Set 1 Set Rp.100.000 Rp.100.000 
+ 3 RF Transmitter Receiver 2 Pcs Rp.75.000 Rp.150.000 
+ 4 Sensor Berat 3 Pcs Rp.40.000 Rp.120.000 
+ 5 Baterai Rechargeable 2 Pcs Rp.75.000 Rp.150.000 
+ 6 Pembungkus Besi 1 Roll Rp.100.000 Rp.100.000 
+Sub Total Rp.1.120.000 
+B.  Biaya Operasional 
+1 Jasa printing 3 dimensi 1 Paket Rp.50.000 Rp.50.000 
+2 Pembuatan laporan 1 Paket Rp. 100.000  Rp. 100.000 
+3 Penggandaan laporan 2 Paket Rp. 50.000 Rp. 100.000 
+4 Jilid Laporan 3 Paket Rp. 25.000 Rp. 75.000 
+ 5 Internet  Rp. 100.000 Rp. 100.000 
+Sub Total  Rp. 425.000 
+Total Biaya Rp. 1.545.000 
+  
+10 
+ 
+DAFTAR PUSTAKA 
+ 
+Afika,  Henny.  2021.  Hubungan  Gaya  Hidup  Dengan  Kejadian  Obesitas  Pada 
+Remaja Era Milenial Di Kota Medan. Tesis. Fakultas Kesehatan Masyarakat. 
+Universitas Sumatera Utara, Medan. 
+Kementrian Kesehatan RI. 2020. Laporan Hasil riset Kesehatan Dasar (Riskesdas). 
+Badan  Penelitian  dan  Pengembangan  Kesehatan.  Diakses  6  Mei  2022. 
+https://www.litbang.kemkes.go.id/laporan-riset-kesehatan-dasar-riskesdas/  
+Dandi,  Mochamad.,  TSP,  H.F.  dan  Rizal,  Syamsul.  2021.  Perancangan  Aplikasi  
+Perhitungan Nutrisi Pada Makanan Berbasis Android Dengan Metode  
+Convolutional  Neural  Network  (CNN).  e-Proceeding  of  Engineering,Vol.8, 
+No.5: 5000. 
+Grosso, G. (2021). Obesity during COVID-19: An underrated pandemic? 
+EClinicalMedicine, 39, 101062. 
+https://doi.org/10.1016/j.eclinm.2021.101062.  
+Mbarushimana,  J.-C.,  Gustafson,  C.  R.,  Gitungwa,  H.,  Zeballos,  E.  (2021).  The 
+relationship  between  bodyweight  status  and  weight  perception  explains 
+differences  in  calories  ordered  in  a  food  choice  exercise.  Nutrients,  13(6), 
+1794. https://doi.org/10.3390/nu13061794. 
+Priyaa, P.K., Sathyapriya, S., Arockiam, L. 2019.Nutrition monitoring and calorie 
+estimation using internet of things (IOT). International Journal of Innovative 
+Technology and Exploring Engineering, 8(11), 2669–2672. 
+https://doi.org/10.35940/ijitee.k2072.0981119. 
+Santya,  T.,  Suharyanto,  C.  E.,  Simanjuntak,  P.,  &amp;  Alfandianto,  A.  (2019). 
+Sistem Pakar menentukan maksimal Kalori Harian berbasis mobile. 
+Innovation in Research of Informatics (INNOVATICS), 1(2). 
+https://doi.org/10.37058/innovatics.v1i2.920. 
+Soebandi.,  Tendean,  Sandi.  dan  Bujali,  Xaperius.  2019.  Perancangan  Aplikasi 
+Perhitungan Jumlah Kebutuhan Kalori Harian.  Jurnal InTeksis Vol 7, no 2: 
+8

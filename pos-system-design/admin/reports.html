@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-indigo-900 text-white flex-shrink-0">
+            <div class="p-6"><div class="flex items-center space-x-3 mb-8"><span class="text-3xl">🏪</span><div><h1 class="text-xl font-bold">POS System</h1><p class="text-indigo-300 text-xs">Admin Panel</p></div></div></div>
+            <nav class="px-4 space-y-1">
+                <a href="dashboard.html" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition"><span class="mr-3">📊</span><span>Dashboard</span></a>
+                <div class="pt-4 pb-2 px-4 text-indigo-300 text-xs font-semibold uppercase tracking-wider">Master Data</div>
+                <a href="categories.html" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition"><span class="mr-3">📑</span><span>Kategori</span></a>
+                <a href="products.html" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition"><span class="mr-3">📦</span><span>Produk</span></a>
+                <a href="suppliers.html" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition"><span class="mr-3">🏭</span><span>Supplier</span></a>
+                <div class="pt-4 pb-2 px-4 text-indigo-300 text-xs font-semibold uppercase tracking-wider">Operasional</div>
+                <a href="inventory.html" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition"><span class="mr-3">📦</span><span>Inventori</span></a>
+                <a href="transactions.html" class="flex items-center px-4 py-3 text-white hover:bg-indigo-800 rounded-lg transition"><span class="mr-3">💳</span><span>Transaksi</span></a>
+                <a href="reports.html" class="flex items-center px-4 py-3 bg-indigo-800 text-white rounded-lg font-medium"><span class="mr-3">📈</span><span>Laporan</span></a>
+                <div class="pt-4 pb-2 px-4 text-indigo-300 text-xs font-semibold uppercase tracking-wider">AI Features</div>
+                <a href="ml-predictions.html" class="flex items-center px-4 py-3 text-indigo-500 cursor-not-allowed rounded-lg relative"><span class="mr-3">🤖</span><span>Prediksi ML</span><span class="ml-auto text-xs bg-yellow-500 text-yellow-900 px-2 py-0.5 rounded-full font-semibold">Soon</span></a>
+                <div class="pt-6"><a href="../index.html" class="flex items-center px-4 py-3 text-white hover:bg-red-600 rounded-lg transition"><span class="mr-3">🚪</span><span>Logout</span></a></div>
+            </nav>
+        </aside>
+        <main class="flex-1 overflow-y-auto">
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="flex items-center justify-between px-8 py-4">
+                    <div><h2 class="text-2xl font-bold text-gray-900">Laporan & Analytics</h2><p class="text-sm text-gray-600 mt-1">Business insights dan performa penjualan</p></div>
+                </div>
+            </header>
+            <div class="p-8">
+                <div class="grid grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-600 mb-2">Total Penjualan Bulan Ini</h3>
+                        <p class="text-3xl font-bold text-gray-900">Rp 45jt</p>
+                        <p class="text-sm text-green-600 mt-2">↑ +25% dari bulan lalu</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-600 mb-2">Total Transaksi</h3>
+                        <p class="text-3xl font-bold text-gray-900">1,248</p>
+                        <p class="text-sm text-blue-600 mt-2">↑ +15% dari bulan lalu</p>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-600 mb-2">Rata-rata per Transaksi</h3>
+                        <p class="text-3xl font-bold text-gray-900">Rp 36k</p>
+                        <p class="text-sm text-gray-600 mt-2">Stable</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-100">
+                    <h3 class="font-bold text-gray-900 mb-4">Top 5 Produk Terlaris</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 border-b">
+                            <span class="font-semibold">Mie Goreng Pcs</span>
+                            <span class="text-gray-600">1,250 terjual</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 border-b">
+                            <span class="font-semibold">Aqua 600ml</span>
+                            <span class="text-gray-600">980 terjual</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg"><p class="text-sm text-yellow-700"><strong>📝 Note:</strong> Charts dan export PDF/Excel akan ditambahkan setelah konsultasi.</p></div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

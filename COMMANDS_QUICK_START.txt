@@ -1,0 +1,157 @@
+========================================
+  QUICK START COMMANDS - POS ML SYSTEM
+========================================
+Date: 26 Feb 2026
+Purpose: Command reference untuk daily development
+
+
+========================================
+1. AKTIVASI VIRTUAL ENVIRONMENT
+========================================
+
+cd C:\laragon\www\TA
+.\.venv\Scripts\Activate.ps1
+
+# Setelah berhasil, prompt jadi: (.venv) PS C:\laragon\www\TA>
+
+
+========================================
+2. RUN DJANGO SERVER (Backend)
+========================================
+
+# Pastikan venv sudah aktif (lihat (.venv) di prompt)
+cd pos-backend
+python manage.py runserver
+
+# Server jalan di: http://127.0.0.1:8000
+# Admin panel: http://127.0.0.1:8000/admin
+
+
+========================================
+3. RUN REACT SERVER (Frontend)
+========================================
+
+# Buka terminal baru (jangan close Django server)
+cd C:\laragon\www\TA\pos-frontend
+npm run dev
+
+# Server jalan di: http://localhost:5173
+
+
+========================================
+4. DATABASE MIGRATIONS
+========================================
+
+# Venv harus aktif
+cd pos-backend
+
+# Buat migration files
+python manage.py makemigrations
+
+# Apply migrations ke database
+python manage.py migrate
+
+# Lihat status migrations
+python manage.py showmigrations
+
+
+========================================
+5. CREATE SUPERUSER (Admin)
+========================================
+
+# Venv harus aktif
+cd pos_backend
+python manage.py createsuperuser
+
+# Isi: username, email, password
+# Login di: http://127.0.0.1:8000/admin
+
+
+========================================
+6. INSTALL DEPENDENCIES
+========================================
+
+# Python packages (venv harus aktif)
+pip install django psycopg2 pillow djangorestframework django-cors-headers
+
+# React packages
+cd pos-frontend
+npm install
+
+
+========================================
+7. DATABASE COMMANDS (PostgreSQL)
+========================================
+
+# List semua databases
+psql -U postgres -c "\l"
+
+# Create database baru
+psql -U postgres -c "CREATE DATABASE pos_ml_db;"
+
+# Drop database
+psql -U postgres -c "DROP DATABASE IF EXISTS pos_ml_db;"
+
+# Connect ke database
+psql -U postgres -d pos_ml_db
+
+# Di dalam psql:
+\dt              # List tables
+\d table_name    # Describe table structure
+\q               # Quit
+
+
+========================================
+8. TROUBLESHOOTING
+========================================
+
+# Cek Python version
+python --version
+
+# Cek Django installed
+python -m django --version
+
+# Cek pip packages di venv
+pip list
+
+# Kill port 8000 kalau stuck
+netstat -ano | findstr :8000
+taskkill /PID <PID_NUMBER> /F
+
+
+========================================
+9. DAILY WORKFLOW (SIMPLE)
+========================================
+
+1. Buka PowerShell
+2. cd C:\laragon\www\TA
+3. .\.venv\Scripts\Activate.ps1
+4. cd pos_backend
+5. python manage.py runserver
+
+# Buka browser: http://127.0.0.1:8000
+
+
+========================================
+10. ONE-LINER (Copy-Paste Langsung)
+========================================
+
+# Django server (1 command):
+cd C:\laragon\www\TA; .\.venv\Scripts\Activate.ps1; cd pos_backend; python manage.py runserver
+
+# Migrations (1 command):
+cd C:\laragon\www\TA; .\.venv\Scripts\Activate.ps1; cd pos_backend; python manage.py makemigrations; python manage.py migrate
+
+
+========================================
+NOTES
+========================================
+
+- Venv HARUS aktif sebelum run Django commands
+- Django server (8000) dan React server (5173) jalan bersamaan
+- Laragon PostgreSQL harus running
+- Jangan close terminal saat server jalan
+- Ctrl+C untuk stop server
+
+
+END OF COMMANDS

@@ -1,0 +1,13 @@
+1. Pada kolom numerik sepertinya itu terjadi eror, soalnya saya sebagai admin itu kan memasukan harga pada range tertentu seperti puluhan ribu hingga ratusan ribu tp saat saya edit itu menjadi jutaan angka nya dan saat saya edit kembali menjadi benar itu seperti tidak ada perubahan.
+   pastikan semua nya pada project yang pakai fitur numerik selalu benar oke jangan sampai salah di semua fitur dan semua user dalam project
+
+2. pada dashboard itukan ada seperti peringatan tentang produk yang butuh pengisian stok tapi tidak dijelaskan produk mana saja 
+
+3. pada dashboard itu bagian navbar lonceng notif nya diganti svg dan dapat di klik tentang notifikasi stok 
+
+4. dan tambahkan fitur audit log untuk admin dan masukan kedalam side bar juga pada bagian bawah kategori pengaturan , yaitu ada bagian baru nama nya " Riwayat Sistem" disitu tracking apa saja yang terjadi di dalam bisnis khsusus bisnsis itu saja , misal kasir kasir di dalam bisnsi melakukan transaksi di tracking, admin update apa saja juga di masukan intinya audit log yang terjadi 
+
+
+5. terahkir ini saya berikan kamu untuk memperbaiki project ini dan merapikan semua kode yang ada di project ini biar lebih rapih dan lebih baik lagi , karena saya lihat masih banyak fitur fitur dan modul untuk semua user itu seperti nya belum dinamis
+
+intinya sebelum kita ke fitur multiple bisnis itu pastikan semua fitur & modul dari frontend dan backend , tombol dan desain desain nya di dalam itu sudah bekerja , dinamis , tepat dan tidak eror

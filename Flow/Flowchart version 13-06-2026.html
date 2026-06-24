@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS ML System — Flowchart v13-06-2026</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-bottom: 1px solid #1e293b;
+      padding: 24px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .header p { font-size: 13px; color: #94a3b8; }
+
+    /* ===== LEGEND ===== */
+    .legend {
+      display: flex;
+      gap: 16px;
+      padding: 16px 32px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+    .dot-ok { background: #22c55e; }
+    .dot-partial { background: #f59e0b; }
+    .dot-belum { background: #ef4444; }
+    .dot-admin { background: #3b82f6; }
+    .dot-kasir { background: #10b981; }
+    .dot-system { background: #8b5cf6; }
+
+    /* ===== TAB NAV ===== */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      padding: 12px 32px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      background: transparent;
+      color: #94a3b8;
+    }
+    .tab-btn:hover { background: #334155; color: #e2e8f0; }
+    .tab-btn.active { background: #3b82f6; color: #fff; }
+
+    /* ===== CONTENT ===== */
+    .content { padding: 32px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ===== FLOW CONTAINER ===== */
+    .flow-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ===== NODES ===== */
+    .node {
+      position: relative;
+      border-radius: 16px;
+      padding: 20px 28px;
+      min-width: 320px;
+      max-width: 480px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .node:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    /* Node types */
+    .node-start {
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      border: 2px solid #60a5fa;
+      border-radius: 50px;
+      padding: 14px 32px;
+    }
+    .node-end {
+      background: linear-gradient(135deg, #991b1b, #dc2626);
+      border: 2px solid #f87171;
+      border-radius: 50px;
+      padding: 14px 32px;
+    }
+    .node-process {
+      background: #1e293b;
+      border: 2px solid #334155;
+    }
+    .node-process.ok { border-color: #22c55e; background: linear-gradient(135deg, #0f172a, #052e16); }
+    .node-process.partial { border-color: #f59e0b; background: linear-gradient(135deg, #0f172a, #422006); }
+    .node-process.belum { border-color: #ef4444; background: linear-gradient(135deg, #0f172a, #450a0a); }
+
+    .node-decision {
+      background: #1e293b;
+      border: 2px solid #a78bfa;
+      transform: rotate(0deg);
+      border-radius: 16px;
+      min-width: 280px;
+    }
+    .node-decision::before {
+      content: '?';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 24px;
+      height: 24px;
+      background: #7c3aed;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .node-backend {
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      border: 2px solid #6366f1;
+      border-style: dashed;
+    }
+
+    .node-group {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px dashed #475569;
+      border-radius: 20px;
+      padding: 24px;
+      min-width: 360px;
+      max-width: 560px;
+    }
+
+    .node h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .node p {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .node .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .tag-ok { background: #166534; color: #86efac; }
+    .tag-partial { background: #713f12; color: #fde047; }
+    .tag-belum { background: #7f1d1d; color: #fca5a5; }
+    .tag-backend { background: #312e81; color: #a5b4fc; }
+    .tag-admin { background: #1e3a5f; color: #93c5fd; }
+    .tag-kasir { background: #064e3b; color: #6ee7b7; }
+
+    /* ===== ARROWS ===== */
+    .arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      color: #475569;
+    }
+    .arrow-line {
+      width: 2px;
+      height: 28px;
+      background: #475569;
+    }
+    .arrow-head {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid #475569;
+    }
+    .arrow-label {
+      font-size: 10px;
+      color: #64748b;
+      padding: 2px 8px;
+      background: #1e293b;
+      border-radius: 4px;
+      margin: 4px 0;
+    }
+
+    /* ===== BRANCH ===== */
+    .branch {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .branch-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .branch-label {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .bl-yes { background: #166534; color: #86efac; }
+    .bl-no { background: #7f1d1d; color: #fca5a5; }
+    .bl-admin { background: #1e3a5f; color: #93c5fd; }
+    .bl-kasir { background: #064e3b; color: #6ee7b7; }
+
+    /* ===== SECTION TITLE ===== */
+    .section-title {
+      text-align: center;
+      margin: 40px 0 24px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: 12px;
+      display: inline-block;
+    }
+    .section-title h2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .section-title p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    /* ===== MINI FLOW (inside groups) ===== */
+    .mini-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      margin-top: 10px;
+    }
+    .mini-step {
+      font-size: 11px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      border-left: 3px solid #475569;
+      color: #cbd5e1;
+    }
+    .mini-step.ok { border-left-color: #22c55e; }
+    .mini-step.belum { border-left-color: #ef4444; }
+    .mini-step.partial { border-left-color: #f59e0b; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .content { padding: 16px; }
+      .node { min-width: 260px; max-width: 100%; padding: 16px 20px; }
+      .branch { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>POS ML System — Flowchart v13-06-2026</h1>
+    <p>Diagram alur semua fitur berdasarkan Blueprint Profesional (Phase 2.5 Refinement)</p>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-ok"></div> Selesai (OK)</div>
+    <div class="legend-item"><div class="legend-dot dot-partial"></div> Sebagian / Tahap Revisi</div>
+    <div class="legend-item"><div class="legend-dot dot-belum"></div> Fitur Baru (Dalam Pengerjaan)</div>
+    <div class="legend-item"><div class="legend-dot dot-admin"></div> Flow Admin</div>
+    <div class="legend-item"><div class="legend-dot dot-kasir"></div> Flow Kasir</div>
+    <div class="legend-item"><div class="legend-dot dot-system"></div> Flow Sistem</div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+    <button class="tab-btn" onclick="showTab('auth')">Auth & Registrasi</button>
+    <button class="tab-btn" onclick="showTab('admin-main')">Admin Flow</button>
+    <button class="tab-btn" onclick="showTab('kasir-pos')">Kasir POS & Shift</button>
+    <button class="tab-btn" onclick="showTab('inventory')">Inventori & FIFO</button>
+    <button class="tab-btn" onclick="showTab('fase2')">Multi-Bisnis</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ============ TAB: OVERVIEW ============ -->
+    <div id="tab-overview" class="tab-panel active">
+      <div class="flow-container">
+        <div class="node node-start">
+          <h3>POS ML SYSTEM v13-06-2026</h3>
+          <p>Sistem Point of Sale UMKM & Restoran dengan standar profesional</p>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-decision">
+          <h3>Sistem Autentikasi 3 Pintu</h3>
+          <p>Kode Unik (Owner/Bisnis) + Username + Password</p>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="branch">
+          <!-- ADMIN BRANCH -->
+          <div class="branch-col">
+            <div class="branch-label bl-admin">ADMIN / OWNER</div>
+            <div class="node node-group">
+              <h3>Fitur Admin</h3>
+              <div class="mini-flow">
+                <div class="mini-step ok">Dashboard (Statistik, Warning)</div>
+                <div class="mini-step partial">Kelola Produk + Varian & Pajak</div>
+                <div class="mini-step ok">Kelola Kategori & Supplier</div>
+                <div class="mini-step partial">Manajemen Diskon (Global & Item)</div>
+                <div class="mini-step partial">Stock Opname (Penyesuaian Fisik)</div>
+                <div class="mini-step belum">Laporan Laba Rugi / Shift Kasir</div>
+                <div class="mini-step ok">Kelola Kasir & Pembayaran</div>
+                <div class="mini-step ok">Multi-Bisnis / Cabang (Portal)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KASIR BRANCH -->
+          <div class="branch-col">
+            <div class="branch-label bl-kasir">KASIR</div>
+            <div class="node node-group">
+              <h3>Fitur Kasir</h3>
+              <div class="mini-flow">
+                <div class="mini-step belum">Buka Shift Kasir (Modal Awal)</div>
+                <div class="mini-step ok">POS Checkout (Pajak, Diskon, Varian)</div>
+                <div class="mini-step belum">Cetak Struk Thermal / Bluetooth</div>
+                <div class="mini-step belum">Tutup Shift Kasir (Rekap Uang)</div>
+                <div class="mini-step ok">Notifikasi Stok & Peringatan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TAB: AUTH ============ -->
+    <div id="tab-auth" class="tab-panel">
+      <div class="flow-container">
+        <div class="node node-start"><h3>User Buka Aplikasi</h3></div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-decision">
+          <h3>Sudah punya akun?</h3>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="branch">
+          <div class="branch-col">
+            <div class="branch-label bl-no">BELUM (Register Owner)</div>
+            <div class="node node-process ok">
+              <h3>Halaman Register Lengkap</h3>
+              <p>Step 1: Data Owner</p>
+              <p>Step 2: Data Usaha Perdana (Lokasi spesifik)</p>
+              <span class="tag tag-ok">OK</span>
+            </div>
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="node node-backend">
+              <h3>Backend: Generate Codes</h3>
+              <p>Generate <b>Kode Owner</b> unik untuk Admin.</p>
+              <p>Generate <b>Kode Bisnis</b> unik untuk Cabang pertama.</p>
+              <span class="tag tag-backend">BACKEND</span>
+            </div>
+          </div>
+
+          <div class="branch-col">
+            <div class="branch-label bl-yes">SUDAH (Login Seragam)</div>
+            <div class="node node-process partial">
+              <h3>Halaman Login 3 Input</h3>
+              <p>1. Kode Unik (Kode Owner atau Kode Bisnis)</p>
+              <p>2. Username</p>
+              <p>3. Password</p>
+              <span class="tag tag-partial">NEW UX</span>
+            </div>
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="node node-backend">
+              <h3>Backend: Validasi Cerdas</h3>
+              <p>Jika kode = Kode Owner -> Masuk Lobi Cabang (Admin)</p>
+              <p>Jika kode = Kode Bisnis -> Masuk Dashboard Toko (Kasir)</p>
+              <span class="tag tag-backend">BACKEND</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TAB: KASIR POS ============ -->
+    <div id="tab-kasir-pos" class="tab-panel">
+      <div class="flow-container">
+        <div class="node node-start"><h3>Alur Transaksi Kasir</h3></div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process belum">
+          <h3>0. Buka Shift (Modal Kas)</h3>
+          <p>Kasir mengisi jumlah uang fisik di laci saat memulai shift (Petty Cash).</p>
+          <span class="tag tag-belum">NEW FEATURE</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process ok">
+          <h3>1. Pilih Produk & Varian</h3>
+          <p>Memilih produk. Jika ada varian (S/M/L) atau Topping, pop-up muncul.</p>
+          <span class="tag tag-ok">ENHANCED</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process ok">
+          <h3>2. Keranjang & Diskon</h3>
+          <p>Keranjang secara otomatis menghitung Pajak (PPN/PB1) jika diaktifkan.</p>
+          <p>Diskon spesifik produk diterapkan.</p>
+          <span class="tag tag-ok">ENHANCED</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-backend">
+          <h3>3. Checkout & Bayar</h3>
+          <p>Catat transaksi, kurangi stok (FIFO), hitung kembalian jika Cash.</p>
+          <p>Support QRIS & E-Wallet.</p>
+          <span class="tag tag-backend">BACKEND</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="branch">
+          <div class="branch-col">
+            <div class="node node-process belum" style="min-width: 200px">
+              <h3>4. Cetak Struk</h3>
+              <p>Cetak ke Thermal Printer via Bluetooth/USB.</p>
+              <span class="tag tag-belum">NEW FEATURE</span>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="node node-process belum" style="min-width: 200px">
+              <h3>5. Tutup Shift</h3>
+              <p>Hitung uang laci, cocokkan dengan sistem (Short/Over).</p>
+              <span class="tag tag-belum">NEW FEATURE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TAB: INVENTORY ============ -->
+    <div id="tab-inventory" class="tab-panel">
+      <div class="flow-container">
+        <div class="node node-start"><h3>Manajemen Stok & Opname</h3></div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process ok">
+          <h3>Input Barang Masuk</h3>
+          <p>Tambah Batch Baru, sistem mendata FIFO dan tanggal expired.</p>
+          <span class="tag tag-ok">OK</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process partial">
+          <h3>Stock Opname (Audit)</h3>
+          <p>Admin menghitung jumlah fisik barang di toko.</p>
+          <p>Mencatat selisih positif/negatif ke sistem.</p>
+          <span class="tag tag-partial">REFINEMENT</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-backend">
+          <h3>Sistem Jurnal Penyesuaian</h3>
+          <p>Sistem tidak hanya mengubah angka batch, namun membuat <b>Inventory Movement</b> dengan tipe ADJUSTMENT (Kerugian/Kelebihan) untuk rekam jejak formal.</p>
+          <span class="tag tag-backend">BACKEND ENHANCED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ TAB: FASE 2 ============ -->
+    <div id="tab-fase2" class="tab-panel">
+      <div class="flow-container">
+        <div class="node node-start"><h3>Portal Multi-Bisnis</h3></div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process ok">
+          <h3>Lobi Cabang</h3>
+          <p>Daftar seluruh bisnis/cabang yang dimiliki Admin.</p>
+          <span class="tag tag-ok">OK</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-process partial">
+          <h3>Buat Cabang Baru</h3>
+          <p>Form pembuatan cabang akan selengkap halaman Registrasi (dengan pemilihan detail wilayah) demi standarisasi data.</p>
+          <span class="tag tag-partial">REFINEMENT</span>
+        </div>
+
+        <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+
+        <div class="node node-backend">
+          <h3>Isolasi Data Penuh</h3>
+          <p>Begitu masuk ke salah satu cabang, seluruh API akan dibatasi (scope) hanya pada cabang tersebut. (Kasir, Transaksi, Laporan, Stok, dll).</p>
+          <span class="tag tag-backend">BACKEND OK</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

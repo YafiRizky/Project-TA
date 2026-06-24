@@ -1,0 +1,339 @@
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import MainLayout from '../components/MainLayout'
+import { transactionsAPI } from '../services/api'
+import { useAuth } from '../contexts/AuthContext'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts'
+import { RiMoneyDollarCircleLine, RiShoppingCartLine, RiArchiveLine, RiLineChartLine, RiFileExcel2Line, RiFilePdfLine, RiDownload2Line, RiBarChartBoxLine } from 'react-icons/ri'
+import { fmt } from '../utils/formatCurrency'
+
+const COLORS = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444']
+
+export default function ReportsPage() {
+  const { business } = useAuth()
+  const bCode = business?.code
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [isExporting, setIsExporting] = useState(false)
+
+  const { data: dailyData, isLoading: loadingDaily } = useQuery({
+    queryKey: ['daily-summary', bCode],
+    queryFn: transactionsAPI.getDailySummary,
+  })
+
+  const { data: paymentData, isLoading: loadingPayment } = useQuery({
+    queryKey: ['payment-summary', bCode],
+    queryFn: transactionsAPI.getPaymentSummary,
+  })
+
+  const { data: transData, isLoading: loadingTrans } = useQuery({
+    queryKey: ['transactions-report', bCode],
+    queryFn: () => transactionsAPI.getTransactions({ limit: 50 }),
+  })
+
+  const isLoading = loadingDaily || loadingPayment || loadingTrans
+
+  // Calculate summary
+  const summary = dailyData || {}
+  const transactions = transData?.results || transData || []
+  const transactionsList = Array.isArray(transactions) ? transactions : []
+
+  const totalRevenue = parseFloat(summary.total_revenue || 0) || transactionsList.reduce((sum, t) => sum + parseFloat(t.total_amount || 0), 0)
+  const totalTransactions = summary.transaction_count || transactionsList.length
+  const totalItems = summary.item_count || transactionsList.reduce((sum, t) => sum + (t.items?.length || 0), 0)
+  const avgTransaction = totalTransactions > 0 ? totalRevenue / totalTransactions : 0
+
+  // Estimasi profit: jumlahkan (selling_price - cost_per_unit) * qty per item
+  // cost_per_unit bisa dari item.cost_per_unit (jika backend kirim) atau dari item.purchase_cost
+  const totalEstimatedCost = transactionsList
+    .filter(t => t.status !== 'VOIDED')
+    .reduce((sum, t) => {
+      return sum + (t.items || []).reduce((s, item) => {
+        const cost = parseFloat(item.cost_per_unit || item.purchase_cost || 0)
+        return s + cost * (item.quantity || 0)
+      }, 0)
+    }, 0)
+  const totalEstimatedProfit = totalRevenue - totalEstimatedCost
+  const profitMarginPct = totalRevenue > 0 ? ((totalEstimatedProfit / totalRevenue) * 100).toFixed(1) : 0
+  const hasCostData = totalEstimatedCost > 0
+
+  // Payment method breakdown -- backend returns { payment_methods: { CASH: {amount, count}, ... } }
+  const paymentMethodsObj = paymentData?.payment_methods || {}
+  const paymentChartData = Object.entries(paymentMethodsObj).map(([method, data]) => ({
+    name: method,
+    value: parseFloat(data.amount || 0),
+    count: data.count || 0,
+  }))
+
+  // Build simple 7-day chart data from transactions
+  const chartData = (() => {
+    const days = {}
+    const now = new Date()
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now)
+      d.setDate(d.getDate() - i)
+      const key = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
+      days[key] = { name: key, revenue: 0, count: 0 }
+    }
+    transactionsList.forEach(t => {
+      const dateKey = t.transaction_date || t.created_at
+      if (dateKey) {
+        const d = new Date(dateKey)
+        const key = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
+        if (days[key]) {
+          days[key].revenue += parseFloat(t.total_amount || 0)
+          days[key].count += 1
+        }
+      }
+    })
+    return Object.values(days)
+  })()
+
+  // Top products from transaction items
+  const topProducts = (() => {
+    const productMap = {}
+    transactionsList.forEach(t => {
+      (t.items || []).forEach(item => {
+        const name = item.product_name || item.product?.name || `Product ${item.product}`
+        if (!productMap[name]) productMap[name] = { name, qty: 0, revenue: 0 }
+        productMap[name].qty += item.quantity || 0
+        productMap[name].revenue += parseFloat(item.subtotal || 0)
+      })
+    })
+    return Object.values(productMap).sort((a, b) => b.qty - a.qty).slice(0, 5)
+  })()
+
+  const handleExport = async (format) => {
+    try {
+      setIsExporting(true)
+      const blob = await transactionsAPI.exportData(format, startDate, endDate)
+      const url = window.URL.createObjectURL(new Blob([blob]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `Laporan_Penjualan_${format.toUpperCase()}.${format}`)
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+    } catch (error) {
+      console.error('Export failed:', error)
+      alert('Gagal mengunduh laporan. Silakan coba lagi.')
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
+  return (
+    <MainLayout title="Laporan Penjualan">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-bold text-gray-800">Laporan Penjualan</h2>
+          <p className="text-gray-400 text-sm">Analisis dan laporan data penjualan bisnis</p>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 px-2">
+            <span className="text-sm text-gray-500 font-medium">Periode:</span>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)}
+              className="text-sm border border-gray-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-blue-500 outline-none" />
+            <span className="text-gray-400">-</span>
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)}
+              className="text-sm border border-gray-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-blue-500 outline-none" />
+          </div>
+          <div className="h-6 w-px bg-gray-200 hidden sm:block"></div>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <button onClick={() => handleExport('csv')} disabled={isExporting}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
+              <RiFileExcel2Line /> CSV
+            </button>
+            <button onClick={() => handleExport('pdf')} disabled={isExporting}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
+              <RiFilePdfLine /> PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="text-center py-16 text-gray-400">
+          <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          Memuat data laporan...
+        </div>
+      ) : (
+        <>
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <SummaryCard icon={RiMoneyDollarCircleLine} iconBg="bg-blue-100" iconColor="text-blue-600"
+              label="Revenue Hari Ini" value={`Rp ${fmt(totalRevenue)}`} />
+            <SummaryCard icon={RiShoppingCartLine} iconBg="bg-green-100" iconColor="text-green-600"
+              label="Jumlah Transaksi" value={totalTransactions} />
+            <SummaryCard icon={RiArchiveLine} iconBg="bg-amber-100" iconColor="text-amber-600"
+              label="Total Item Terjual" value={totalItems} />
+            <SummaryCard icon={RiLineChartLine} iconBg="bg-purple-100" iconColor="text-purple-600"
+              label="Rata-rata / Transaksi" value={`Rp ${fmt(Math.round(avgTransaction))}`} />
+          </div>
+
+          {/* Profit Estimasi Row */}
+          {hasCostData && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-emerald-100">
+                    <RiMoneyDollarCircleLine size={20} className="text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs">Total Modal (Est.)</p>
+                    <p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(totalEstimatedCost))}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${totalEstimatedProfit >= 0 ? 'bg-emerald-100' : 'bg-red-100'}`}>
+                    <RiLineChartLine size={20} className={totalEstimatedProfit >= 0 ? 'text-emerald-600' : 'text-red-600'} />
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs">Estimasi Profit Bersih</p>
+                    <p className={`text-xl font-bold ${totalEstimatedProfit >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>Rp {fmt(Math.round(Math.abs(totalEstimatedProfit)))}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${parseFloat(profitMarginPct) >= 10 ? 'bg-emerald-100' : parseFloat(profitMarginPct) >= 0 ? 'bg-amber-100' : 'bg-red-100'}`}>
+                    <RiBarChartBoxLine size={20} className={parseFloat(profitMarginPct) >= 10 ? 'text-emerald-600' : parseFloat(profitMarginPct) >= 0 ? 'text-amber-600' : 'text-red-600'} />
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs">Margin Keuntungan</p>
+                    <p className={`text-xl font-bold ${parseFloat(profitMarginPct) >= 10 ? 'text-emerald-700' : parseFloat(profitMarginPct) >= 0 ? 'text-amber-700' : 'text-red-700'}`}>{profitMarginPct}%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            {/* Sales Chart */}
+            <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h3 className="text-base font-bold text-gray-800 mb-4">Tren Penjualan (7 Hari Terakhir)</h3>
+              {chartData.some(d => d.revenue > 0) ? (
+                <ResponsiveContainer width="100%" height={250}>
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                    <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
+                    <Tooltip formatter={(v) => [`Rp ${fmt(v)}`, 'Revenue']}
+                      contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', fontSize: '12px' }} />
+                    <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2.5}
+                      dot={{ fill: '#4f46e5', r: 4 }} activeDot={{ r: 6 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="h-[250px] flex items-center justify-center text-gray-400 text-sm">
+                  Belum ada data penjualan dalam 7 hari terakhir
+                </div>
+              )}
+            </div>
+
+            {/* Top Products */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h3 className="text-base font-bold text-gray-800 mb-4">Produk Terlaris</h3>
+              {topProducts.length > 0 ? (
+                <div className="space-y-4">
+                  {topProducts.map((p, i) => (
+                    <div key={i} className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold text-gray-800 text-sm">{p.name}</p>
+                        <p className="text-xs text-gray-400">Rp {fmt(p.revenue)}</p>
+                      </div>
+                      <span className="text-blue-600 font-bold text-sm">{p.qty} terjual</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="h-[200px] flex items-center justify-center text-gray-400 text-sm">
+                  Belum ada data produk terjual
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Payment Breakdown */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h3 className="text-base font-bold text-gray-800 mb-4">Metode Pembayaran</h3>
+              {paymentChartData.length > 0 ? (
+                <div className="space-y-3">
+                  {paymentChartData.map((p, i) => {
+                    const total = paymentChartData.reduce((s, x) => s + x.value, 0)
+                    const pct = total > 0 ? ((p.value / total) * 100).toFixed(1) : 0
+                    return (
+                      <div key={i}>
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium text-gray-700">{p.name}</span>
+                          <span className="text-xs text-gray-500">{p.count}x - Rp {fmt(p.value)} ({pct}%)</span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-2">
+                          <div className="h-2 rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: COLORS[i % COLORS.length] }}></div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="h-[150px] flex items-center justify-center text-gray-400 text-sm">
+                  Belum ada data pembayaran
+                </div>
+              )}
+            </div>
+
+            {/* Recent Transactions */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <h3 className="text-base font-bold text-gray-800 mb-4">Transaksi Terakhir</h3>
+              {transactionsList.length > 0 ? (
+                <div className="space-y-3 max-h-[250px] overflow-y-auto">
+                  {transactionsList.slice(0, 8).map(t => (
+                    <div key={t.id} className="flex items-center justify-between text-sm border-b border-gray-50 pb-2">
+                      <div>
+                        <p className="font-mono text-blue-600 text-xs font-bold">{t.transaction_code}</p>
+                        <p className="text-gray-400 text-xs">{t.cashier_name || '-'}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-gray-800">Rp {fmt(t.total_amount)}</p>
+                        <span className={`text-xs px-1.5 py-0.5 rounded ${
+                          t.payment_method === 'CASH' ? 'bg-green-100 text-green-700' :
+                          t.payment_method === 'QRIS' ? 'bg-blue-100 text-blue-700' :
+                          'bg-purple-100 text-purple-700'
+                        }`}>{t.payment_method}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="h-[150px] flex items-center justify-center text-gray-400 text-sm">
+                  Belum ada transaksi
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </MainLayout>
+  )
+}
+
+function SummaryCard({ icon: Icon, iconBg, iconColor, label, value }) {
+  return (
+    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+      <div className="flex items-center gap-3">
+        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${iconBg}`}>
+          <Icon size={20} className={iconColor} />
+        </div>
+        <div>
+          <p className="text-gray-500 text-xs">{label}</p>
+          <p className="text-xl font-bold text-gray-800">{value}</p>
+        </div>
+      </div>
+    </div>
+  )
+}

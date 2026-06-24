@@ -1,0 +1,13 @@
+di note ini saya akan menyampaikan seperti kendala,perbaikan,atau pertanyaan yang berikaitan dengan project pos ini
+
+1. pada step2 registrasi itu kan ada field no telfon, nah itu placeholder tiap negara (kode telfon) itu harus selalu muncul, ini kan default nya indonesia negara nya nah nanti di dalam field atau kolom input nya itu ada "+62" secara otomatis dan ini juga berlaku untuk tiap negara,
+   yang saya temukan itu saat saya sudah isi kan no telfon lalu lanjut ke step berikutnya dan kembali lagi itu barus muncul placeholder kode telfon negara (dari negara yang dipilih) 
+
+2. pada step3 registrasi itu pada field "kecamatan" harusnya di isi kan dropdown bukan isi sendiri input user, jadi user itu hanya input nama bisnis , kode pos, dan alamat pada step 2
+
+3. pada field alamat itu svg nya terlalu turun, naikan sedikit setidaknya harus sama dengan text user input field, intinya naikkan sedikit
+
+4. dan tolong kamu buat folder baru yaitu tentang flow yang lengkap dan mencakup semua fitur yang saya lihat nanti di draw.io atau html dari masing masing flow lengkap ya, kyk flow login dan semua fitur fitur lain
+
+5. saya mau tanya kenapa di batch admin itu harus isi harga beli padahal di produk sudah ada sama juga 
+

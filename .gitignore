@@ -1,0 +1,37 @@
+# Node
+node_modules/
+dist/
+build/
+.npm/
+
+# Python & Django
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+media/
+logs/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+.env.development
+
+# OS & Editor
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# File yang tidak penting untuk project utama
+*.zip
+*.rar
+*.tar.gz
+pos-ml-system_preview/
+pos-ml-system_dummy_v2/
+Mockup/
+Active phase/
+Debug/

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup — Dashboard Admin (Updated)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body{font-family:'Inter',sans-serif;background:#f8fafc;}</style>
+</head>
+<body class="p-8">
+
+  <div class="max-w-5xl mx-auto space-y-6">
+
+    <!-- GREETING -->
+    <div>
+      <h2 class="text-gray-800 font-bold text-xl">Selamat datang, Admin</h2>
+      <p class="text-gray-500 text-sm mt-0.5">Toko Maju Jaya • Senin, 16 Juni 2026</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">Produk</span>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">12</p>
+        <p class="text-xs text-gray-500 mt-0.5">Total produk aktif</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">Stok</span>
+        </div>
+        <p class="text-2xl font-bold text-amber-600">2</p>
+        <p class="text-xs text-gray-500 mt-0.5">Stok perlu diisi</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">Hari Ini</span>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">8</p>
+        <p class="text-xs text-gray-500 mt-0.5">Transaksi hari ini</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <span class="text-xs text-gray-400 font-medium">Revenue</span>
+        </div>
+        <p class="text-2xl font-bold text-gray-800">Rp 1.250.000</p>
+        <p class="text-xs text-gray-500 mt-0.5">Revenue hari ini</p>
+      </div>
+    </div>
+
+    <!-- LOW STOCK ALERT (PERUBAHAN: NAMA PRODUK JADI UTAMA) -->
+    <div class="bg-amber-50 border border-amber-200 rounded-xl overflow-hidden">
+      <div class="flex items-center gap-3 px-4 py-3">
+        <svg class="w-5 h-5 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+        <p class="text-amber-700 text-sm font-medium flex-1">2 produk membutuhkan pengisian stok segera.</p>
+        <button class="text-amber-700 text-xs font-semibold hover:text-amber-900 flex items-center gap-1">
+          Lihat <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <!-- PERUBAHAN: Nama Produk jadi judul utama, bukan batch code -->
+      <div class="flex items-center justify-between px-4 py-2.5 border-t border-amber-100 hover:bg-amber-100/50 cursor-pointer">
+        <div>
+          <span class="text-sm text-gray-800 font-semibold">Gas LPG 5Kg</span>
+          <span class="text-xs text-gray-400 ml-2">PRD-GASLPG5</span>
+        </div>
+        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">Habis</span>
+      </div>
+      <div class="flex items-center justify-between px-4 py-2.5 border-t border-amber-100 hover:bg-amber-100/50 cursor-pointer">
+        <div>
+          <span class="text-sm text-gray-800 font-semibold">Gula Pasir 1Kg</span>
+          <span class="text-xs text-gray-400 ml-2">PRD-GULA1KG</span>
+        </div>
+        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">Sisa 3</span>
+      </div>
+    </div>
+
+    <!-- EXPIRING ALERT (PERUBAHAN: NAMA PRODUK JADI UTAMA) -->
+    <div class="bg-red-50 border border-red-200 rounded-xl overflow-hidden">
+      <div class="flex items-center gap-3 px-4 py-3">
+        <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p class="text-red-700 text-sm font-medium flex-1">2 produk akan atau telah kadaluarsa.</p>
+        <button class="text-red-700 text-xs font-semibold hover:text-red-900 flex items-center gap-1">
+          Lihat <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <!-- PERUBAHAN: Nama Produk utama, batch code kecil -->
+      <div class="flex items-center justify-between px-4 py-2.5 border-t border-red-100 hover:bg-red-100/50 cursor-pointer">
+        <div>
+          <span class="text-sm text-gray-800 font-semibold">Gas LPG 5Kg</span>
+          <span class="text-xs text-gray-400 ml-2">(BTH-VKD4RM • Sisa 50 pcs)</span>
+        </div>
+        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-red-200 text-red-800">Telah Kadaluarsa</span>
+      </div>
+      <div class="flex items-center justify-between px-4 py-2.5 border-t border-red-100 hover:bg-red-100/50 cursor-pointer">
+        <div>
+          <span class="text-sm text-gray-800 font-semibold">Susu Beruang 189ml</span>
+          <span class="text-xs text-gray-400 ml-2">(BTH-SB0012 • Sisa 24 pcs)</span>
+        </div>
+        <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">Sisa 5 Hari</span>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div>
+      <h3 class="text-gray-700 font-semibold text-sm mb-3">Aksi Cepat</h3>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <button class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all text-left">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          </div>
+          <div><p class="text-gray-800 font-semibold text-sm">Kelola Produk</p><p class="text-gray-400 text-xs">Tambah & edit produk</p></div>
+        </button>
+        <button class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all text-left">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          </div>
+          <div><p class="text-gray-800 font-semibold text-sm">Cek Inventori</p><p class="text-gray-400 text-xs">Kelola stok batch</p></div>
+        </button>
+        <button class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all text-left">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+          </div>
+          <div><p class="text-gray-800 font-semibold text-sm">Transaksi</p><p class="text-gray-400 text-xs">Riwayat penjualan</p></div>
+        </button>
+        <button class="flex items-center gap-3 p-4 bg-white rounded-2xl border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all text-left">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div><p class="text-gray-800 font-semibold text-sm">Laporan</p><p class="text-gray-400 text-xs">Analisis penjualan</p></div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

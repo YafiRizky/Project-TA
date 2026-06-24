@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mockup UI Inventori & Batch</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+  </style>
+</head>
+<body class="p-8">
+
+  <!-- MAIN CONTENT AREA MOCKUP -->
+  <div class="max-w-6xl mx-auto space-y-6">
+    
+    <!-- HEADER -->
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">Manajemen Inventori</h1>
+        <p class="text-gray-500 text-sm mt-1">Kelola stok batch, penerimaan barang, dan tanggal kadaluarsa.</p>
+      </div>
+      <button class="px-4 py-2 bg-blue-600 text-white rounded-xl font-medium shadow-sm flex items-center gap-2 hover:bg-blue-700">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        Penerimaan Barang (Restock)
+      </button>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="grid grid-cols-2 gap-4 w-1/2">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500 font-medium">Total Batch Aktif</p>
+          <p class="text-2xl font-bold text-gray-800">4</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500 font-medium">Total Stok Riil</p>
+          <p class="text-2xl font-bold text-gray-800">230 PCS</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABEL BATCH AKTIF -->
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
+        <h3 class="font-bold text-gray-800">Daftar Batch Aktif</h3>
+        <span class="text-xs text-gray-500 bg-white px-2 py-1 rounded border border-gray-200">Hanya batch yang bisa dijual</span>
+      </div>
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gray-50 text-gray-500 text-xs uppercase font-semibold">
+          <tr>
+            <th class="px-6 py-3">Kode Batch</th>
+            <th class="px-6 py-3">Produk</th>
+            <th class="px-6 py-3 text-center">Qty Sisa</th>
+            <th class="px-6 py-3">Kadaluarsa</th>
+            <th class="px-6 py-3 text-center">Status</th>
+            <th class="px-6 py-3 text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-50">
+          <tr class="hover:bg-blue-50/30">
+            <td class="px-6 py-4 font-mono font-medium text-gray-600">BTH-X89K2P</td>
+            <td class="px-6 py-4 font-medium text-gray-900">Beras SPHP 5Kg</td>
+            <td class="px-6 py-4 text-center font-bold text-gray-800">50</td>
+            <td class="px-6 py-4 text-gray-500">2026-12-01</td>
+            <td class="px-6 py-4 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-bold">ACTIVE</span></td>
+            <td class="px-6 py-4 text-center">
+              <button class="text-red-500 hover:text-red-700 text-xs font-medium px-2 py-1 bg-red-50 rounded">Hapus (Jika Salah)</button>
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/30">
+            <td class="px-6 py-4 font-mono font-medium text-gray-600">BTH-L9MN12</td>
+            <td class="px-6 py-4 font-medium text-gray-900">Beras SPHP 5Kg</td>
+            <td class="px-6 py-4 text-center font-bold text-gray-800">180</td>
+            <td class="px-6 py-4 text-gray-500">2027-02-15</td>
+            <td class="px-6 py-4 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-bold">ACTIVE</span></td>
+            <td class="px-6 py-4 text-center">
+              <button class="text-red-500 hover:text-red-700 text-xs font-medium px-2 py-1 bg-red-50 rounded">Hapus</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="px-6 py-3 bg-blue-50/50 border-t border-blue-100 text-xs text-blue-800 flex items-center gap-2">
+        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Info: Batch bersifat tetap dan tidak bisa diedit untuk menjaga akurasi FIFO kasir. Gunakan menu Stock Opname untuk penyesuaian qty gudang.
+      </div>
+    </div>
+
+    <!-- TABEL RIWAYAT BATCH -->
+    <div class="mt-8 opacity-75">
+      <h3 class="font-bold text-gray-500 mb-3 ml-2">Riwayat Batch (Habis / Kadaluarsa)</h3>
+      <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-gray-100 text-gray-400 text-xs uppercase font-semibold">
+            <tr>
+              <th class="px-6 py-3">Kode Batch</th>
+              <th class="px-6 py-3">Produk</th>
+              <th class="px-6 py-3 text-center">Qty Sisa</th>
+              <th class="px-6 py-3">Kadaluarsa</th>
+              <th class="px-6 py-3 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr>
+              <td class="px-6 py-4 font-mono text-gray-400">BTH-OLD999</td>
+              <td class="px-6 py-4 text-gray-500 line-through">Gas LPG 5Kg</td>
+              <td class="px-6 py-4 text-center text-gray-400">0</td>
+              <td class="px-6 py-4 text-gray-400">2026-06-10</td>
+              <td class="px-6 py-4 text-center"><span class="bg-gray-100 text-gray-500 px-2 py-1 rounded text-[10px] font-bold">DEPLETED (HABIS)</span></td>
+            </tr>
+            <tr>
+              <td class="px-6 py-4 font-mono text-gray-400">BTH-EXP123</td>
+              <td class="px-6 py-4 text-gray-500 line-through">Susu Beruang</td>
+              <td class="px-6 py-4 text-center text-red-400 font-bold">12</td>
+              <td class="px-6 py-4 text-red-500 font-medium">2026-06-15</td>
+              <td class="px-6 py-4 text-center"><span class="bg-red-50 text-red-600 px-2 py-1 rounded text-[10px] font-bold border border-red-100">EXPIRED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- MOCKUP MODAL PENERIMAAN BARANG -->
+  <div class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100">
+      
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-blue-50/30">
+        <div>
+          <h3 class="font-bold text-gray-900 text-lg">Catat Penerimaan Barang Baru</h3>
+          <p class="text-xs text-gray-500">Stok akan langsung tersedia di Kasir (FIFO)</p>
+        </div>
+        <button class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5">
+        
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Produk <span class="text-red-500">*</span></label>
+          <select class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-900 font-medium">
+            <option>Beras SPHP 5Kg</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Kuantitas Masuk <span class="text-red-500">*</span></label>
+            <input type="number" value="50" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Tgl Kadaluarsa <span class="text-red-500">*</span></label>
+            <input type="date" value="2027-06-16" class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:border-blue-500 outline-none">
+          </div>
+        </div>
+
+        <hr class="border-gray-100">
+
+        <!-- BAGIAN HARGA BELI & SMART MARGIN (INTI PERUBAHAN) -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <label class="block text-sm font-bold text-gray-800 mb-3 flex items-center gap-2">
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Harga Modal (Kulaan) untuk Batch ini
+          </label>
+          
+          <div class="relative mb-3">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-semibold text-gray-500">Rp</span>
+            <input type="text" value="60.000" class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl font-bold text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-lg">
+          </div>
+          
+          <!-- SMART MARGIN INFO BOX -->
+          <div class="mt-3 bg-white p-3 rounded-lg border border-emerald-100 shadow-sm">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs text-gray-500">Harga Jual di Kasir:</span>
+              <span class="text-sm font-bold text-gray-800">Rp 75.000</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs text-gray-500">Estimasi Keuntungan:</span>
+              <div class="flex items-center gap-1.5">
+                <span class="text-sm font-bold text-emerald-600">Rp 15.000</span>
+                <span class="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0.5 rounded font-bold">+20%</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-[10px] text-gray-400 mt-2 italic text-center">Harga Jual di Kasir tidak akan berubah. Margin ini hanya estimasi laba kotor untuk stok batch ini.</p>
+        </div>
+
+      </div>
+
+      <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+        <button class="px-5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50">Batal</button>
+        <button class="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-xl hover:bg-blue-700 flex items-center gap-2">
+          Simpan Batch Baru
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
