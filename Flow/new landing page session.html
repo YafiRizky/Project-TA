@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metacrura POS - Point of Sale Integrated Machine Learning AI</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            accent: {
+              emerald: '#10b981',
+              cyan: '#06b6d4',
+              violet: '#8b5cf6',
+              amber: '#f59e0b',
+            }
+          },
+          boxShadow: {
+            'glow': '0 0 50px -12px rgba(79, 70, 229, 0.35)',
+            'glow-emerald': '0 0 50px -12px rgba(16, 185, 129, 0.35)',
+            'card': '0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 0 10px rgba(0, 0, 0, 0.02)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    .bg-grid-pattern {
+      background-image: radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    .glass-dark {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-card border-b border-slate-200/60 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+            <i class="ri-store-3-fill text-2xl"></i>
+          </div>
+          <div>
+            <span class="font-display font-bold text-2xl tracking-tight text-slate-900">Metacrura<span class="text-brand-600">POS</span></span>
+            <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase bg-brand-50 text-brand-700 border border-brand-200 rounded-md">Smart AI</span>
+          </div>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+          <a href="#fitur" class="hover:text-brand-600 transition-colors">Fitur Unggulan</a>
+          <a href="#ai-ml" class="hover:text-brand-600 transition-colors flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Modul AI
+          </a>
+          <a href="#xendit" class="hover:text-brand-600 transition-colors">Pembayaran Xendit</a>
+          <a href="#harga" class="hover:text-brand-600 transition-colors">Paket Harga</a>
+          <a href="#faq" class="hover:text-brand-600 transition-colors">FAQ</a>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-3">
+          <a href="http://localhost:3000/login" target="_blank" class="px-4 py-2.5 text-sm font-semibold text-slate-700 hover:text-brand-600 transition-colors">
+            Masuk Portal
+          </a>
+          <a href="http://localhost:3000/register" target="_blank" class="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 text-white font-semibold text-sm shadow-md shadow-brand-500/25 hover:shadow-lg hover:shadow-brand-500/40 transition-all active:scale-95">
+            <span class="relative z-10 flex items-center gap-2">
+              Coba Gratis <i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-grid-pattern overflow-hidden">
+    <!-- Glow Elements -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-brand-500/20 to-cyan-500/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto space-y-6">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold shadow-xs">
+          <i class="ri-sparkling-fill text-indigo-500"></i>
+          Sistem POS Generasi Baru Berbasis Machine Learning
+        </div>
+
+        <!-- Main Headline -->
+        <h1 class="font-display font-extrabold text-4xl sm:text-5xl md:text-6xl text-slate-900 tracking-tight leading-[1.15]">
+          Kelola Toko Lebih Cerdas Dengan <span class="gradient-text">Kecerdasan Buatan</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
+          Metacrura POS mengintegrasikan sistem Kasir POS modern, manajemen batch stok FIFO, pembayaran otomatis Xendit (QRIS, VA, E-Wallet), serta 5 Modul Machine Learning untuk prediksi penjualan & omset harian.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="http://localhost:3000/register" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 via-indigo-600 to-cyan-600 text-white font-bold text-base shadow-lg shadow-brand-500/30 hover:shadow-xl hover:shadow-brand-500/50 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+            <i class="ri-rocket-line text-xl"></i>
+            Daftar Sekarang — Gratis 14 Hari
+          </a>
+          <a href="#demo" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-base shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+            <i class="ri-play-circle-line text-xl text-brand-600"></i>
+            Lihat Interactive Demo
+          </a>
+        </div>
+
+        <!-- Social Proof Stats -->
+        <div class="pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto border-t border-slate-200/80">
+          <div>
+            <p class="font-display font-extrabold text-2xl text-slate-900">8.800+</p>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Transaksi Terverifikasi</p>
+          </div>
+          <div>
+            <p class="font-display font-extrabold text-2xl text-brand-600">99.8%</p>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Akurasi Prediksi AI</p>
+          </div>
+          <div>
+            <p class="font-display font-extrabold text-2xl text-emerald-600">Instan</p>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Payment Callback Xendit</p>
+          </div>
+          <div>
+            <p class="font-display font-extrabold text-2xl text-violet-600">100%</p>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Multi-Tenant Isolation</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- App Preview Dashboard Mockup -->
+      <div id="demo" class="mt-14 relative max-w-5xl mx-auto">
+        <div class="relative rounded-3xl p-3 bg-gradient-to-b from-slate-200 to-slate-300 shadow-glow border border-white/80">
+          <div class="rounded-2xl bg-slate-900 text-white overflow-hidden shadow-2xl">
+            <!-- Mac Browser Bar -->
+            <div class="px-4 py-3 bg-slate-800/80 border-b border-slate-700 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500"></span>
+              </div>
+              <div class="px-4 py-1 rounded-lg bg-slate-950/60 border border-slate-700/60 text-xs text-slate-400 font-mono flex items-center gap-2">
+                <i class="ri-lock-line text-emerald-400"></i>
+                https://pos.metacrura.com/dashboard
+              </div>
+              <div class="text-xs text-slate-400 font-medium">Metacrura POS v2.4</div>
+            </div>
+
+            <!-- UI Preview Dashboard Grid -->
+            <div class="p-6 md:p-8 space-y-6 bg-slate-950">
+              <!-- Top Summary Cards Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                  <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
+                    <span>Revenue Hari Ini</span>
+                    <i class="ri-wallet-3-line text-brand-400 text-lg"></i>
+                  </div>
+                  <p class="text-xl font-bold text-white mt-2">Rp 13.232.300</p>
+                  <span class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1 mt-1">
+                    <i class="ri-arrow-up-line"></i> +14.2% dibanding kemarin
+                  </span>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                  <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
+                    <span>Total Item Terjual</span>
+                    <i class="ri-shopping-bag-3-line text-cyan-400 text-lg"></i>
+                  </div>
+                  <p class="text-xl font-bold text-white mt-2">303 Pcs</p>
+                  <span class="text-[11px] text-slate-400 mt-1 block">Dari 100 Transaksi</span>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                  <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
+                    <span>Prediksi Restock AI</span>
+                    <i class="ri-brain-line text-purple-400 text-lg"></i>
+                  </div>
+                  <p class="text-xl font-bold text-white mt-2">3 Produk</p>
+                  <span class="text-[11px] text-amber-400 font-semibold mt-1 block">Segera pesan sebelum stok habis</span>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                  <div class="flex items-center justify-between text-slate-400 text-xs font-medium">
+                    <span>Status Xendit QRIS</span>
+                    <i class="ri-qr-code-line text-emerald-400 text-lg"></i>
+                  </div>
+                  <p class="text-xl font-bold text-emerald-400 mt-2">AKTIF & TERHUBUNG</p>
+                  <span class="text-[11px] text-slate-400 mt-1 block">Callback Callback Auto-Settlement</span>
+                </div>
+              </div>
+
+              <!-- ML Forecast Graph Preview -->
+              <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                      <i class="ri-line-chart-line text-brand-400"></i>
+                      Grafik Revenue: Aktual vs Prediksi Ridge Regression AI
+                    </h4>
+                    <p class="text-xs text-slate-400 mt-0.5">Analisis histori 30 hari + Prediksi 30 hari ke depan (MAPE: 4.2%)</p>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-lg bg-brand-950 border border-brand-700 text-brand-300 text-xs font-semibold">
+                    Live Model V2
+                  </span>
+                </div>
+                <!-- Simulated SVG Chart Line -->
+                <div class="h-44 w-full flex items-end gap-2 pt-6 pb-2 px-2 border-b border-slate-800">
+                  <div class="h-[40%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[55%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[45%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[70%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[85%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[60%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[95%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <div class="h-[75%] flex-1 bg-indigo-500/20 border-t-2 border-indigo-500 rounded-t"></div>
+                  <!-- Forecast AI Line (Dashed) -->
+                  <div class="h-[65%] flex-1 bg-emerald-500/20 border-t-2 border-dashed border-emerald-400 rounded-t"></div>
+                  <div class="h-[70%] flex-1 bg-emerald-500/20 border-t-2 border-dashed border-emerald-400 rounded-t"></div>
+                  <div class="h-[80%] flex-1 bg-emerald-500/20 border-t-2 border-dashed border-emerald-400 rounded-t"></div>
+                  <div class="h-[75%] flex-1 bg-emerald-500/20 border-t-2 border-dashed border-emerald-400 rounded-t"></div>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-400 pt-3">
+                  <span>Aktual Penjualan (07 Jul - 05 Agu)</span>
+                  <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                    <span class="w-3 h-0.5 bg-emerald-400 border-b border-dashed"></span>
+                    Prediksi AI (06 Agu - 19 Agu)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FITUR UNGGULAN SECTION ================= -->
+  <section id="fitur" class="py-20 bg-white border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600">Fitur Utama</h2>
+        <h3 class="font-display font-bold text-3xl sm:text-4xl text-slate-900">
+          Solusi Lengkap Manajemen Operasional UMKM
+        </h3>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Dirancang untuk mempercepat transaksi kasir, mengontrol persediaan stok barang secara FIFO, hingga mengamankan arus kas toko.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 hover:border-brand-300 hover:shadow-card transition-all group">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-brand-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="ri-computer-line"></i>
+          </div>
+          <h4 class="font-display font-bold text-xl text-slate-900 mb-3">Kasir POS Cepat & Thermal Receipt</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Pencarian cepat barcode/nama produk, aplikasi promo otomatis, cetak struk thermal Bluetooth/USB, serta pembuatan transaksi kilat tanpa pending.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 hover:border-emerald-300 hover:shadow-card transition-all group">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="ri-stack-line"></i>
+          </div>
+          <h4 class="font-display font-bold text-xl text-slate-900 mb-3">Manajemen Batch Stok FIFO & Opname</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Tracking umur barang per batch dengan skema First-In First-Out (FIFO), notifikasi expired, serta audit fisik Stock Opname dengan persetujuan Admin.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 hover:border-cyan-300 hover:shadow-card transition-all group">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+            <i class="ri-building-4-line"></i>
+          </div>
+          <h4 class="font-display font-bold text-xl text-slate-900 mb-3">Multi-Tenant Isolation & Multi-User</h4>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Satu akun owner dapat mengelola banyak unit bisnis UMKM dengan isolasi data 100% aman. Pembagian role jelas antara Admin Bisnis & Staf Kasir.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5 AI & MACHINE LEARNING SHOWCASE ================= -->
+  <section id="ai-ml" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-900/80 border border-brand-700 text-brand-300 text-xs font-semibold">
+          <i class="ri-cpu-line"></i> Machine Learning Core V2
+        </div>
+        <h3 class="font-display font-bold text-3xl sm:text-4xl text-white">
+          5 Modul Prediksi AI Untuk Keputusan Bisnis Presisi
+        </h3>
+        <p class="text-slate-400 text-sm sm:text-base">
+          Algoritma machine learning terintegrasi secara langsung dengan data transaksi aktual toko kamu.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- ML 1 -->
+        <div class="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-brand-500 transition-all">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-2.5 py-1 rounded-lg bg-indigo-950 border border-indigo-700 text-indigo-300 text-xs font-bold">Modul 1</span>
+            <i class="ri-time-line text-indigo-400 text-xl"></i>
+          </div>
+          <h4 class="font-display font-bold text-lg text-white mb-2">Stockout Risk Prediction</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Menganalisis Moving Average penjualan 7 & 30 hari ditambah deviasi standar untuk memprediksi tanggal persis stok habis.
+          </p>
+        </div>
+
+        <!-- ML 2 -->
+        <div class="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-cyan-500 transition-all">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-2.5 py-1 rounded-lg bg-cyan-950 border border-cyan-700 text-cyan-300 text-xs font-bold">Modul 2</span>
+            <i class="ri-shopping-cart-2-line text-cyan-400 text-xl"></i>
+          </div>
+          <h4 class="font-display font-bold text-lg text-white mb-2">Restock EOQ & Safety Stock</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Menghitung jumlah pembelian stok paling optimal (Economic Order Quantity) dan batas cadangan aman (*Safety Stock Z*sigma*sqrt(L)*).
+          </p>
+        </div>
+
+        <!-- ML 3 -->
+        <div class="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-amber-500 transition-all">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-2.5 py-1 rounded-lg bg-amber-950 border border-amber-700 text-amber-300 text-xs font-bold">Modul 3</span>
+            <i class="ri-error-warning-line text-amber-400 text-xl"></i>
+          </div>
+          <h4 class="font-display font-bold text-lg text-white mb-2">Expiry Risk & Financial Loss</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Mendeteksi batch mendekati kadaluwarsa dan memberikan estimasi potensi kerugian serta saran diskon otomatis.
+          </p>
+        </div>
+
+        <!-- ML 4 -->
+        <div class="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-emerald-500 transition-all">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-950 border border-emerald-700 text-emerald-300 text-xs font-bold">Modul 4</span>
+            <i class="ri-line-chart-line text-emerald-400 text-xl"></i>
+          </div>
+          <h4 class="font-display font-bold text-lg text-white mb-2">Revenue Forecasting</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Model *Ridge Regression* dengan 12 *Feature Engineering* (gaji, tanggal merah, musiman) untuk meramal omset 30 hari ke depan.
+          </p>
+        </div>
+
+        <!-- ML 5 -->
+        <div class="p-6 rounded-2xl bg-slate-800/80 border border-slate-700 hover:border-purple-500 transition-all md:col-span-2 lg:col-span-1">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-2.5 py-1 rounded-lg bg-purple-950 border border-purple-700 text-purple-300 text-xs font-bold">Modul 5</span>
+            <i class="ri-pie-chart-2-line text-purple-400 text-xl"></i>
+          </div>
+          <h4 class="font-display font-bold text-lg text-white mb-2">ABC Pareto Product Classification</h4>
+          <p class="text-slate-400 text-xs leading-relaxed">
+            Mengkategorikan produk ke Kategori A (80% pendongkrak omset), B (15%), dan C (5%) untuk efisiensi modal belanja toko.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INTEGRASI XENDIT PAYMENT SECTION ================= -->
+  <section id="xendit" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <span class="px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">
+            Integrasi Payment Gateway Native
+          </span>
+          <h3 class="font-display font-bold text-3xl sm:text-4xl text-slate-900">
+            Terima Pembayaran Non-Tunai Otomatis Lewat Xendit
+          </h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Metacrura POS mendukung transaksi kasir instan tanpa perlu konfirmasi manual. Setiap pembayaran otomatis terverifikasi via Webhook callback realtime.
+          </p>
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <i class="ri-qr-code-fill text-2xl text-emerald-600"></i>
+              <div>
+                <p class="font-bold text-sm text-slate-900">QRIS All Payment</p>
+                <p class="text-xs text-slate-500">BCA, Mandiri, GoPay, OVO, DANA, ShopeePay</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <i class="ri-bank-card-fill text-2xl text-indigo-600"></i>
+              <div>
+                <p class="font-bold text-sm text-slate-900">Virtual Account (VA)</p>
+                <p class="text-xs text-slate-500">BCA, Mandiri, BNI, BRI, Permata</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-gradient-to-tr from-slate-900 to-indigo-950 text-white shadow-2xl space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-400">Simulasi Xendit Payment Modal</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+          </div>
+          <div class="p-6 rounded-2xl bg-slate-800/90 border border-slate-700 text-center space-y-4">
+            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Scan QRIS Untuk Bayar</p>
+            <div class="w-36 h-36 mx-auto bg-white p-2 rounded-xl shadow-md flex items-center justify-center">
+              <i class="ri-qr-code-line text-9xl text-slate-900"></i>
+            </div>
+            <p class="font-mono text-lg font-bold text-emerald-400">Rp 125.000,00</p>
+            <span class="inline-block px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 text-xs font-semibold">
+              <i class="ri-checkbox-circle-fill"></i> Settle Otomatis dalam 2 Detik
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PAKET HARGA SECTION ================= -->
+  <section id="harga" class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+        <h2 class="text-xs font-extrabold uppercase tracking-widest text-brand-600">Pilihan Berlangganan</h2>
+        <h3 class="font-display font-bold text-3xl sm:text-4xl text-slate-900">Harga Transparan Tanpa Biaya Tersembunyi</h3>
+        <p class="text-slate-600 text-sm">Pilih paket investasi usaha yang sesuai dengan skala UMKM kamu.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Starter Plan -->
+        <div class="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <h4 class="font-bold text-lg text-slate-900">Trial UMKM</h4>
+            <p class="text-xs text-slate-500 mt-1">Untuk uji coba fitur dasar kasir</p>
+          </div>
+          <p class="font-display font-extrabold text-3xl text-slate-900">Gratis <span class="text-xs font-normal text-slate-500">/ 14 hari</span></p>
+          <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-4">
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-500"></i> 1 Unit Bisnis UMKM</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-500"></i> Transaksi Kasir Unlimited</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-500"></i> Manajemen Batch FIFO</li>
+          </ul>
+          <a href="http://localhost:3000/register" target="_blank" class="block text-center py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors">Coba Gratis</a>
+        </div>
+
+        <!-- Pro Plan (Popular) -->
+        <div class="p-8 rounded-3xl bg-gradient-to-b from-brand-600 to-indigo-700 text-white shadow-xl shadow-brand-500/20 space-y-6 relative transform md:-translate-y-4">
+          <span class="absolute -top-3 right-8 px-3 py-1 rounded-full bg-amber-400 text-slate-900 font-extrabold text-[10px] tracking-wider uppercase">Paling Diminati</span>
+          <div>
+            <h4 class="font-bold text-lg text-white">Pro Smart AI</h4>
+            <p class="text-xs text-brand-200 mt-1">Lengkap 5 Modul Machine Learning</p>
+          </div>
+          <p class="font-display font-extrabold text-3xl text-white">Rp 99.000 <span class="text-xs font-normal text-brand-200">/ bulan</span></p>
+          <ul class="space-y-3 text-xs text-brand-100 border-t border-brand-500/40 pt-4">
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-300"></i> Multi-Unit Bisnis UMKM</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-300"></i> 5 Modul ML AI (Forecast, EOQ, ABC)</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-300"></i> Integrasi Xendit QRIS / VA</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-300"></i> Laporan Laba Rugi & Stock Opname</li>
+          </ul>
+          <a href="http://localhost:3000/register" target="_blank" class="block text-center py-3 rounded-xl bg-white text-brand-700 hover:bg-brand-50 font-bold text-xs shadow-md transition-colors">Daftar Paket Pro</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="p-8 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <h4 class="font-bold text-lg text-slate-900">Custom Business</h4>
+            <p class="text-xs text-slate-500 mt-1">Untuk jaringan franchise / grosir</p>
+          </div>
+          <p class="font-display font-extrabold text-3xl text-slate-900">Hubungi Kami</p>
+          <ul class="space-y-3 text-xs text-slate-600 border-t border-slate-100 pt-4">
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-500"></i> Custom Integration API</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-500"></i> Dedicated Database Server</li>
+            <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-500"></i> Support 24/7 VIP</li>
+          </ul>
+          <a href="http://localhost:3000/register" target="_blank" class="block text-center py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors">Hubungi Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ SECTION ================= -->
+  <section id="faq" class="py-20 bg-white border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div class="text-center space-y-2">
+        <h3 class="font-display font-bold text-3xl text-slate-900">Pertanyaan Sering Diajukan (FAQ)</h3>
+        <p class="text-slate-600 text-sm">Semua yang perlu kamu ketahui tentang Metacrura POS.</p>
+      </div>
+
+      <div class="space-y-4">
+        <details class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 group">
+          <summary class="font-bold text-sm text-slate-900 cursor-pointer flex items-center justify-between">
+            Bagaimana cara kerja 5 Modul Machine Learning di Metacrura POS?
+            <i class="ri-add-line text-lg group-open:rotate-45 transition-transform"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+            Algoritma AI membaca histori transaksi toko kamu secara otomatis tanpa perlu input manual. Modul akan menghitung Moving Average, Economic Order Quantity (EOQ), Ridge Regression omset, dan mengkategorikan produk Pareto ABC.
+          </p>
+        </details>
+
+        <details class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 group">
+          <summary class="font-bold text-sm text-slate-900 cursor-pointer flex items-center justify-between">
+            Apakah data antar unit usaha UMKM terpisah secara aman?
+            <i class="ri-add-line text-lg group-open:rotate-45 transition-transform"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+            Ya, Metacrura POS menerapkan skema *Multi-Tenant Isolation* berbasis `business_id` di mana data produk, stok, transaksi, dan pembukuan antar usaha terisolasi 100% aman di level database.
+          </p>
+        </details>
+
+        <details class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 group">
+          <summary class="font-bold text-sm text-slate-900 cursor-pointer flex items-center justify-between">
+            Apakah mendukung pencetakan struk transaksi ke printer kasir thermal?
+            <i class="ri-add-line text-lg group-open:rotate-45 transition-transform"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">
+            Sangat mendukung. Kasir POS dilengkapi dengan jendela cetak struk thermal 58mm / 80mm yang kompatibel dengan printer Bluetooth maupun USB.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold">
+          <i class="ri-store-3-fill"></i>
+        </div>
+        <span class="font-display font-bold text-xl text-white">Metacrura POS</span>
+      </div>
+      <p class="text-xs text-slate-500">
+        &copy; 2026 Metacrura POS. Point of Sale Integrated Machine Learning AI System. All rights reserved.
+      </p>
+      <div class="flex items-center gap-4 text-lg">
+        <a href="#" class="hover:text-white transition-colors"><i class="ri-global-line"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="ri-github-fill"></i></a>
+        <a href="#" class="hover:text-white transition-colors"><i class="ri-whatsapp-line"></i></a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

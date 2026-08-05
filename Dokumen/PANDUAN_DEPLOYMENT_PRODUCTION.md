@@ -1,6 +1,6 @@
-# Panduan Deployment Production Metracrura POS
+# Panduan Deployment Production Metacrura POS
 
-Panduan ini berisi instruksi langkah-demi-langkah untuk melakukan **deployment online** aplikasi **Metracrura POS** (Frontend React Vite di Vercel/Netlify, Backend Django REST + PostgreSQL di Railway/Render/VPS, dan Webhook Xendit).
+Panduan ini berisi instruksi langkah-demi-langkah untuk melakukan **deployment online** aplikasi **Metacrura POS** (Frontend React Vite di Vercel/Netlify, Backend Django REST + PostgreSQL di Railway/Render/VPS, dan Webhook Xendit).
 
 ---
 
@@ -10,7 +10,7 @@ Panduan ini berisi instruksi langkah-demi-langkah untuk melakukan **deployment o
 +--------------------------+              +--------------------------+
 |  Frontend (React Vite)   |   HTTP/API   |  Backend (Django REST)   |
 |  Hosting: Vercel/Netlify |  ----------> |  Hosting: Railway / VPS  |
-|  URL: pos.metracrura.com |              |  URL: api.metracrura.com |
+|  URL: pos.metacrura.com |              |  URL: api.metacrura.com |
 +--------------------------+              +--------------------------+
                                                        |
                                             +----------+----------+
@@ -43,7 +43,7 @@ Panduan ini berisi instruksi langkah-demi-langkah untuk melakukan **deployment o
    DB_PASSWORD=${PGPASSWORD}
    DB_HOST=${PGHOST}
    DB_PORT=${PGPORT}
-   FRONTEND_URL=https://metracrura-pos.vercel.app
+   FRONTEND_URL=https://metacrura-pos.vercel.app
    XENDIT_SECRET_KEY=xnd_production_xxx
    XENDIT_WEBHOOK_TOKEN=xnd_webhook_token_xxx
    ```
@@ -54,7 +54,7 @@ Panduan ini berisi instruksi langkah-demi-langkah untuk melakukan **deployment o
      python manage.py collectstatic --noinput
      python manage.py shell -c "from accounts.models import TechnicalAdmin; TechnicalAdmin.objects.create_superuser('admin_tech', 'AdminTechPass123!')"
      ```
-   - backend Railway kamu kini aktif misal di: `https://metracrura-backend.up.railway.app`
+   - backend Railway kamu kini aktif misal di: `https://metacrura-backend.up.railway.app`
 
 ---
 
@@ -68,7 +68,7 @@ Panduan ini berisi instruksi langkah-demi-langkah untuk melakukan **deployment o
    - Output Directory: `dist`
 5. **Atur Environment Variable**:
    ```env
-   VITE_API_URL=https://metracrura-backend.up.railway.app/api
+   VITE_API_URL=https://metacrura-backend.up.railway.app/api
    ```
 6. **Klik Deploy**. Vercel akan otomatis membaca file [vercel.json](file:///c:/laragon/www/TA/pos-frontend/vercel.json) untuk penanganan routing React Single Page App (SPA).
 
@@ -108,7 +108,7 @@ Buat file `.env` di `/var/www/Project-TA/pos-backend/.env`:
 ```env
 DJANGO_SECRET_KEY=production_secret_key_3948572
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=api.metracrura.com,localhost,127.0.0.1
+DJANGO_ALLOWED_HOSTS=api.metacrura.com,localhost,127.0.0.1
 DB_NAME=pos_ml
 DB_USER=pos_user
 DB_PASSWORD=PasswordRahasiamu123!
@@ -126,7 +126,7 @@ python manage.py collectstatic --noinput
 Buat file `/etc/systemd/system/gunicorn.service`:
 ```ini
 [Unit]
-Description=gunicorn daemon for Metracrura POS Backend
+Description=gunicorn daemon for Metacrura POS Backend
 After=network.target
 
 [Service]
@@ -146,10 +146,10 @@ sudo systemctl enable gunicorn
 ```
 
 ### 6. Setup Nginx Reverse Proxy
-Buat file `/etc/nginx/sites-available/metracrura-backend`:
+Buat file `/etc/nginx/sites-available/metacrura-backend`:
 ```nginx
 server {
-    server_name api.metracrura.com;
+    server_name api.metacrura.com;
 
     location /static/ {
         alias /var/www/Project-TA/pos-backend/staticfiles/;
@@ -168,10 +168,10 @@ server {
 
 Aktifkan Nginx site & SSL Certbot:
 ```bash
-sudo ln -s /etc/nginx/sites-available/metracrura-backend /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/metacrura-backend /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
-sudo certbot --nginx -d api.metracrura.com
+sudo certbot --nginx -d api.metacrura.com
 ```
 
 ---
@@ -181,7 +181,7 @@ sudo certbot --nginx -d api.metracrura.com
 1. Login ke Dashboard Xendit (`dashboard.xendit.co`).
 2. Buka menu **Settings** → **Callbacks**.
 3. Masukkan Callback URL:
-   `https://api.metracrura.com/api/payments/xendit/callback/` (atau URL Railway).
+   `https://api.metacrura.com/api/payments/xendit/callback/` (atau URL Railway).
 4. Centang event:
    - Invoice Paid / Expired
    - Virtual Account Payment Paid

@@ -1,7 +1,7 @@
 # MEMO: Status Testing & Catatan Integrasi Payment Gateway Xendit
 
 **Tanggal Memo:** 4 Agustus 2026  
-**Sistem:** Metracrura POS (Point of Sale Integrated Machine Learning)  
+**Sistem:** Metacrura POS (Point of Sale Integrated Machine Learning)  
 **Penguji:** User & System Agent  
 **Status Pengujian:** 2 dari 3 Metode Xendit 100% Berhasil & Smooth  
 

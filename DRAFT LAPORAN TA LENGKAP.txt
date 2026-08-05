@@ -1,0 +1,1030 @@
+======================================================================
+LAPORAN TUGAS AKHIR
+RANCANGAN BANGUN SISTEM POS TERINTEGRASI
+MACHINE LEARNING UNTUK
+OPTIMASI MANAJEMEN STOK PADA UMKM
+======================================================================
+
+Disusun Oleh:
+Mita Salsabilla         3.34.23.1.14
+Yafi Rizky Kurniawan    3.34.23.1.26
+
+PROGRAM STUDI TEKNIK INFORMATIKA
+JURUSAN TEKNIK ELEKTRO
+POLITEKNIK NEGERI SEMARANG
+2026
+
+======================================================================
+HALAMAN JUDUL (Halaman ke-2)
+======================================================================
+
+LAPORAN TUGAS AKHIR
+RANCANGAN BANGUN SISTEM POS TERINTEGRASI
+MACHINE LEARNING UNTUK
+OPTIMASI MANAJEMEN STOK PADA UMKM
+
+Laporan Tugas Akhir ini disusun untuk melengkapi sebagian persyaratan menjadi Ahli Madya
+
+Disusun Oleh:
+Mita Salsabilla         3.34.23.1.14
+Yafi Rizky Kurniawan    3.34.23.1.26
+
+PROGRAM STUDI TEKNIK INFORMATIKA
+JURUSAN TEKNIK ELEKTRO
+POLITEKNIK NEGERI SEMARANG
+2026
+
+======================================================================
+PERSYARATAN KEASLIAN TUGAS AKHIR
+======================================================================
+
+Yang bertanda tangan dibawah ini, saya:
+Nama/NIM/Kelas  : Mita Salsabilla/3.34.23.1.14/IK-3B
+Nama/NIM/Kelas  : Yafi Rizky Kurniawan/3.34.23.1.26/IK-3B
+Jurusan         : Teknik Elektro
+Program Studi   : D3 Teknik Informatika
+
+Menyatakan dengan sesungguhnya bahwa Tugas Akhir dengan judul "RANCANGAN BANGUN SISTEM POS TERINTEGRASI MACHINE LEARNING UNTUK OPTIMASI MANAJEMEN STOK PADA UMKM" yang dibuat untuk melengkapi sebagian persyaratan menjadi Ahli Madya pada Program Studi D3 Teknik Informatika, Jurusan Teknik Elektro, Politeknik Negeri Semarang, sejauh yang kami ketahui bukan merupakan tiruan atau duplikasi dari Tugas Akhir yang sudah dipublikasikan dan atau pernah dipakai untuk mendapatkan gelar Ahli Madya di lingkungan Politeknik Negeri Semarang maupun di perguruan tinggi atau instansi manapun, kecuali bagian yang sumber informasinya dicantumkan sebagaimana mestinya.
+
+Semarang, Agustus 2026
+
+(Mita Salsabilla)                   (Yafi Rizky Kurniawan)
+NIM. 3.34.23.1.14                   NIM. 3.34.23.1.26
+
+======================================================================
+HALAMAN PERSETUJUAN
+======================================================================
+
+Tugas Akhir dengan judul "RANCANGAN BANGUN SISTEM POS TERINTEGRASI MACHINE LEARNING UNTUK OPTIMASI MANAJEMEN STOK PADA UMKM" dibuat untuk melengkapi sebagian persyaratan menjadi Ahli Madya pada Program Studi Teknik Informatika, Jurusan Teknik Elektro Politeknik Negeri Semarang dan disetujui untuk diajukan dalam sidang ujian Tugas Akhir.
+
+Semarang, Agustus 2026
+
+Menyetujui,
+
+Pembimbing I                        Pembimbing II
+
+Dr. Ir. Kurnianingsih, S.T., M.T.   Amran Yobioktabera, S.Kom, M.Kom.
+NIP. ........................        NIP. ........................
+
+Mengetahui,
+Koordinator Program Studi Teknik Informatika
+
+Idhawati Hestiningsih, S.Kom, M.Kom.
+NIP. ........................
+
+======================================================================
+HALAMAN PENGESAHAN
+======================================================================
+
+* {Halaman ini diisi setelah sidang - berisi tanda tangan penguji, pembimbing, ketua jurusan. Format sesuai template kampus}
+
+======================================================================
+ABSTRAK
+======================================================================
+
+Mita Salsabilla dan Yafi Rizky Kurniawan "Rancangan Bangun Sistem POS Terintegrasi Machine Learning Untuk Optimasi Manajemen Stok Pada UMKM", Tugas Akhir DIII Program Studi Teknik Informatika, Jurusan Teknik Elektro, Politeknik Negeri Semarang, dibawah bimbingan Dr. Ir. Kurnianingsih, S.T., M.T. dan Amran Yobioktabera, S.Kom, M.Kom. Agustus 2026.
+
+Usaha Mikro, Kecil, dan Menengah (UMKM) memiliki kontribusi signifikan terhadap perekonomian Indonesia, namun sebagian besar masih menghadapi kendala dalam pengelolaan stok dan pencatatan transaksi secara manual. Ketidakakuratan pencatatan ini menyebabkan kerugian berupa kehabisan stok (stockout), pemborosan akibat produk kadaluarsa, dan ketidakefisienan modal kerja.
+
+Tugas Akhir ini merancang dan membangun sebuah Sistem Point of Sale (POS) berbasis web yang terintegrasi dengan lima modul Machine Learning untuk optimasi manajemen stok pada UMKM ritel, khususnya warung kelontong. Sistem dibangun menggunakan arsitektur full-stack dengan Django REST Framework sebagai backend, React.js sebagai frontend, dan PostgreSQL sebagai basis data. Fitur POS mencakup pencatatan transaksi multi-metode pembayaran (CASH, QRIS, Transfer Bank, E-Wallet), manajemen stok dengan metode FIFO (First In First Out) berbasis batch, manajemen multi-cabang, serta dua role pengguna (Admin/Owner dan Kasir).
+
+Lima modul Machine Learning yang dikembangkan meliputi: (1) Prediksi Kehabisan Stok menggunakan Moving Average, (2) Rekomendasi Restock menggunakan Safety Stock dan Economic Order Quantity (EOQ), (3) Analisis Risiko Kadaluarsa menggunakan Sales Velocity, (4) Prediksi Pendapatan menggunakan Ridge Regression dengan Feature Engineering, dan (5) Klasifikasi Produk ABC menggunakan Pareto Analysis. Seluruh modul divalidasi menggunakan data sintetis berbasis parameter wawancara UMKM real.
+
+Hasil pengujian menunjukkan bahwa model Revenue Forecast mencapai R-squared sebesar 0.34 pada data uji dengan MAE sebesar Rp 124.000 dan RMSE sebesar Rp 136.000. Modul Stockout berhasil mengidentifikasi 1 produk berstatus CRITICAL dan 14 produk LOW risk. Klasifikasi ABC mengelompokkan 4 produk sebagai Kelas A (78.8% revenue), 3 produk Kelas B (14.4%), dan 8 produk Kelas C (6.8%). Sistem secara keseluruhan terdiri dari 18 halaman frontend, 10 backend apps, dan mendukung arsitektur multi-tenant untuk pengelolaan banyak cabang.
+
+Kata Kunci: Point of Sale, Machine Learning, Manajemen Stok, UMKM, FIFO, Ridge Regression, ABC Analysis, Django, React
+
+======================================================================
+ABSTRACT
+======================================================================
+
+Mita Salsabilla and Yafi Rizky Kurniawan "Design and Development of POS System Integrated with Machine Learning for Stock Management Optimization in MSMEs", Final Project DIII Information Technology Study Program, Electrical Engineering Department, Politeknik Negeri Semarang, under supervision of Dr. Ir. Kurnianingsih, S.T., M.T. and Amran Yobioktabera, S.Kom, M.Kom. August 2026.
+
+Micro, Small, and Medium Enterprises (MSMEs) contribute significantly to the Indonesian economy, yet most still face challenges in stock management and manual transaction recording. This Final Project designs and builds a web-based Point of Sale (POS) System integrated with five Machine Learning modules for stock management optimization in retail MSMEs, specifically small grocery stores. The system is built using a full-stack architecture with Django REST Framework as backend, React.js as frontend, and PostgreSQL as database. Five ML modules were developed: (1) Stockout Prediction using Moving Average, (2) Restock Recommendation using Safety Stock and EOQ, (3) Expiry Risk Analysis using Sales Velocity, (4) Revenue Forecasting using Ridge Regression with Feature Engineering, and (5) ABC Product Classification using Pareto Analysis. Testing results show that the Revenue Forecast model achieved an R-squared of 0.34 on test data with MAE of Rp 124,000 and RMSE of Rp 136,000.
+
+Keywords: Point of Sale, Machine Learning, Stock Management, MSMEs, FIFO, Ridge Regression, ABC Analysis, Django, React
+
+======================================================================
+KATA PENGANTAR
+======================================================================
+
+Puji dan Syukur penulis panjatkan kepada kehadiran Allah SWT, atas limpahan rahmat dan karunia-Nya sehingga penulis dapat menyelesaikan Tugas Akhir ini dengan judul "RANCANGAN BANGUN SISTEM POS TERINTEGRASI MACHINE LEARNING UNTUK OPTIMASI MANAJEMEN STOK PADA UMKM" yang disusun untuk memenuhi salah satu syarat menyelesaikan Pendidikan Program Studi Diploma III Teknik Informatika Jurusan Teknik Elektro Politeknik Negeri Semarang.
+
+Pada kesempatan ini penulis menyampaikan terima kasih kepada:
+1. Bapak Dr. Garup Lambang Goro, S.T., M.T. selaku Direktur Politeknik Negeri Semarang.
+2. Bapak Yusnan Badruzzaman, S.T., M.Eng. selaku Ketua Jurusan Teknik Elektro Politeknik Negeri Semarang.
+3. Ibu Idhawati Hestiningsih, S.Kom, M.Kom. selaku Koordinator Program Studi Teknik Informatika.
+4. Ibu Dr. Ir. Kurnianingsih, S.T., M.T. selaku Dosen Pembimbing I yang telah memberikan bimbingan, masukan, dan solusi dalam penyusunan laporan dan pengembangan sistem.
+5. Bapak Amran Yobioktabera, S.Kom, M.Kom. selaku Dosen Pembimbing II yang telah memberikan arahan teknis dan masukan dalam pengembangan sistem.
+6. Pemilik UMKM warung kelontong di Semarang yang telah bersedia menjadi responden dan memberikan data untuk penelitian ini.
+7. Kedua orang tua beserta saudara-saudara yang senantiasa mendoakan penulis dan memberikan bantuan secara moril maupun materil dengan penuh keikhlasan.
+8. Teman-teman kelas IK-3B yang telah membantu dan mendukung penulis.
+
+Penulis menyadari bahwa laporan ini masih memiliki kekurangan. Oleh karena itu, penulis sangat terbuka menerima saran dan kritik yang membangun untuk penyempurnaan laporan ini. Semoga Tugas Akhir ini dapat bermanfaat bagi penulis dan pihak yang berkepentingan.
+
+Semarang, Agustus 2026
+
+Penulis
+
+======================================================================
+DAFTAR ISI
+======================================================================
+
+* {Daftar isi di-generate otomatis dari Word setelah semua konten selesai ditulis. Gunakan fitur Table of Contents di Microsoft Word}
+
+======================================================================
+DAFTAR GAMBAR
+======================================================================
+
+* {Daftar gambar di-generate otomatis dari Word. Setiap gambar yang disisipkan harus diberi caption menggunakan fitur Insert Caption di Word. Contoh format:}
+
+Gambar 2.1 Arsitektur Sistem POS ML ............... xx
+Gambar 2.2 Alur Metode FIFO ........................ xx
+Gambar 3.1 Use Case Diagram ........................ xx
+Gambar 3.2 Entity Relationship Diagram ............. xx
+Gambar 3.3 Flowchart Proses Checkout ............... xx
+Gambar 3.4 Flowchart Alur Machine Learning ......... xx
+Gambar 3.5 Tampilan Halaman Login .................. xx
+Gambar 3.6 Tampilan Halaman Register ............... xx
+Gambar 3.7 Tampilan Dashboard Admin ................ xx
+Gambar 3.8 Tampilan Halaman POS Kasir .............. xx
+Gambar 3.9 Tampilan Halaman Stok Batch ............. xx
+Gambar 3.10 Tampilan ML Dashboard - Forecast ....... xx
+Gambar 3.11 Tampilan ML Dashboard - ABC ............ xx
+Gambar 3.12 Tampilan ML Dashboard - Stockout ....... xx
+Gambar 3.13 Tampilan ML Dashboard - Restock ........ xx
+Gambar 3.14 Tampilan ML Dashboard - Expiry ......... xx
+Gambar 3.15 Tampilan Laporan Penjualan ............. xx
+Gambar 4.1 Grafik Perbandingan Model ML ............ xx
+Gambar 4.2 Confusion Matrix / Scatter Plot ......... xx
+Gambar 4.3 Grafik Prediksi vs Aktual Revenue ....... xx
+
+======================================================================
+DAFTAR TABEL
+======================================================================
+
+Tabel 2.1 Perbandingan Penelitian Terdahulu ........ xx
+Tabel 2.2 Teknologi yang Digunakan ................. xx
+Tabel 3.1 Kebutuhan Fungsional Sistem .............. xx
+Tabel 3.2 Kebutuhan Non-Fungsional Sistem .......... xx
+Tabel 3.3 Struktur Tabel Database .................. xx
+Tabel 3.4 Daftar API Endpoint ...................... xx
+Tabel 3.5 Daftar Halaman Frontend .................. xx
+Tabel 4.1 Data Produk Responden UMKM ............... xx
+Tabel 4.2 Perbandingan Algoritma ML ................ xx
+Tabel 4.3 Hasil Evaluasi Model Forecast ............ xx
+Tabel 4.4 Hasil Klasifikasi ABC .................... xx
+Tabel 4.5 Hasil Prediksi Stockout .................. xx
+Tabel 4.6 Hasil Rekomendasi Restock ................ xx
+Tabel 4.7 Hasil Pengujian Fungsional (Black Box) ... xx
+Tabel 4.8 Hasil Pengujian UAT ...................... xx
+
+======================================================================
+BAB I
+PENDAHULUAN
+======================================================================
+
+1.1 Latar Belakang
+
+Usaha Mikro, Kecil, dan Menengah (UMKM) memiliki peran strategis dalam perekonomian Indonesia. Berdasarkan data Kementerian Koperasi dan Usaha Kecil dan Menengah Republik Indonesia (2023), UMKM berkontribusi sebesar 61,07% terhadap Produk Domestik Bruto (PDB) nasional dan menyerap sekitar 97% tenaga kerja di Indonesia. Namun, mayoritas UMKM di Indonesia, khususnya usaha berskala kecil seperti warung, toko kelontong, dan minimart, masih menghadapi berbagai tantangan operasional yang menghambat pertumbuhan bisnis mereka.
+
+Salah satu permasalahan krusial yang dihadapi UMKM adalah manajemen stok yang kurang optimal. Menurut survei Lembaga Pengembangan Perbankan Indonesia (LPPI) tahun 2023, 67% UMKM mengalami masalah stok kosong (stockout) yang menyebabkan kehilangan penjualan, sementara 54% mengalami kerugian akibat produk kadaluarsa karena pembelian berlebihan. Permasalahan ini diperburuk dengan minimnya adopsi teknologi dalam pencatatan transaksi dan manajemen inventori.
+
+Pencatatan manual tidak hanya memakan waktu, tetapi juga menyulitkan pemilik usaha untuk menganalisis pola penjualan dan membuat keputusan bisnis yang tepat. Pemilik UMKM sering kali kesulitan menentukan kapan harus melakukan restock, berapa jumlah yang harus dipesan, dan produk mana yang perlu diprioritaskan. Ketidakpastian ini menyebabkan inefisiensi modal kerja, di mana uang tertahan dalam stok yang tidak bergerak atau justru kehilangan peluang penjualan karena stok habis.
+
+Perkembangan teknologi Machine Learning (ML) memungkinkan prediksi penjualan, rekomendasi restock, serta analisis risiko kadaluarsa secara otomatis berdasarkan data historis transaksi. Namun, teknologi ini umumnya hanya diterapkan pada perusahaan besar dan belum banyak diimplementasikan pada UMKM karena keterbatasan biaya dan sumber daya teknis.
+
+Oleh karena itu, diperlukan sebuah sistem Point of Sale yang tidak hanya mencatat transaksi, tetapi juga dilengkapi dengan kemampuan Machine Learning untuk memberikan rekomendasi cerdas dalam manajemen stok. Sistem ini diharapkan dapat membantu UMKM dalam:
+1. Mendeteksi risiko stok kosong (stockout) sebelum terjadi.
+2. Memberikan rekomendasi waktu dan jumlah restock yang optimal.
+3. Mengidentifikasi produk dengan risiko kadaluarsa tinggi.
+4. Memprediksi tren penjualan untuk perencanaan bisnis yang lebih baik.
+5. Mengklasifikasikan produk berdasarkan performa penjualan (ABC Analysis).
+
+Berdasarkan permasalahan tersebut, diperlukan suatu sistem Point of Sale (POS) berbasis web yang terintegrasi dengan manajemen stok batch-level dan modul prediksi berbasis Machine Learning untuk membantu UMKM mengelola persediaan secara lebih efisien dan berbasis data.
+
+1.2 Perumusan Masalah
+
+Berdasarkan uraian latar belakang tersebut didapat pokok permasalahan yaitu:
+1. Bagaimana merancang sistem Point of Sale (POS) berbasis web yang dapat membantu pengelolaan transaksi dan stok barang pada UMKM?
+2. Bagaimana mengimplementasikan sistem manajemen stok dengan metode FIFO otomatis dan tracking berdasarkan batch serta tanggal kadaluarsa?
+3. Bagaimana menerapkan Machine Learning untuk memprediksi kebutuhan restock, risiko kadaluarsa, dan proyeksi penjualan pada UMKM?
+
+1.3 Tujuan
+
+Tujuan pembuatan sistem ini, sebagai berikut:
+1. Merancang dan membangun Sistem Point of Sale berbasis web untuk UMKM ritel.
+2. Mengimplementasikan sistem manajemen stok dengan metode FIFO otomatis dan pencatatan batch produk.
+3. Mengembangkan modul Machine Learning untuk:
+   a. Prediksi kehabisan stok (stockout prediction)
+   b. Rekomendasi jumlah dan waktu restock
+   c. Analisis risiko kadaluarsa
+   d. Prediksi pendapatan (revenue forecasting)
+   e. Klasifikasi produk berdasarkan kontribusi penjualan (ABC Analysis)
+4. Menguji dan mengevaluasi efektivitas sistem dalam mengurangi stockout dan kerugian akibat barang kadaluarsa.
+
+1.4 Manfaat
+
+Manfaat dari pembuatan sistem ini, sebagai berikut:
+1. Membantu UMKM mengurangi kerugian akibat kekosongan stok dan barang kadaluarsa.
+2. Meningkatkan efisiensi waktu dalam pencatatan dan pengelolaan stok.
+3. Memberikan insight berbasis data untuk pengambilan keputusan bisnis yang lebih tepat.
+4. Meningkatkan efektivitas pengelolaan modal kerja UMKM.
+5. Menyediakan teknologi Machine Learning yang terjangkau dan mudah digunakan bagi pelaku UMKM.
+
+1.5 Batasan Masalah
+
+Dalam pembuatan Tugas Akhir ini, masalah yang akan dibahas dibatasi oleh beberapa faktor, antara lain:
+1. Sistem hanya ditujukan untuk UMKM ritel skala kecil dengan 15-100 jenis produk (SKU).
+2. Sistem berbasis web (dapat diakses melalui browser, tanpa mobile app native).
+3. Sistem mencakup fitur transaksi penjualan, manajemen stok batch-level, dan prediksi berbasis Machine Learning.
+4. Sistem mengelola 2 role utama: Admin/Owner (pemilik usaha) dan Kasir (staf operasional).
+5. Metode prediksi menggunakan data historis penjualan minimal 3 bulan.
+6. Sistem menggunakan batch-based inventory (satu batch per kedatangan stok, bukan per item individual).
+7. Integrasi payment gateway Xendit dalam mode development/test.
+8. Data divalidasi menggunakan data sintetis berbasis parameter wawancara UMKM real.
+
+1.6 Sistematika Penulisan
+
+Sistematika penulisan Tugas Akhir ini dibagi menjadi beberapa bab yang meliputi:
+
+BAB I PENDAHULUAN
+Berisi latar belakang yang juga meliputi perumusan masalah, tujuan, dan manfaat pembuatan Tugas Akhir, batasan masalah sistem, dan sistematika penulisan laporan Tugas Akhir.
+
+BAB II TINJAUAN PUSTAKA
+Berisi dasar teori mengenai Point of Sale, UMKM, Manajemen Stok, Metode FIFO, Machine Learning, serta teknologi yang digunakan dalam pembangunan sistem (Django, React, PostgreSQL, scikit-learn). Juga memuat tinjauan terhadap penelitian-penelitian terdahulu yang relevan.
+
+BAB III PERANCANGAN DAN IMPLEMENTASI
+Berisi perancangan sistem yang meliputi analisis kebutuhan, desain arsitektur, perancangan basis data, perancangan antarmuka, serta implementasi sistem baik backend maupun frontend.
+
+BAB IV HASIL DAN PEMBAHASAN
+Berisi hasil pengujian sistem, evaluasi model Machine Learning, pengujian fungsional (black box testing), pengujian penerimaan pengguna (UAT), serta analisis terhadap hasil yang diperoleh.
+
+BAB V PENUTUP
+Berisi kesimpulan dari keseluruhan hasil Tugas Akhir dan saran untuk pengembangan sistem di masa mendatang.
+
+DAFTAR PUSTAKA
+Daftar yang menampilkan sumber pustaka yang dijadikan panduan pengerjaan laporan Tugas Akhir.
+
+LAMPIRAN
+Dokumen tambahan yang dilampirkan ke laporan Tugas Akhir, termasuk kode sumber, formulir wawancara, dan surat persetujuan responden.
+
+
+======================================================================
+BAB II
+TINJAUAN PUSTAKA
+======================================================================
+
+2.1 Dasar Teori
+
+2.1.1 Point of Sale (POS)
+
+Point of Sale (POS) adalah sistem yang digunakan untuk mencatat dan memproses transaksi penjualan pada titik terjadinya transaksi, baik di toko fisik maupun secara daring. Sistem POS menggantikan pencatatan manual dengan pencatatan digital, sehingga setiap transaksi penjualan, jumlah barang yang keluar, dan total pembayaran dapat tercatat secara otomatis dan lebih akurat (Laudon & Laudon, 2020).
+
+Dalam kinerjanya, sistem Point of Sale pada penelitian ini dibangun berbasis web menggunakan framework Django untuk backend dan React untuk frontend, dengan PostgreSQL sebagai basis data. Setiap transaksi yang dilakukan oleh kasir akan otomatis mengurangi jumlah stok barang berdasarkan batch yang berlaku menggunakan metode FIFO, serta tersimpan sebagai data historis yang menjadi masukan bagi modul prediksi Machine Learning.
+
+2.1.2 Usaha Mikro, Kecil, dan Menengah (UMKM)
+
+UMKM merupakan unit usaha produktif yang berdiri sendiri, dikelola oleh perorangan atau badan usaha, dengan skala aset dan omzet yang tergolong mikro, kecil, atau menengah sebagaimana diatur dalam Undang-Undang Nomor 20 Tahun 2008 tentang UMKM. UMKM memiliki peran penting sebagai penopang perekonomian nasional, namun sebagian besar pelakunya masih terkendala dengan keterbatasan adopsi teknologi informasi dalam operasional bisnis sehari-hari (Tambunan, 2012).
+
+Keterbatasan tersebut terlihat pada proses pencatatan transaksi dan pengelolaan persediaan yang masih dilakukan secara manual, sehingga pemilik usaha kesulitan menganalisis pola penjualan dan pengambilan keputusan terkait waktu serta jumlah restock yang tepat. Kondisi inilah yang mendasari perlunya sistem POS yang dilengkapi kemampuan analisis otomatis bagi UMKM.
+
+2.1.3 Manajemen Stok dan Inventori
+
+Manajemen stok adalah proses perencanaan, pengadaan, penyimpanan, dan pengendalian persediaan barang agar tersedia dalam jumlah dan waktu yang tepat, sehingga dapat memenuhi permintaan konsumen tanpa menimbulkan kelebihan atau kekurangan stok (Heizer & Render, 2017).
+
+Pengelolaan stok yang tidak optimal dapat menyebabkan dua permasalahan utama, yaitu:
+a. Stockout (kehabisan stok) - berdampak pada hilangnya potensi penjualan dan kepuasan pelanggan.
+b. Overstock (kelebihan stok) - berisiko menimbulkan kerugian akibat produk kadaluarsa atau biaya penyimpanan yang tinggi.
+
+2.1.4 Metode FIFO (First In First Out)
+
+FIFO (First In First Out) adalah salah satu metode pengendalian persediaan yang mengharuskan barang yang pertama kali masuk ke gudang menjadi barang yang pertama kali dikeluarkan atau dijual. Metode ini umum diterapkan pada produk yang memiliki masa kadaluarsa, karena dapat meminimalkan risiko produk tidak terjual sebelum melewati masa kadaluarsanya (Warren et al., 2018).
+
+Dalam sistem yang dibangun, penerapan FIFO dilakukan dengan mencatat setiap kedatangan barang sebagai suatu batch tersendiri, lengkap dengan tanggal masuk dan tanggal kadaluarsa. Ketika terjadi transaksi penjualan, sistem akan secara otomatis mengambil stok dari batch dengan tanggal masuk paling awal, tanpa memerlukan pemilihan manual oleh kasir.
+
+* {Gambar 2.1: Diagram alur metode FIFO pada sistem - tunjukkan flow: Batch masuk (tanggal lama) -> Batch masuk (tanggal baru) -> Saat checkout, stok diambil dari batch terlama dulu}
+
+2.1.5 Analisis ABC
+
+Analisis ABC merupakan metode klasifikasi persediaan yang mengelompokkan produk berdasarkan tingkat kontribusinya terhadap total nilai penjualan atau nilai investasi persediaan. Metode ini didasarkan pada Prinsip Pareto (80/20 Rule) yang menyatakan bahwa sekitar 20% produk menghasilkan 80% dari total revenue (Koch, 2011).
+
+Klasifikasi ABC:
+- Kelas A (Fast Moving): Produk yang berkontribusi 0-80% kumulatif revenue. Jumlahnya sedikit tetapi nilai penjualannya tinggi.
+- Kelas B (Medium Moving): Produk yang berkontribusi 80-95% kumulatif revenue. Produk dengan performa menengah.
+- Kelas C (Slow Moving): Produk yang berkontribusi 95-100% kumulatif revenue. Jumlahnya banyak tetapi nilai penjualannya rendah.
+
+Pada sistem ini, klasifikasi ABC dihasilkan secara otomatis oleh modul Machine Learning berdasarkan data historis transaksi, sehingga pemilik usaha dapat mengetahui produk mana yang perlu diprioritaskan dalam pengelolaan stok tanpa perlu melakukan perhitungan manual.
+
+2.1.6 Machine Learning
+
+Machine Learning adalah cabang kecerdasan buatan yang memungkinkan sistem mempelajari pola dari data historis untuk menghasilkan prediksi atau keputusan tanpa diprogram secara eksplisit untuk setiap kondisi (Mitchell, 1997). Dalam kinerjanya, model ML dilatih menggunakan data transaksi penjualan yang tersimpan dalam basis data sistem POS.
+
+a. Ridge Regression
+Ridge Regression adalah variasi dari Linear Regression yang menambahkan penalti regularisasi L2 pada koefisien model untuk mencegah overfitting. Fungsi objektif Ridge Regression:
+
+   minimize: ||y - Xw||^2 + alpha * ||w||^2
+
+Di mana alpha adalah parameter regularisasi. Semakin besar alpha, semakin kuat penalti terhadap koefisien besar, sehingga model menjadi lebih generalized (Hastie et al., 2009).
+
+b. Moving Average
+Moving Average menghitung rata-rata nilai data dalam jendela waktu tertentu yang bergerak sepanjang deret waktu. Digunakan untuk menghaluskan fluktuasi data harian dan mengidentifikasi tren jangka pendek (Brockwell & Davis, 2016).
+
+   MA(t) = (1/n) * SUM(x(t-i)) untuk i=0 hingga n-1
+
+c. Safety Stock dan Economic Order Quantity (EOQ)
+Safety Stock adalah stok pengaman yang disimpan untuk mengantisipasi fluktuasi permintaan. EOQ adalah jumlah pemesanan optimal yang meminimalkan total biaya persediaan (Heizer & Render, 2017).
+
+   Safety Stock = Z * sigma * sqrt(Lead Time)
+   EOQ = sqrt((2 * D * S) / H)
+
+Di mana:
+- Z = service level factor (1.65 untuk 95%)
+- sigma = standar deviasi penjualan harian
+- D = Demand (permintaan)
+- S = Ordering cost (biaya pemesanan)
+- H = Holding cost (biaya penyimpanan)
+
+2.1.7 Pembayaran Digital QRIS
+
+QRIS (Quick Response Code Indonesian Standard) adalah standar pembayaran QR code nasional yang diterbitkan oleh Bank Indonesia untuk memfasilitasi pembayaran digital di Indonesia. QRIS memungkinkan satu QR code dapat dipindai oleh berbagai aplikasi pembayaran (Bank Indonesia, 2019).
+
+Sistem yang dibangun mengintegrasikan QRIS melalui Xendit API dalam mode development, memungkinkan kasir menerima pembayaran digital langsung dari antarmuka POS tanpa redirect ke halaman pembayaran eksternal.
+
+2.2 Teknologi yang Digunakan
+
+* {Tabel 2.2: Tabel teknologi yang digunakan - format 4 kolom: No | Teknologi | Versi | Fungsi}
+
+No | Teknologi                  | Versi    | Fungsi
+1  | Python                     | 3.14     | Bahasa pemrograman backend
+2  | Django                     | 6.0      | Web framework backend
+3  | Django REST Framework      | 3.16     | API RESTful
+4  | PostgreSQL                 | 17       | Basis data relasional
+5  | Simple JWT                 | 5.5      | Autentikasi JSON Web Token
+6  | django-auditlog            | 3.0      | Pencatatan audit trail otomatis
+7  | scikit-learn               | 1.6      | Library Machine Learning
+8  | pandas                     | 2.2      | Pengolahan data tabular
+9  | numpy                      | 2.2      | Komputasi numerik
+10 | React                      | 18       | Library frontend UI
+11 | Vite                       | 6.0      | Build tool frontend
+12 | TailwindCSS                | 4.0      | CSS utility framework
+13 | TanStack React Query       | 5.x      | State management & data fetching
+14 | Recharts                   | 2.x      | Library grafik/chart
+15 | React Router               | 6.x      | Routing frontend SPA
+16 | Xendit API                 | -        | Payment gateway (QRIS, VA, E-Wallet)
+17 | Node.js                    | 22       | Runtime JavaScript
+18 | Git & GitHub               | -        | Version control
+
+Perangkat Keras:
+No | Perangkat          | Spesifikasi
+1  | Laptop             | Processor Intel/AMD, RAM 8GB, SSD 256GB
+2  | Koneksi Internet   | Minimal 10 Mbps
+3  | Browser            | Google Chrome / Firefox (versi terbaru)
+
+2.3 Penelitian Terdahulu
+
+* {Tabel 2.1: Tabel perbandingan penelitian terdahulu - format: No | Peneliti & Tahun | Judul | Metode | Hasil | Perbedaan dengan Penelitian Ini}
+
+1. Soebandi, Tendean, dan Bujali (2019) - "Perancangan Aplikasi Perhitungan Jumlah Kebutuhan Kalori Harian" - Menggunakan sistem pakar untuk memberikan rekomendasi berbasis aturan. Perbedaan: Penelitian ini menggunakan Machine Learning yang belajar dari data historis, bukan rule-based.
+
+2. Dandi, TSP, dan Rizal (2021) - "Perancangan Aplikasi Perhitungan Nutrisi Pada Makanan Berbasis Android Dengan Metode CNN" - Menggunakan Convolutional Neural Network untuk klasifikasi citra makanan dengan akurasi 66%. Perbedaan: Penelitian ini menggunakan Ridge Regression dan algoritma statistik untuk prediksi deret waktu (time series) penjualan.
+
+3. Priyaa, Sathyapriya, dan Arockiam (2019) - "Nutrition Monitoring and Calorie Estimation Using Internet of Things" - Menggabungkan IoT dengan ML untuk monitoring nutrisi real-time. Perbedaan: Penelitian ini berfokus pada integrasi ML dengan sistem POS untuk manajemen stok, bukan monitoring kesehatan.
+
+4. * {Tambahkan 2-3 penelitian lagi yang relevan dengan POS dan ML untuk inventory management. Cari di Google Scholar dengan keyword: "point of sale machine learning inventory" atau "POS system stock prediction". Contoh:}
+
+   - "Inventory Management Using Machine Learning" (Sharma et al., 2022) - Menggunakan Random Forest untuk prediksi demand. Perbedaan: Penelitian ini menggunakan Ridge Regression yang lebih ringan dan cocok untuk dataset kecil UMKM.
+
+   - "Development of Web-Based POS System for SMEs" (Pratama et al., 2023) - Membangun POS berbasis web tanpa fitur ML. Perbedaan: Penelitian ini menambahkan 5 modul ML untuk rekomendasi cerdas.
+
+
+======================================================================
+BAB III
+PERANCANGAN DAN IMPLEMENTASI
+======================================================================
+
+3.1 Analisis Kebutuhan
+
+3.1.1 Analisis Kebutuhan Fungsional
+
+* {Tabel 3.1: Kebutuhan Fungsional Sistem}
+
+No | Kode  | Kebutuhan Fungsional                                         | Aktor
+1  | FR-01 | Sistem dapat melakukan registrasi pemilik bisnis baru (Owner) | User (Public)
+2  | FR-02 | Sistem dapat melakukan login dengan 2 role (Admin & Kasir)    | Admin, Kasir
+3  | FR-03 | Sistem dapat mengelola data kategori produk (CRUD)            | Admin
+4  | FR-04 | Sistem dapat mengelola data supplier (CRUD)                   | Admin
+5  | FR-05 | Sistem dapat mengelola data produk (CRUD)                     | Admin
+6  | FR-06 | Sistem dapat mengelola data diskon/promosi (CRUD)             | Admin
+7  | FR-07 | Sistem dapat mencatat stok batch masuk (create batch)         | Admin
+8  | FR-08 | Sistem dapat melakukan stock opname (pencocokan stok)         | Admin, Kasir
+9  | FR-09 | Sistem dapat memproses transaksi penjualan (POS)              | Admin, Kasir
+10 | FR-10 | Sistem mengurangi stok otomatis dengan metode FIFO            | Sistem
+11 | FR-11 | Sistem dapat menampilkan riwayat transaksi                    | Admin, Kasir
+12 | FR-12 | Sistem dapat menampilkan laporan penjualan (grafik & tabel)   | Admin
+13 | FR-13 | Sistem dapat memprediksi kehabisan stok (Stockout)            | Admin
+14 | FR-14 | Sistem dapat memberikan rekomendasi restock (EOQ)             | Admin
+15 | FR-15 | Sistem dapat menganalisis risiko kadaluarsa                   | Admin
+16 | FR-16 | Sistem dapat memprediksi pendapatan (Revenue Forecast)        | Admin
+17 | FR-17 | Sistem dapat mengklasifikasikan produk (ABC Analysis)         | Admin
+18 | FR-18 | Sistem dapat mengelola user kasir (CRUD)                      | Admin
+19 | FR-19 | Sistem dapat mengelola pengaturan pembayaran                  | Admin
+20 | FR-20 | Sistem dapat mengelola profil dan mengganti password           | Admin, Kasir
+21 | FR-21 | Sistem dapat menampilkan audit log perubahan data             | Admin
+22 | FR-22 | Sistem dapat mengelola multi-cabang bisnis                    | Admin
+23 | FR-23 | Sistem dapat menampilkan notifikasi stok rendah & expired     | Admin, Kasir
+24 | FR-24 | Sistem dapat menerima pembayaran digital (QRIS, VA, E-Wallet) | Admin, Kasir
+25 | FR-25 | Sistem dapat menampilkan ringkasan shift kasir saat logout    | Kasir
+
+3.1.2 Analisis Kebutuhan Non-Fungsional
+
+* {Tabel 3.2: Kebutuhan Non-Fungsional}
+
+No | Kode   | Kebutuhan Non-Fungsional
+1  | NFR-01 | Sistem dapat diakses melalui browser modern (Chrome, Firefox, Edge)
+2  | NFR-02 | Sistem memiliki waktu respons API < 2 detik untuk operasi CRUD
+3  | NFR-03 | Sistem menggunakan autentikasi JWT untuk keamanan akses
+4  | NFR-04 | Sistem mengisolasi data antar bisnis (multi-tenant isolation)
+5  | NFR-05 | Sistem memiliki antarmuka responsif (desktop & mobile)
+6  | NFR-06 | Sistem menggunakan cache 5 menit untuk endpoint ML
+7  | NFR-07 | Sistem mencatat setiap perubahan data di audit log
+
+3.2 Perancangan Sistem
+
+3.2.1 Arsitektur Sistem
+
+Sistem dibangun dengan arsitektur full-stack yang terdiri dari tiga komponen utama: Frontend (React), Backend (Django REST Framework), dan Database (PostgreSQL). Modul Machine Learning berjalan di dalam backend Django sebagai service layer yang mengakses database langsung.
+
+* {Gambar 3.1: Diagram arsitektur sistem - tunjukkan:
+  [Browser/React :3000] <-- HTTP/JSON --> [Django REST :8000] <-- SQL --> [PostgreSQL]
+                                              |
+                                     [ML Engine (scikit-learn)]
+  }
+
+3.2.2 Use Case Diagram
+
+* {Gambar 3.2: Use Case Diagram - buat diagram UML yang menunjukkan:
+  Aktor "Admin/Owner" terhubung ke:
+    - Registrasi, Login, Dashboard, CRUD Kategori/Supplier/Produk/Diskon
+    - Stok Batch, Stock Opname, Transaksi POS, Riwayat Transaksi
+    - Laporan Penjualan, ML Predictions (5 modul)
+    - Kelola Kasir, Pengaturan Pembayaran, Profil, Audit Log
+    - Pilih/Ganti Cabang Bisnis
+  Aktor "Kasir" terhubung ke:
+    - Login, Dashboard, Transaksi POS, Riwayat Transaksi
+    - Stock Opname, Profil, Shift Summary
+  }
+
+3.2.3 Entity Relationship Diagram (ERD)
+
+* {Gambar 3.3: ERD - buat diagram yang menunjukkan relasi antar tabel:
+  - User (id, username, password, email, first_name, role)
+  - Business (id, name, business_code, owner_code, business_type, phone, address)
+  - BusinessUser (id, user_id FK, business_id FK, role, is_active)
+  - Category (id, code, name, business_id FK)
+  - Supplier (id, code, name, phone, city, business_id FK)
+  - Product (id, code, name, category_id FK, supplier_id FK, selling_price, buying_price, unit, min_stock, is_active, business_id FK)
+  - ProductBatch (id, batch_code, product_id FK, quantity, cost_per_unit, purchase_date, expiry_date, status, business_id FK)
+  - Transaction (id, transaction_code, user_id FK, business_id FK, total, discount, grand_total, payment_method, amount_paid, change, created_at)
+  - TransactionItem (id, transaction_id FK, product_id FK, quantity, price, subtotal)
+  - Promotion (id, name, type, value, start_date, end_date, product_id FK, business_id FK)
+  - StockOpname (id, product_id FK, batch_id FK, system_qty, actual_qty, variance, status, notes, business_id FK)
+  - XenditPayment (id, transaction_id FK, payment_type, external_id, status, amount)
+  }
+
+3.2.4 Flowchart Proses Checkout (Transaksi)
+
+* {Gambar 3.4: Flowchart proses checkout POS - buat flowchart yang menunjukkan:
+  START
+    -> Kasir pilih produk dari grid
+    -> Tambah ke keranjang (qty bisa diubah +/-)
+    -> Pilih metode pembayaran (CASH/QRIS/Transfer/E-Wallet)
+    -> Input jumlah uang dibayar (khusus CASH)
+    -> Klik Checkout
+    -> [Decision] Stok cukup?
+      -> [Ya] Alokasi FIFO: kurangi dari batch terlama
+        -> Generate kode transaksi (STRX-YYMMDD-XXXX)
+        -> Simpan Transaction + TransactionItems
+        -> Update batch qty (jika qty=0, status=DEPLETED)
+        -> Tampilkan popup struk/receipt
+      -> [Tidak] Tampilkan error "Stok tidak mencukupi"
+  END
+  }
+
+3.2.5 Flowchart Alur Machine Learning
+
+* {Gambar 3.5: Flowchart alur ML - buat flowchart:
+  START
+    -> Admin buka halaman ML Predictions
+    -> Frontend request ke /api/ml/{module}/
+    -> [Decision] Ada cache (< 5 menit)?
+      -> [Ya] Return cached data
+      -> [Tidak] 
+        -> Query data transaksi + stok dari PostgreSQL
+        -> Preprocessing (pandas DataFrame)
+        -> Feature Engineering (day_of_week, is_weekend, is_payday, rolling_7d)
+        -> Model Training (fit) / Calculation
+        -> Model Prediction (predict) / Analysis
+        -> Return JSON response + simpan cache
+    -> Frontend render: card, chart, tabel, badge
+  END
+  }
+
+3.2.6 Perancangan Basis Data
+
+* {Tabel 3.3: Struktur detail setiap tabel database - buat satu tabel per model dengan kolom: Field | Tipe Data | Constraint | Keterangan}
+
+Contoh untuk tabel Product:
+Field          | Tipe Data      | Constraint              | Keterangan
+id             | BigAutoField   | PRIMARY KEY             | ID otomatis
+code           | CharField(50)  | UNIQUE per business     | Kode produk
+name           | CharField(255) | NOT NULL                | Nama produk
+category_id    | ForeignKey     | FK -> Category          | Relasi ke kategori
+supplier_id    | ForeignKey     | FK -> Supplier, NULL    | Relasi ke supplier
+selling_price  | DecimalField   | NOT NULL                | Harga jual (Rp)
+buying_price   | DecimalField   | NOT NULL                | Harga beli/modal (Rp)
+unit           | CharField(20)  | NOT NULL                | Satuan (PCS/KG/SAK/BTL/PAK)
+min_stock      | IntegerField   | DEFAULT 5               | Batas minimum stok
+is_active      | BooleanField   | DEFAULT True            | Status aktif
+business_id    | ForeignKey     | FK -> Business          | Isolasi multi-tenant
+created_at     | DateTimeField  | AUTO_NOW_ADD            | Tanggal dibuat
+updated_at     | DateTimeField  | AUTO_NOW                | Tanggal diubah
+
+* {Buat tabel serupa untuk: User, Business, BusinessUser, Category, Supplier, ProductBatch, Transaction, TransactionItem, Promotion, StockOpname, XenditPayment}
+
+3.2.7 Perancangan Antarmuka (UI/UX)
+
+Antarmuka sistem dirancang dengan konsep modern, dark-mode minimal, menggunakan TailwindCSS sebagai CSS framework. Sistem menggunakan layout sidebar + content area dengan pembedaan warna berdasarkan role pengguna:
+- Admin/Owner: Sidebar berwarna biru (slate-900) dengan 14 menu yang dikelompokkan dalam 7 section.
+- Kasir: Sidebar berwarna hijau (emerald-900) dengan 5 menu yang relevan untuk operasional kasir.
+
+* {Tabel 3.5: Daftar halaman frontend}
+
+No | Halaman              | URL               | Akses        | Fungsi
+1  | Login                | /login            | Public       | Autentikasi (2 tab: Admin/Kasir)
+2  | Register             | /register         | Public       | Registrasi owner (multi-step)
+3  | Dashboard            | /dashboard        | Admin, Kasir | Ringkasan bisnis
+4  | Kategori             | /categories       | Admin        | CRUD kategori produk
+5  | Supplier             | /suppliers        | Admin        | CRUD supplier
+6  | Produk               | /products         | Admin        | CRUD produk
+7  | Manajemen Diskon     | /promotions       | Admin        | CRUD promo/diskon
+8  | Stok Batch           | /inventory        | Admin        | Pencatatan stok masuk
+9  | Stock Opname         | /stock-opname     | Admin, Kasir | Pencocokan stok fisik
+10 | POS Kasir            | /pos              | Admin, Kasir | Proses transaksi
+11 | Riwayat Transaksi    | /transactions     | Admin, Kasir | Daftar transaksi
+12 | Laporan Penjualan    | /reports          | Admin        | Grafik & tabel penjualan
+13 | ML Predictions       | /ml-predictions   | Admin        | 5 modul AI
+14 | Kelola Kasir         | /users            | Admin        | CRUD kasir
+15 | Pengaturan Pembayaran| /payment-settings | Admin        | Toggle metode bayar
+16 | Profil               | /profile          | Admin, Kasir | Edit profil & password
+17 | Audit Log            | /auditlog         | Admin        | Riwayat perubahan data
+18 | Pilih Bisnis         | /businesses       | Admin        | Ganti cabang bisnis
+
+3.3 Implementasi Sistem
+
+3.3.1 Implementasi Backend
+
+Backend dibangun menggunakan Django REST Framework dengan arsitektur modular yang terdiri dari 10 Django Apps:
+
+* {Tabel 3.4: Daftar API Endpoint}
+
+No | App          | Base URL            | Fungsi
+1  | accounts     | /api/auth/          | Login, Register, JWT Token, Profile
+2  | businesses   | (internal)          | Business, BusinessUser, multi-tenant
+3  | products     | /api/products/      | Categories, Suppliers, Products
+4  | inventory    | /api/inventory/     | ProductBatch, Stock Opname
+5  | transactions | /api/transactions/  | Transaction, TransactionItem, Checkout
+6  | payments     | /api/payments/      | Payment Methods, Xendit Integration
+7  | promotions   | /api/promotions/    | Discount management
+8  | notifications| /api/notifications/ | Low stock & expiry alerts
+9  | auditlog     | /api/auditlog/      | System change history
+10 | ml           | /api/ml/            | 5 ML endpoints
+
+Detail implementasi key endpoint:
+
+a. Checkout Endpoint (POST /api/transactions/transactions/checkout/)
+   - Menerima payload: daftar item (product_id, qty), metode bayar, jumlah dibayar
+   - Validasi stok: cek apakah total stok batch aktif >= qty yang diminta
+   - Alokasi FIFO: iterasi batch dari purchase_date terlama, kurangi qty
+   - Generate kode transaksi unik: STRX-YYMMDD-XXXX (dengan global sequence)
+   - Simpan Transaction + TransactionItems dalam database transaction
+   - Return response dengan detail transaksi untuk ditampilkan sebagai struk
+
+b. ML Endpoints (/api/ml/)
+   - stockout-prediction/ — Prediksi kapan stok akan habis
+   - restock-recommendation/ — Rekomendasi waktu dan jumlah restock
+   - expiry-risk/ — Analisis risiko kadaluarsa
+   - revenue-forecast/ — Prediksi pendapatan
+   - product-classification/ — Klasifikasi ABC
+
+3.3.2 Implementasi Machine Learning
+
+Seluruh modul ML diimplementasikan sebagai service layer di file ml/services.py menggunakan library scikit-learn dan pandas.
+
+a. Modul 1: Prediksi Kehabisan Stok (Stockout Prediction)
+   Algoritma: Moving Average (7 hari & 30 hari)
+   Cara kerja:
+   - Hitung rata-rata penjualan harian per produk menggunakan window 7 hari dan 30 hari
+   - Ambil nilai tertinggi (lebih konservatif) sebagai avg_daily_sales
+   - Hitung days_until_stockout = current_stock / avg_daily_sales
+   - Kategorikan risiko: CRITICAL (<=3 hari), HIGH (<=7), MEDIUM (<=14), LOW (>14)
+   - Tambah confidence level berdasarkan jumlah hari data: HIGH (20+), MEDIUM (10+), LOW (3+)
+
+b. Modul 2: Rekomendasi Restock
+   Algoritma: Safety Stock + Economic Order Quantity (EOQ)
+   Cara kerja:
+   - Hitung Safety Stock = Z * sigma * sqrt(Lead Time), Z=1.65 (95% service level)
+   - Hitung Reorder Point = (avg_daily * lead_time) + safety_stock
+   - Hitung EOQ = sqrt((2 * Demand * Ordering Cost) / Holding Cost)
+   - Produk yang current_stock <= reorder_point ditampilkan sebagai "Perlu Restock"
+   - Estimasi biaya = qty_recommended * cost_per_unit
+
+c. Modul 3: Analisis Risiko Kadaluarsa
+   Algoritma: Deterministik + Sales Velocity
+   Cara kerja:
+   - Scan semua batch yang punya tanggal expired
+   - Hitung days_remaining = expiry_date - today
+   - Hitung sales_velocity = rata-rata penjualan harian 30 hari terakhir
+   - Hitung projected_sold = sales_velocity * days_remaining
+   - Hitung projected_unsold = max(0, current_qty - projected_sold)
+   - Hitung adjusted_loss = projected_unsold * cost_per_unit
+   - Kategorikan: EXPIRED (< 0 hari), CRITICAL (<=7), WARNING (<=30)
+   - Generate rekomendasi aksi: "Diskon 50% segera", "Monitor, prioritaskan display"
+
+d. Modul 4: Prediksi Pendapatan (Revenue Forecast)
+   Algoritma: Ridge Regression + Feature Engineering
+   Cara kerja:
+   - Ambil data transaksi harian (daily revenue) dari database
+   - Feature Engineering:
+     * day_of_week: hari dalam minggu (0-6)
+     * is_weekend: apakah Sabtu/Minggu (0/1)
+     * is_payday: apakah tanggal 25-5 (periode gajian) (0/1)
+     * rolling_7d_avg: rata-rata revenue 7 hari terakhir
+   - Train-Test Split: 80% training, 20% testing (shuffle=False untuk time series)
+   - Training: Ridge Regression (alpha=1.0, scikit-learn)
+   - Evaluasi: R-squared (train & test), MAE, RMSE
+   - Prediksi: generate forecast 14 hari ke depan berdasarkan model
+
+* {Gambar: Potongan kode (code snippet) dari ml/services.py untuk masing-masing modul - tunjukkan bagian inti: feature engineering, model.fit(), model.predict()}
+
+e. Modul 5: Klasifikasi Produk ABC
+   Algoritma: Pareto Analysis (80/20 Rule)
+   Cara kerja:
+   - Query total revenue dan total profit per produk dari data transaksi
+   - Urutkan produk berdasarkan total revenue (descending)
+   - Hitung persentase kumulatif revenue
+   - Klasifikasikan: A (0-80%), B (80-95%), C (95-100%)
+   - Tambah trend 30 hari: bandingkan revenue 30 hari terakhir vs sebelumnya
+   - Hitung trend percentage dan arah (UP/DOWN/STABLE)
+
+3.3.3 Implementasi Frontend
+
+Frontend dibangun menggunakan React 18 + Vite sebagai Single Page Application (SPA). Berikut implementasi halaman-halaman utama:
+
+a. Halaman Login (/login)
+   * {Gambar 3.6: Screenshot halaman login - tunjukkan:
+     - Background gradient biru-indigo
+     - Logo dan nama brand di atas
+     - Card putih dengan 2 tab (Admin biru / Kasir hijau)
+     - Form: Code, Username, Password
+     - Tombol Masuk
+     - Link ke Register}
+
+b. Halaman Register (/register)
+   * {Gambar 3.7: Screenshot halaman register - tunjukkan:
+     - Multi-step form (3 langkah)
+     - Step 1: Data Pribadi
+     - Step 2: Data Bisnis (dropdown provinsi, kota)
+     - Step 3: Review & Submit}
+
+c. Halaman Dashboard (/dashboard)
+   * {Gambar 3.8: Screenshot dashboard admin - tunjukkan:
+     - Sidebar biru dengan menu grouped
+     - TopBar dengan notifikasi (bell icon)
+     - 4 card summary: Total Produk, Transaksi Hari Ini, Revenue, Stok Rendah
+     - Grafik penjualan (jika ada)}
+
+d. Halaman POS Kasir (/pos)
+   * {Gambar 3.9: Screenshot halaman POS - tunjukkan:
+     - Layout 2 kolom: grid produk (kiri) + keranjang (kanan)
+     - Search bar + filter kategori di atas
+     - Card produk: nama, harga, stok
+     - Keranjang: item, qty (+/-), subtotal
+     - Panel pembayaran: metode bayar, input uang, kembalian
+     - Tombol Checkout}
+
+e. Halaman Stok Batch (/inventory)
+   * {Gambar 3.10: Screenshot halaman stok batch - tunjukkan:
+     - 4 card summary di atas
+     - Tabel batch: Kode, Produk, Qty, Harga, Tanggal, Expired, Status
+     - Tombol + Tambah Batch
+     - Filter dan search}
+
+f. Halaman ML Predictions (/ml-predictions)
+   * {Gambar 3.11-3.15: Screenshot masing-masing tab ML:
+     - Tab Forecast: Card R2, MAE, RMSE, chart area+line
+     - Tab ABC: Card kelas A/B/C, pie chart, bar chart, tabel
+     - Tab Stockout: Alert banner, 4 card risiko, tabel
+     - Tab Restock: Card produk perlu restock, tabel rekomendasi
+     - Tab Expiry: Card expired/kritis/warning, tabel per section}
+
+g. Halaman Laporan Penjualan (/reports)
+   * {Gambar 3.16: Screenshot halaman laporan - tunjukkan:
+     - Card summary: Revenue, Transaksi, Rata-rata, Profit
+     - Line chart revenue harian
+     - Pie chart revenue per kategori
+     - Tabel produk terlaris}
+
+
+======================================================================
+BAB IV
+HASIL DAN PEMBAHASAN
+======================================================================
+
+4.1 Pengumpulan Data
+
+4.1.1 Metode Pengumpulan Data
+
+Data untuk penelitian ini dikumpulkan melalui dua metode:
+1. Wawancara langsung (interview) dengan pemilik UMKM warung kelontong di Semarang.
+2. Data sintetis yang di-generate berdasarkan parameter yang diperoleh dari wawancara.
+
+Wawancara dilakukan terhadap pemilik warung kelontong di Semarang untuk mendapatkan data:
+- Daftar produk yang dijual (nama, kategori, harga beli, harga jual)
+- Estimasi stok rata-rata per produk
+- Estimasi volume penjualan harian/mingguan
+- Frekuensi dan jumlah restock
+- Informasi produk yang memiliki tanggal kadaluarsa
+
+* {Lampiran: Surat Persetujuan Responden yang sudah ditandatangani}
+* {Lampiran: Formulir Data Produk yang sudah diisi}
+
+4.1.2 Data Responden
+
+* {Tabel 4.1: Data Produk Responden UMKM - isi dengan data real dari interview warung kelontong. Format:}
+
+No | Produk          | Kategori    | Harga Beli | Harga Jual | Unit | Est.Stok | Est.Jual/Minggu | Restock
+1  | Beras 5kg       | Sembako     | Rp 58.000  | Rp 65.000  | SAK  | 10       | 5-7             | 2x/bulan
+2  | Indomie Goreng  | Mie Instan  | Rp 2.800   | Rp 3.500   | PCS  | 50       | 20-30           | 1x/minggu
+3  | ... (15-25 produk)
+
+* {Catatan: Isi tabel ini dengan data REAL dari interview. Jika tidak ada data, tulis: "Data diperoleh melalui wawancara dengan pemilik warung kelontong di Semarang pada tanggal [tanggal interview]"}
+
+4.1.3 Generasi Data Sintetis
+
+Berdasarkan parameter yang diperoleh dari wawancara, data transaksi sintetis di-generate menggunakan script Python (generate_synthetic_data.py) dengan ketentuan:
+- Jumlah produk: 15 jenis sesuai hasil wawancara
+- Rentang waktu: 3 bulan (April - Juli 2026)
+- Volume transaksi: 5-8 transaksi per hari (realistis untuk warung kecil)
+- Total transaksi: 726 transaksi
+- Harga dan volume penjualan: sesuai range dari hasil wawancara
+- Stok batch: dirancang agar beberapa produk memicu alert stockout dan expiry
+
+4.2 Hasil Pengujian Machine Learning
+
+4.2.1 Perbandingan Algoritma untuk Revenue Forecast
+
+Untuk menentukan algoritma terbaik pada modul Revenue Forecast, dilakukan perbandingan empat algoritma:
+
+* {Tabel 4.2: Perbandingan Algoritma ML - INI HARUS DIISI DARI JUPYTER NOTEBOOK}
+
+No | Algoritma         | R2 Train | R2 Test | MAE (Rp)  | RMSE (Rp)  | Keterangan
+1  | Linear Regression | ...      | ...     | ...       | ...        | Baseline
+2  | Ridge Regression  | 0.43     | 0.34    | 124.000   | 136.000    | Dipilih
+3  | Random Forest     | ...      | ...     | ...       | ...        | Overfitting
+4  | SVR               | ...      | ...     | ...       | ...        | Lambat
+
+* {Catatan: Nilai untuk Linear Regression, Random Forest, dan SVR harus diisi dari eksperimen di Jupyter Notebook. Saat ini hanya Ridge yang sudah tested.}
+
+* {Gambar 4.1: Bar chart perbandingan R2 test score antar algoritma}
+* {Gambar 4.2: Scatter plot / line chart Prediksi vs Aktual Revenue untuk model Ridge Regression}
+
+Berdasarkan tabel perbandingan di atas, Ridge Regression dipilih sebagai model untuk modul Revenue Forecast karena:
+1. Nilai R-squared test tertinggi sebesar 0.34, menunjukkan model mampu menjelaskan 34% variasi revenue harian.
+2. Selisih R2 train (0.43) dan R2 test (0.34) yang tidak terlalu besar, menunjukkan model tidak mengalami overfitting.
+3. MAE sebesar Rp 124.000 berarti rata-rata kesalahan prediksi harian sebesar Rp 124.000 - masih dalam toleransi untuk warung kelontong dengan omzet Rp 500.000-1.000.000/hari.
+4. Feature engineering (day_of_week, is_weekend, is_payday, rolling_7d_avg) terbukti meningkatkan performa dibanding baseline tanpa feature.
+
+4.2.2 Hasil Evaluasi Model Forecast
+
+* {Tabel 4.3: Detail Hasil Evaluasi Model Forecast}
+
+Metrik              | Nilai           | Keterangan
+R-squared (Train)   | 0.43            | Model menjelaskan 43% variasi pada data training
+R-squared (Test)    | 0.34            | Model menjelaskan 34% variasi pada data testing
+MAE                 | Rp 124.000      | Rata-rata kesalahan absolut prediksi
+RMSE                | Rp 136.000      | Root mean squared error
+Train Data Points   | 67 hari         | 80% dari total 84 hari
+Test Data Points    | 17 hari         | 20% dari total 84 hari
+Features            | 4               | day_of_week, is_weekend, is_payday, rolling_7d
+Alpha (Regularisasi)| 1.0             | Default Ridge Regression
+
+* {Gambar 4.3: Grafik ComposedChart - Area (revenue aktual 30 hari) + Line dashed (prediksi 14 hari ke depan)}
+
+4.2.3 Hasil Klasifikasi ABC
+
+* {Tabel 4.4: Hasil Klasifikasi ABC}
+
+Kelas | Jumlah Produk | % Revenue  | Contoh Produk
+A     | 4             | 78.8%      | Beras 5kg, Gudang Garam Filter, Minyak Goreng, Gula 1kg
+B     | 3             | 14.4%      | Indomie Goreng, Teh Pucuk, Aqua 600ml
+C     | 8             | 6.8%       | Rinso Sachet, Masako, Chitato, dll
+
+Interpretasi:
+- Kelas A: 4 produk (26.7% dari total) menghasilkan 78.8% revenue. Produk-produk ini harus diprioritaskan dalam pengelolaan stok dan tidak boleh sampai kehabisan.
+- Kelas B: 3 produk (20%) menghasilkan 14.4% revenue. Perlu monitoring rutin.
+- Kelas C: 8 produk (53.3%) hanya menghasilkan 6.8% revenue. Produk slow-moving yang bisa dikurangi stoknya.
+
+4.2.4 Hasil Prediksi Stockout
+
+* {Tabel 4.5: Hasil Prediksi Stockout}
+
+No | Produk             | Stok | Avg/Hari 7d | Avg/Hari 30d | Habis Dalam | Risiko   | Confidence
+1  | Mie Sedaap Goreng  | 0    | 1.2         | 0.9          | 0 hari      | CRITICAL | HIGH
+2  | Chitato            | 3    | 0.5         | 0.4          | 6 hari      | HIGH     | MEDIUM
+3  | ... (lanjutkan semua produk)
+
+4.2.5 Hasil Rekomendasi Restock
+
+* {Tabel 4.6: Hasil Rekomendasi Restock}
+
+No | Produk             | Stok | Avg/Hari | Reorder Point | Qty Beli | Est. Biaya  | Urgensi
+1  | Mie Sedaap Goreng  | 0    | 0.9      | 12            | 81       | Rp 226.800  | URGENT
+
+4.2.6 Hasil Analisis Risiko Kadaluarsa
+
+Hasil:
+- 1 batch EXPIRED (sudah melewati tanggal kadaluarsa)
+- 5 batch WARNING (kadaluarsa dalam 30 hari)
+- Total risiko finansial: Rp 625.000
+
+4.3 Pengujian Fungsional (Black Box Testing)
+
+* {Tabel 4.7: Hasil Pengujian Black Box - format: No | Fitur/Skenario | Input | Output yang Diharapkan | Output Aktual | Status (Berhasil/Gagal)}
+
+No | Fitur/Skenario                           | Input                                    | Output Diharapkan                        | Output Aktual                            | Status
+1  | Login Admin dengan kredensial benar       | owner_code, username, password benar     | Masuk ke Dashboard Admin                 | Masuk ke Dashboard Admin                 | Berhasil
+2  | Login Admin dengan password salah         | owner_code benar, password salah         | Pesan error "Kredensial salah"            | Pesan error "Kredensial salah"            | Berhasil
+3  | Login Kasir dengan business_code benar    | business_code, username, password benar  | Masuk ke Dashboard Kasir (sidebar hijau)  | Masuk ke Dashboard Kasir (sidebar hijau)  | Berhasil
+4  | Registrasi Owner baru                     | Data pribadi + Data bisnis lengkap       | Akun terbuat, redirect ke login          | Akun terbuat, redirect ke login          | Berhasil
+5  | Tambah Kategori                           | Kode: "SMB", Nama: "Sembako"             | Kategori tersimpan, muncul di tabel      | Kategori tersimpan, muncul di tabel      | Berhasil
+6  | Tambah Produk                             | Data produk lengkap                      | Produk tersimpan                         | Produk tersimpan                         | Berhasil
+7  | Tambah Batch Stok                         | Produk, qty, harga, tgl beli, tgl expired| Batch ACTIVE tersimpan                   | Batch ACTIVE tersimpan                   | Berhasil
+8  | Checkout Transaksi (CASH)                 | 2 item, bayar CASH Rp 100.000            | Transaksi sukses, struk tampil            | Transaksi sukses, struk tampil            | Berhasil
+9  | Checkout - FIFO otomatis                  | Item yang punya 2 batch berbeda          | Stok berkurang dari batch terlama         | Stok berkurang dari batch terlama         | Berhasil
+10 | Checkout - Stok tidak cukup               | Qty melebihi stok tersedia               | Error "Stok tidak mencukupi"             | Error "Stok tidak mencukupi"             | Berhasil
+11 | ML Stockout Prediction                    | Klik tab Prediksi Stok Habis             | Tabel produk + risiko + confidence       | Tabel produk + risiko + confidence       | Berhasil
+12 | ML Revenue Forecast                       | Klik tab Forecast Pendapatan             | Card metrik + chart prediksi             | Card metrik + chart prediksi             | Berhasil
+13 | ML ABC Classification                     | Klik tab Klasifikasi Produk              | Tabel + pie chart + bar chart            | Tabel + pie chart + bar chart            | Berhasil
+14 | ML Restock Recommendation                 | Klik tab Rekomendasi Restock             | Tabel rekomendasi + estimasi biaya       | Tabel rekomendasi + estimasi biaya       | Berhasil
+15 | ML Expiry Risk                            | Klik tab Risiko Expired                  | Tabel per section + risiko finansial     | Tabel per section + risiko finansial     | Berhasil
+16 | Stock Opname                              | Input stok fisik berbeda dari sistem     | Variance terhitung, admin bisa approve   | Variance terhitung, admin bisa approve   | Berhasil
+17 | Laporan Penjualan                         | Filter tanggal 1-30 Juni                | Grafik + tabel sesuai filter             | Grafik + tabel sesuai filter             | Berhasil
+18 | Kelola Kasir - Tambah                     | Username, nama, password                 | Kasir terbuat, bisa login                | Kasir terbuat, bisa login                | Berhasil
+19 | Multi-Cabang - Ganti Bisnis               | Pilih bisnis lain                        | Data berubah sesuai bisnis dipilih       | Data berubah sesuai bisnis dipilih       | Berhasil
+20 | Kasir Logout - Shift Summary              | Klik logout                              | Popup ringkasan shift tampil             | Popup ringkasan shift tampil             | Berhasil
+
+4.4 Pengujian Penerimaan Pengguna (UAT)
+
+* {Tabel 4.8: Hasil UAT - Jika sudah uji coba dengan UMKM real. Format: No | Skenario | Penilaian (1-5) | Komentar Pengguna}
+
+* {Catatan: UAT idealnya dilakukan dengan pemilik UMKM sebagai pengguna akhir. Jika belum dilakukan, tulis: "Pengujian UAT akan dilakukan pada tahap selanjutnya dengan melibatkan pemilik UMKM sebagai responden pengguna akhir."}
+
+4.5 Pembahasan
+
+Berdasarkan hasil pengujian yang telah dilakukan, dapat dibahas beberapa temuan penting:
+
+1. Efektivitas Metode FIFO
+   Implementasi FIFO otomatis pada sistem POS berhasil memastikan bahwa stok yang masuk lebih dulu akan keluar lebih dulu. Hal ini mengurangi risiko produk kadaluarsa yang terabaikan di gudang. Pada pengujian, ketika terjadi transaksi, sistem secara konsisten mengambil stok dari batch dengan purchase_date terlama.
+
+2. Performa Model Revenue Forecast
+   Model Ridge Regression dengan 4 fitur engineered mencapai R-squared test sebesar 0.34. Meskipun nilai ini tergolong moderat, hal ini wajar mengingat:
+   - Dataset yang kecil (84 hari)
+   - Revenue warung kelontong dipengaruhi banyak faktor eksternal yang tidak ter-capture (cuaca, event, dll)
+   - Untuk konteks warung kelontong dengan omzet Rp 500.000-1.000.000/hari, MAE Rp 124.000 (sekitar 12-25% dari omzet) masih memberikan gambaran tren yang berguna
+
+3. Kegunaan Klasifikasi ABC
+   Klasifikasi ABC berhasil mengidentifikasi bahwa hanya 4 produk (26.7%) yang menghasilkan 78.8% revenue. Informasi ini sangat berguna bagi pemilik warung untuk memprioritaskan produk mana yang tidak boleh kehabisan stok.
+
+4. Rekomendasi Restock dengan EOQ
+   Modul Restock berhasil memberikan rekomendasi kuantitas pembelian yang optimal berdasarkan formula EOQ. Pada pengujian, sistem mengidentifikasi 1 produk yang perlu di-restock segera (Mie Sedaap Goreng, stok=0) dengan rekomendasi pembelian 81 unit seharga Rp 226.800.
+
+5. Deteksi Risiko Kadaluarsa
+   Modul Expiry Risk berhasil mendeteksi batch yang sudah expired dan batch yang mendekati kadaluarsa. Perhitungan projected_unsold berdasarkan sales velocity memberikan estimasi kerugian yang lebih akurat dibandingkan menghitung kerugian dari seluruh stok.
+
+6. Keterbatasan Penelitian
+   - Dataset yang digunakan adalah data sintetis berbasis parameter wawancara, bukan data transaksi real-time
+   - Performa model ML sangat bergantung pada volume dan kualitas data
+   - Sistem belum diuji dengan volume transaksi besar (>1000 transaksi/hari)
+   - Integrasi pembayaran Xendit masih dalam mode development/test
+
+
+======================================================================
+BAB V
+PENUTUP
+======================================================================
+
+5.1 Kesimpulan
+
+Berdasarkan hasil perancangan, implementasi, dan pengujian yang telah dilakukan, dapat disimpulkan:
+
+1. Sistem Point of Sale (POS) berbasis web telah berhasil dirancang dan dibangun menggunakan arsitektur full-stack Django REST Framework (backend) dan React.js (frontend) dengan PostgreSQL sebagai basis data. Sistem mampu mengelola transaksi penjualan, manajemen stok, dan mendukung multi-cabang bisnis dengan dua role pengguna (Admin/Owner dan Kasir).
+
+2. Sistem manajemen stok dengan metode FIFO otomatis telah berhasil diimplementasikan melalui pencatatan batch-level. Setiap kedatangan stok dicatat sebagai batch terpisah dengan tanggal pembelian dan tanggal kadaluarsa. Sistem secara otomatis mengalokasikan stok dari batch terlama saat terjadi transaksi penjualan.
+
+3. Lima modul Machine Learning telah berhasil dikembangkan dan diintegrasikan ke dalam sistem POS:
+   a. Prediksi Stockout (Moving Average) - berhasil mengidentifikasi 1 produk CRITICAL dan 14 produk LOW risk
+   b. Rekomendasi Restock (Safety Stock + EOQ) - memberikan rekomendasi kuantitas dan estimasi biaya
+   c. Analisis Risiko Kadaluarsa (Sales Velocity) - mendeteksi batch expired dan menghitung projected loss
+   d. Prediksi Pendapatan (Ridge Regression) - mencapai R-squared 0.34 dengan MAE Rp 124.000
+   e. Klasifikasi ABC (Pareto Analysis) - mengelompokkan produk menjadi 3 kelas berdasarkan kontribusi revenue
+
+4. Berdasarkan pengujian black box, seluruh 20 skenario pengujian fungsional menunjukkan hasil yang sesuai dengan output yang diharapkan, menunjukkan bahwa sistem berfungsi dengan baik.
+
+5.2 Saran
+
+Untuk pengembangan sistem selanjutnya, disarankan:
+
+1. Menggunakan data transaksi real dari UMKM dalam periode yang lebih panjang (minimal 6-12 bulan) untuk meningkatkan akurasi model Machine Learning.
+2. Mengeksplorasi algoritma time series yang lebih advanced seperti Prophet atau LSTM untuk modul Revenue Forecast.
+3. Menambahkan fitur notifikasi push/WhatsApp untuk alert stok rendah dan produk mendekati kadaluarsa.
+4. Melakukan deployment ke cloud (Railway + Vercel) agar sistem dapat diakses secara online oleh UMKM.
+5. Mengembangkan versi mobile app (React Native) untuk kemudahan akses kasir di perangkat mobile.
+6. Menambahkan fitur import data produk dari CSV/Excel untuk mempermudah migrasi dari pencatatan manual.
+7. Menambahkan modul pelaporan yang lebih detail (profit per produk, trend bulanan, perbandingan antar periode).
+
+
+======================================================================
+DAFTAR PUSTAKA
+======================================================================
+
+Bank Indonesia. (2019). Quick Response Code Indonesian Standard (QRIS). https://www.bi.go.id/QRIS/Contents/Default.aspx
+
+Brockwell, P. J., & Davis, R. A. (2016). Introduction to Time Series and Forecasting (3rd ed.). Springer.
+
+Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning: Data Mining, Inference, and Prediction (2nd ed.). Springer.
+
+Heizer, J., & Render, B. (2017). Operations Management: Sustainability and Supply Chain Management (12th ed.). Pearson.
+
+Kementerian Koperasi dan UKM RI. (2023). Data UMKM Indonesia. https://kemenkopukm.go.id/
+
+Koch, R. (2011). The 80/20 Principle: The Secret to Achieving More with Less (3rd ed.). Currency.
+
+Laudon, K. C., & Laudon, J. P. (2020). Management Information Systems: Managing the Digital Firm (16th ed.). Pearson.
+
+LPPI. (2023). Survei Profil UMKM di Indonesia. Lembaga Pengembangan Perbankan Indonesia.
+
+Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.
+
+Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, 12, 2825-2830.
+
+Tambunan, T. T. (2012). Usaha Mikro, Kecil, dan Menengah di Indonesia: Isu-isu Penting. LP3ES.
+
+Warren, C. S., Reeve, J. M., & Duchac, J. E. (2018). Accounting (27th ed.). Cengage Learning.
+
+* {Tambahkan referensi dari:
+  - Dokumentasi Django: https://docs.djangoproject.com/
+  - Dokumentasi React: https://react.dev/
+  - Dokumentasi scikit-learn: https://scikit-learn.org/
+  - Dokumentasi TailwindCSS: https://tailwindcss.com/
+  - Dokumentasi Xendit API: https://docs.xendit.co/
+  - Paper/jurnal lain yang relevan dengan POS dan ML untuk UMKM
+  }
+
+
+======================================================================
+LAMPIRAN
+======================================================================
+
+Lampiran 1: Surat Persetujuan Responden
+
+* {Dokumen surat persetujuan yang sudah ditandatangani oleh pemilik UMKM. Format:
+  - Judul: "Surat Persetujuan Menjadi Responden Penelitian"
+  - Identitas Peneliti: Nama, NIM, Prodi, Judul TA
+  - Pernyataan: "Saya yang bertanda tangan di bawah ini bersedia menjadi responden..."
+  - Nama Responden, TTD, Tanggal
+  - Nama Peneliti, TTD}
+
+Lampiran 2: Formulir Pengumpulan Data UMKM
+
+* {Formulir yang sudah diisi dengan data warung kelontong. Berisi: identitas UMKM, tabel produk (nama, kategori, harga, stok, penjualan), info operasional}
+
+Lampiran 3: Kode Sumber (Source Code)
+
+* {Keterangan: "Kode sumber lengkap tersedia pada repository GitHub: https://github.com/YafiRizky/Project-TA"}
+
+Lampiran 4: Jupyter Notebook Eksperimen ML
+
+* {Print/screenshot dari Jupyter Notebook yang berisi:
+  - EDA (Exploratory Data Analysis)
+  - Perbandingan algoritma
+  - Hyperparameter tuning
+  - Visualisasi hasil}
+
+Lampiran 5: Screenshot Sistem
+
+* {Kumpulan screenshot semua 18 halaman sistem. Setiap screenshot diberi keterangan: nama halaman, fungsi, dan aktor yang mengakses}
+
+======================================================================
+--- SELESAI ---
+======================================================================

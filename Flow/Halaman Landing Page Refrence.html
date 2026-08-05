@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mecratura — Landing Page Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* Brand Colors — sama dengan app (blue-indigo) */
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --primary-dark: #3730a3;
+      --accent: #06b6d4;
+      --accent-green: #10b981;
+      --surface: #0f172a;
+      --surface-light: #1e293b;
+      --surface-card: #1e293b;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      /* User color coding */
+      --admin-color: #3b82f6;
+      --kasir-color: #10b981;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ===================== NAVBAR ===================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(15, 23, 42, 0.85);
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      transition: all 0.3s ease;
+    }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    }
+    .logo-text {
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-ghost {
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: #fff; border-color: #475569; background: rgba(255,255,255,0.04); }
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 25px rgba(79, 70, 229, 0.5);
+    }
+    .btn-large { padding: 14px 32px; font-size: 0.95rem; border-radius: 12px; }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -15%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(79, 70, 229, 0.15);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      margin-bottom: 20px;
+    }
+    .hero-badge span {
+      width: 6px; height: 6px;
+      background: #818cf8;
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-stat h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-stat p { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Mockup */
+    .hero-mockup {
+      position: relative;
+    }
+    .mockup-window {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+      transform: perspective(1000px) rotateY(-4deg) rotateX(2deg);
+      transition: transform 0.5s ease;
+    }
+    .mockup-window:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
+    .mockup-titlebar {
+      height: 36px;
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-dot.red { background: #ef4444; }
+    .mockup-dot.yellow { background: #f59e0b; }
+    .mockup-dot.green { background: #22c55e; }
+    .mockup-body {
+      padding: 20px;
+      min-height: 320px;
+    }
+    /* Mini Dashboard mockup inside */
+    .mini-dash { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .mini-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .mini-card .label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .mini-card .value { font-size: 1.2rem; font-weight: 700; margin-top: 4px; }
+    .mini-card .value.blue { color: #60a5fa; }
+    .mini-card .value.green { color: #34d399; }
+    .mini-card .value.purple { color: #a78bfa; }
+    .mini-chart {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 16px;
+      height: 160px;
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .chart-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--primary), var(--primary-light));
+      border-radius: 4px 4px 0 0;
+      min-height: 20px;
+      opacity: 0.7;
+    }
+    .chart-bar:nth-child(odd) { opacity: 0.5; }
+
+    /* AI badge floating */
+    .ai-float {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+      z-index: 2;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ===================== SECTION UTILS ===================== */
+    .section {
+      padding: 100px 24px;
+    }
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .section-label.blue { background: rgba(59,130,246,0.12); color: #60a5fa; }
+    .section-label.green { background: rgba(16,185,129,0.12); color: #34d399; }
+    .section-label.purple { background: rgba(139,92,246,0.12); color: #a78bfa; }
+    .section-label.amber { background: rgba(245,158,11,0.12); color: #fbbf24; }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* ===================== FEATURES ===================== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+    .feature-card {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover::after { opacity: 1; }
+    .feature-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .feature-icon.blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .feature-icon.green { background: rgba(16,185,129,0.15); color: #34d399; }
+    .feature-icon.purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
+    .feature-icon.amber { background: rgba(245,158,11,0.15); color: #fbbf24; }
+    .feature-icon.cyan { background: rgba(6,182,212,0.15); color: #22d3ee; }
+    .feature-icon.rose { background: rgba(244,63,94,0.15); color: #fb7185; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
+
+    /* ===================== DUAL USER (Admin vs Kasir) ===================== */
+    .dual-section { background: var(--surface-light); }
+    .dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .dual-card {
+      border-radius: 16px;
+      padding: 36px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    .dual-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .dual-card.admin::before { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+    .dual-card.kasir::before { background: linear-gradient(90deg, #10b981, #34d399); }
+    .dual-card .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .dual-card.admin .role-badge { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .dual-card.kasir .role-badge { background: rgba(16,185,129,0.15); color: #34d399; }
+    .dual-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+    .dual-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.7; }
+    .dual-features { list-style: none; }
+    .dual-features li {
+      padding: 8px 0;
+      font-size: 0.88rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dual-features li::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dual-card.admin .dual-features li::before { background: var(--admin-color); }
+    .dual-card.kasir .dual-features li::before { background: var(--kasir-color); }
+
+    /* ===================== ML SECTION ===================== */
+    .ml-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-top: 50px;
+    }
+    .ml-card {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 18px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .ml-card:hover { border-color: rgba(139,92,246,0.4); transform: translateY(-3px); }
+    .ml-card .ml-num {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: rgba(139,92,246,0.15);
+      color: #a78bfa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin: 0 auto 14px;
+    }
+    .ml-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 8px; }
+    .ml-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ===================== PAIN POINT ===================== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 50px;
+      align-items: center;
+    }
+    .pain-list { list-style: none; }
+    .pain-list li {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .pain-list li:last-child { border-bottom: none; }
+    .pain-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .pain-icon.red { background: rgba(239,68,68,0.12); color: #f87171; }
+    .pain-icon.green { background: rgba(16,185,129,0.12); color: #34d399; }
+    .pain-list h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .pain-list p { font-size: 0.85rem; color: var(--text-muted); }
+
+    .solution-card {
+      background: linear-gradient(135deg, rgba(79,70,229,0.1), rgba(6,182,212,0.1));
+      border: 1px solid rgba(79,70,229,0.2);
+      border-radius: 20px;
+      padding: 40px;
+    }
+    .solution-card h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 16px; }
+    .solution-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; }
+    .solution-card .check-list { list-style: none; margin-top: 20px; }
+    .solution-card .check-list li {
+      padding: 6px 0;
+      font-size: 0.9rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .solution-card .check-list li::before {
+      content: '\2713';
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    /* ===================== ABOUT ===================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-top: 50px;
+    }
+    .visi-card, .misi-card {
+      background: var(--surface-light);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+    }
+    .visi-card h3, .misi-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .visi-card p, .misi-card li {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+    .misi-card ol { padding-left: 20px; }
+    .misi-card li { margin: 8px 0; }
+
+    /* ===================== CONTACT / CTA ===================== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--primary-dark), var(--surface));
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at center, rgba(79,70,229,0.2) 0%, transparent 70%);
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-section h2 { font-size: 2.4rem; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px; }
+    .cta-section p { color: var(--text-muted); font-size: 1.05rem; max-width: 550px; margin: 0 auto 32px; }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; }
+
+    /* ===================== FOOTER ===================== */
+    .footer {
+      padding: 50px 24px 30px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    .footer-brand p { color: var(--text-muted); font-size: 0.85rem; margin-top: 12px; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.88rem;
+      padding: 5px 0;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--primary-light); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 30px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .footer-bottom .contact-badges { display: flex; gap: 12px; }
+    .contact-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-mockup { display: none; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .ml-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.2rem; }
+      .features-grid, .dual-grid, .about-grid, .pain-grid { grid-template-columns: 1fr; }
+      .ml-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .hero-stats { flex-direction: column; gap: 16px; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .section-title { font-size: 1.6rem; }
+    }
+
+    /* ===================== ANIMATIONS ===================== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeInUp 0.7s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================== NAVBAR =================== -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">M</div>
+        <span class="logo-text">Mecratura</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#fitur">Fitur</a></li>
+        <li><a href="#ml">AI & Prediksi</a></li>
+        <li><a href="#user-roles">Peran User</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="/login" class="btn btn-ghost">Masuk</a>
+        <a href="/register" class="btn btn-primary">Daftar Gratis</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =================== HERO =================== -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">
+          <span></span>
+          Powered by Machine Learning
+        </div>
+        <h1>
+          Kelola Warung<br>
+          <span class="gradient">Lebih Cerdas</span><br>
+          dengan AI
+        </h1>
+        <p class="hero-desc">
+          Mecratura adalah sistem Point of Sale cerdas untuk UMKM Indonesia. 
+          Otomatiskan pencatatan, prediksi stok, dan analisis bisnis Anda 
+          dengan teknologi Machine Learning — tanpa ribet.
+        </p>
+        <div class="hero-actions">
+          <a href="/register" class="btn btn-primary btn-large">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Mulai Sekarang — Gratis
+          </a>
+          <a href="#fitur" class="btn btn-ghost btn-large">Lihat Fitur</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <h3>5</h3>
+            <p>Modul AI</p>
+          </div>
+          <div class="hero-stat">
+            <h3>18</h3>
+            <p>Halaman Lengkap</p>
+          </div>
+          <div class="hero-stat">
+            <h3>QRIS</h3>
+            <p>Pembayaran Digital</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mockup Dashboard -->
+      <div class="hero-mockup">
+        <div class="ai-float">AI Powered</div>
+        <div class="mockup-window">
+          <div class="mockup-titlebar">
+            <div class="mockup-dot red"></div>
+            <div class="mockup-dot yellow"></div>
+            <div class="mockup-dot green"></div>
+          </div>
+          <div class="mockup-body">
+            <div class="mini-dash">
+              <div class="mini-card">
+                <div class="label">Revenue Hari Ini</div>
+                <div class="value blue">Rp 1.2jt</div>
+              </div>
+              <div class="mini-card">
+                <div class="label">Transaksi</div>
+                <div class="value green">24</div>
+              </div>
+              <div class="mini-card">
+                <div class="label">Produk Aktif</div>
+                <div class="value purple">15</div>
+              </div>
+            </div>
+            <div class="mini-chart">
+              <div class="chart-bar" style="height:40%"></div>
+              <div class="chart-bar" style="height:65%"></div>
+              <div class="chart-bar" style="height:50%"></div>
+              <div class="chart-bar" style="height:80%"></div>
+              <div class="chart-bar" style="height:60%"></div>
+              <div class="chart-bar" style="height:90%"></div>
+              <div class="chart-bar" style="height:75%"></div>
+              <div class="chart-bar" style="height:55%"></div>
+              <div class="chart-bar" style="height:85%"></div>
+              <div class="chart-bar" style="height:70%"></div>
+              <div class="chart-bar" style="height:95%"></div>
+              <div class="chart-bar" style="height:60%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== FITUR UTAMA =================== -->
+  <section class="section" id="fitur">
+    <div class="section-inner">
+      <div class="section-label blue">Fitur Utama</div>
+      <h2 class="section-title">Semua yang Anda Butuhkan<br>dalam Satu Platform</h2>
+      <p class="section-desc">Dari kasir hingga prediksi AI — Mecratura menangani seluruh operasional warung Anda.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>POS Kasir Modern</h3>
+          <p>Interface kasir yang cepat dan intuitif. Grid produk, keranjang belanja, multi metode bayar (CASH, QRIS, Transfer, E-Wallet). Langsung cetak struk.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12l4-4"/><path d="M12 2v4"/></svg>
+          </div>
+          <h3>Prediksi AI & Machine Learning</h3>
+          <p>5 modul ML: Forecast revenue, Klasifikasi ABC, Prediksi stok habis, Rekomendasi restock (EOQ), dan Analisis risiko expired.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h3>Manajemen Stok FIFO</h3>
+          <p>Batch tracking otomatis. Stok keluar dari batch terlama (FIFO). Notifikasi stok rendah dan mendekati expired secara real-time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+          </div>
+          <h3>Laporan & Analisis</h3>
+          <p>Grafik penjualan harian, revenue per kategori, produk terlaris, dan profit. Filter berdasarkan tanggal dan kategori.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon cyan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Multi-User & Multi-Cabang</h3>
+          <p>Owner kelola banyak cabang dari satu akun. Tambahkan kasir tanpa batas. Data terisolasi per bisnis, aman dan terorganisir.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon rose">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <h3>Pembayaran Digital (QRIS)</h3>
+          <p>Integrasi Xendit: terima pembayaran QRIS, Transfer Bank, dan E-Wallet langsung dari POS. QR code tampil di layar kasir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== DUAL USER ROLES =================== -->
+  <section class="section dual-section" id="user-roles">
+    <div class="section-inner">
+      <div class="section-label green">Peran Pengguna</div>
+      <h2 class="section-title">Dua Peran, Satu Tujuan</h2>
+      <p class="section-desc">Interface yang disesuaikan untuk setiap peran — pemilik mengelola, kasir melayani.</p>
+
+      <div class="dual-grid">
+        <div class="dual-card admin">
+          <div class="role-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
+            Admin / Owner
+          </div>
+          <h3>Sidebar Biru — Kendali Penuh</h3>
+          <p>Pemilik bisnis memiliki akses ke seluruh fitur: dari master data hingga prediksi AI. 14 menu terorganisir dalam 7 section.</p>
+          <ul class="dual-features">
+            <li>Dashboard ringkasan bisnis</li>
+            <li>Master Data: Kategori, Supplier, Produk, Diskon</li>
+            <li>Inventori: Stok Batch, Stock Opname</li>
+            <li>Laporan Penjualan & Grafik</li>
+            <li>5 Modul Machine Learning & Prediksi AI</li>
+            <li>Kelola Kasir & Pengaturan Pembayaran</li>
+            <li>Audit Log (riwayat perubahan data)</li>
+            <li>Ganti Cabang / Tambah Bisnis Baru</li>
+          </ul>
+        </div>
+
+        <div class="dual-card kasir">
+          <div class="role-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
+            Kasir
+          </div>
+          <h3>Sidebar Hijau — Fokus Transaksi</h3>
+          <p>Kasir mendapat interface yang simpel dan fokus: hanya fitur yang dibutuhkan untuk melayani pelanggan. 5 menu praktis.</p>
+          <ul class="dual-features">
+            <li>Dashboard ringkasan shift hari ini</li>
+            <li>POS Kasir — proses transaksi cepat</li>
+            <li>Riwayat Transaksi sendiri</li>
+            <li>Stock Opname — pencocokan stok fisik</li>
+            <li>Profil & Ganti Password</li>
+            <li>Ringkasan Shift saat Logout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== ML SECTION =================== -->
+  <section class="section" id="ml">
+    <div class="section-inner">
+      <div class="section-label purple">AI & Machine Learning</div>
+      <h2 class="section-title">5 Modul AI yang Bekerja untuk Anda</h2>
+      <p class="section-desc">Biarkan data berbicara. Algoritma ML menganalisis ratusan transaksi dan memberikan rekomendasi bisnis yang akurat.</p>
+
+      <div class="ml-grid">
+        <div class="ml-card">
+          <div class="ml-num">1</div>
+          <h4>Forecast Revenue</h4>
+          <p>Ridge Regression + Feature Engineering memprediksi pendapatan bulan depan berdasarkan pola weekend, gajian, dan trend.</p>
+        </div>
+        <div class="ml-card">
+          <div class="ml-num">2</div>
+          <h4>Klasifikasi ABC</h4>
+          <p>Pareto Analysis mengelompokkan produk menjadi Fast Moving (A), Medium (B), dan Slow (C) berdasarkan revenue + profit.</p>
+        </div>
+        <div class="ml-card">
+          <div class="ml-num">3</div>
+          <h4>Prediksi Stok Habis</h4>
+          <p>Moving Average menghitung kapan setiap produk akan habis. Alert otomatis untuk produk CRITICAL dan HIGH risk.</p>
+        </div>
+        <div class="ml-card">
+          <div class="ml-num">4</div>
+          <h4>Rekomendasi Restock</h4>
+          <p>Safety Stock + EOQ menentukan kapan dan berapa banyak harus beli ulang. Estimasi biaya restock otomatis.</p>
+        </div>
+        <div class="ml-card">
+          <div class="ml-num">5</div>
+          <h4>Risiko Expired</h4>
+          <p>Sales Velocity menghitung proyeksi produk yang tidak terjual sebelum expired. Rekomendasi aksi: diskon, bundle, dll.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== PAIN POINT vs SOLUSI =================== -->
+  <section class="section dual-section">
+    <div class="section-inner">
+      <div class="section-label amber">Kenapa Mecratura?</div>
+      <h2 class="section-title">Masih Catat Manual?<br>Saatnya Upgrade.</h2>
+
+      <div class="pain-grid">
+        <ul class="pain-list">
+          <li>
+            <div class="pain-icon red">&#10007;</div>
+            <div>
+              <h4>Stok tidak tercatat, sering kehabisan</h4>
+              <p>Pelanggan kecewa karena barang yang dicari tidak ada — padahal seharusnya sudah restock.</p>
+            </div>
+          </li>
+          <li>
+            <div class="pain-icon red">&#10007;</div>
+            <div>
+              <h4>Tidak tahu produk mana yang paling laris</h4>
+              <p>Semua produk terlihat sama. Tidak ada data untuk menentukan mana yang harus diprioritaskan.</p>
+            </div>
+          </li>
+          <li>
+            <div class="pain-icon red">&#10007;</div>
+            <div>
+              <h4>Barang expired terbuang sia-sia</h4>
+              <p>Baru sadar setelah tanggal lewat. Kerugian ratusan ribu setiap bulan.</p>
+            </div>
+          </li>
+          <li>
+            <div class="pain-icon red">&#10007;</div>
+            <div>
+              <h4>Pencatatan keuangan manual & rawan salah</h4>
+              <p>Pakai buku catatan, sering lupa, dan tidak bisa lihat profit sebenarnya.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="solution-card">
+          <h3>Mecratura Solusinya</h3>
+          <p>Dengan teknologi AI dan otomatisasi, semua masalah di atas teratasi secara real-time tanpa perlu keahlian teknis.</p>
+          <ul class="check-list">
+            <li>Prediksi stok habis sebelum kehabisan</li>
+            <li>Klasifikasi produk Fast/Medium/Slow otomatis</li>
+            <li>Alert expired 7-30 hari sebelumnya</li>
+            <li>Laporan keuangan otomatis + grafik</li>
+            <li>Rekomendasi restock: kapan & berapa banyak</li>
+            <li>Pembayaran digital QRIS langsung dari kasir</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== TENTANG =================== -->
+  <section class="section" id="tentang">
+    <div class="section-inner">
+      <div class="section-label blue">Tentang Kami</div>
+      <h2 class="section-title">Visi & Misi</h2>
+      <p class="section-desc">Mecratura lahir dari kepedulian terhadap UMKM Indonesia yang masih mengelola bisnis secara manual.</p>
+
+      <div class="about-grid">
+        <div class="visi-card">
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Visi
+          </h3>
+          <p>Menjadi platform Point of Sale berbasis AI terdepan untuk UMKM di Indonesia, yang membantu pelaku usaha kecil mengambil keputusan bisnis berdasarkan data, bukan perkiraan.</p>
+        </div>
+        <div class="misi-card">
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Misi
+          </h3>
+          <ol>
+            <li>Menyediakan sistem kasir yang <strong>mudah digunakan</strong> oleh siapa saja, bahkan tanpa latar belakang IT.</li>
+            <li>Menerapkan <strong>Machine Learning</strong> untuk membantu UMKM memprediksi permintaan, mengelola stok, dan mengurangi kerugian.</li>
+            <li>Mendorong <strong>digitalisasi UMKM</strong> Indonesia melalui pembayaran digital (QRIS) dan pencatatan otomatis.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== CTA =================== -->
+  <section class="section cta-section" id="kontak">
+    <div class="section-inner cta-inner">
+      <h2>Siap Mengelola Warung<br>Lebih Cerdas?</h2>
+      <p>Daftar sekarang dan rasakan kemudahan POS berbasis AI. Gratis untuk memulai, tanpa kartu kredit.</p>
+      <div class="cta-actions">
+        <a href="/register" class="btn btn-primary btn-large">Daftar Gratis Sekarang</a>
+        <a href="/login" class="btn btn-ghost btn-large">Sudah Punya Akun? Masuk</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== FOOTER =================== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom: 8px;">
+          <div class="logo-icon">M</div>
+          <span class="logo-text">Mecratura</span>
+        </div>
+        <p>Sistem Point of Sale cerdas berbasis Machine Learning untuk UMKM Indonesia. Dari pencatatan hingga prediksi bisnis, semua dalam satu platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Fitur</h4>
+        <a href="#fitur">POS Kasir</a>
+        <a href="#ml">Prediksi AI</a>
+        <a href="#fitur">Manajemen Stok</a>
+        <a href="#fitur">Laporan</a>
+        <a href="#fitur">QRIS Payment</a>
+      </div>
+      <div class="footer-col">
+        <h4>Perusahaan</h4>
+        <a href="#tentang">Tentang Kami</a>
+        <a href="#tentang">Visi & Misi</a>
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak</h4>
+        <a href="mailto:support@mecratura.id">support@mecratura.id</a>
+        <a href="https://wa.me/6281234567890">WhatsApp: 0812-xxxx-xxxx</a>
+        <a href="#">Semarang, Jawa Tengah</a>
+        <a href="#">Indonesia</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Mecratura. All rights reserved.</span>
+      <div class="contact-badges">
+        <span class="contact-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          support@mecratura.id
+        </span>
+        <span class="contact-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72"/></svg>
+          WhatsApp
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

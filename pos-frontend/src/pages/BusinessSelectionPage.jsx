@@ -287,7 +287,7 @@ export default function BusinessSelectionPage() {
             <Store size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Metracrura POS</h1>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Metacrura POS</h1>
             <p className="text-xs text-gray-500 font-medium">Business Portal</p>
           </div>
         </div>

@@ -1,0 +1,636 @@
+--- Halaman 1 ---
+1 
+  
+ 
+Proyek Tugas Akhir  
+ 
+ 
+ 
+ 
+ 
+ 
+Disusun Oleh:  
+I Wayan Asta Se mara jaya 
+2115323056  
+DIII Manajemen Informatika  
+ 
+ 
+ 
+ 
+ 
+ 
+Program Studi DIII Manajemen Informatika  
+Jurusan Te knologi  Informasi  
+Politeknik Negeri Bali  
+2023-2024
+
+--- Halaman 2 ---
+PROYEK  
+ 
+TUGAS AKHIR  
+ 
+ 
+   
+ 
+  
+ 
+ 
+ 
+ 
+ 
+Analisis Infrakstruktur  Fiber To The Home Pada PT Solusi Surya 
+Deswata  
+ 
+ 
+ 
+   
+ 
+ 
+OLEH :  
+ 
+ 
+[ I Wayan Asta Semara jaya / 2115323056 ] 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+ 
+ 
+PROGRAM STUDI MANAJEMEN INFORMATIKA  
+JURUSAN TEKNOLOGI INFORMASI  
+POLITEKNIK NEGERI BALI  
+2024  
+
+--- Halaman 3 ---
+ii 
+ 
+ 
+
+--- Halaman 4 ---
+iii 
+ 
+ 
+ 
+ 
+
+--- Halaman 5 ---
+iv 
+ 
+ 
+ 
+  
+ 
+
+--- Halaman 6 ---
+v 
+ ABSTRAK 
+ 
+Penelitian ini bertujuan untuk menganalisis infrastruktur Fiber To The Home (FTTH) yang 
+diimplementasikan oleh PT Solusi Surya Deswata di Desa Besan. Teknologi FTTH, 
+khususnya Gigabit Passive Optical Network (GPON), dipilih untuk meningkatkan kualitas 
+dan kecepatan akses internet bagi masyarakat di daerah tersebut. Fokus penelitian ini 
+adalah mengevaluasi perencanaan, pemasangan, dan performa jaringan FTTH yang 
+diterapkan.  
+ 
+Metode penelitian melibatkan observasi lapangan, wawancara dengan tim teknis PT 
+Solusi Surya Deswata, serta analisis dokumen teknis dan laporan kinerja jaringan. Data 
+yang diperoleh dianalisis untuk mengidentifikasi tantangan yang dihadapi selama proses 
+instalasi dan solusi yang diterapkan untuk mengatasi hambatan tersebut.  
+ Hasil penelitian ini diharapkan dapat memberikan wawasan tentang efektivitas 
+infrastruktur FTTH yang diterapkan oleh PT Solusi Surya Deswata di Desa Besan. 
+Temuan ini juga diharapkan dapat menjadi panduan bagi perusahaan lain yang ingin 
+mengimplementasikan teknologi FTTH di daerah pedesaan atau wilayah dengan 
+karakteristik serupa.  
+ Kata kunci: FTTH, GPON, Desa Besan, PT Solusi Surya Deswata, teknologi broadband.  
+ 
+ 
+   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Halaman 7 ---
+vi 
+ KATA PENGANTAR 
+ 
+Puji syukur penulis panjatkan kehadiran Tuhan Yang Maha Esa yang telah senantiasa 
+memberikan berkat dan Rahmat -Nya sehingga penulis dapat menyelesaikan kegiatan 
+Praktik Kerja Lapangan (PKL) dan Laporan Praktik Kerja Lapangan yang berjudul 
+“Analisis Infrakstruktur  Fiber To The Home Pada PT Solusi Surya Deswata”  
+terselesaikan tepat pada waktunya. Laporan ini merupakan hasil dari kegiatan selama 
+PKL berlangsung  yang dilakukan selama 6 bulan terhitung mulai dari 12  Maret  2024  
+hingga 9 Agustus  2024 di Seksi Lapangan . 
+Dalam penyusunan laporan ini penulis mengucapkan terima kasih banyak karena 
+memperoleh bantuan, bimbingan serta dukungan dari berbagai pihak diantaranya:  
+1. Bapak Prof. Dr. I Nyoman Gede Arya Astawa,ST.,M.Kom selaku Ketua Jurusan Teknologi Informasi Politeknik Negeri Bali.  
+2. Bapak I Wayan Suasnawa, ST,MT selaku Kepala Program Studi D3 Manajemen Informatika Jurusan Teknologi Informasi Politeknik Negeri Bali.  
+3. Bapak Ida Bagus Putra Manuaba, S.Kom.,MT selaku Koordinator PKL Jurusan Teknologi Informasi Program Studi D3 Manajemen Informatika Politeknik Negeri Bali  
+4. Bapak I Made Ari Dwi Suta Atmaja , S.T  Selaku Dosen Pembimbing Penulis Jurusan 
+Teknologi Informasi Program Studi D3 Manajemen Informatika Politeknik Negeri Bali  
+5. Bapak I  Nengah Susastra selaku Pembimbing Lapangan yang membimbing dan 
+memberikan masukan selama pelaksanaan Kerja  PT. Solusi Surya Deswata  
+6. Kedua orang tua Penulis yang telah banyak memberikan dukungan, dorongan dan semangat.  
+ Semoga dengan tersusunnya laporan PKL ini dapat memberikan wawasan baru serta 
+manfaat bagi penulis ataupun kepada pembaca, selama penyusunan laporan ini penulis menyadari laporan ini masih banyak kekurangan. Dengan ini penulis sangat terbuka 
+menerima saran dan kritik yang membangun untuk menyempurnakan penyusunan laporan 
+ini. 
+Akhir kata penulis mengucapkan terima kasih atas segala dukungan, bantuan, 
+bimbingan dari semua pihak yang terkait sehingga laporan ini bisa tersusun dengan baik dan selesai tepat pada waktunya.   
+
+--- Halaman 8 ---
+vii 
+ Badung,7 Febuari 2024 
+ 
+                      ( I Wayan Asta Semarajaya)  
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+   
+ 
+ 
+ 
+   
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+
+--- Halaman 9 ---
+viii 
+ DAFTAR ISI  
+PRO YEK TUGAS AKHIR  ................................ ................................ ................................ .......................  1 
+PROYEK  ................................ ................................ ................................ ................................ ..............  I 
+TUGAS AKHIR  ................................ ................................ ................................ ................................ ..... I 
+LEMBAR PENGESAHAN  ................................ ................................ ................................ .......................  I 
+PROYEK TUGAS AKHIR  ................................ ................................ ... ERROR! BOOKMARK NOT DEFINED.  
+ABSTRAK  ................................ ................................ ................................ ................................ ...........  V 
+KATA PENGANTAR  ................................ ................................ ................................ ............................  VI 
+DAFTAR ISI  ................................ ................................ ................................ ................................ ...... VIII 
+DAFTAR TABEL  ................................ ................................ ................................ ................................ . XII 
+DAFTAR GAMBAR  ................................ ................................ ................................ ...........................  XIII 
+BAB I  INFORMASI UMUM PROYEK  ................................ ................................ ................................ ..... 1 
+INFORMASI GLOBAL PROYEK  ................................ ................................ ................................ .............  1 
+LATAR BELAKANG  ................................ ................................ ................................ ..............................  1 
+DESKRIPSI PROYEK / GAMBARAN UMUM  PROYEK  ................................ ................................ .............  2 
+TUJUAN PROYEK  ................................ ................................ ................................ ................................  6 
+KEUNTUNGAN PROYEK  ................................ ................................ ................................ ......................  6 
+BAB II  PERANCANGAN PROYEK  ................................ ................................ ................................ ..........  7 
+TEKNOLOGI DIGUNAKAN  ................................ ................................ ................................ ...................  7 
+TEKNOLOGI SERAT OPTIK (FIBER OPTIC)  ................................ ................................ .............................  7 
+
+--- Halaman 10 ---
+ix 
+ TEKNOLOGI GPON (GIGABIT PASSIVE OPTICAL NETWORK)  ................................ ................................ . 7 
+FIBER TO THE HOME(FTTH)  ................................ ................................ ................................ ...............  7 
+PERANGKAT DALAM JARINGAN FTTH  ................................ ................................ ................................ . 8 
+PEMBAGIAN TUGAS DAN PELAKSANAAN  ................................ ................................ ...........................  9 
+PERANCANGAN PROYEK  ................................ ................................ ................................ ..................  11 
+PERANCANGAN JARINGAN  ................................ ................................ ................................ ..............  11 
+PROSES PENGERJAAN PROYEK AKHIR  ................................ ................................ ...............................  11 
+PENENTUAN LOKASI  ................................ ................................ ................................ ........................  12 
+SURVEI LOKASI  ................................ ................................ ................................ ................................  12 
+PERANCANGAN FTTH DENGAN GOOGLE EARTH  ................................ ................................ ..............  14 
+MENGUKUR JARAK  ................................ ................................ ................................ ..........................  15 
+MENENTUKAN JENIS DAN JUMLAH PERANGKAT  ................................ ................................ ..............  17 
+MENENTUKAN LOKASI PERANGKAT  ................................ ................................ ................................ . 17 
+MENENTUKAN LOKASI OLT  ................................ ................................ ................................ ..............  17 
+TITIK PENEMPATAN ODC  ................................ ................................ ................................ .................  18 
+TITIK PENEMPATAN ODP  ................................ ................................ ................................ .................  19 
+TITIK PENEMPATAN ONT  ................................ ................................ ................................ .................  20 
+ANGGARAN BIAYA  ................................ ................................ ................................ ...........................  21 
+BAB III  PELAKSANAAN PROYEK  ................................ ................................ ................................ .........  22 
+HASIL PROYEK APLIKASI  ................................ ................................ ................................ ...................  22 
+
+--- Halaman 11 ---
+x 
+ PENARIKAN KABEL DARI OLT KE ODC  ................................ ................................ ...............................  22 
+PENARIKAN KABEL DARI OLT KE ODC  ................................ ................................ ...............................  22 
+PENYAMBUNGAN KABEL DI ODC  ................................ ................................ ................................ ..... 24 
+PENARIKAN KABEL DARI ODC KE ODP  ................................ ................................ ..............................  30 
+PENARIKAN KABEL DARI ODC KE ODP  ................................ ................................ ..............................  30 
+PENYAMBUNGAN KABEL DI ODC  ................................ ................................ ................................ ..... 33 
+PENGUJIAN REDAMAN  ................................ ................................ ................................ ....................  38 
+PENARIKAN KABEL DARI ODP KE ONT  ................................ ................................ ..............................  39 
+PENARIKAN KABEL DARI ODP KE ONT  ................................ ................................ ..............................  39 
+PENYAMBUNGAN ONT  ................................ ................................ ................................ ....................  42 
+PENGUJIAN ................................ ................................ ................................ ................................ ...... 50 
+PENGUJIAN REDAMAN  ................................ ................................ ................................ ....................  50 
+TEST KONEKSI  ................................ ................................ ................................ ................................ .. 50 
+IMPLEMENTASI PROYEK  ................................ ................................ ................................ ..................  58 
+PERENCANAAN DAN DESAIN:  ................................ ................................ ................................ ..........  58 
+PENGADAAN MATERIAL DAN PERALATAN  ................................ ................................ ........................  61 
+PEMBANGUNAN INFRASTRUKTUR  ................................ ................................ ................................ ... 65 
+PENGUJIAN DAN VALIDASI  ................................ ................................ ................................ ...............  67 
+PEMELIHARAAN DAN MONITORING  ................................ ................................ ................................  70 
+BAB IV  PENUTUP  ................................ ................................ ................................ .............................  72 
+
+--- Halaman 12 ---
+xi 
+ KESIMPULAN  ................................ ................................ ................................ ................................ ... 72 
+SARAN  ................................ ................................ ................................ ................................ .............  72 
+DAFTAR PUSTAKA  ................................ ................................ ................................ ............................  73 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+
+--- Halaman 13 ---
+xii 
+ DAFTAR TABEL 
+ 
+TABEL 1. INFORMASI GLOBAL PROYEK  ................................ ................................ ...............................  1 
+2.1 TABLE PEMBAGIAN TUGAS  ................................ ................................ ................................ ..........  9 
+2.2 TABLE ICON PERANGKAT ................................ ................................ ................................ ............  15 
+2.3  TABLE JARAK ALAT DAN KABEL  ................................ ................................ ................................ .. 15 
+2.4 TABLE JUMLAH PERANGKAT  ................................ ................................ ................................ ...... 17 
+2.5 TABLE BIAYA MATERIAL  ................................ ................................ ................................ .............  21 
+3.1 TABLE MATERIAL  ................................ ................................ ................................ .......................  61 
+3.2 TABLE PERALATAN  ................................ ................................ ................................ .....................  63 
+3.3 TABLE JUMLAH PERANGKAT  ................................ ................................ ................................ ...... 71 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Halaman 14 ---
+xiii 
+ DAFTAR GAMBAR  
+GAMBAR 1.1 FLOWCHART PERANCANGAN FTTH  ................................ ................................ ...............  3 
+GAMBAR 2.1 FLOWCARD PERANCANGAN  ................................ ................................ ........................  11 
+GAMBAR 2.2 LOKASI DESA BESAN  ................................ ................................ ................................ .... 12 
+GAMBAR 2.3 PERANCANGAN FTTH  ................................ ................................ ................................ .. 14 
+GAMBAR 2.4 TITIK PENEMPATAN ODC  ................................ ................................ ............................  17 
+GAMBAR 2.5 TITIK PENEMPATAN ODC  ................................ ................................ ............................  18 
+GAMBAR 2.6 TITIK PENEMPATAN ODP  ................................ ................................ .............................  19 
+GAMBAR 2.7 TITIK PENEMPATAN ONT  ................................ ................................ .............................  20 
+GAMBAR 3.1 PENARIKAN DARI OLT KE ODC  ................................ ................................ .....................  22 
+GAMBAR 3.2 PENARIKAN KABEL  ................................ ................................ ................................ ...... 23 
+GAMBAR 3.3 PEMASANGAN ODC  ................................ ................................ ................................ .... 25 
+GAMBAR 3.4 MENGUPAS CORE  ................................ ................................ ................................ .......  26 
+GAMBAR 3.5  PEMOTONGAN CORE.  ................................ ................................ ................................  26 
+GAMBAR 3.6 PENYAMBUNGAN CORE  ................................ ................................ ..............................  27 
+GAMBAR 3.7 PEMASANGAN PROTECTOR PADA SAMBUNGAN  ................................ .........................  27 
+GAMBAR 3.8 PEMANASAN SLEEVER PROTECTOR  ................................ ................................ .............  28 
+GAMBAR 3.9 SLEEVER PROTECTOR YANG SUDAH DIKELUARKAN.  ................................ ....................  28 
+GAMBAR 3.10 PORT YANG SUDAH DI PASANGKAN PATCHCORD.  ................................ .....................  29 
+GAMBAR 3.11 PENGUJIAN REDAMAN DARI OLT KE ODC  ................................ ................................ .. 29 
+
+--- Halaman 15 ---
+xiv 
+ GAMBAR 3.12 PENARIKAN KABEL DARI ODC KE ODP  ................................ ................................ ........  30 
+GAMBAR 3.13 PENARIKAN KE ODP  ................................ ................................ ................................ .. 31 
+GAMBA 3.14 PEMASANGAN KABEL PADA ODP  ................................ ................................ ................  33 
+GAMBAR 3.15 MENGUPAS CORE  ................................ ................................ ................................ ..... 34 
+GAMBAR 3.16  PEMOTONGAN CORE.  ................................ ................................ ..............................  34 
+GAMBAR 3.17 PENYAMBUNGAN CORE  ................................ ................................ ............................  35 
+GAMBAR 3.18 PEMASANGAN PROTECTOR PADA SAMBUNGAN  ................................ .......................  36 
+GAMBAR 3.19 PEMANASAN SLEEVER PROTECTOR  ................................ ................................ ...........  36 
+GAMBAR 3.20 SLEEVER PROTECTOR YANG SUDAH DIKELUARKAN.  ................................ ...................  37 
+GAMBAR 3.21 PEMASANGAN PATCHCORD  ................................ ................................ ......................  37 
+GAMBAR 3.22 PENGUJIAN REDAMAN DARI OLT KE ODC  ................................ ................................ .. 38 
+GAMBAR 3.23 PENARIKIAN KABEL ODP KE ONT  ................................ ................................ ...............  39 
+GAMBAR 3. 24 PENARIKAN KABEL KE ONT  ................................ ................................ .......................  40 
+GAMBAR 3.25 PEMASANGAN ROSET  ................................ ................................ ...............................  44 
+GAMBAR 3.26 PENGUPASAN KABEL FIBER.  ................................ ................................ ......................  44 
+GAMBAR 3.27 PEMOTONGAN CORE DENGAN CLEAVE.  ................................ ................................ .... 45 
+GAMBAR 3.28 PENYAMBUNGAN KABEL CORE  ................................ ................................ .................  45 
+GAMBAR 3.29 PEMASANGAN PROTECTOR PADA SAMBUNGAN.  ................................ ......................  46 
+GAMBAR 3.30 MEMANASKAN SLEEVE PROTECTOR.  ................................ ................................ .........  46 
+GAMBAR 3.31 PROTECTOR YANG SUDAH DI DINGINKAN.  ................................ ................................  47 
+
+--- Halaman 16 ---
+xv 
+ GAMBAR 3.32 PEMASANGAN PATCHCORD PADA ONT  ................................ ................................ ..... 48 
+GAMBAR 3.33  MERAPIKAN KABEL.  ................................ ................................ ................................ .. 48 
+GAMBAR 3.34 PEMASANGAN PATCHCORD PADA PORT 1  ................................ ................................  49 
+GAMBAR 3.35 PENGUJIAN REDAMAN PADA RUMAH PELANGGAN  ................................ ...................  50 
+GAMBAR 3.36 HASIL SPEEDTEST MENGGUNAKAN SPEEDTEST GOOGLE  ................................ ...........  51 
+GAMBAR 3.37 HASIL SPEEDTEST MENGGUNAKAN APLIKASI SPEDDTEST.  ................................ .........  51 
+GAMBAR 3.34 DESAIN JARINGAN FTTT  ................................ ................................ ............................  58 
+GAMBAR 3.35 KABEL FO 12 CORE  ................................ ..................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.35 PATCH CORD ................................ ...........................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.36 PASIF SPLITTERS  ................................ ......................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.37 ROSET  ................................ ................................ ..... ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.38 SLEEVE PROTECTOR  ................................ ................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.39 OLT BESAN  ................................ ..............................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.40 PELATAN ODP  ................................ .........................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.41 MESIN SPLICER  ................................ .......................  ERROR! BOOKMARK NOT DEFINED.  
+GAMBAR 3.42 PENARIKAN KABEL KE USER ................................ ................................ .......................  65 
+GAMBAR 3.43 PEMASANGAN KABEL PADA TIANG  ................................ ................................ ...........  66 
+GAMBAR 3.44 PEMASANGAN ODP  ................................ ................................ ................................ .. 66 
+GAMBAR 3.45 PEMASANGAN SPLITTER  ................................ ................................ ...........................  67 
+GAMBAR 3.46 HASIL OTDR JALUR OLT KE ONT  ................................ ................................ .................  67 
+
+--- Halaman 17 ---
+xvi 
+ GAMBAR 3.47 HASIL OTDR JALUR ODC KE ODP  ................................ ................................ ................  68 
+GAMBAR 3.48 HASIL OTDR JALUR ODP KE ONT PADA RUMAH USER  ................................ ................  69 
+GAMBAR 3.49 HASIL TRAFIC PENGUNAAN JARINGAN PADA DESA BESAN ................................ .........  70 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+   
+ 
+   
+ 
+ 
+
+--- Halaman 18 ---
+1 
+ BAB I  
+INFORMASI UMUM PROYEK  
+ 
+1.1  Informasi Global Proyek  
+Proyek yang akan buat adalah melakukan analisis infrastruktur fiber to the home 
+baru pada desa Besan. Proyek ini bertujuan untuk memberikan gambaran 
+infrastruktur yang akan dibangun pada Desa Besan.  
+  Tabel 1. Informasi Global Proyek  
+Jenis Proyek  Proyek Dari Tempat PKL / Penugasan Dari Pr odi 
+Pengerjaan Proyek  Kelompok  / Individu  
+Pemilik Proyek  I Nengah Susatra  
+Manajer Proyek  I Nengah Susatra  
+Ketua Tim Proyek  Wayan Yanzu  
+Anggota Proyek  1. I Wayan Asta Sem arajaya  
+1.2 Latar Belakang  
+Perkembangan teknologi didorong oleh kebutuhan dan permintaan perubahan 
+dalam kehidupan masyarakat. Evolusi jaringan komunikasi yang cepat dari jaringan telepon hingga jaringan dengan area luas berkecepatan tinggi saat ini hadir dari 
+kebutuhan sosial manusia untuk berkomunikasi satu sama lain, peningkatan 
+permintaan pengguna untuk berbagai aplikasi baru, serta kemajuan dalam 
+teknologi. Perubahan yang cepat pada jaringan telekomunikasi juga didorong oleh  
+kebutuhan pengguna agar tetap terkoneksi kapan pun dan di mana pun. 
+Berbagai aplikasi baru, seperti layanan multimedia, video conference, permainan 
+interaktif, dan layanan internet, semuanya membutuhkan bandwidth yang sangat 
+besar. Di samping itu, pengguna menginginkan jaringan yang memberikan layanan 
+terbaik dan efisien( G.P. Agrawal, 2010).  
+ 
+Modernisasi jaringan terus dilakukan untuk meningkatkan kapasitas bandwidth 
+agar didapatkan peningkatan layanan multimedia video, voice, dan data. Media 
+transmisi yang cocok untuk memenuhi kebutuhan tersebut adalah fiber optic. 
+Komunikasi fiber optic adalah teknologi komunikasi yang menggunakan pulsa 
+
+--- Halaman 19 ---
+2 
+ cahaya untuk mentransfer informasi dari satu titik ke titik lain melalui optical fiber 
+(fiber optic). Fiber optic dipilih di antaranya karena memiliki bandwidth yang besar, 
+loss dan biaya rendah, ringan, tahan terhadap gangguan elektromagnetik, dan 
+berbagai gangguan lainnya (noise) (Sahid Ridho, dkk 2020)  
+Salah satu teknologi komunikasi dengan memanfaatkan fiber optic adalah Fiber 
+to the Home (FTTH). FTTH merupakan pembangunan infrastruktur jaringan fiber 
+optic ke pelanggan atau rumah tinggal. FTTH menjadi penting karena tingkat 
+kepadatan penduduk (pelanggan) dan kebutuhan akan internet semakin tinggi. 
+Selain itu, FTTH juga mampu menjadi sarana untuk mendukung program Indonesia 
+Digital Network (IDN) yang dicanangkan pemerintah Indonesia (R. Topani, dkk 
+2017).  
+ 
+Oleh sebab itu PT. Solusi Surya Deswata yaitu salah satu perusahaan yang 
+sedang melangsungkan proyek pembangunan jaringan optik. Salah satunya 
+pembangunan jaringan Fiber to The Home (FTTH) sebagai salah satu solusi dalam 
+menyelesaikan masalah pembangunan di lapangan, dikarenakan kondisi 
+pembangunan di daerah tersebut yang padat penduduk Fiber to The Home (FTTH) 
+merupakan salah satu jaringan serat optik. Pembangunan jaringan ini dimulai dari 
+Sentral Telepon Otomat (STO) di Dawan hingga ke pengguna. Dengan 
+menggunakan sistem jaringan optik ini memungkinkan lebih luasnya layanan yang 
+akan digunakan oleh pelanggan. Perancangan jaringan serat optik dapat dibuat 
+dengan menggunakan Google Earth pro yaitu software yang dapat mempermudah 
+engineer dalam membuat perancangan jaringan Fiber to The Home (FTTH) .  
+ 
+Beberapa permasalahan yang akan dihadapi di antaranya:  
+1. Bagaimana merancang Infrastruktur FTTH  
+2. Bagaimana menerapkan teknologi GPON pada desa Besan yang belum tersedia  
+3. Menghitung efesiensi dari bahan yang digunakan  
+ 
+1.3 Deskripsi Proyek / Gambaran Umum  Proyek  
+Berikan keterangan terkait deskripsi proyek, baik dari gambaran umum dari proyek yang di 
+ilustrasikan berupa gambar maupun flowmap , fitur/hasil yang diinginkan serta batasan dari 
+proyek tugas akhir.  
+
+--- Halaman 20 ---
+3 
+ Alur Flowchart Perancangan F TH 
+ 
+Gambar 1.1 Flowchart Perancangan FTTH  
+ 
+  
+
+--- Halaman 21 ---
+4 
+ Keterangan:  
+1. Survei dan Penentuan Lokasi  
+     untuk mengetahui lokasi rumah pelanggan, jarak tiang, jumlah tiang, dan titik 
+pemasangan perangkat.  
+2. Mengukur jarak tiang dan jumlah tiang  
+     Pengukuran jarak tiang dan jumlah tiang dilakukan untuk menghetahui jumlah 
+tiang di lapangan menggunakan alat GPS  
+3. Menentukan titik Perangkat  
+   Penentuan titik pemasangan perangkat dilakukan untuk menggetahui titik 
+pemasangan perangkat yang sesuai supaya tidak terlalu jauh dengan perangkat 
+yang lainnya  
+4. Menggambar infrastruktur FTTH.  
+Penggambaran infrastruktur untuk melakukan pemetaan pada wilayah yang akan di pasang ftth dan penempatan titik perangkat FTTH  
+5. Penarikan Kabel  
+Penarikan kabel dilakukan dari titik yang sudah diberitahu oleh perusahaan  
+6. Pemasangan Perangkat  
+Pemasangan perangkat dilakukan setelah penarikan kabel sampai ke rumah 
+pelanggan dan pemasangan perangkat ditempatkan pada titik yang sudah 
+ditentukan pada denah atau peta.  
+7. Penyambungan dan pengecekan redaman  
+Penyambungan dilakukan untuk menyambung kabel fiber dari arah ODP ke 
+rumah pelanggan dan pengecekan redaman untuk mengetahui jumlah redaman 
+yang didapat dari hasil sambungan  
+8. Setelah selesai melakukan penyambungan, maka selanjutnya mengecek 
+redaman pada sambungan. Jika tidak layak maka dilakukan penyambungan 
+ulang.  
+9. Jika redaman pada sambungan core sesuai standar perusahaan maka kabel fiber bisa di gunakan.  
+10. Analisis Infrastruktur FTTH untuk mengetahui alat, jarak tiang dan pengunaan kabel.  
+
+--- Halaman 22 ---
+5 
+ Uraian Masalah  
+Dalam perancangan FTTH (Fiber to the Home), ada beberapa masalah yang 
+mungkin dihadapi yaitu:  
+1. Biaya :  
+Salah satu masalah utama dalam perancangan FTTH adalah biaya. Pengeluaran 
+untuk pemasangan infrastruktur serat optik dari titik distribusi pusat ke rumah 
+pelanggan bisa sangat tinggi, terutama jika wilayah yang harus ditutupi luas atau 
+memiliki topografi yang sulit. Biaya tersebut mencakup pembelian serat optik, 
+perangkat jaringan, pekerjaan konstruksi, dan biaya tenaga kerja.  
+2. Tantangan  Konstruksi :  
+Proses pemasangan serat optik di bawah tanah atau di atas tiang listrik dapat 
+menghadapi tantangan konstruksi yang signifikan. Hal ini termasuk penggalian tanah 
+untuk menanam serat optik, navigasi di sekitar infrastruktur yang ada, dan 
+pemeliharaan akses ke rumah pelanggan. Faktor lingkungan seperti cuaca ekstrem 
+juga bisa memperlambat atau menghambat proses konstruksi.  
+3. Regulasi  dan Perizinan :  
+Perizinan dan persetujuan dari pihak berwenang lokal seringkali diperlukan sebelum 
+pemasangan infrastruktur serat optik dapat dimulai. Proses ini bisa memakan waktu 
+dan membutuhkan biaya tambahan. Selain itu, regulasi yang berkaitan dengan hak 
+tanah, hak -hak pekerja, dan standar konstruksi juga harus dipatuhi.  
+4. Keandalan  dan Kualitas  Layanan :  
+FTTH harus dirancang untuk memberikan koneksi internet yang andal dan 
+berkualitas tinggi kepada pelanggan. Namun, faktor seperti kebocoran serat optik, 
+gangguan lingkungan, atau kegagalan perangkat keras jaringan bisa mempengaruhi 
+keandalan dan kualitas layanan.  
+5. Penerimaan  Masyarakat :  
+Pengenalan teknologi FTTH mungkin dihadapi dengan tantangan penerimaan dari 
+masyarakat. Beberapa orang mungkin skeptis terhadap manfaatnya atau khawatir 
+dengan dampaknya terhadap lingkungan atau infrastruktur yang ada. Oleh karena 
+itu, perancangan harus mencakup strategi komunikasi dan edukasi yang efektif 
+untuk membangun dukungan masyarakat dan mempromosikan adopsi teknologi.  
+ 
+
+--- Halaman 23 ---
+6 
+ Batasan – batasan dari proyek Tugas Akhir ini adalah  
+1. Data diambil berdasarkan hasil survei.  
+2. Informasi yang diberikan berdasarkan dari survei lapangan langsung 
+3. Pelanggan tidak ada di tempat/rumah.  
+ 
+1.4 Tujuan Proyek  
+Tujuan proyek merupakan uraian mengenai target atau hasil yang akan dicapai atau 
+jawaban atas permasalahan yang ada.  
+Tujuan penelitian ini berdasarkan rumusan masalah sebagai berikut:  
+1. Untuk mengetahui analisis peletakan material FTTH pada Desa Besan.  
+2. Untuk mengetahui analisis perancangan jaringan distribusi FTTH menggunakan Aplikasi  
+google earth . 
+3. Untuk mengetahui analisis kelayakan rancangan distribusi FTTH.  
+ 
+1.5 Keuntungan Proyek  
+Deskripsikan keuntungan- keuntungan yang diharapkan dari proyek yang akan dilaksanakan.  
+Keuntungan proyek di antara lain:  
+1. Efesiensi penempatan alat  
+Penempatan alat yang efisien dapat membantu mengurangi biaya operasional proyek. Dengan menggunakan alat yang tepat dan ditempatkan dengan baik, perusahaan dapat  
+menghemat biaya bahan bakar, biaya perawatan, dan biaya operasional lainnya.  
+2. Efesiensi penggunaan alat  
+Efisiensi penggunaan alat dapat membantu perusahaan menghemat biaya operasional. 
+Dengan penggunaan alat yang efisien, perusahaan dapat mengurangi biaya bahan bakar, biaya perawatan, dan biaya operasional lainnya  
+3. Efesiensi waktu  
+Efisiensi waktu membantu meningkatkan efisiensi operasional secara keseluruhan. 
+Dengan menghemat waktu dalam setiap tahapan proyek, perusahaan dapat 
+menyelesaikan proyek dengan biaya yang lebih rendah dan dalam waktu yang lebih singkat.  
+ 
+ 
+  
+
+--- Halaman 24 ---
+72 
+ BAB IV  
+PENUTUP  
+ 
+ Kesimpulan  
+ Berdasarkan hasil dan pembahasan maka dapat disimpulkan bahwa :  
+a. Perancangan yang dilakukan dengan menentukan batas -batas wilayah 
+menggunakan fitur polygon, path dan ODC secara detail dan rinci.  
+b. Jumlah bangunan rumah  yang ada di wilayah Desa Besan adalah 50+ 
+bangunan.  
+c. Perancangan tiang ODP berjumlah 8  titik menyesuaikan dengan jumlah 
+bangunan yang ada yakni 50+  bangunan, sehingga dengan jumlah tiang ODP 
+ tersebut dapat mentransmisikan serta mendistribusikan jaringan FTTH 
+ kepada 50+ homepass.  
+d. Panjang kabel distribusi yang telah didata yaitu memiliki panjang 2900  meter.   
+Saran  
+ Selama penyusunan proyek akhir ini tentu tidak semua yang terdapat pada buku ini 
+ sempurna, melainkan masih ada beberapa poin yang masih bisa dikembangkan bagi 
+ penelitian selanjutnya, yaitu dapat membuat lebih dari satu jalur skema 
+ perancangan FTTH  agar dapat dibandingkan jalur skema perancangan FTTH 
+ yang satu dengan yang lainnya, sehingga skema jalur perancangan FTTH yang 
+ diterapkan di lapangan adalah jalur skema yang paling tepat dan efesien.  
+• Di harapkan untuk Penelitian selanjutnya perancangan didaerah desa Besan dapat 
+lebih dibuka lagi untuk layanan FTTH karna masih banyak daerah desa  yang masih 
+belum terjaangkau jaringan FTTH khususnya Fiber Optic.  
+• Untuk penelitian selanjutanya di  desa Besan sendiri masih memerlukan banyak 
+survei lokasi te mpat lagi yang akan di bagun jaringan fiber karna masih banyak 
+tempat yang masih belum tersentuh jaringan fiber sendiri khususnya daerah yang 
+sudah masuk kedalam bukit .  
+• Pada survei dan pegerjaan masih banyak kendala dan kesulitan yang dihadapi 
+dikarnakan masih banyak daerah Besan  yang masih belum tersentuh jaringan fiber 
+dan masih banyak juga jaringan pindahan dari tembaga ( speedy) migrasi ke fiber optic  
+
+--- Halaman 25 ---
+73 
+ DAFTAR PUSTAKA  
+ 
+ 
+1. G.P. Agrawal, Fiber -Optic Communication Sistems, 4th ed. Rochester, USA: John 
+Wiley & Sons, Inc, 2010.  
+2. R.Sahid, "Perancangan Jaringan Fiber to the Home (FTTH) pada Perumahan di 
+Daerah   Urban," JNTETI. Jurnal Nasional Teknik Elektro dan Teknologi Informas  
+vol. SU- 9, no. 9, pp. 94 -103, Febuary 2020.  
+3. R. Topani, T.N. Damayanti, dan A. Hartaman, “Perancangan Fiber to the Home 
+(FTTH) di Perumahan Panorama Indah Purwakarta,” eProceeding of Applied 
+Science., Vol. 3, No. 2, hal. 1047- 1058, Agt. 2017  
+4. F. Pahlawan, D.A. Cahyasiwi, dan K. Fayakun, “Perancangan Jaringan Akses Fiber 
+to the Home (FTTH) Menggunakan Teknologi Gigabit Passive Optical Network 
+(GPON): Studi Kasus Perumahan Graha Permai Ciputat,” Prosiding Seminar 
+Nasional Teknoka ke- 2, 2017, Vol. 2, hal 47- 54. 
+5. R. Pratama, A. Hambali, dan A.D. Pambudi, “Analisis Perbandingan Kinerja 
+Teknologi Gigabit Passive Optical Network (GPON) dan Gigabit Ethernet Passive 
+Optical Network (GEPON) Turbo Mode pada Jaringan Passive Optical Network (PON),” e -Proceeding of Engineering, Vol. 3, No. 2, hal. 2011- 2018, Agus. 2016. 
+6. A.J. Maulana, “Perencanaan Desain Jaringan Metro FTTH di Universitas Indonesia,” 
+Skripsi, Universitas Indonesia, Depok, Indonesia, Jul. 2012.  
+7. W. Ningrat dan Ratnadewi, “Perancangan Jaringan Distribusi Fiber to the Home 
+(FTTH) di Kompleks Batununggal Indah Bandung,” Modern Electrical Engineering 
+Technology and Its Application Seminar, 2016, hal. 69– 78. 
+8. F.R. Somantri, Hafidudin, dan H. Putri, “Perancangan Fiber to the Home (FTTH) untuk Wilayah Perumahan Sukasari Baleendah,” eProceeding of Applied Science, 2017, Vol. 3, No. 2, hal. 1022– 1030.  
+9. B. Dermawan, I. Santoso, dan T. Prakoso, “Analisis Jaringan FTTH (Fiber to the 
+Home) Berteknologi GPON (Gigabit Passive Optical Network),” J. Transm., Vol. 18, 
+No. 1, hal 30- 37, Jan. 2016.
+ 
+ 
+ 
+    
+ 
+

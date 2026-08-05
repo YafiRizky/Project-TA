@@ -1,0 +1,322 @@
+
+======================================================================
+FILE: Agen Beras Boyolali Lembu Abang.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['FORMULIR PENGUMPULAN DATA UMKM (PER WARUNG)', '', '', '', '', '', '', '', '', '']
+  R2: ['Diisi oleh peneliti saat wawancara dengan pemilik/pengelola warung', '', '', '', '', '', '', '', '', '']
+  R4: ['A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['Nama UMKM / Warung', 'Agen Beras Boyolali Lembu Abang', '', '', '', '', '', '', '', '']
+  R6: ['Nama Pemilik', 'Dedi Paryono', '', '', '', '', '', '', '', '']
+  R7: ['Alamat', 'Jl. Zebramukti barat no 04', '', '', '', '', '', '', '', '']
+  R8: ['No. HP', '', '', '', '', '', '', '', '', '']
+  R9: ['Tanggal Interview', '2026-07-22 00:00:00', '', '', '', '', '', '', '', '']
+  R11: ['B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/Minggu', 'Frekuensi Restock', 'Ada Expired?', 'Catatan']
+  R13: ['Indomie Goreng', 'Makanan Instan', '2500', '3500', 'pcs', '40', '60', '2x/minggu', 'Tidak', 'Contoh isian']
+  R14: ['C4 Super', 'Beras', '15000', '15500', 'KG', '2 Ton', '350 kg', '2x/minggu', '3-4 Bulan', '']
+  R15: ['Bramo', 'Beras', '16500', '17000', 'KG', '1 Ton', '350 Kg', '2x/minggu', '3-4 Bulan', '']
+  R16: ['Mentik Wangi', 'Beras', '17500', '18000', 'KG', '1 Ton', '350 Kg', '2x/minggu', '3-4 Bulan', '']
+  R17: ['Pandan Wangi', 'Beras', '19000', '20000', 'KG', '1 Ton', '350 Kg', '2x/minggu', '3-4 Bulan', '']
+  R30: ['Catatan: jika baris tabel produk pada halaman ini tidak cukup, gunakan lembar "2. Lanjutan Tabel Produk" untuk mencatat produk tambahan. Informasi omzet, transaksi, supplier, dan jam operasi dicatat pada lembar "3. Info Umum Warung".', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Dapur Bu Jatmiko.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'Dapur bu jatmiko', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'dian kusmariyah', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'perum bukit diponegoro blok B 319', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Pempek ', 'makanan', '4500', '6500', 'pcs', '500', '3500', '1x/minggu', '']
+  R14: ['', '2', 'Sambal', 'makanan', '15000', '20000', 'botol', '50', '50', '1x/minggu', '']
+  R17: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Nisa Shop.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'Nisa Shop', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'Faridatul', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Diponegoro blok D 405', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Minyak Kelapa', 'minyak', '38000', '50000', 'pcs', '15 dus', '50', '20 dus/minggu', '']
+  R16: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Toko Kelontong Amanah.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'Toko Amanah ', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'Mba Yayu', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Jl. Pekunden Barat No 884B', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Aqua botol 600 ml', 'Minuman', '3000', '4000', 'pcs', '60', '90', '2x/mimggu', 'Ya']
+  R14: ['', '2', 'Gula Pasir 1 KG', 'Sembako', '13500', '15500', 'kilo', '25', '20', '1x/minggu', '']
+  R15: ['', '3', 'kopi kapal api sachet', 'minuman instan', '2000', '3000', 'pcs', '100', '140', '2x/minggu', '']
+  R16: ['', '4', 'Rokok Soemperna', 'Rokok', '24000', '27000', 'pack', '40', '35', '2x/minggu', '']
+  R17: ['', '5', 'mie sedap', 'makanan instan', '2600', '3500', 'pcs', '2 kardus', '55', '2x/minggu', '']
+  R18: ['', '6', 'snack chiki', 'camilan', '1500', '2000', 'pcs', '1 kardus', '45', '1x/mimggu', '']
+  R19: ['', '7', 'mie indomie', 'makanan instan', '3000', '3500', 'pcs', '2 kardus', '60', '2x/minggu', '']
+  R20: ['', '8', 'susu kental manis sachet', 'sembako', '3000', '5000', 'pcs', '2 renceng', '20', '2x/mimggu', '']
+  R21: ['', '9', 'shampoo sachet', 'kebutuhan rumah tangga', '500', '1000', 'pcs', '2 renceng', '100', '2x/mimggu', '']
+  R22: ['', '10', 'baterai AA', 'Elektronik', '6000', '8000', 'pack', '15', '8', 'sesuai kebutuhan ', '']
+  R23: ['', '11', 'popok bayi', '', '3500', '4000', 'pcs', '10', '6', '1x/minggu', '']
+  R24: ['', '12', 'lilin', 'kebutuhan rumah tangga', '2000', '3000', 'pcs', '10', '4', 'sesuai kebutuhan ', '']
+  R25: ['', '13', 'pembalut', '', '5000', '6000', 'pcs', '1 kardus', '15', '2x/mimggu', '']
+  R28: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Toko Kelontong Barokah.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'barokah ', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'ibu itera prapti ', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Jl. Zebra mukti raya no 113', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '81575292199', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-18 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Roma Vanila Cream', 'makanan', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R14: ['', '2', 'Roma Sari Gandum', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R15: ['', '3', 'wafer chocolate momogi', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R16: ['', '4', 'go-pie cake coklat', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R17: ['', '5', 'tango wafer', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R18: ['', '6', 'nice biscuit', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R19: ['', '7', 'malkist', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R20: ['', '8', 'better caramel', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R21: ['', '9', 'roma biskuit kelapa', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R22: ['', '10', 'nissin crispy craker', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R23: ['', '11', 'nabati pineapple', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R24: ['', '12', 'kerupuk udang ', '', '3300', '4000', 'bungkus', '15', '18', '1x/minggu', '']
+  R25: ['', '13', 'Kopi sachet gula aren', 'minuman', '1700', '2000', 'pcs', '30', '40', '2x/minggu', '']
+  R26: ['', '14', 'good day chococino', '', '1600', '2000', 'pcs', '25', '30', '1x/minggu', '']
+  R27: ['', '15', 'kapal api kopi susu', '', '6700', '7000', 'pcs', '30', '40', '2x/minggu', '']
+  R28: ['', '16', 'torabika creamy latte', '', '1700', '2000', 'pcs', '30', '40', '2x/minggu', '']
+  R29: ['', '17', 'milo', '', '700', '1000', 'pcs', '30', '40', '2x/minggu', '']
+  R30: ['', '18', 'dancow coklat', '', '3700', '4000', 'pcs', '30', '40', '2x/minggu', '']
+  R31: ['', '19', 'energen', '', '2200', '2500', 'pcs', '30', '40', '2x/minggu', '']
+  R32: ['', '20', 'nutrisari jeruk', '', '1700', '2000', 'pcs', '30', '40', '2x/minggu', '']
+  R33: ['', '21', 'tong ji jasmine tea', '', '1700', '2000', 'pcs', '30', '40', '2x/minggu', '']
+  R34: ['', '22', 'adem sari', '', '1700', '2000', 'pcs', '30', '40', '2x/minggu', '']
+  R35: ['', '23', 'galon le minerale 19L', '', '23000', '26000', 'galon', '5', '8', '2x/minggu', '']
+  R36: ['', '24', 'aqua galon 19L', '', '19000', '22000', 'galon', '5', '8', '2x/minggu', '']
+  R37: ['', '25', 'teh gelas', '', '1700', '2000', 'pcs', '30', '40', '2x/minggu', '']
+  R38: ['', '26', 'pocari sweet', '', '4000', '5000', 'botol', '15', '20', '1x/minggu', '']
+  R39: ['', '27', 'fanta 390ml', '', '4000', '5000', 'botol', '15', '20', '1x/minggu', '']
+  R40: ['', '28', 'minyak goreng', 'Sembako', '13500', '15000', 'liter', '8', '10', '1x/minggu', '']
+  R41: ['', '29', 'kecap', '', '3300', '4000', 'bungkus', '15', '18', '1x/minggu', '']
+  R42: ['', '30', 'tepung beras', '', '3300', '4000', 'bungkus', '15', '18', '1x/minggu', '']
+  R43: ['', '31', 'raja gula', '', '3300', '4000', 'bungkus', '15', '18', '1x/minggu', '']
+  R44: ['', '32', 'gas LPG 3 KG', 'Kebutuhan Dapur', '20000', '23000', 'tabung', '3', '4', '1x/minggu', '']
+  R45: ['', '33', 'Gas LPG 12 KG', '', '19500', '21000', 'tabung', '3', '4', '1x/minggu', '']
+  R46: ['', '34', 'rinso anti noda', 'Kebutuhan Rumah Tangga', '1200', '1500', 'sachet', '25', '15', '1x/minggu', '']
+  R47: ['', '35', 'so klin deterjen', '', '1200', '1500', 'sachet', '25', '15', '1x/minggu', '']
+  R48: ['', '36', 'super pell 260g', '', '1200', '1500', 'sachet', '25', '15', '1x/minggu', '']
+  R49: ['', '37', 'downy cuci baju', '', '1200', '1500', 'sachet', '25', '15', '1x/minggu', '']
+  R50: ['', '38', 'head & shoulders', '', '1200', '1500', 'sachet', '25', '15', '1x/minggu', '']
+  R51: ['', '39', 'rejoice shampoo', '', '1200', '1500', 'sachet', '25', '15', '1x/minggu', '']
+  R52: ['', '40', 'rexona lotion', '', '1600', '2000', 'pcs', '10', '8', '1x/minggu', '']
+  R53: ['', '41', 'mie Gelas', 'makanan instan', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R54: ['', '42', 'mie goreng sedap', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R55: ['', '43', 'mie rebus ayam bawang ', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R56: ['', '45', 'indomie mie goreng', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R57: ['', '50', 'indomie soto mie', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R58: ['', '51', 'wow spageti goreng', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R59: ['', '52', 'indomie rebus ayam spesial', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R60: ['', '53', 'bihun jagung', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R61: ['', '54', 'elmie', '', '2500', '3000', 'pcs', '40', '50', '2x/minggu', '']
+  R64: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Toko Kelontong Moro.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['FORMULIR PENGUMPULAN DATA UMKM (PER WARUNG)', '', '', '', '', '', '', '', '', '']
+  R2: ['Diisi oleh peneliti saat wawancara dengan pemilik/pengelola warung', '', '', '', '', '', '', '', '', '']
+  R4: ['A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['Nama UMKM / Warung', 'Toko Moro', '', '', '', '', '', '', '', '']
+  R6: ['Nama Pemilik', 'Ibu Yuni', '', '', '', '', '', '', '', '']
+  R7: ['Alamat', '', '', '', '', '', '', '', '', '']
+  R8: ['No. HP', '', '', '', '', '', '', '', '', '']
+  R9: ['Tanggal Interview', '2026-07-22 00:00:00', '', '', '', '', '', '', '', '']
+  R11: ['B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/Minggu', 'Frekuensi Restock', 'Ada Expired?', 'Catatan']
+  R13: ['Tongji Jasmine Tea', 'Minuman Sachet', '2000', '2500', 'pcs', '30', '1x/bulan', 'Sampai Habis', 'Ada', '']
+  R14: ['Teh sosro celup', 'Minuman Sachet', '1000', '1500', 'pcs', '10', '1x/bulan', 'Sampai Habis', '', '']
+  R15: ['susu jahe', 'Minuman Sachet', '2000', '2500', 'pcs', '10', '1x/bulan', 'Sampai Habis', '', '']
+  R16: ['energen coklat', 'Minuman Sachet', '2000', '2500', 'pcs', '10', '1x/Minggu', 'Sampai Habis', '', '']
+  R17: ['Coffemix', 'Minuman Sachet', '1500', '2000', 'pcs', '10', '1x/Minggu', 'Sampai Habis', '', '']
+  R18: ['Milo', 'Minuman Sachet', '2000', '2500', 'pcs', '20', '20 pcs/minggu', '2x/Seminggu', '', '']
+  R19: ['Gooday Merah', 'Minuman Sachet', '1500', '2000', 'pcs', '10', '20 pcs/minggu', '2x/Seminggu', '', '']
+  R20: ['Gooday Biru', 'Minuman Sachet', '1500', '2000', 'pcs', '10', '10 pcs/minggu', '2x/Seminggu', '', '']
+  R21: ['PopIce', 'Minuman Sachet', '1500', '2000', 'pcs', '10', '1 pcs/minggu', '1x/bulan', '', '']
+  R22: ['Nutrisari', 'Minuman Sachet', '1200', '1500', 'pcs', '40', '10 pcs/minggu', '2x/Seminggu', '', '']
+  R23: ['Ultramilk Plain', 'Minuman Gelas/Botol', '113000', '7000', 'Box', '24', '10 pcs/minggu', '1,5x/bulan', '', '1 box isi 24 pcs']
+  R24: ['Ultramilk Strawberry', 'Minuman Gelas/Botol', '113000', '7000', 'Box', '24', '8 pcs/minggu', '1,5x/bulan', '', '1 box isi 24 pcs']
+  R25: ['Ultramilk Coklat', 'Minuman Gelas/Botol', '113000', '7000', 'Box', '24', '8 pcs/minggu', '1,5x/bulan', '', '1 box isi 24 pcs']
+  R26: ['Milku', 'Minuman Gelas/Botol', '35000', '4000', 'box', '12', '6 pcs/minggu', 'Sampai Habis', '', '1 box isi 12 pcs']
+  R27: ['Teh Botol', 'Minuman Gelas/Botol', '65000', '4000', 'box', '28', '10 pcs/minggu', '1x/bulan', '', '1 box isi 24 pcs']
+  R28: ['Fanta', 'Minuman Gelas/Botol', '50000', '5000', 'pcs', '8', '5 pcs/minggu', '1x/seminggu', '', '']
+  R29: ['Abc Kopi', 'Minuman Gelas/Botol', '35000', '4000', 'box', '12', '2 pcs/minggu', '1x/bulan', '', '1 box isi 12 pcs']
+  R30: ['Floridina', 'Minuman Gelas/Botol', '35000', '4000', 'box', '16', '2 pcs/minggu', '1x/bulan', '', '2 box isi 12 pcs']
+  R31: ['Larutan Cap Kaki Tiga', 'Minuman Gelas/Botol', '3000', '3500', 'pack', '6', '1 pcs/minggu', '1x/bulan', '', '1 pack isi 10']
+  R32: ['Le Minerale', 'Minuman Gelas/Botol', '45000', '5000', 'box', '48', '10 pcs/minggu', '1x/bulan', '', '1 box isi 24 pcs']
+  R33: ['Mie Sedap Cup Soto Ayam', 'Mie Instant', '4500', '5500', 'pcs', '2', '10 pcs/minggu', '2x/Seminggu', '', '']
+  R34: ['Mie Sedap Cup Rawit', 'Mie Instant', '4500', '5500', 'pcs', '2', '4 pcs/minggu', '2x/Seminggu', '', '']
+  R35: ['Mie Sedap Cup Seaweed', 'Mie Instant', '4500', '5500', 'pcs', '3', '4 pcs/minggu', '2x/Seminggu', '', '']
+  R36: ['Mie Sedap Cup Kari Kuah', 'Mie Instant', '4500', '5500', 'pcs', '1', '4 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R37: ['Mie Sedap Soto Ayam', 'Mie Instant', '110000', '3500', 'box', '120', '20 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R38: ['Mie Sedap Ayam Bawang', 'Mie Instant', '110000', '3500', 'box', '120', '20 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R39: ['Mie Sedap Ayam Geprek', 'Mie Instant', '110000', '3500', 'box', '120', '20 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R40: ['Mie Sedap Rendang', 'Mie Instant', '115000', '4000', 'box', '120', '20 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R41: ['Mie Sedap Aceh', 'Mie Instant', '115000', '4000', 'box', '120', '20 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R42: ['Mie Sedap Mercon', 'Mie Instant', '115000', '4000', 'box', '120', '20 pcs/minggu', '2x/Seminggu', '', '1 box isi 40 pcs']
+  R43: ['Sabun Batang Giv', 'Kebersihan', '3000', '3500', 'pcs', '3', '1 pcs/minggu', '1x/bulan', '', '']
+  R44: ['Sabun Batang Harmony', 'Kebersihan', '3500', '4000', 'pcs', '2', '1 pcs/minggu', '1x/bulan', '', '']
+  R45: ['Sabun Batang Zen', 'Kebersihan', '2500', '3000', 'pcs', '8', '1 pcs/minggu', '1x/bulan', '', '']
+  R46: ['Sabun Batang Nuvo', 'Kebersihan', '3000', '3500', 'pcs', '4', '4 pcs/minggu', '1x/bulan', '', '']
+  R47: ['Bedak MBK', 'Kebersihan', '30000', '3500', 'box', '36', '3 pcs/minggu', '1x/bulan', '', '1 box isi 12 pcs']
+  R48: ['Wipol Sachet', 'Kebersihan', '4500', '5000', 'pcs', '2', '3 pcs/minggu', '1x/seminggu', '', '']
+  R49: ['Gentle Gen', 'Kebersihan', '17000', '19000', 'pcs', '1', '1 pcs/bulan', '2x/bulan', '', '']
+  R50: ['Vixal', 'Kebersihan', '4500', '5000', 'pcs', '1', '1 pcs/minggu', '1x /bulan', '', '']
+  R51: ['So Klin', 'Kebersihan', '10000', '1000', 'pcs', '10', '12 pcs/Minggu', '1x/minggu', '', '']
+  R52: ['Pepsodent', 'Kebersihan', '24000', '3000', 'pcs', '10', '1 pcs/minggu', '1x/perbulan', '', '']
+  R53: ['Mama Lemon', 'Kebersihan', '8000', '9000', 'pcs', '2', '4 pcs/minggu', '1x/minggu', '', '']
+  R54: ['Sunlight', 'Kebersihan', '9000', '10000', 'pcs', '4', '1 pcs/minggu', '1x/minggu', '', '']
+  R55: ['Sosis So Nice Sapi', 'Snack', '20000', '1000', 'pack', '25', '25 pcs/minggu', '1x/minggu', '', '1 pack isi 25']
+  R56: ['Sosis So Nice Ayam', 'Snack', '20000', '1000', 'pack', '25', '25 pcs/minggu', '1x/minggu', '', '1 pack isi 25']
+  R57: ['Better', 'Snack', '16000', '2000', 'pcs', '12', '12 pcs/Minggu', '1x/minggu', '', '1 renceng isi 12']
+  R58: ['Kalpa', 'Snack', '20000', '2500', 'pcs', '12', '12 pcs/Minggu', '1x/minggu', '', '2 renceng isi 12']
+  R59: ['Chocolatos', 'Snack', '20000', '1000', 'pack', '20', '20 pcs/minggu', '1x/minggu', '', '1 pack isi 20']
+  R60: ['Davos', 'Snack', '100000', '1500', 'pack', '120', '10 pcs/minggu', '1x/bulan', '', '1 pack isi 60']
+  R61: ['Waffello', 'Snack', '10000', '1500', 'pack', '20', '10 pcs/minggu', '1x/minggu', '', '']
+  R62: ['Yupi', 'Snack', '8000', '1000/3', 'pack', '30', '2 pcs/bulan', 'Sampai Habis', '', '']
+  R63: ['Mentos', 'Snack', '8000', '1000/3', 'pack', '30', '2 pcs/bulan', 'Sampai Habis', '', '']
+  R64: ['Kopiko', 'Snack', '11000', '1000/3', 'pack', '40', '10 pcs/minggu', '1x/bulan', '', '']
+  R65: ['Potabee', 'Snack', '17000', '2000', 'pack', '10', '20 pcs/minggu', '1x/minggu', '', '']
+  R66: ['Roni Makaroni', 'Snack', '16000', '2000', 'pack', '10', '20 pcs/minggu', '1x/minggu', '', '']
+  R67: ['Chitato', 'Snack', '18000', '2000', 'pack', '10', '20 pcs/minggu', '1x/minggu', '', '']
+
+======================================================================
+FILE: Toko Mba Lala.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', '', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'Lala Sulistiyani', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Jl. baskoro raya 2 no. 59', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'talas', 'camilan', '4000', '6000', 'pcs', '50', '300', 'tiap hari', '']
+  R16: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Toko Migunani.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'migunani', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'mba siti', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Jl. baskoro 40 RT 1/Rw7', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Risol Mayo', 'camilan', '2500', '3000', 'pcs', '50', '300', 'tiap hari', '']
+  R14: ['', '2', 'Cireng', 'camilan', '2500', '3000', 'pcs', '50', '300', 'tiap hari', '']
+  R17: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Warung Melati.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'warung melati', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'Ulfa', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Jl. Melati III/E. 238', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Minyak Goreng', 'sembako', '18000', '20000', 'pcs', '15', '20', '1x/minggu', 'Ya']
+  R14: ['', '2', 'Sabun Cuci Baju', 'Kebutuhan Rumah tangga', '4500', '5000', 'pcs', '20', '25', '1x/minggu', '']
+  R15: ['', '3', 'Sabun Mandi', 'perawatan tubuh', '3000', '4500', 'pcs', '25', '30', '1x/minggu', '']
+  R16: ['', '4', 'Pembersih Lantai', 'Kebutuhan Rumah tangga', '10000', '12000', 'pcs', '10', '8', '1x/2minggu', '']
+  R17: ['', '5', 'Pasta gigi', 'perawatan tubuh', '10000', '12000', 'pcs', '15', '12', '1x/minggu', '']
+  R18: ['', '6', 'masako', 'bumbu dapur', '4500', '5000', 'pack', '30', '35', '1x/minggu', '']
+  R19: ['', '7', 'sabun cuci piring', 'Kebutuhan Rumah tangga', '5000', '7000', 'pcs', '20', '22', '1x/minggu', '']
+  R20: ['', '8', 'kapas', 'perawatan tubuh', '5000', '6500', 'pcs', '10', '8', '1x/minggu', '']
+  R21: ['', '9', 'tisu', 'Kebutuhan Rumah tangga', '8000', '10000', 'pcs', '15', '15', '1x/minggu', '']
+  R22: ['', '10', 'pembalut', 'kebutuhan pribadi wanita', '8000', '10000', 'pcs', '20', '15', '1x/minggu', '']
+  R25: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Warung Sumiyarsih.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', '', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'Sumiyarsih', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'tembalang', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'peyek', 'camilan', '5000', '6000', 'pack', '30', '50', '3 hari', '']
+  R16: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']
+
+======================================================================
+FILE: Wingko Babat.xlsx
+======================================================================
+
+--- Sheet: Sheet1 ---
+  R1: ['', 'FORMULIR PENGUMPULAN DATA UMKM', '', '', '', '', '', '', '', '', '']
+  R4: ['', 'A. IDENTITAS UMKM', '', '', '', '', '', '', '', '', '']
+  R5: ['', 'Nama UMKM / Warung', '', 'Wingko Babat "O"', '', '', '', '', 'Contoh: Warung Bu Sri', '', '']
+  R6: ['', 'Nama Pemilik', '', 'Pak Dedy ', '', '', '', '', 'Contoh: Sri Wahyuni', '', '']
+  R7: ['', 'Alamat', '', 'Jl. Pekunden Barat No 870', '', '', '', '', 'Contoh: Jl. Merdeka No. 12, RT 03/RW 05', '', '']
+  R8: ['', 'No. HP / WhatsApp', '', '', '', '', '', '', 'Contoh: 0812xxxxxxx', '', '']
+  R9: ['', 'Tanggal Interview', '', '2026-07-21 00:00:00', '', '', '', '', 'Contoh: 16/07/2026', '', '']
+  R11: ['', 'B. TABEL PRODUK', '', '', '', '', '', '', '', '', '']
+  R12: ['', 'No', 'Nama Produk', 'Kategori', 'Harga Beli (Rp)', 'Harga Jual (Rp)', 'Unit', 'Est. Stok', 'Est. Penjualan/\nMinggu', 'Frekuensi\nRestock', 'Ada\nExpired?']
+  R13: ['', '1', 'Wingko Babat Ori', 'Makanan ', '25000', '30000', 'pack ', '150', '350', 'Sehabisnya', 'Ya']
+  R14: ['', '2', 'Paket 1 GB + 10 Pack', 'Makanan ', '150000', '300000', 'pack ', '50', '100', 'Sehabisnya', '']
+  R15: ['', '3', 'paket 1GB + 3 pack + TB', 'Makanan ', '100000', '150000', 'pack ', '50', '100', 'Sehabisnya', '']
+  R16: ['', '4', 'pisang goreng ori', 'Makanan ', '5000', '100.00', 'pack ', '25', '50', 'Sehabisnya', '']
+  R17: ['', '5', 'bandeng duri lunak', 'Makanan beku', '50000', '75000', 'pack ', '100', '350', 'Sehabisnya', '']
+  R18: ['', '6', 'tahu bakso ', 'Makanan beku', '50000', '70000', 'pack ', '100', '250', 'Sehabisnya', '']
+  R21: ['', 'Keterangan: Sel berwarna kuning adalah kolom yang perlu diisi. Baris abu-abu berisi contoh pengisian (boleh dihapus/ditimpa).', '', '', '', '', '', '', '', '', '']

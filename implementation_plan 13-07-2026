@@ -1,0 +1,139 @@
+# ML Overhaul + Data Reset + Loading Performance
+
+## Latar Belakang
+
+Berdasarkan analisis dari percakapan Anda dengan AI lain dan review kode ML saat ini, ada beberapa masalah kritis:
+
+1. **Data sintetis terlalu banyak (28k+) dan stok terlalu tinggi** — membuat ML tidak actionable
+2. **Revenue Forecast R² = 40%** — Linear Regression murni tanpa fitur musiman
+3. **Tidak ada train-test split / MAE / RMSE** — tidak bisa jawab dosen soal akurasi
+4. **N+1 query** di Stockout — performa buruk
+5. **Loading halaman yang data-heavy sangat lama** — perlu pagination/caching di backend
+
+---
+
+## Proposed Changes
+
+### Tahap 1: Reset Database + Rewrite Data Generator
+
+#### [DELETE] Database lama
+- Hapus `db.sqlite3`, jalankan `migrate` ulang, buat superuser baru
+
+#### [MODIFY] [generate_synthetic_data.py](file:///c:/laragon/www/TA/pos-backend/generate_synthetic_data.py)
+
+Rewrite total. Perubahan utama:
+
+| Aspek | Sebelum | Sesudah |
+|-------|---------|---------|
+| Jumlah bisnis | 3 (Warung Pusat, Cabang, Elektronik) | 1 (Warung Yafi — fokus untuk demo) |
+| Jumlah transaksi | 28.015 | ~300-500 (3 bulan data) |
+| Volume harian | 50/hari | 5-8/hari (realistis warung kecil) |
+| Stok batch | 80-200 unit (fast) | 15-40 unit (fast) |
+| Stok batch | 30-80 unit (medium) | 8-20 unit (medium) |
+| Stok batch | 5-20 unit (slow) | 3-8 unit (slow) |
+| Restock interval (fast) | 3-6 hari | 5-10 hari |
+| Periode | 12 bulan | 3 bulan (Apr-Jul 2026) |
+| Produk | 30 warung + 15 elektronik | 15-20 produk warung (yang paling umum) |
+
+> [!IMPORTANT]
+> Data yang lebih sedikit justru lebih realistis untuk UMKM warung kelontong kecil. Warung kecil punya 5-8 transaksi/hari, bukan 50. Dan stok beras 15-20 sak, bukan ribuan unit.
+
+**Efek di ML:**
+- Stok akan lebih cepat habis → modul Stockout dan Restock **akan trigger alert**
+- Forecast akan lebih akurat karena data tidak terlalu sparse
+- Loading akan jauh lebih cepat
+
+---
+
+### Tahap 2: Improve ML Algorithms (5 Modul)
+
+#### [MODIFY] [services.py](file:///c:/laragon/www/TA/pos-backend/ml/services.py)
+
+**Modul 1: Stockout Prediction** (6/10 → 8/10)
+- Fix N+1 query: single query `GROUP BY product_id` untuk stok
+- Tambah `std_dev` (standar deviasi) penjualan harian
+- Tambah `confidence_level` (tingkat kepercayaan prediksi)
+
+**Modul 2: Restock Recommendation** (6/10 → 8/10)
+- Ganti Safety Stock formula: `avg * lead * 0.2` → `Z * sigma * sqrt(L)` (Z=1.65 untuk 95% service level)
+- Tambah EOQ (Economic Order Quantity): `sqrt((2 * D * S) / H)`
+- Output rekomendasi lebih actionable
+
+**Modul 3: Expiry Risk** (7/10 → 8.5/10)
+- Tambah **sales velocity**: proyeksi berapa unit terjual sebelum expired
+- Tambah **rekomendasi aksi**: "Diskon 50% segera" / "Diskon 30% atau bundle"
+- Hitung `projected_unsold_qty` dan `adjusted_loss`
+
+**Modul 4: Revenue Forecast** (5/10 → 8/10) — PERBAIKAN TERBESAR
+- Tambah **Feature Engineering**: `is_weekend`, `is_payday` (tgl 25-5), `day_of_week`
+- Tambah **train-test split** (80/20, `shuffle=False` untuk time series)
+- Tambah **MAE dan RMSE** sebagai metrik error absolut
+- R² diharapkan naik dari 40% ke 70%+
+- Tetap pakai Linear Regression (mudah dijelaskan ke dosen) tapi dengan fitur tambahan
+
+**Modul 5: ABC Classification** (7.5/10 → 8.5/10)
+- Tambah **profit-based analysis** selain revenue: `(selling_price - purchase_price) * qty`
+- Tambah **trend indicator**: bandingkan 30 hari terakhir vs 30 hari sebelumnya
+
+#### [MODIFY] [views.py](file:///c:/laragon/www/TA/pos-backend/ml/views.py)
+- Tambah **Django caching** (5 menit) untuk semua endpoint ML
+- Response format include metrik validasi (MAE, RMSE, R²)
+
+---
+
+### Tahap 3: Loading Performance (Pagination + Caching)
+
+> [!IMPORTANT]
+> Ini mengatasi masalah loading lama saat navigasi ke halaman dengan data banyak.
+
+#### Backend Pagination
+Untuk endpoint yang mengembalikan banyak data:
+
+| Endpoint | Saat Ini | Sesudah |
+|----------|----------|---------|
+| `/api/transactions/` | Load semua sekaligus | Page 1 of N (20 per page) |
+| `/api/inventory/batches/` | Load semua sekaligus | Page 1 of N (20 per page) |
+| `/api/ml/*` | Hitung ulang setiap request | Cache 5 menit + response cepat |
+| `/api/transactions/profit_loss/` | Load semua sekaligus | Date range + cache |
+
+#### Frontend Improvements
+- Sudah ada pagination di frontend (dari Phase 2c)
+- Pastikan frontend memanfaatkan backend pagination (server-side)
+
+---
+
+## Open Questions
+
+> [!IMPORTANT]
+> **Soal data interview UMKM:**
+> Anda menyebut akan interview toko kelontong untuk data real. Pertanyaan:
+> - Apakah data generator ini tetap dipakai sebagai "data awal" sebelum data real masuk?
+> - Atau mau kita buat fitur import CSV agar bisa input data dari interview langsung?
+
+---
+
+## Verification Plan
+
+### Automated Tests
+```bash
+python manage.py check           # Django system check
+npx vite build --mode development # Frontend build check
+```
+
+### Manual Verification
+1. Setelah regenerate data: buka ML Dashboard → pastikan ada alert Stockout (produk kritis)
+2. Cek Restock Recommendation → pastikan ada produk yang perlu restock
+3. Cek Revenue Forecast → R² harus > 60%, prediksi masuk akal
+4. Cek loading speed: navigasi halaman transaksi/inventori harus < 2 detik
+
+---
+
+## Urutan Eksekusi
+
+1. Hapus database lama + migrate ulang
+2. Rewrite data generator (lebih kecil, realistis)
+3. Generate data baru
+4. Rewrite ML services.py (5 modul improved)
+5. Update ML views.py (caching)
+6. Test semua modul ML
+7. Backend pagination untuk transaksi/inventori (jika belum)

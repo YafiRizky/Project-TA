@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alur Awal Hingga Akhir - POS ML System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.8;
+    }
+
+    /* Header */
+    .hero {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e1b4b 100%);
+      padding: 60px 20px;
+      text-align: center;
+      border-bottom: 1px solid #334155;
+    }
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .hero p { color: #94a3b8; font-size: 1rem; max-width: 700px; margin: 0 auto; }
+    .hero .meta {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero .meta span {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    /* Container */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* Table of Contents */
+    .toc {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 30px;
+      margin: 40px auto;
+      max-width: 600px;
+    }
+    .toc h2 { font-size: 1.2rem; color: #60a5fa; margin-bottom: 16px; }
+    .toc ol { padding-left: 24px; }
+    .toc li { margin: 8px 0; }
+    .toc a { color: #93c5fd; text-decoration: none; font-size: 0.95rem; }
+    .toc a:hover { color: #60a5fa; text-decoration: underline; }
+
+    /* Phase Sections */
+    .phase {
+      margin: 50px 0;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .phase-header {
+      padding: 24px 30px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .phase-number {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.2rem; color: white;
+      flex-shrink: 0;
+    }
+    .phase-header h2 { font-size: 1.3rem; font-weight: 700; color: #f1f5f9; }
+    .phase-header p { font-size: 0.85rem; color: #94a3b8; margin-top: 2px; }
+    .phase-body { padding: 30px; }
+
+    /* Story blocks */
+    .story {
+      margin-bottom: 30px;
+      padding: 20px 24px;
+      background: #0f172a;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+    }
+    .story.green { border-left-color: #10b981; }
+    .story.purple { border-left-color: #8b5cf6; }
+    .story.amber { border-left-color: #f59e0b; }
+    .story.rose { border-left-color: #f43f5e; }
+    .story.cyan { border-left-color: #06b6d4; }
+
+    .story h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 10px;
+    }
+    .story p, .story li { font-size: 0.92rem; color: #cbd5e1; }
+    .story ul { padding-left: 20px; margin-top: 8px; }
+    .story li { margin: 4px 0; }
+
+    /* Flowchart */
+    .flowchart {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 30px 20px;
+      margin: 30px 0;
+      overflow-x: auto;
+    }
+    .flowchart h3 {
+      text-align: center;
+      font-size: 1rem;
+      color: #60a5fa;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+    .flow-box {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      min-width: 130px;
+      max-width: 200px;
+      color: white;
+    }
+    .flow-box.start { background: #1d4ed8; border: 2px solid #3b82f6; border-radius: 24px; }
+    .flow-box.process { background: #1e293b; border: 1px solid #475569; color: #e2e8f0; }
+    .flow-box.decision { background: #92400e; border: 1px solid #f59e0b; transform: rotate(0deg); border-radius: 4px; }
+    .flow-box.action { background: #065f46; border: 1px solid #10b981; }
+    .flow-box.end { background: #7c2d12; border: 2px solid #f97316; border-radius: 24px; }
+    .flow-box.ml { background: #4c1d95; border: 1px solid #8b5cf6; }
+    .flow-box.ui { background: #164e63; border: 1px solid #06b6d4; }
+
+    .flow-arrow {
+      color: #64748b;
+      font-size: 1.3rem;
+      padding: 0 6px;
+      flex-shrink: 0;
+    }
+    .flow-arrow.down {
+      display: block;
+      text-align: center;
+      padding: 4px 0;
+      font-size: 1.2rem;
+    }
+
+    /* Feature table */
+    .feat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 16px 0;
+    }
+    .feat-table th {
+      background: #334155;
+      color: #e2e8f0;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+    }
+    .feat-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #1e293b;
+      color: #cbd5e1;
+    }
+    .feat-table tr:hover td { background: #1e293b; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge.admin { background: #1e40af; color: #93c5fd; }
+    .badge.kasir { background: #065f46; color: #6ee7b7; }
+    .badge.both { background: #4c1d95; color: #c4b5fd; }
+
+    /* Tech Stack */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .tech-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .tech-card h4 { font-size: 0.9rem; color: #60a5fa; margin-bottom: 6px; }
+    .tech-card p { font-size: 0.82rem; color: #94a3b8; }
+
+    /* Separator */
+    hr { border: none; border-top: 1px solid #334155; margin: 40px 0; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.5rem; }
+      .phase-body { padding: 20px; }
+      .flow-row { flex-direction: column; gap: 4px; }
+      .flow-arrow { transform: rotate(90deg); }
+    }
+
+    .note {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 0.88rem;
+      color: #94a3b8;
+    }
+    .note strong { color: #f59e0b; }
+
+    .ui-element {
+      display: inline-block;
+      background: #334155;
+      color: #e2e8f0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================== HERO =================== -->
+  <div class="hero">
+    <h1>Alur Lengkap POS ML System</h1>
+    <p>Cerita teknis dari awal hingga akhir: bagaimana sistem Point of Sale berbasis Machine Learning untuk UMKM warung kelontong bekerja, mulai dari registrasi hingga prediksi AI.</p>
+    <div class="meta">
+      <span>Tugas Akhir (TA) 2026</span>
+      <span>Django + React + PostgreSQL</span>
+      <span>5 Modul ML (scikit-learn)</span>
+      <span>18 Halaman Frontend</span>
+      <span>10 Backend Apps</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- =================== TOC =================== -->
+    <div class="toc">
+      <h2>Daftar Isi</h2>
+      <ol>
+        <li><a href="#s1">Gambaran Umum & Tech Stack</a></li>
+        <li><a href="#s2">Fase 1 — Registrasi & Login (Onboarding)</a></li>
+        <li><a href="#s3">Fase 2 — Setup Master Data (Admin/Owner)</a></li>
+        <li><a href="#s4">Fase 3 — Inventori & Stok Batch</a></li>
+        <li><a href="#s5">Fase 4 — POS Kasir & Transaksi</a></li>
+        <li><a href="#s6">Fase 5 — Laporan & Riwayat</a></li>
+        <li><a href="#s7">Fase 6 — Machine Learning (5 Modul AI)</a></li>
+        <li><a href="#s8">Fase 7 — Pengaturan & Multi-Bisnis</a></li>
+        <li><a href="#s9">Daftar Lengkap Halaman & Hak Akses</a></li>
+        <li><a href="#s10">Arsitektur & Alur Data Teknis</a></li>
+      </ol>
+    </div>
+
+    <!-- =================== SECTION 1 =================== -->
+    <div class="phase" id="s1">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #3b82f6, #6366f1);">1</div>
+        <div>
+          <h2>Gambaran Umum & Tech Stack</h2>
+          <p>Apa itu POS ML System dan teknologi apa yang digunakan</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story">
+          <h3>Apa Ini?</h3>
+          <p>POS ML System adalah aplikasi <strong>Point of Sale (Kasir)</strong> berbasis web untuk UMKM, khususnya <strong>warung kelontong kecil</strong>. Bedanya dengan POS biasa: sistem ini dilengkapi <strong>5 modul Machine Learning</strong> yang membantu pemilik warung mengambil keputusan bisnis berdasarkan data, bukan perkiraan.</p>
+          <p style="margin-top: 10px;">Ada <strong>2 jenis user</strong>:</p>
+          <ul>
+            <li><strong>Admin/Owner</strong> — Pemilik warung. Bisa mengelola semua: produk, stok, laporan, ML, kasir, diskon, pembayaran.</li>
+            <li><strong>Kasir</strong> — Pegawai kasir. Hanya bisa melakukan transaksi POS, melihat riwayat, stock opname, dan profil sendiri.</li>
+          </ul>
+        </div>
+
+        <div class="story green">
+          <h3>Tech Stack</h3>
+          <div class="tech-grid">
+            <div class="tech-card">
+              <h4>Frontend</h4>
+              <p>React 18 + Vite, TailwindCSS, React Query (TanStack), Recharts, React Icons, React Router v6</p>
+            </div>
+            <div class="tech-card">
+              <h4>Backend</h4>
+              <p>Django 6.0 + Django REST Framework, PostgreSQL, Simple JWT (Auth), django-auditlog</p>
+            </div>
+            <div class="tech-card">
+              <h4>Machine Learning</h4>
+              <p>scikit-learn (Ridge Regression, Linear Regression), pandas, numpy</p>
+            </div>
+            <div class="tech-card">
+              <h4>Payment Gateway</h4>
+              <p>Xendit API (QRIS, eWallet, Transfer Bank) — mode development/test</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="story purple">
+          <h3>Arsitektur Multi-Tenant</h3>
+          <p>Sistem mendukung <strong>multi-bisnis</strong>. Satu owner bisa memiliki beberapa toko/cabang. Semua data (produk, stok, transaksi, ML) <strong>terisolasi per bisnis</strong> menggunakan <code>business_id</code> di setiap query.</p>
+          <p style="margin-top: 8px;">Owner punya <code>owner_code</code> unik (6 karakter) untuk mengidentifikasi kepemilikan. Kasir terikat ke satu bisnis via <code>business_code</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 2 =================== -->
+    <div class="phase" id="s2">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #10b981, #059669);">2</div>
+        <div>
+          <h2>Fase 1 — Registrasi & Login (Onboarding)</h2>
+          <p>Bagaimana user pertama kali masuk ke sistem</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story green">
+          <h3>Cerita: Owner Daftar Pertama Kali</h3>
+          <p>Yafi adalah pemilik Warung Yafi di Semarang. Dia membuka browser dan mengakses <code>http://localhost:3000/register</code>. Di halaman <strong>Register</strong> yang berwarna biru-indigo dengan gradient modern, dia melihat form multi-step:</p>
+          <ul>
+            <li><strong>Step 1 — Data Pribadi:</strong> Username, nama lengkap, email, password (min 8 karakter), konfirmasi password.</li>
+            <li><strong>Step 2 — Data Bisnis:</strong> Nama bisnis ("Warung Yafi"), jenis bisnis (dropdown: Warung/Toko Kelontong), nomor telepon, provinsi (dropdown data Indonesia), kota, kecamatan, alamat lengkap.</li>
+            <li><strong>Step 3 — Review & Submit:</strong> Ringkasan semua data. Tombol <span class="ui-element">Daftar Sekarang</span>.</li>
+          </ul>
+          <p style="margin-top: 10px;">Setelah submit, backend membuat: <strong>BusinessUser</strong> (role=admin), <strong>Business</strong> (dengan business_code unik 6 char), dan men-generate <strong>owner_code</strong>. Yafi langsung diredirect ke halaman login.</p>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Alur Registrasi Owner</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Buka /register</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Isi Data Pribadi</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Isi Data Bisnis</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">Submit</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box end">Redirect /login</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box process" style="font-size: 0.75rem;">Backend: Create User + Business + owner_code</div>
+          </div>
+        </div>
+
+        <div class="story">
+          <h3>Cerita: Login (Admin & Kasir)</h3>
+          <p>Di halaman <strong>Login</strong>, ada <strong>2 tab</strong>: "Masuk sebagai <strong>Owner</strong>" dan "Masuk sebagai <strong>Kasir</strong>".</p>
+          <ul>
+            <li><strong>Tab Owner:</strong> Input <code>owner_code</code> (6 huruf unik), username, password. Backend memverifikasi bahwa username cocok dengan owner_code tersebut.</li>
+            <li><strong>Tab Kasir:</strong> Input <code>business_code</code> (6 huruf unik), username kasir, password. Kasir hanya bisa login ke bisnis yang mereka terdaftar.</li>
+          </ul>
+          <p style="margin-top: 10px;">Setelah login sukses, backend mengembalikan <strong>JWT token</strong> (access + refresh). Token disimpan di localStorage. React context (<code>AuthContext</code>) menyimpan data user, role, dan business yang aktif.</p>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Alur Login</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Buka /login</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box decision">Pilih Tab: Owner / Kasir</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Isi code + username + password</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">POST /api/auth/login/</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box action">Simpan JWT Token</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box decision">Role?</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ui">Admin: Sidebar biru (14 menu)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box ui">Kasir: Sidebar hijau (5 menu)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 3 =================== -->
+    <div class="phase" id="s3">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #f59e0b, #d97706);">3</div>
+        <div>
+          <h2>Fase 2 — Setup Master Data (Admin/Owner)</h2>
+          <p>Owner mengatur fondasi bisnis: kategori, supplier, produk, dan diskon</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story amber">
+          <h3>Cerita: Owner Setup Produk Warung</h3>
+          <p>Setelah login, Yafi melihat <strong>Dashboard</strong> dengan widget ringkasan: total produk, total transaksi hari ini, stok rendah, revenue hari ini. Sidebar kiri berwarna <strong>slate-900</strong> (gelap) dengan ikon dan section group.</p>
+          <p style="margin-top: 10px;">Yafi mulai setup:</p>
+        </div>
+
+        <div class="story">
+          <h3>1. Halaman Kategori (/categories) — Admin Only</h3>
+          <p>Yafi buka menu <strong>"Kategori"</strong> di sidebar section "Master Data". Dia melihat tabel daftar kategori (kosong). Ada tombol <span class="ui-element">+ Tambah Kategori</span> di pojok kanan atas.</p>
+          <p>Klik tombol tersebut, muncul <strong>modal popup</strong> dengan form: Kode Kategori, Nama Kategori. Yafi menambahkan: Sembako, Mie Instan, Minuman, Rokok, Snack.</p>
+          <p style="margin-top: 8px;">Setiap kategori bisa <strong>Edit</strong> (ikon pensil) atau <strong>Hapus</strong> (ikon trash, dengan konfirmasi dialog). Ada <strong>search bar</strong> di atas tabel untuk filter cepat.</p>
+        </div>
+
+        <div class="story">
+          <h3>2. Halaman Supplier (/suppliers) — Admin Only</h3>
+          <p>Sama seperti Kategori: tabel + tombol tambah + modal form. Field: Kode, Nama Supplier, Telepon, Kota. Yafi menambahkan: "Indogrosir Semarang" dan "Agen Sembako Jaya".</p>
+        </div>
+
+        <div class="story">
+          <h3>3. Halaman Produk (/products) — Admin Only</h3>
+          <p>Halaman ini lebih kompleks. Di atas ada <strong>3 card summary</strong>: Total Produk, Produk Aktif, Stok Rendah. Di bawah ada tabel dengan kolom: Nama, Kode, Kategori, Harga Jual, Harga Beli, Unit, Min Stok, Status.</p>
+          <p style="margin-top: 8px;">Tombol <span class="ui-element">+ Tambah Produk</span> membuka <strong>modal form</strong> dengan field: Nama Produk, Kode, Kategori (dropdown), Supplier (dropdown), Harga Jual, Harga Beli, Unit (SAK/BTL/KG/PCS/PAK), Minimum Stok, dan toggle Aktif/Nonaktif.</p>
+          <p style="margin-top: 8px;">Yafi menambahkan 15 produk: Beras 5kg (Rp 65.000/sak), Indomie Goreng (Rp 3.500/pcs), Aqua 600ml (Rp 4.000/btl), Gudang Garam Filter (Rp 28.000/pak), dll.</p>
+        </div>
+
+        <div class="story purple">
+          <h3>4. Halaman Manajemen Diskon (/promotions) — Admin Only</h3>
+          <p>Owner bisa membuat <strong>promo/diskon</strong> yang aktif dalam periode tertentu. Form: Nama Promo, Tipe (Persentase / Nominal), Nilai diskon, Tanggal Mulai, Tanggal Berakhir, Produk yang di-diskon. Diskon otomatis muncul di POS kasir jika berlaku saat checkout.</p>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Setup Master Data</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Login sebagai Owner</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Buat Kategori</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Buat Supplier</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Buat Produk</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">Buat Diskon (opsional)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box end">Master Data Siap &rarr; Lanjut ke Inventori</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 4 =================== -->
+    <div class="phase" id="s4">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">4</div>
+        <div>
+          <h2>Fase 3 — Inventori & Stok Batch</h2>
+          <p>Mengelola stok barang masuk, batch, dan stock opname</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story purple">
+          <h3>Cerita: Owner Terima Kiriman Barang</h3>
+          <p>Setiap kali Yafi belanja stok di Indogrosir, dia mencatat barang masuk di halaman <strong>Stok Batch (/inventory)</strong>. Halaman ini menampilkan <strong>semua batch</strong> yang pernah masuk, dengan filter: Status (ACTIVE / DEPLETED), Produk, dan tanggal.</p>
+        </div>
+
+        <div class="story">
+          <h3>Halaman Stok Batch (/inventory) — Admin Only</h3>
+          <p>Di atas halaman ada <strong>4 card summary</strong>: Total Batch Aktif, Total Nilai Stok, Batch Mendekati Expired, Batch Habis. Di bawah ada tabel batch dengan kolom: Kode Batch, Produk, Qty, Harga Beli, Tanggal Beli, Tanggal Expired, Status.</p>
+          <p style="margin-top: 10px;">Tombol <span class="ui-element">+ Tambah Batch</span> membuka modal form:</p>
+          <ul>
+            <li><strong>Produk</strong> (dropdown search) — pilih produk yang akan di-restock</li>
+            <li><strong>Jumlah / Qty</strong> — berapa unit yang dibeli</li>
+            <li><strong>Harga Beli per Unit</strong> — harga modal per unit</li>
+            <li><strong>Tanggal Pembelian</strong> — kapan dibeli</li>
+            <li><strong>Tanggal Expired</strong> (opsional) — untuk produk yang ada masa kadaluarsa</li>
+          </ul>
+          <p style="margin-top: 10px;">Setiap batch mendapat <strong>batch_code</strong> unik otomatis. Batch berstatus <code>ACTIVE</code> saat masih ada stok, dan otomatis berubah ke <code>DEPLETED</code> saat qty = 0 (habis terjual via FIFO).</p>
+        </div>
+
+        <div class="story green">
+          <h3>Halaman Stock Opname (/stock-opname) — Admin & Kasir</h3>
+          <p>Fitur ini untuk <strong>pencocokan stok fisik vs stok sistem</strong>. Kasir atau owner bisa buka halaman ini, pilih produk dan batch, lalu input jumlah stok fisik aktual. Sistem menghitung <strong>selisih (variance)</strong>:</p>
+          <ul>
+            <li><strong>Selisih positif:</strong> stok fisik lebih banyak dari sistem (kelebihan)</li>
+            <li><strong>Selisih negatif:</strong> stok fisik lebih sedikit dari sistem (kehilangan/rusak)</li>
+          </ul>
+          <p style="margin-top: 8px;">Admin bisa menyetujui atau menolak hasil opname. Jika disetujui, stok di sistem <strong>otomatis disesuaikan</strong> dan dicatat di audit log.</p>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Alur Inventori</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Beli Stok dari Grosir</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Catat Batch Baru di /inventory</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">Batch ACTIVE (qty > 0)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box process">Transaksi POS</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">FIFO: Kurangi dari batch terlama</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box decision">Qty = 0?</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box end">Status = DEPLETED</div>
+          </div>
+          <div class="flow-row" style="margin-top: 20px;">
+            <div class="flow-box start">Stock Opname</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Input Stok Fisik</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box decision">Selisih?</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">Adjustment + Audit Log</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 5 =================== -->
+    <div class="phase" id="s5">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #f43f5e, #e11d48);">5</div>
+        <div>
+          <h2>Fase 4 — POS Kasir & Transaksi</h2>
+          <p>Inti dari sistem: proses jual beli di kasir</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story rose">
+          <h3>Cerita: Kasir Rina Melayani Pembeli</h3>
+          <p>Kasir Rina login dengan business_code warung + username "Kasir Rina" + password. Sidebar-nya berwarna <strong>hijau emerald</strong> (beda dari admin yang biru). Dia hanya melihat 5 menu: Dashboard, Transaksi Baru, Riwayat Transaksi, Stock Opname, Profil.</p>
+          <p style="margin-top: 10px;">Rina klik <strong>"Transaksi Baru"</strong> dan masuk ke halaman POS fullscreen.</p>
+        </div>
+
+        <div class="story">
+          <h3>Halaman POS (/pos) — Admin & Kasir</h3>
+          <p>Ini adalah halaman <strong>paling kompleks</strong> di sistem (46KB). Layout dibagi 2 kolom:</p>
+          <ul>
+            <li><strong>Kolom Kiri (70%):</strong> Grid produk. Di atas ada search bar + filter kategori (tab horizontal). Setiap produk ditampilkan sebagai card: nama, harga, stok tersedia. Klik card untuk menambahkan ke keranjang.</li>
+            <li><strong>Kolom Kanan (30%):</strong> Keranjang belanja. Daftar item yang dipilih: nama, qty (bisa + / -), harga per unit, subtotal. Di bawah ada: Total, Diskon (otomatis dari promo aktif atau manual), Grand Total.</li>
+          </ul>
+          <p style="margin-top: 10px;">Di bawah keranjang ada panel pembayaran:</p>
+          <ul>
+            <li><strong>Pilih Metode:</strong> CASH, QRIS, Transfer, E-Wallet (radio buttons)</li>
+            <li><strong>Input "Uang Dibayar"</strong> (khusus CASH) — quick amount buttons: Rp 10rb, 20rb, 50rb, 100rb, Uang Pas</li>
+            <li><strong>Tampilkan Kembalian</strong> otomatis dihitung</li>
+            <li>Tombol <span class="ui-element">Checkout</span> — hijau besar</li>
+          </ul>
+        </div>
+
+        <div class="story green">
+          <h3>Proses Checkout (Backend)</h3>
+          <p>Saat kasir klik "Checkout", frontend mengirim <code>POST /api/transactions/transactions/checkout/</code> dengan payload: daftar item (product_id, qty), metode bayar, jumlah dibayar, catatan diskon.</p>
+          <p style="margin-top: 10px;">Backend melakukan:</p>
+          <ul>
+            <li><strong>Validasi stok</strong> — cek apakah produk ada stok yang cukup</li>
+            <li><strong>Alokasi FIFO</strong> — kurangi stok dari batch terlama dulu</li>
+            <li><strong>Hitung total</strong> — subtotal, diskon, grand total, kembalian</li>
+            <li><strong>Generate kode transaksi</strong> — format: STRX-YYMMDD-0001</li>
+            <li><strong>Simpan Transaction + TransactionItems</strong></li>
+            <li><strong>Update batch qty</strong> — jika habis, set status = DEPLETED</li>
+          </ul>
+          <p style="margin-top: 10px;">Setelah sukses, muncul <strong>popup struk/receipt</strong> dengan detail transaksi. Bisa dicetak (CSS print-friendly).</p>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Alur Transaksi POS</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Kasir buka /pos</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ui">Pilih produk (grid card)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Masuk Keranjang</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Atur qty (+ / -)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box ui">Pilih Metode Bayar</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Input Uang Dibayar</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">Klik CHECKOUT</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box decision">Stok cukup?</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box action">FIFO Allocation</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Create Transaction + Items</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ui">Popup Struk</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box end">Selesai</div>
+          </div>
+        </div>
+
+        <div class="story">
+          <h3>Halaman Riwayat Transaksi (/transactions) — Admin & Kasir</h3>
+          <p>Tabel daftar semua transaksi: Kode, Tanggal, Kasir, Metode Bayar, Total, Status. Ada <strong>filter</strong> tanggal, metode bayar, dan search. Klik baris untuk melihat <strong>detail transaksi</strong> (popup modal dengan daftar item, qty, harga).</p>
+          <p style="margin-top: 8px;">Admin melihat semua transaksi bisnis. Kasir hanya melihat transaksi yang dia buat.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 6 =================== -->
+    <div class="phase" id="s6">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">6</div>
+        <div>
+          <h2>Fase 5 — Laporan & Riwayat Sistem</h2>
+          <p>Melihat performa bisnis dan audit trail</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story cyan">
+          <h3>Halaman Laporan Penjualan (/reports) — Admin Only</h3>
+          <p>Halaman ini menampilkan <strong>ringkasan penjualan</strong> dalam berbagai perspektif:</p>
+          <ul>
+            <li><strong>Card Summary:</strong> Total Revenue, Total Transaksi, Rata-rata per Transaksi, Total Profit</li>
+            <li><strong>Grafik Revenue Harian:</strong> Line chart menggunakan Recharts — menampilkan revenue per hari dalam rentang tanggal yang dipilih</li>
+            <li><strong>Grafik Revenue per Kategori:</strong> Pie chart — distribusi penjualan per kategori produk</li>
+            <li><strong>Tabel Produk Terlaris:</strong> Top 10 produk berdasarkan total penjualan</li>
+            <li><strong>Filter:</strong> Date range picker (dari tanggal - sampai tanggal)</li>
+          </ul>
+        </div>
+
+        <div class="story">
+          <h3>Halaman Audit Log (/auditlog) — Admin Only</h3>
+          <p>Sistem mencatat <strong>setiap perubahan data</strong> secara otomatis menggunakan django-auditlog. Halaman ini menampilkan: Siapa, Kapan, Apa yang berubah, Nilai lama vs baru. Contoh: "admin1 mengubah harga jual Beras 5kg dari Rp 60.000 ke Rp 65.000 pada 13 Juli 2026 14:30".</p>
+          <p style="margin-top: 8px;">Ada filter berdasarkan: User, Tipe Aksi (Create/Update/Delete), Model, dan Tanggal.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 7 — ML =================== -->
+    <div class="phase" id="s7">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">7</div>
+        <div>
+          <h2>Fase 6 — Machine Learning (5 Modul AI)</h2>
+          <p>Jantung dari project TA: prediksi dan rekomendasi cerdas</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story purple">
+          <h3>Halaman ML Predictions (/ml-predictions) — Admin Only</h3>
+          <p>Halaman ini memiliki <strong>5 tab horizontal</strong> di atas: Forecast Pendapatan, Klasifikasi Produk, Prediksi Stok Habis, Rekomendasi Restock, Risiko Expired. Setiap tab menampilkan data berbeda dari modul ML yang berbeda. Ada tombol <span class="ui-element">Refresh</span> untuk memperbarui prediksi.</p>
+          <p style="margin-top: 10px;">Semua modul ML di-cache selama <strong>5 menit</strong> di backend (Django cache) untuk performa. Data diisolasi per <code>business_id</code>.</p>
+        </div>
+
+        <div class="story">
+          <h3>Modul 1: Forecast Pendapatan (Tab 1)</h3>
+          <p><strong>Algoritma:</strong> Ridge Regression + Feature Engineering</p>
+          <p><strong>Fitur input:</strong> day_of_week, is_weekend, is_payday (tgl 25-5), rolling_7d_avg (rata-rata revenue 7 hari terakhir)</p>
+          <p><strong>Validasi:</strong> Train-Test Split 80/20 (shuffle=False untuk time series)</p>
+          <p><strong>Metrik:</strong> R² (train & test), MAE (Mean Absolute Error), RMSE (Root Mean Squared Error)</p>
+          <p style="margin-top: 10px;"><strong>UI menampilkan:</strong></p>
+          <ul>
+            <li>4 card: Revenue Bulan Ini, Prediksi Bulan Depan (+ badge % pertumbuhan), Rata-rata Harian, Akurasi Model R²</li>
+            <li>3 card validasi: MAE, RMSE, Train/Test Split (misal: 67/17)</li>
+            <li>Trend badge: "Tren NAIK/TURUN/STABIL" dengan penjelasan fitur yang digunakan</li>
+            <li>Grafik ComposedChart: Area (revenue aktual 30 hari) + Line dashed (prediksi 14 hari ke depan)</li>
+          </ul>
+        </div>
+
+        <div class="story green">
+          <h3>Modul 2: Klasifikasi Produk ABC (Tab 2)</h3>
+          <p><strong>Algoritma:</strong> Pareto Analysis (80/20 Rule)</p>
+          <p><strong>Cara kerja:</strong> Urutkan produk berdasarkan total revenue, hitung persentase kumulatif. Kelas A = 0-80% kumulatif, Kelas B = 80-95%, Kelas C = 95-100%.</p>
+          <p style="margin-top: 10px;"><strong>V2 Improvement:</strong></p>
+          <ul>
+            <li>Tambah analisis <strong>Profit</strong> (revenue - cost)</li>
+            <li>Tambah <strong>Trend 30 hari</strong>: bandingkan revenue 30 hari terakhir vs 30 hari sebelumnya. Muncul sebagai arrow UP/DOWN/STABLE + persentase.</li>
+          </ul>
+          <p style="margin-top: 10px;"><strong>UI menampilkan:</strong></p>
+          <ul>
+            <li>3 card warna: Kelas A (hijau, Fast Moving), Kelas B (amber, Medium), Kelas C (merah, Slow/Dead)</li>
+            <li>Pie Chart: Distribusi jumlah produk per kelas</li>
+            <li>Bar Chart horizontal: Top 10 produk by revenue (warna sesuai kelas)</li>
+            <li>Tabel detail: #, Produk, Revenue, Profit, Qty, % Revenue, Kelas (badge), Trend 30d (arrow + %)</li>
+          </ul>
+        </div>
+
+        <div class="story amber">
+          <h3>Modul 3: Prediksi Stok Habis (Tab 3)</h3>
+          <p><strong>Algoritma:</strong> Moving Average (7 hari & 30 hari)</p>
+          <p><strong>Cara kerja:</strong> Hitung rata-rata penjualan harian per produk (7d dan 30d). Pakai yang tertinggi (lebih konservatif). <code>days_until_stockout = current_stock / avg_daily_sales</code>.</p>
+          <p style="margin-top: 10px;"><strong>V2 Improvement:</strong></p>
+          <ul>
+            <li>Fixed <strong>N+1 query</strong>: satu query aggregated untuk semua stok</li>
+            <li>Tambah <strong>Standard Deviation</strong> penjualan harian</li>
+            <li>Tambah <strong>Confidence Level</strong>: HIGH (20+ hari data), MEDIUM (10+), LOW (3+), INSUFFICIENT_DATA</li>
+          </ul>
+          <p style="margin-top: 10px;"><strong>UI menampilkan:</strong></p>
+          <ul>
+            <li>Alert banner merah jika ada produk CRITICAL/HIGH</li>
+            <li>4 card: Kritis (≤3 hari), Tinggi (≤7 hari), Sedang (≤14 hari), Aman (>14 hari)</li>
+            <li>Tabel: Produk, Stok, Avg/Hari 7d, Avg/Hari 30d, Habis Dalam (hari), Risiko (badge warna), Confidence (badge)</li>
+          </ul>
+        </div>
+
+        <div class="story">
+          <h3>Modul 4: Rekomendasi Restock (Tab 4)</h3>
+          <p><strong>Algoritma:</strong></p>
+          <ul>
+            <li><strong>Safety Stock</strong> = Z * sigma * sqrt(Lead Time), Z = 1.65 (95% service level)</li>
+            <li><strong>Reorder Point</strong> = (avg_daily * lead_time) + safety_stock</li>
+            <li><strong>EOQ</strong> (Economic Order Quantity) = sqrt((2 * Demand * Ordering Cost) / Holding Cost)</li>
+          </ul>
+          <p style="margin-top: 10px;"><strong>Kapan tampil:</strong> Hanya produk yang <code>current_stock ≤ reorder_point</code> yang ditampilkan sebagai "Perlu Restock".</p>
+          <p style="margin-top: 10px;"><strong>UI menampilkan:</strong></p>
+          <ul>
+            <li>3 card: Produk Perlu Restock, Total Estimasi Biaya, Lead Time</li>
+            <li>Tabel: Produk, Stok, Avg/Hari, Reorder Point, Qty Beli (rekomendasi), Est. Biaya, Urgensi (URGENT/SOON/OK)</li>
+            <li>Jika semua aman, muncul ikon centang hijau "Semua stok aman!"</li>
+          </ul>
+        </div>
+
+        <div class="story rose">
+          <h3>Modul 5: Risiko Expired (Tab 5)</h3>
+          <p><strong>Algoritma:</strong> Deterministik + Sales Velocity</p>
+          <p><strong>Cara kerja:</strong> Scan semua batch yang punya tanggal expired. Hitung hari tersisa. Hitung <strong>sales velocity</strong> (rata-rata penjualan harian 30 hari). Proyeksikan berapa yang bisa terjual sebelum expired.</p>
+          <p style="margin-top: 10px;"><strong>V2 Improvement:</strong></p>
+          <ul>
+            <li><strong>Projected Unsold:</strong> qty yang kemungkinan tidak terjual sebelum expired</li>
+            <li><strong>Adjusted Loss:</strong> kerugian berdasarkan projected unsold (bukan full loss)</li>
+            <li><strong>Rekomendasi Aksi:</strong> "Diskon 50% segera atau bundle", "Monitor, prioritaskan di display", dll</li>
+          </ul>
+          <p style="margin-top: 10px;"><strong>UI menampilkan:</strong></p>
+          <ul>
+            <li>4 card: Sudah Expired (merah), Kritis ≤7 hari (oranye), Warning ≤30 hari (amber), Total Risiko Finansial (ungu)</li>
+            <li>Tabel per section (Expired, Kritis, Warning): Produk + Batch Code, Qty, Proyeksi Tdk Terjual, Est. Rugi, Expired kapan, Rekomendasi aksi</li>
+          </ul>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Alur Data ke ML</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Transaksi POS</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Data Transaction + Items (PostgreSQL)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ml">ML Services (Python)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box ml">Stockout (Moving Avg)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ml">Restock (Z*sigma*sqrt L + EOQ)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ml">Expiry (Velocity)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box ml">Forecast (Ridge + Features)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ml">ABC (Pareto + Profit)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ui">ML Dashboard (React)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box end">Owner melihat insight, mengambil keputusan bisnis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 8 =================== -->
+    <div class="phase" id="s8">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #ec4899, #db2777);">8</div>
+        <div>
+          <h2>Fase 7 — Pengaturan & Multi-Bisnis</h2>
+          <p>Fitur administratif: kelola kasir, pembayaran, profil, dan cabang</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="story">
+          <h3>Halaman Kelola Kasir (/users) — Admin Only</h3>
+          <p>Owner bisa <strong>menambah, mengedit, dan menonaktifkan kasir</strong>. Tombol <span class="ui-element">+ Tambah Kasir</span> membuka modal: Username, Nama Lengkap, Password. Kasir yang dibuat otomatis terikat ke bisnis yang sedang aktif. Ada toggle untuk aktifkan/nonaktifkan kasir.</p>
+        </div>
+
+        <div class="story green">
+          <h3>Halaman Pengaturan Pembayaran (/payment-settings) — Admin Only</h3>
+          <p>Mengelola metode pembayaran yang tersedia di POS: CASH, QRIS, Transfer Bank, E-Wallet. Owner bisa mengaktifkan/menonaktifkan metode tertentu. Integrasi Xendit API disiapkan untuk pembayaran digital (mode development).</p>
+        </div>
+
+        <div class="story purple">
+          <h3>Halaman Profil (/profile) — Admin & Kasir</h3>
+          <p>User bisa melihat dan mengedit profil mereka: nama lengkap, email, upload foto profil (disimpan di Django media). Ada section <strong>Ubah Password</strong> (password lama, baru, konfirmasi). Juga menampilkan info bisnis, role, owner_code/business_code.</p>
+        </div>
+
+        <div class="story amber">
+          <h3>Halaman Pilih Bisnis (/businesses) — Admin Only</h3>
+          <p>Untuk owner yang memiliki <strong>lebih dari 1 bisnis/cabang</strong>. Halaman ini menampilkan daftar semua bisnis yang dimiliki sebagai card. Klik card untuk <strong>beralih ke bisnis tersebut</strong>. Semua data (produk, stok, transaksi, ML) langsung berubah mengikuti bisnis yang dipilih.</p>
+          <p style="margin-top: 8px;">Ada juga tombol <span class="ui-element">+ Tambah Bisnis Baru</span> untuk membuat cabang baru.</p>
+        </div>
+
+        <div class="story">
+          <h3>Fitur Shift Summary (Kasir Logout)</h3>
+          <p>Saat <strong>kasir</strong> klik tombol Logout di sidebar, sebelum benar-benar keluar, muncul <strong>popup "Ringkasan Shift Anda"</strong> yang menampilkan:</p>
+          <ul>
+            <li>Total Transaksi hari ini</li>
+            <li>Total Omzet (revenue) hari ini</li>
+            <li>Total Item Terjual</li>
+            <li>Breakdown per metode bayar (CASH: 5x Rp xxx, QRIS: 2x Rp xxx, dst)</li>
+          </ul>
+          <p style="margin-top: 8px;">Kasir bisa review dulu, lalu klik "Lanjut Logout" atau "Kembali". Baru setelah itu muncul konfirmasi logout final.</p>
+        </div>
+
+        <div class="story cyan">
+          <h3>Notifikasi Stok (TopBar)</h3>
+          <p>Di TopBar (header atas), ada <strong>ikon lonceng</strong> dengan badge angka. Badge menunjukkan jumlah produk dengan stok rendah + batch mendekati expired. Klik lonceng membuka <strong>dropdown panel</strong> berisi daftar alert: "Stok Indomie Goreng rendah (sisa 3)", "Batch Telur expired dalam 5 hari".</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 9 =================== -->
+    <div class="phase" id="s9">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #64748b, #475569);">9</div>
+        <div>
+          <h2>Daftar Lengkap Halaman & Hak Akses</h2>
+          <p>Semua 18 halaman dan siapa yang bisa akses</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <table class="feat-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Halaman</th>
+              <th>URL</th>
+              <th>Akses</th>
+              <th>Fungsi Utama</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Login</td><td>/login</td><td><span class="badge both">Public</span></td><td>Autentikasi user (2 tab: Owner/Kasir)</td></tr>
+            <tr><td>2</td><td>Register</td><td>/register</td><td><span class="badge both">Public</span></td><td>Registrasi owner baru + bisnis (multi-step)</td></tr>
+            <tr><td>3</td><td>Dashboard</td><td>/dashboard</td><td><span class="badge both">All</span></td><td>Widget ringkasan: produk, transaksi, revenue, stok rendah</td></tr>
+            <tr><td>4</td><td>Kategori</td><td>/categories</td><td><span class="badge admin">Admin</span></td><td>CRUD kategori produk</td></tr>
+            <tr><td>5</td><td>Supplier</td><td>/suppliers</td><td><span class="badge admin">Admin</span></td><td>CRUD supplier/pemasok</td></tr>
+            <tr><td>6</td><td>Produk</td><td>/products</td><td><span class="badge admin">Admin</span></td><td>CRUD produk + harga jual/beli</td></tr>
+            <tr><td>7</td><td>Manajemen Diskon</td><td>/promotions</td><td><span class="badge admin">Admin</span></td><td>Buat promo/diskon dengan periode</td></tr>
+            <tr><td>8</td><td>Stok Batch</td><td>/inventory</td><td><span class="badge admin">Admin</span></td><td>Catat barang masuk, lihat semua batch</td></tr>
+            <tr><td>9</td><td>Stock Opname</td><td>/stock-opname</td><td><span class="badge both">All</span></td><td>Pencocokan stok fisik vs sistem</td></tr>
+            <tr><td>10</td><td>POS Kasir</td><td>/pos</td><td><span class="badge both">All</span></td><td>Proses jual beli (grid produk + keranjang)</td></tr>
+            <tr><td>11</td><td>Riwayat Transaksi</td><td>/transactions</td><td><span class="badge both">All</span></td><td>Daftar transaksi + detail</td></tr>
+            <tr><td>12</td><td>Laporan Penjualan</td><td>/reports</td><td><span class="badge admin">Admin</span></td><td>Chart + tabel penjualan + filter tanggal</td></tr>
+            <tr><td>13</td><td>ML Predictions</td><td>/ml-predictions</td><td><span class="badge admin">Admin</span></td><td>5 modul AI: forecast, ABC, stockout, restock, expiry</td></tr>
+            <tr><td>14</td><td>Kelola Kasir</td><td>/users</td><td><span class="badge admin">Admin</span></td><td>CRUD user kasir</td></tr>
+            <tr><td>15</td><td>Pengaturan Pembayaran</td><td>/payment-settings</td><td><span class="badge admin">Admin</span></td><td>Toggle metode bayar (CASH, QRIS, dll)</td></tr>
+            <tr><td>16</td><td>Profil</td><td>/profile</td><td><span class="badge both">All</span></td><td>Edit profil, foto, ganti password</td></tr>
+            <tr><td>17</td><td>Audit Log</td><td>/auditlog</td><td><span class="badge admin">Admin</span></td><td>Riwayat perubahan data sistem</td></tr>
+            <tr><td>18</td><td>Pilih Bisnis</td><td>/businesses</td><td><span class="badge admin">Admin</span></td><td>Pilih/ganti cabang bisnis aktif</td></tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          <strong>Catatan Sidebar:</strong> Admin melihat <strong>14 menu</strong> (sidebar biru, grouped: Dashboard, Master Data, Inventori, Transaksi, Laporan, AI & Prediksi, Pengaturan). Kasir melihat <strong>5 menu</strong> (sidebar hijau: Dashboard, Transaksi Baru, Riwayat, Stock Opname, Profil). Ada tombol "Ganti Cabang" di footer sidebar (admin only) dan "Logout" dengan shift summary (kasir).
+        </div>
+      </div>
+    </div>
+
+    <!-- =================== SECTION 10 =================== -->
+    <div class="phase" id="s10">
+      <div class="phase-header">
+        <div class="phase-number" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">10</div>
+        <div>
+          <h2>Arsitektur & Alur Data Teknis</h2>
+          <p>Bagaimana semua komponen saling terhubung</p>
+        </div>
+      </div>
+      <div class="phase-body">
+        <div class="flowchart">
+          <h3>Arsitektur Keseluruhan</h3>
+          <div class="flow-row">
+            <div class="flow-box ui" style="min-width: 180px;">Browser (User)<br><small>React + Vite</small><br><small>:3000</small></div>
+            <span class="flow-arrow">&larr; HTTP/JSON &rarr;</span>
+            <div class="flow-box action" style="min-width: 180px;">Backend API<br><small>Django REST Framework</small><br><small>:8000</small></div>
+            <span class="flow-arrow">&larr; SQL &rarr;</span>
+            <div class="flow-box process" style="min-width: 160px;">Database<br><small>PostgreSQL</small><br><small>pos_ml</small></div>
+          </div>
+          <div class="flow-row" style="margin-top: 20px;">
+            <div class="flow-box ml" style="min-width: 200px;">ML Engine<br><small>scikit-learn + pandas</small><br><small>(inside Django)</small></div>
+            <span class="flow-arrow">&larr; Query &rarr;</span>
+            <div class="flow-box process" style="min-width: 160px;">Database<br><small>PostgreSQL</small></div>
+          </div>
+        </div>
+
+        <div class="story">
+          <h3>Backend Apps (10 Django Apps)</h3>
+          <table class="feat-table">
+            <thead><tr><th>App</th><th>Endpoint</th><th>Fungsi</th></tr></thead>
+            <tbody>
+              <tr><td>accounts</td><td>/api/auth/</td><td>Login, Register, JWT Token Refresh, Profile</td></tr>
+              <tr><td>businesses</td><td>Internal</td><td>Model Business, BusinessUser, multi-tenant logic</td></tr>
+              <tr><td>products</td><td>/api/products/</td><td>Categories, Suppliers, Products CRUD</td></tr>
+              <tr><td>inventory</td><td>/api/inventory/</td><td>ProductBatch, InventoryMovement, Stock Opname</td></tr>
+              <tr><td>transactions</td><td>/api/transactions/</td><td>Transaction, TransactionItem, Checkout, Daily Summary</td></tr>
+              <tr><td>payments</td><td>/api/payments/</td><td>Payment Methods, Xendit Integration</td></tr>
+              <tr><td>promotions</td><td>/api/promotions/</td><td>Discount management, Active promos</td></tr>
+              <tr><td>notifications</td><td>/api/notifications/</td><td>Low stock alerts, Expiry notifications</td></tr>
+              <tr><td>auditlog</td><td>/api/auditlog/</td><td>System change history (auto-tracked)</td></tr>
+              <tr><td>ml</td><td>/api/ml/</td><td>5 ML endpoints: stockout, restock, expiry, forecast, classification</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="story green">
+          <h3>Alur Data Lengkap (End-to-End)</h3>
+          <p>Berikut adalah perjalanan data dari awal hingga menjadi insight ML:</p>
+          <ol style="padding-left: 20px; margin-top: 10px;">
+            <li><strong>Owner register</strong> &rarr; Business + User created di PostgreSQL</li>
+            <li><strong>Owner setup master data</strong> &rarr; Categories, Suppliers, Products tersimpan</li>
+            <li><strong>Owner catat stok masuk</strong> &rarr; ProductBatch created (qty, harga beli, expiry date)</li>
+            <li><strong>Kasir proses transaksi</strong> &rarr; Transaction + TransactionItems created, Batch qty dikurangi FIFO</li>
+            <li><strong>Data terakumulasi</strong> &rarr; Ratusan transaksi terkumpul selama berminggu-minggu</li>
+            <li><strong>Owner buka ML Dashboard</strong> &rarr; Backend query data transaksi + stok</li>
+            <li><strong>ML Engine memproses</strong> &rarr; pandas DataFrame, scikit-learn model.fit(), model.predict()</li>
+            <li><strong>Hasil dikembalikan sebagai JSON</strong> &rarr; Frontend render sebagai chart, tabel, card, badge</li>
+            <li><strong>Owner mengambil keputusan</strong> &rarr; "Harus restock Indomie besok", "Beras paling laris, tetap stok banyak"</li>
+          </ol>
+        </div>
+
+        <div class="flowchart">
+          <h3>Flowchart: Perjalanan Data End-to-End</h3>
+          <div class="flow-row">
+            <div class="flow-box start">Owner Register</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Setup Produk</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box process">Catat Stok Batch</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box action">Kasir Jual (POS)</div>
+          </div>
+          <div class="flow-row">
+            <div class="flow-box process">Data Terakumulasi (PostgreSQL)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ml">ML Engine (5 Modul)</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box ui">Dashboard ML</div>
+            <span class="flow-arrow">&rarr;</span>
+            <div class="flow-box end">Keputusan Bisnis</div>
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>Data Sintetis:</strong> Untuk keperluan demo dan evaluasi TA, sistem menggunakan data sintetis yang digenerate oleh script <code>generate_synthetic_data.py</code>. Data ini memodelkan warung kelontong kecil di Semarang: 15 produk, 726 transaksi selama 3 bulan (Apr-Jul 2026), volume 5-8 transaksi/hari (realistis untuk warung kecil). Stok batch dirancang agar beberapa produk memicu alert stockout dan expiry — sehingga ML punya data yang bermakna untuk dianalisis.
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div style="text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.85rem;">
+      <p>Dokumen ini di-generate pada <strong>13 Juli 2026</strong></p>
+      <p>POS ML System &mdash; Tugas Akhir &mdash; Universitas</p>
+      <p style="margin-top: 8px; color: #475569;">Total: 18 Halaman | 10 Backend Apps | 5 Modul ML | 2 User Roles | Multi-Bisnis</p>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+LAPORAN TUGAS AKHIR
+RANCANGAN BANGUN SISTEM POS TERINTEGRITASI 
+MACHINE LEARNING UNTUK 
+OPTIMASI MANAJEMEN STOK PADA UMKM
+
+
+
+Disusun Oleh:
+
+Mita Salsabilla 		3.34.23.1.14
+Yafi Rizky Kurniawan 	3.34.23.1.26
+
+
+
+PROGRAM STUDI TEKNIK INFORMATIKA
+JURUSAN TEKNIK ELEKTRO
+POLITEKNIK NEGERI SEMARANG
+2026
+
+
+LAPORAN TUGAS AKHIR
+RANCANGAN BANGUN SISTEM POS TERINTEGRITASI 
+MACHINE LEARNING UNTUK 
+OPTIMASI MANAJEMEN STOK PADA UMKM
+
+
+
+Laporan Tugas Akhir ini disusun untuk melengkapi sebagian persyaratan menjadi Ahli Madya
+
+Disusun Oleh:
+Mita Salsabilla 		3.34.23.1.14
+Yafi Rizky Kurniawan 	3.34.23.1.26
+
+
+PROGRAM STUDI TEKNIK INFORMATIKA
+JURUSAN TEKNIK ELEKTRO
+POLITEKNIK NEGERI SEMARANG
+2026
+
+PERSYARATAN KEASLIAN TUGAS AKHIR
+
+Yang bertanda tangan dibawah ini, saya:
+Nama/NIM/Kelas	: Mita Salsabilla/3.34.23.1.14/IK-3B
+Nama/NIM/Kelas	: Yafi Rizky Kurniawan/3.34.23.1.26/IK-3B
+Jurusan 		: Teknik Elektro 
+Program Studi 	: D3 Teknik Informatika 
+Menyatakan dengan sesungguhnya bahwa Tugas Akhir dengan judul “RANCANGAN BANGUN SISTEM POS TERINTEGRITASI MACHINE LEARNING UNTUK OPTIMASI MANAJEMEN STOK PADA UMKM” yang dibuat untuk melengkapi sebagian persyaratan menjadi Ahli Madya pada Program Studi D3 Teknik Informatika, Jurusan Teknik Elektro, Politeknik Negeri Semarang, sejauh yang kami ketahui bukan merupakan tiruan atau duplikasi dari Tugas Akhir yang sudah dipublikasikan dan atau pernah dipakai untuk mendapatkan gelar Ahli Madya di lingkungan Politeknik Negeri Semarang maupun di perguruan tinggi atau instansi maupun, kecuali bagian yang sumber informasinya dicantumkan sebagaimana mestinya. 
+
+	
+Semarang, Agustus 2026
+
+
+HALAMAN PERSETUJUAN
+
+Tugas Akhir dengan judul “RANCANGAN BANGUN SISTEM POS TERINTEGRITASI MACHINE LEARNING UNTUK OPTIMASI MANAJEMEN STOK PADA UMKM” dibuat untuk melengkapi Sebagian persyaratan menjadi AhliMadya pada Program Studi Teknik Informatika, Jurusan Teknik Elektro Politeknik Negeri Semarang dan disetujui untuk diajukan dalam siding ujian Tugas Akhir. 
+
+
+    	Semarang, Agustus 2026
+
+Menyetujui,
+
+Mengetahui,
+
+HALAMAN PENGESAHAN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ABSTRAK
+Mita Salsabilla dan Yafi Rizky Kurniawan “Rancangan Bangun Sistem POS Terintegrasi Machine Learning Untuk Optimatimasi Manajemen Stok Pada UMKM”, Tugas Akhir DIII Program Studi Teknik Informatika, Jurusan Teknik Elektro, Politeknik Negeri Semarang, dibawah bimbingan Dr. Ir. Kurnianingsih, S.T., M.T. dan Amran Yobioktabera, S.Kom, M.Kom. Agustus 2026
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+KATA PENGANTAR
+Puji dan Syukur penulis panjatkan kepada kehadiran Allah SWT, atas limpahan rahmat dan karunia-Nya sehingga penulis dapat menyelesaikan Tugas Akhir ini dengan judul RANCANGAN BANGUN SISTEM POS TERINTEGRITASI MACHINE LEARNING UNTUK OPTIMASI MANAJEMEN STOK PADA UMKM disusun untuk memenuhi salah satu syarat menyelesaikan Pendidikan Program Studi Diploma III Teknik Informatika Jurusan Teknik Elektro Politeknik Negeri Semarang. 
+Pada kesempatan ini penulis menyampaikan terimakasih kepada:
+Bapak Dr. Garup Lambang Goro, S.T., M.T. selaku Direktur Politeknik Negeri Semarang. 
+Bapak Yusnan Badruzzaman, S.T., M.Eng. selaku Ketua Jurusan Teknik Elektro Politeknik Negeri Semarang. 
+Ibu Idhawati Hestiningsih, S.Kom, M.Kom. selaku Koordinator Program Studi Teknik Informatika 
+Ibu Dr. Ir. Kurnianingsih, S.T., M.T. dan Bapak Amran Yobioktabera, S.Kom, M.Kom. Selaku Dosen Pembimbing yang memberikan masukan dan solusi kepada penulis mengenai pembantuan alat dan penyusunan laporan.
+Kedua orang tua beserta saudara-saudara yang senantiasa mendoakan penulis dan memberikan bantuan secara moril maupun materil dengan penuh Keikhlasan,
+Teman-teman kelas IK-3B yang telah membantu dan mendukung penulis. 
+Semoga Tugas Akhir ini dapat bermanfaat bagi penulis dan pihak yang berkepentingan
+
+
+
+
+Semarang, Agustus 2026
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DAFTAR ISI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DAFTAR GAMBAR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BAB 1
+PENDAHULUAN 
+ Latar Belakang 
+Usaha Mikro, Kecil, dan Menengah (UMKM) memiliki peran strategis dalam perekonomian Indonesia. Berdasarkan data Kementerian Koperasi dan Usaha Kecil dan Menengah Republik Indonesia (2023), UMKM berkontribusi sebesar 61,07% terhadap Produk Domestik Bruto (PDB) nasionl dan menyerap sekitar 97% tenaga kerja di Indonesia. Namun, mayoritas UMKM di Indonesia, khususnya usaha berskala kecil seperti warung, toko kelontong, dan minimart, masih menghadapi berbagai tantangan operasional yang menghambat bisnis mereka.
+Salah satu permasalahan krusial yang dihadapi UMKM adalah manajemen stok yang kurang optimal. Menurut survei Lembaga Pengembangan Perbankan Indonesia (LPPI) tahun 2023, 67% UMKM mengalami masalah stok kosong (stockout) yang menyebabkan kehilangan penjualan, sementara 54% mengalami kerugian akibat produk kadaluarsa karena pembelian berlebihan. Permasalahan ini diperburuk dengan minimnya adopsi teknologi dalam pencatatan transaksi dan manajemen inventori. 
+Pencatatan manual tidak hanya memakan waktu, tetapi juga menyulitkan pemilik usaha untuk mengalisis pola penjualan dan membuat Keputusan bisnis yang tepat. Pemilik UMKM sering kali kesulitan menentukan kapan harus melakukan restock, berapa jumlah yang harus dipesan, dan prudk mana yang perlu diprioritaskan. Ketidakpastian ini menyebabkan inefiensi modal kerja, dimana uang tertahan dalam stok yang tidak bergerak atau justru kehilangan peluan penjualan karen astok habis. 
+Perkembangan teknologi Machine Learning (ML) memungkinkan prediksi penjualan, rekomendasi restock, serta analisis risiko kadaluarsa secara otomatis. Namun, teknologi ini umumnya hanya diterapkan pada perusahaan besar dan belum banyak diimplementasikan pada UMKM karena keterbatasan biaya dan sumber daya teknis.
+Oleh karena itu, diperlukan sebuah sistem Point of Sale yang tidak hanya mencatat transaksi, tetapi juga dilengkapi dengan kemampuan Machine Learning untuk memberikan rekomendasi cerdas dalam manajemen stok. Sistem ini diharapkan dapat membantu UMKM dalam:
+Mendeteksi risiko stok kosong (stockout) sebelum terjadi 
+Memberikan rekomendasi waktu dan jumlah restock yang optimal
+Mengidentifikasi produk dengan risiko kadaluarsa tinggi
+Memprediksi tren penjualan untuk perencanaan bisnis yang lebih baik 
+Mengklasifikasikan produk berdasarkan performa penjualan (ABC Analysis). 
+Berdasarkan permasalahan tersebut, diperlukan suatu sistem Point Os Sale (POS) berbasis web yang terintegrasi dengan manajemen stok batch-level dan modul prediksi berbasis Machine Learning untuk membantu UMKM mengelola persediaan secara lebih efisien dan berbasis data. s
+ Perumusan Masalah
+Berdasarkan uraian latar belakang tersebut didapat pokok permasalahan yaitu:
+Bagaimana merancang sistem Point of Sale (POS) berbasis web yang dapat membantu pengelolaan transaksi dan stok barang pada UMKM?
+Bagaimana mengimplementasikan sistem manajemen stok dengan metode FIFO otomatis dan tracking berdasarkan batch serta tanggal kadaluarsa?
+Bagaimana menerapkan Machine Learning untuk memprediksi kebutuhan restock, risiko kadaluarsa, dan proyeksi penjualan pada UMKM?
+
+ Tujuan 
+Tujuan Pembuatan Sistem ini, sebagai berikut:
+Merancang dan membangun Sistem Point of Sale berbasis web untuk UMKM ritel
+Mengimplementasikan sistem manajemen stok dengan metode FIFO otomatis dan pencatatan batch produk.
+Mengembangkan modul Machine Learning untuk:
+Prediksi kehabisan stok (stockout prediction)
+Rekomendasi jumlah restock
+Analisis risiko kadaluarsa
+Prediksi pendapatan (revenue forecasting)
+Menguji dan mengevaluasi efektivitas sistem dalam mengurangi stockout dan kerungian akibat barang kadaluarsa.
+
+ Manfaat 
+Manfaat dari pembuatan sistem ini, sebagai berikut:
+Membantu UMKM mengurangi kerungian akibat kekosongan stok dan barang kadaluarsa
+Meningkatkan efisiensi waktu dalam pencatatan dan pengelolaan stock
+Meningkatkan efektivitas pengelolaan modal kerja UMKM
+
+ Batasan Masalah 
+Dalam pembuatan Tugas Akhir ini, masalah yang akan dibahas dibatasi oleh beberapa factor, antara lain:
+Sistem hanya ditunjukkan untuk UMKM ritel skala kecil 50 – 500 jenis produk (SKU).
+Sistem berbasis web (dapat diakses melalui browser, tanpa mobile app native).
+Sistem mencakup fitur transaksi penjualan, manajemen stok, dan prediksi berbasis Machine Learning.
+Sistem mengelola 2 role utama: admin (pemilik usaha) dan kasir (staf operasional).
+Metode prediksi menggunakan data historis penjualan minimal 3 bulan.
+Sistem barcode menggunakan batch-based system (satu barcode untuk satu barch produk, bukan per item individual)
+Tidak mencakup integrasi payment gateway atau sistem akuntansi lengkap
+
+ Sistematika
+Sistematika penulisan Tugas Akhir ini dibagi menjadi beberapa bab yang meliputi:
+BAB I PENDAHULUAN 
+Berisi latar belakang yang juga meliputi perumusan masalah, tujuan, dan manfaat pembuatan Tugas Akhir, batasan masalah sistem, dan sistematika penulisan laporan Tugas Akhir.
+BAB II TINJAUAN PUSTAKA 
+BAB III KEGIATAN PELAKSANAAN
+BAB IV ANALISIS DAN PEMBAHASAN 
+BAB V KESIMPULAN 
+Berisi kesimpulan dibuatnya laporan Tugas Akhir.
+DAFTAR PUSTAKA 
+Daftar yang menampilkan sumber pustaka yang dijadikan panduan pengerjaan laporan Tugas Akhir.
+LAMPIRAN 
+Dokumen tambahan yang ditambahkan (dilampirkan) ke laporan Tugas Akhir.
+	
+
+
+
+
+
+
+
+BAB II
+TINJAUAN PUSTAKA 
+ Dasar Teori 
+Point Of Sales (POS)
+Point Of Sales (POS) adalah sistem yang digunakan untuk mencatat dan memproses transaksi penjualan pada titik terjadinya transaksi, baik di toko fisik maupun secara daring. Sistem POS menggantikan pencatatan manual dengan pencatatan digital, sehingga setiap transaksi penjualan, jumlah barang yang keluar, dan total pembayaran dapat tercatat secara otomatis dan lebih akurat. 
+Dalam kinerjanya, sistem Point Of Sales pada penelitian ini dibangun berbasis web menggunakan framework Django untuk backend dan React untuk frontend, dengan PostgreSQL sebagai basis data. Setiap transaksi yang dilakukan oleh kasir akan otomatis mengurangi jumlah stok barang berdasarkan batch yang berlaku, serta tersimpan sebgaai data historis yang menjadi masukan bagi modul prediksi Machine Learning. 
+Usaha Mikro, Kecil, dan Menengah (UMKM) 
+UMKM merupkan unit usaha produktif yang berdiri sendiri, dikelola oleh perorangan atay badan usaha, dengan skla asset dan omzet yang tergolong mikro, kecil, atau menengah sebagaimana diatur dalam peraturan perundang undangan di Indonesia. UMKM memiliki peran penting sebgaia penopang perekonomian nasional, namun Sebagian besar pelakunya masih terkendala dengan keterbatasan adopsi teknologi informasi dalam operasional bisnis sehari-hari. 
+Keterbatasan tersebut terlihat pada proses pencatatan transaksi dan pengelolaan persediaan yang masih dilakukan secara manual, sehingga pemilik usaha kesulitan menganalisis pola penjualan dan pengambilan keputusan terkait waktu serta jumlah restock yang tepat. Kondisi inilah yang mendasari perlunya sistem POS yang dilengkapi kemampuan analisis otomatis bagi UMKM. 
+Manajemen Stok dan Inventori
+Manejemen stok adalah proses perencanaan, pengadaan, penyimpanan, dan pengendalian persediaan barang agar tersedia dalam jumlah dan waktu yang tepat, sehingga dapat memenuhi permintaan konsumen tanpa menimbulkan kelebihan atau kekurangan stok. 
+Pengelolaan stok yang tidak optimal dapat menyebabkan dua permasalagan utama, yaitu stockout (kehabisan stok) yang berdampak pada hilangnya potensi penjualan, dan overstock yang berisiko menimbulkan kerugian akibat produk kadaluarsa atau biaya penyimpanan yang tinggi. 
+Metode FIFO (First In First Out)
+FIFO (First In First Out) adalah salah satu metode pengendalian persediaan yang mengharuskan barang yang pertama kali masuk ke Gudang menjadi barang yang pertama kali dikeluarkan atau dijual. Metode ini umum diterapkan pada produk yang memiliki masa kadaluarsa, karena dapat meminimalkan risiko produk tidak terjual sebelum melewati masa kadaluarsanya.
+Dalam sistem yang dibangun ini, penerapan FIFO dilakukan dengan mencatat setiap kedatangan barang sebagai suatu batch tersendiri, lengkap dengan tanggal masuk dan tanggal kadaluarsa. Ketika terjadi transaksi penjualan, sistem akan secara otomatis mengambil stok dari batch dengan tanggal masuk paling awal, tanpa memerlukan pemilihan manual oleh kasir. 
+Analisi ABC
+Analisis ABC merupakan klasifikasi persediaan yang mengelompokkan produk berdasarkan tingkat kontribusinya terhadap total nilai penjualan atau nilai investasi persediaan. 
+Pada sistem ini, klasifikasi ABC dihasilkan secara otomatis oleh modul Machine Learning berdasarkan data historis transaksi, sehingga pemilik usaha dapat mengetahui produk mana yang perlu diprioritaskan dalam pengelolaan stok tanpa perlu melakukan perhitungan manual
+Machine Learning 
+Machine Learning adalah kecerdasan buatan yang memungkinkan sistem mempelajari pola dari data historis untuk menghasilkan prediksi atau keputusan tanpa deprogram secara eksplisit untuk seyiap kondisi. Dalam kinerjanya, model ML ini dilatih menggunakandata transaksi penjualan yang sebelumnya tersimpan dalam basis data sistem POS.
+Sistem yang dibangun ini memanfaatkan Pustaka scikit-learn dan Prophet pada Bahasa pemrograman Python untuk mengolah data deret waktu (time series) penjualan. Model ini menghasilkan beberapa keluaran, yaitu prediksi risiko stockout, rekomendasi jumlah dan waktu restock, deteksi risiko produk kadaluarsa pada periode tertentu, serta klasifikasi produk berdasarkan analisis ABC. Seluruh hasil prediksi tersebut kemudian ditampilkan pada dasbor admin agar dapat digunakan sebgai dasar pengambilan keputusan bisnis. 
+ Teknologi yang Digunakan
+Pada pembuatan Website Sistem POS Berintegrasi Machine Learning ini memerlukan beberapa teknologi di antaranya sebagai berikut:
+Perangkat Lunak 
+Berikut merupakan perangkat lunak yang digunakna untuk membangun Sistem POS Berintegrasi Machine Learning di antaranya:
+Django
+Django merupakan perangkat lunak yang digunakan utnuk mengembangkan aplikasi web dengan cepat dan efisien. Sebagian besar aplikasi web memiliki beberapa fungsi umum, seperti autentikasi,pengambilan informasi dari basis data, dan manajemen cookie. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

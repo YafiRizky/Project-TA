@@ -38,7 +38,7 @@ from auditlog.views import audit_log_list
 from ml.views import stockout_prediction, restock_recommendation, expiry_risk, revenue_forecast, product_classification
 
 print("=================================================================")
-print("  FULLSTACK ENDPOINT AUDIT VERIFICATION — METRACRURA POS")
+print("  FULLSTACK ENDPOINT AUDIT VERIFICATION — METACRURA POS")
 print("=================================================================")
 
 # Load user admin & business

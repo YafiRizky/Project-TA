@@ -1,0 +1,275 @@
+======================================================================
+PANDUAN DATA GENERATOR + FITUR BELUM IMPLEMENTASI + ROADMAP FUTURE
+======================================================================
+Tanggal: 21 Juli 2026
+
+======================================================================
+BAGIAN 1: DATA PRODUK REALISTIS UNTUK GENERATE SYNTHETIC DATA
+======================================================================
+
+Sumber Referensi Data Harga:
+- Kemendag RI - Pusat Informasi Harga Pangan Strategis (pihps.kemendag.go.id)
+- Lottemart, Tokopedia, Blibli - Harga grosir online Juli 2026
+- Jurnal: "Sistem Informasi Manajemen Stok Warung Kelontong" (dharmawangsa.ac.id, 2024)
+- Jurnal: "Analisis Pola Pembelian dengan Algoritma Apriori pada Toko Kelontong" (isas.or.id, 2023)
+- Data BPS - Rata-rata pengeluaran per kapita rumah tangga 2023
+- Fitch Ratings - Indonesia Modern Retail Analysis 2024
+
+Profil UMKM Target:
+- Tipe: Warung Kelontong / Toko Sembako pinggir jalan
+- Lokasi: Perumahan/kampung di kota sedang (Semarang)
+- Omzet harian: Rp 300.000 - Rp 1.500.000 (rata-rata Rp 700.000)
+- Transaksi harian: 10-25 transaksi
+- Jumlah SKU: 30-80 produk (kita pakai 15 representatif)
+- Margin rata-rata: 10-18% (sembako 3-7%, snack/rokok 10-25%)
+- Jam operasi: 06.00 - 21.00 WIB
+- Pegawai: 0-1 (pemilik sendiri atau 1 pembantu)
+
+----------------------------------------------------------------------
+TABEL DATA PRODUK (15 Produk Representatif)
+----------------------------------------------------------------------
+
+Sumber harga: Kemendag, marketplace grosir online, observasi pasar Jul 2026
+
+No | Kode  | Nama Produk          | Kategori          | Unit | Harga Beli | Harga Jual | Margin | Min Stok | Est. Jual/Hari | Restock  | Ada Expired?
+---|-------|----------------------|-------------------|------|------------|------------|--------|----------|----------------|----------|-------------
+1  | BRS01 | Beras Premium 5kg    | Sembako           | SAK  | 74.500     | 82.000     | 10.1%  | 5        | 2-3            | 2x/bulan | Tidak
+2  | GLA01 | Gula Pasir 1kg       | Sembako           | KG   | 17.500     | 20.000     | 14.3%  | 10       | 2-3            | 2x/bulan | Tidak
+3  | MYK01 | Minyak Goreng 1L     | Sembako           | BTL  | 18.000     | 21.000     | 16.7%  | 8        | 2-4            | 2x/bulan | Ya (12 bln)
+4  | TLR01 | Telur Ayam 1kg       | Sembako           | KG   | 27.000     | 30.000     | 11.1%  | 5        | 3-5            | 1x/minggu| Ya (21 hari)
+5  | IDM01 | Indomie Goreng       | Mie Instan        | PCS  | 3.200      | 3.800      | 18.8%  | 20       | 5-10           | 1x/minggu| Ya (8 bln)
+6  | IDM02 | Indomie Kuah Soto    | Mie Instan        | PCS  | 3.000      | 3.500      | 16.7%  | 15       | 3-5            | 1x/minggu| Ya (8 bln)
+7  | AQA01 | Aqua 600ml           | Minuman           | BTL  | 2.500      | 4.000      | 60.0%  | 24       | 5-8            | 1x/minggu| Ya (12 bln)
+8  | TPK01 | Teh Pucuk Harum 350ml| Minuman           | BTL  | 3.000      | 4.500      | 50.0%  | 12       | 3-5            | 1x/minggu| Ya (6 bln)
+9  | GGF01 | Gudang Garam Filter  | Rokok             | PAK  | 27.500     | 31.000     | 12.7%  | 10       | 4-6            | 1x/minggu| Tidak
+10 | SMP01 | Sampoerna Mild 16    | Rokok             | PAK  | 34.000     | 38.000     | 11.8%  | 8        | 3-5            | 1x/minggu| Tidak
+11 | MSK01 | Masako Ayam 8g x10   | Bumbu & Penyedap  | PAK  | 8.500      | 10.000     | 17.6%  | 10       | 2-3            | 2x/bulan | Ya (12 bln)
+12 | SNL01 | Sunlight 400ml       | Kebutuhan RT      | BTL  | 8.000      | 10.500     | 31.3%  | 6        | 1-2            | 2x/bulan | Tidak
+13 | RNS01 | Rinso Sachet 45g x6  | Kebutuhan RT      | PAK  | 6.500      | 8.000      | 23.1%  | 8        | 1-2            | 2x/bulan | Tidak
+14 | CHT01 | Chitato Sapi Panggang| Snack             | PCS  | 6.000      | 8.000      | 33.3%  | 10       | 1-3            | 2x/bulan | Ya (4 bln)
+15 | LPG01 | Gas LPG 3kg          | Gas               | TAB  | 18.000     | 22.000     | 22.2%  | 3        | 1              | 1x/bulan | Tidak
+
+----------------------------------------------------------------------
+PARAMETER UNTUK GENERATOR (generate_synthetic_data.py)
+----------------------------------------------------------------------
+
+GLOBAL PARAMETERS:
+- Rentang tanggal: 3 bulan (1 Apr - 30 Jun 2026 = 91 hari)
+- Transaksi per hari: random(8, 20) -- weekday lebih sedikit, weekend lebih banyak
+- Faktor weekend: 1.3x (Sabtu-Minggu lebih ramai)
+- Faktor gajian (tgl 25-5): 1.5x (periode gajian lebih ramai)
+- Faktor awal bulan (tgl 1-5): 1.2x (belanja bulanan)
+- Jam transaksi: distribusi normal, puncak 10.00-12.00 dan 16.00-18.00
+- Item per transaksi: random(1, 5) -- warung kecil biasanya beli sedikit
+- Metode bayar: CASH 85%, QRIS 10%, Transfer 3%, E-Wallet 2%
+
+PER-PRODUCT PARAMETERS:
+(frequency = berapa kali per hari produk ini muncul di transaksi)
+
+No | Produk              | Freq/Hari | Qty/Transaksi | Batch Qty | Batch Freq | Expired Days
+1  | Beras Premium 5kg   | 2-3       | 1             | 20        | 14 hari    | NULL
+2  | Gula Pasir 1kg      | 2-3       | 1             | 15        | 14 hari    | NULL
+3  | Minyak Goreng 1L    | 2-4       | 1             | 12        | 14 hari    | 365
+4  | Telur Ayam 1kg      | 3-5       | 1-2           | 10        | 7 hari     | 21
+5  | Indomie Goreng      | 5-10      | 2-5           | 40 (1 dus)| 7 hari     | 240
+6  | Indomie Kuah Soto   | 3-5       | 1-3           | 40 (1 dus)| 7 hari     | 240
+7  | Aqua 600ml          | 5-8       | 1-3           | 24 (1 pak)| 7 hari     | 365
+8  | Teh Pucuk 350ml     | 3-5       | 1-2           | 12 (1 pak)| 7 hari     | 180
+9  | Gudang Garam Filter | 4-6       | 1             | 10 (1 slp)| 7 hari     | NULL
+10 | Sampoerna Mild 16   | 3-5       | 1             | 10 (1 slp)| 7 hari     | NULL
+11 | Masako Ayam          | 2-3       | 1-2           | 12        | 14 hari    | 365
+12 | Sunlight 400ml      | 1-2       | 1             | 6         | 14 hari    | NULL
+13 | Rinso Sachet         | 1-2       | 1-2           | 12        | 14 hari    | NULL
+14 | Chitato              | 1-3       | 1             | 12        | 14 hari    | 120
+15 | Gas LPG 3kg          | 0-1       | 1             | 5         | 30 hari    | NULL
+
+----------------------------------------------------------------------
+JUSTIFIKASI AKADEMIS (untuk ditulis di BAB IV)
+----------------------------------------------------------------------
+
+"Data transaksi sintetis di-generate menggunakan script Python berdasarkan 
+parameter yang bersumber dari:
+(1) Wawancara langsung dengan N pemilik UMKM warung kelontong di Semarang,
+(2) Data harga pasar dari Pusat Informasi Harga Pangan Strategis (PIHPS) 
+    Kemendag RI periode Juli 2026,
+(3) Margin keuntungan rata-rata warung kelontong sebesar 10-18% sesuai 
+    literatur (Tambunan, 2012; BPS, 2023),
+(4) Pola transaksi harian berdasarkan observasi lapangan dan studi terdahulu
+    mengenai perilaku belanja konsumen Indonesia.
+
+Parameter generator dirancang agar menghasilkan data yang realistis dalam
+threshold yang sesuai dengan kondisi UMKM ritel skala kecil, termasuk:
+- Fluktuasi penjualan berdasarkan hari kerja vs akhir pekan
+- Peningkatan volume pada periode gajian (tanggal 25 hingga 5)
+- Distribusi metode pembayaran yang mencerminkan adopsi QRIS pada UMKM
+- Variasi kuantitas pembelian per transaksi yang konsisten dengan pola 
+  belanja warung kelontong"
+
+
+======================================================================
+BAGIAN 2: FITUR YANG BELUM DIIMPLEMENTASIKAN
+======================================================================
+
+A. LANDING PAGE & BRANDING
+Status: BELUM
+- [ ] Landing page di route "/" (sekarang langsung ke /login)
+- [ ] Branding: Logo, nama brand (Mecratura?), favicon
+- [ ] Update nama di: Login, Register, Sidebar header, <title>
+- [ ] Navbar landing: Fitur, Tentang, Kontak, Masuk, Daftar
+
+B. JUPYTER NOTEBOOK (RISET ML)
+Status: BELUM
+- [ ] Notebook EDA (Exploratory Data Analysis)
+- [ ] Notebook perbandingan 3-4 algoritma
+- [ ] Dokumentasi hyperparameter tuning
+- [ ] Grafik Prediksi vs Aktual
+
+C. DEPLOYMENT
+Status: BELUM
+- [ ] Deploy backend ke Railway/Render (Django + PostgreSQL)
+- [ ] Deploy frontend ke Vercel (React build)
+- [ ] Configure CORS untuk production domain
+- [ ] Environment variables (.env) untuk production
+- [ ] HTTPS / SSL
+- [ ] Xendit webhook URL publik
+
+D. POLISHING UI/UX
+Status: PERLU AUDIT
+- [ ] Konsistensi tema seluruh halaman
+- [ ] Loading skeleton/spinner di setiap halaman
+- [ ] Error state yang user-friendly (bukan blank putih)
+- [ ] Empty state illustration (tabel kosong)
+- [ ] Mobile responsif (sidebar, tabel, POS)
+- [ ] Print receipt styling
+- [ ] Notifikasi toast/alert konsisten
+- [ ] Form validation message konsisten
+- [ ] Hover effect & micro-animation konsisten
+- [ ] Favicon & meta tags SEO
+
+E. FITUR MINOR
+Status: BELUM
+- [ ] Export laporan ke PDF/CSV
+- [ ] Import produk dari CSV/Excel
+- [ ] Dark/Light mode toggle
+- [ ] Bahasa: i18n (Indonesia/English)
+- [ ] Forgot password flow
+- [ ] Email verification
+
+
+======================================================================
+BAGIAN 3: ROADMAP FUTURE (SETELAH LULUS - ENTREPRENEUR)
+======================================================================
+
+----------------------------------------------------------------------
+FASE 1: POLISH & DEPLOY (Sekarang - Sidang)
+----------------------------------------------------------------------
+- Selesaikan semua fitur untuk TA
+- Deploy ke cloud
+- Sidang & lulus
+
+----------------------------------------------------------------------
+FASE 2: PRODUK MVP (1-3 bulan setelah lulus)
+----------------------------------------------------------------------
+
+2.1 Mobile App (React Native / Flutter)
+- Kasir bisa pakai tablet/HP untuk transaksi
+- Owner bisa monitoring dari HP
+- Push notification: stok rendah, produk mau expired
+- Offline mode: transaksi bisa jalan tanpa internet
+  (sync saat online)
+
+2.2 Super Admin / Technical Admin Dashboard
+- Panel khusus untuk KAMU sebagai "penyedia layanan"
+- Bisa monitoring semua tenant (UMKM yang pakai Mecratura)
+- Statistik penggunaan: berapa tenant aktif, total transaksi
+- Health monitoring: API response time, error rate
+- Data aggregated (anonim) dari semua tenant untuk riset ML
+
+2.3 Perbaikan ML dengan Data Agregat
+- Kumpulkan data real dari semua user tenant
+- Retrain model ML dengan dataset yang jauh lebih besar
+- A/B testing: bandingkan akurasi model lama vs baru
+- Dashboard akurasi ML:
+  "Bulan lalu prediksi stockout 87% akurat"
+  "Revenue forecast error rata-rata 8%"
+- Personalized model per tenant (jika data cukup)
+
+----------------------------------------------------------------------
+FASE 3: GROWTH (3-12 bulan)
+----------------------------------------------------------------------
+
+3.1 Subscription / Pricing Model
+- Free tier: 1 cabang, 50 produk, ML dasar
+- Pro tier (Rp 99.000/bulan): unlimited, semua ML, multi-cabang
+- Enterprise: custom, API access, dedicated support
+
+3.2 Multi-Platform
+- Web app (sudah ada)
+- Android app (React Native)
+- iOS app (React Native)
+- Whatsapp Bot notifikasi
+
+3.3 Fitur Tambahan untuk User
+- Barcode scanner via kamera HP
+- Customer loyalty program (poin, stamp card)
+- Integrasi marketplace (Tokopedia, Shopee)
+- Supplier portal: supplier bisa lihat stok UMKM & auto offer restock
+- Multi-bahasa (ID, EN, Jawa?)
+
+3.4 Data & Analytics untuk Admin Teknis (KAMU)
+- Dashboard aggregated:
+  "500 UMKM aktif, 12.000 transaksi/hari"
+  "Produk terlaris nasional: Indomie Goreng"
+  "Rata-rata akurasi ML: 82%"
+- Insight per region: "UMKM di Semarang omzet rata-rata 800rb/hari"
+- Data ini bisa dijual sebagai market research ke:
+  - FMCG companies (Indofood, Unilever, Wings)
+  - Bank/fintech untuk credit scoring UMKM
+  - Pemerintah untuk program UMKM
+- (Tetap mematuhi regulasi data privasi & persetujuan user)
+
+----------------------------------------------------------------------
+FASE 4: SCALE (1-3 tahun)
+----------------------------------------------------------------------
+
+4.1 AI Advanced
+- Computer Vision: scan struk supplier otomatis → input batch
+- NLP Chatbot: "Berapa stok Indomie?" → jawab otomatis
+- Anomaly detection: deteksi transaksi mencurigakan
+- Dynamic pricing recommendation (sesuaikan harga berdasar demand)
+
+4.2 Financial Services (Fintech)
+- UMKM loan scoring berdasarkan data transaksi POS
+- Kerjasama dengan bank/fintech: "Omzet 3 bulan terakhir Rp X, eligible pinjaman Rp Y"
+- Digital invoice & billing antar UMKM dan supplier
+
+4.3 Ecosystem
+- Marketplace sesama UMKM pengguna Mecratura
+- Supply chain visibility: dari supplier → warung → konsumen
+- Community: forum/grup pemilik warung, tips bisnis
+
+----------------------------------------------------------------------
+REVENUE MODEL POTENSIAL
+----------------------------------------------------------------------
+
+Stream             | Model                          | Target Revenue
+Subscription       | Rp 99.000/bulan/tenant         | 100 tenant = Rp 9.9jt/bulan
+Transaction Fee    | 0.5% per transaksi digital     | Passive income
+Data Analytics     | Rp 5-50jt/report untuk FMCG    | B2B
+White Label        | License ke ISP/koperasi        | Enterprise
+Ads/Promotion      | Supplier promote produk di POS | CPM/CPC
+
+----------------------------------------------------------------------
+COMPETITIVE ADVANTAGE (Nilai Jual Unik)
+----------------------------------------------------------------------
+
+Vs Moka POS / Kasir Pintar / Olsera:
+1. ML terintegrasi (mereka tidak punya prediksi stok AI)
+2. FIFO otomatis (mereka tidak track batch & expired)
+3. Harga lebih terjangkau (target warung kecil, bukan cafe/restoran)
+4. Fokus UMKM ritel (bukan restoran/F&B)
+5. Data insight untuk FMCG (revenue stream B2B unik)
+
+======================================================================
+--- SELESAI ---
+======================================================================
