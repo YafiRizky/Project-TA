@@ -63,7 +63,7 @@ const ownerMenu = [
   {
     section: 'AI & Prediksi',
     items: [
-      { label: 'Prediksi & Rekomendasi', path: '/ml-predictions', icon: RiBrainLine, badge: 'Dev' },
+      { label: 'Prediksi & Rekomendasi', path: '/ml-predictions', icon: RiBrainLine, badge: 'AI' },
     ]
   },
   {

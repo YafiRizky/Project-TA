@@ -4,6 +4,7 @@ Handles checkout, transaction management, void/refund, and summaries.
 """
 import logging
 from rest_framework import viewsets, filters, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -31,6 +32,13 @@ logger = logging.getLogger(__name__)
 MAX_DISCOUNT_PERCENT = Decimal('50')  # Max 50% diskon per transaksi
 
 
+class TransactionPagination(PageNumberPagination):
+    """Pagination untuk list transaksi. Default 20 per page, max 5000."""
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 5000
+
+
 class TransactionViewSet(viewsets.ModelViewSet):
     """
     ViewSet for Transaction (Sales) CRUD and POS operations
@@ -49,6 +57,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     - payment_summary: GET /api/transactions/transactions/payment_summary/
     """
     permission_classes = [IsAuthenticated]
+    pagination_class = TransactionPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['transaction_code', 'cashier_name']
     ordering_fields = ['transaction_date', 'total_amount', 'status']
@@ -96,27 +105,34 @@ class TransactionViewSet(viewsets.ModelViewSet):
             return queryset
         return Transaction.objects.none()
     
-    def _generate_transaction_code(self, business):
+    def _generate_transaction_code(self, business, attempt=0):
         """Generate sequential, collision-free transaction code.
-        Format: TRX-YYMMDD-NNNNN (sequential per day per business)
+        Format: TRX-YYMMDD-NNNNN (sequential per day, GLOBAL across all businesses)
+        Uses retry logic to handle race conditions.
         """
+        import uuid
         today = timezone.now().strftime('%y%m%d')
         prefix = f"TRX-{today}-"
         
-        # Get the last transaction code for today
+        # Query ALL transactions with this prefix (global, not per-business)
+        # to prevent duplicate key across different businesses
         last_trx = Transaction.objects.filter(
-            business=business,
             transaction_code__startswith=prefix
-        ).order_by('-transaction_code').first()
+        ).order_by('-id').first()  # order by -id is more reliable than -transaction_code
         
+        next_num = 1
         if last_trx:
             try:
                 last_num = int(last_trx.transaction_code.split('-')[-1])
-                next_num = last_num + 1
+                next_num = last_num + 1 + attempt  # Add attempt offset for retries
             except (ValueError, IndexError):
-                next_num = 1
+                next_num = 1 + attempt
         else:
-            next_num = 1
+            next_num = 1 + attempt
+        
+        # Safety: if too many retries, add random hex to guarantee uniqueness
+        if attempt >= 5:
+            return f"{prefix}{next_num:05d}-{uuid.uuid4().hex[:4].upper()}"
         
         return f"{prefix}{next_num:05d}"
     
@@ -273,8 +289,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
                         'error': f'Pembayaran kurang. Total: Rp {total_amount:,.0f}, dibayar: Rp {amount_paid:,.0f}'
                     }, status=status.HTTP_400_BAD_REQUEST)
                 
-                # Generate sequential transaction code
-                transaction_code = self._generate_transaction_code(business)
+                # Generate sequential transaction code (with retry attempt offset)
+                checkout_attempt = getattr(request, '_checkout_attempt', 0)
+                transaction_code = self._generate_transaction_code(business, attempt=checkout_attempt)
                 
                 # Create transaction
                 trx = Transaction.objects.create(
@@ -313,7 +330,8 @@ class TransactionViewSet(viewsets.ModelViewSet):
                             quantity=quantity_from_batch,
                             price_per_unit=price_per_unit,
                             subtotal=Decimal(str(quantity_from_batch)) * price_per_unit,
-                            discount=item_discount
+                            discount=item_discount,
+                            cost_per_unit=batch.purchase_cost or Decimal('0.00'),
                         )
                         
                         # Reduce batch quantity and update status
@@ -352,13 +370,21 @@ class TransactionViewSet(viewsets.ModelViewSet):
             return Response(result_serializer.data, status=status.HTTP_201_CREATED)
             
         except IntegrityError as e:
-            if 'idempotency_key' in str(e):
+            err_str = str(e)
+            if 'idempotency_key' in err_str:
                 # Race condition on idempotency key — return existing transaction
                 existing = Transaction.objects.filter(idempotency_key=idempotency_key).first()
                 if existing:
                     result_serializer = TransactionSerializer(existing)
                     return Response(result_serializer.data, status=status.HTTP_200_OK)
-            logger.error('Checkout IntegrityError: %s', str(e))
+            if 'transaction_code' in err_str:
+                # Race condition on transaction_code — retry with attempt counter
+                attempt = getattr(request, '_checkout_attempt', 0) + 1
+                if attempt < 5:
+                    request._checkout_attempt = attempt
+                    logger.warning('Transaction code collision (attempt %d), retrying...', attempt)
+                    return self.checkout(request)
+            logger.error('Checkout IntegrityError: %s', err_str)
             return Response({'error': 'Terjadi kesalahan database. Silakan coba lagi.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             logger.error('Checkout error: %s', str(e))
@@ -570,3 +596,98 @@ class TransactionViewSet(viewsets.ModelViewSet):
             
         else:
             return Response({'error': 'Format export tidak didukung'}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'])
+    def profit_loss(self, request):
+        """
+        Laporan Laba Rugi (Profit & Loss)
+        Calculates Revenue, COGS, Gross Profit from cost_per_unit data.
+        Supports date range filtering via ?start_date=&end_date=
+        """
+        if not hasattr(request.user, 'business'):
+            return Response({'error': 'Tidak ada bisnis yang terkait'}, status=status.HTTP_400_BAD_REQUEST)
+
+        business = request.user.business
+        start_date = request.query_params.get('start_date')
+        end_date = request.query_params.get('end_date')
+
+        # Base queryset: completed transactions for this business
+        trx_qs = Transaction.objects.filter(
+            business=business,
+            status='COMPLETED'
+        )
+
+        if start_date:
+            trx_qs = trx_qs.filter(transaction_date__date__gte=start_date)
+        if end_date:
+            trx_qs = trx_qs.filter(transaction_date__date__lte=end_date)
+
+        # Overall aggregation
+        overall = trx_qs.aggregate(
+            total_revenue=Sum('total_amount'),
+            total_discount=Sum('discount_amount'),
+            transaction_count=Count('id')
+        )
+
+        total_revenue = overall['total_revenue'] or Decimal('0.00')
+        total_discount = overall['total_discount'] or Decimal('0.00')
+        transaction_count = overall['transaction_count'] or 0
+
+        # COGS from TransactionItems
+        items_qs = TransactionItem.objects.filter(
+            transaction__in=trx_qs
+        )
+
+        cogs_data = items_qs.aggregate(
+            total_cogs=Sum(F('cost_per_unit') * F('quantity')),
+            total_items_sold=Sum('quantity')
+        )
+
+        total_cogs = cogs_data['total_cogs'] or Decimal('0.00')
+        total_items_sold = cogs_data['total_items_sold'] or 0
+
+        gross_profit = total_revenue - total_cogs
+        margin_pct = (gross_profit / total_revenue * 100) if total_revenue > 0 else Decimal('0.00')
+
+        # Per-product breakdown
+        product_breakdown = items_qs.values(
+            'product__id', 'product__name', 'product__code'
+        ).annotate(
+            qty_sold=Sum('quantity'),
+            revenue=Sum('subtotal'),
+            cogs=Sum(F('cost_per_unit') * F('quantity')),
+        ).order_by('-revenue')
+
+        products = []
+        for p in product_breakdown:
+            rev = p['revenue'] or Decimal('0.00')
+            cogs = p['cogs'] or Decimal('0.00')
+            profit = rev - cogs
+            margin = (profit / rev * 100) if rev > 0 else Decimal('0.00')
+            products.append({
+                'product_id': p['product__id'],
+                'product_name': p['product__name'],
+                'product_code': p['product__code'],
+                'qty_sold': p['qty_sold'],
+                'revenue': str(rev),
+                'cogs': str(cogs),
+                'profit': str(profit),
+                'margin_pct': round(float(margin), 1),
+            })
+
+        return Response({
+            'period': {
+                'start_date': start_date or 'all',
+                'end_date': end_date or 'all',
+            },
+            'summary': {
+                'total_revenue': str(total_revenue),
+                'total_cogs': str(total_cogs),
+                'gross_profit': str(gross_profit),
+                'margin_pct': round(float(margin_pct), 1),
+                'total_discount': str(total_discount),
+                'transaction_count': transaction_count,
+                'total_items_sold': total_items_sold,
+            },
+            'products': products,
+        })

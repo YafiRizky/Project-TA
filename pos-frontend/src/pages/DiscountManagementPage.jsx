@@ -35,7 +35,7 @@ export default function DiscountManagementPage() {
   })
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('discounts', 10)
 
   const { data: discounts, isLoading } = useQuery({
     queryKey: ['discounts', bCode],

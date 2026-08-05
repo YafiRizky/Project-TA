@@ -70,6 +70,8 @@ def payment_method_list_create(request):
                 'account_name': m.account_name,
                 'instructions': m.instructions,
                 'is_active': m.is_active,
+                'use_xendit': m.use_xendit,
+                'xendit_channel': m.xendit_channel,
                 'qris_image': request.build_absolute_uri(m.qris_image.url) if m.qris_image else None,
                 'created_at': m.created_at.isoformat(),
             }
@@ -86,7 +88,13 @@ def payment_method_list_create(request):
         account_number = request.data.get('account_number', '').strip()
         account_name = request.data.get('account_name', '').strip()
         instructions = request.data.get('instructions', '').strip()
+        use_xendit = request.data.get('use_xendit', False)
+        xendit_channel = request.data.get('xendit_channel', '').strip()
         qris_image = request.FILES.get('qris_image')
+        
+        # Normalize use_xendit to boolean
+        if isinstance(use_xendit, str):
+            use_xendit = use_xendit.lower() in ('true', '1', 'yes')
         
         # Validate uploaded file
         file_error = validate_upload_file(qris_image)
@@ -113,6 +121,8 @@ def payment_method_list_create(request):
             account_number=account_number,
             account_name=account_name,
             instructions=instructions,
+            use_xendit=use_xendit,
+            xendit_channel=xendit_channel,
             qris_image=qris_image,
             is_active=True,
         )
@@ -155,6 +165,8 @@ def payment_method_detail(request, method_id):
             'account_name': method.account_name,
             'instructions': method.instructions,
             'is_active': method.is_active,
+            'use_xendit': method.use_xendit,
+            'xendit_channel': method.xendit_channel,
             'qris_image': request.build_absolute_uri(method.qris_image.url) if method.qris_image else None,
         })
     
@@ -163,6 +175,13 @@ def payment_method_detail(request, method_id):
         method.account_number = request.data.get('account_number', method.account_number).strip()
         method.account_name = request.data.get('account_name', method.account_name).strip()
         method.instructions = request.data.get('instructions', method.instructions).strip()
+        
+        # Xendit fields
+        if 'use_xendit' in request.data:
+            val = request.data['use_xendit']
+            method.use_xendit = val in [True, 'true', '1', 'yes'] if isinstance(val, str) else bool(val)
+        if 'xendit_channel' in request.data:
+            method.xendit_channel = request.data.get('xendit_channel', '').strip()
         
         if 'is_active' in request.data:
             method.is_active = request.data['is_active'] in [True, 'true', '1']

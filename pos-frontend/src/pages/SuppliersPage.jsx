@@ -22,7 +22,7 @@ export default function SuppliersPage() {
   const [deleteConfirm, setDeleteConfirm] = useState(null)
   
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('suppliers', 10)
 
   const { data: suppliers, isLoading, isError, error: queryError } = useQuery({
     queryKey: ['suppliers', bCode],
@@ -236,7 +236,7 @@ export default function SuppliersPage() {
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1.5">Telepon</label>
-                  <input value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} placeholder="Masukan No Telfon" className={inputClass} />
+                  <input value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} placeholder="Masukkan No Telepon" className={inputClass} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">

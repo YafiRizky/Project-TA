@@ -14,11 +14,13 @@ db.sqlite3
 media/
 logs/
 
-# Environment Variables
+# Environment Variables (SANGAT RAHASIA - JANGAN PERNAH DIPUSH)
 .env
 .env.local
 .env.production
 .env.development
+*.key
+*.pem
 
 # OS & Editor
 .vscode/
@@ -26,10 +28,15 @@ logs/
 .DS_Store
 Thumbs.db
 
-# File yang tidak penting untuk project utama
+# Documents & Raw Files (Bukan Kode Aplikasi)
 *.zip
 *.rar
 *.tar.gz
+*.pdf
+*.docx
+*.xlsx
+*.rtf
+LAPORAN KITA/
 pos-ml-system_preview/
 pos-ml-system_dummy_v2/
 Mockup/

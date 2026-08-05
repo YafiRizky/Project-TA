@@ -26,7 +26,7 @@ import MainLayout from '../components/MainLayout'
 export default function AuditLogPage() {
   const { user, business } = useAuth()
   const bCode = business?.code
-  const [pageSize, setPageSize] = usePageSize(50)
+  const [pageSize, setPageSize] = usePageSize('auditlog', 50)
   const [filters, setFilters] = useState({
     action: '',
     actor_id: '',

@@ -1,0 +1,30 @@
+code,name,category,buy,sell,unit,min_stock,avg_daily,std_daily,restock_days,batch_qty,expiry_days,source
+SMB01,Beras Premium 5kg,Sembako,62000,68000,karung,5,1.5,0.7,7,10,180.0,Hj. Fatimah
+SMB02,Gula Pasir 1kg,Sembako,13500,15500,kg,10,3.0,1.2,7,25,,Toko Amanah
+SMB03,Minyak Goreng Bimoli 1L,Sembako,16000,18000,botol,5,2.0,0.8,7,12,365.0,Hj. Fatimah
+SMB04,Telur Ayam 1kg,Sembako,26000,29000,kg,3,1.2,0.5,7,5,14.0,Hj. Fatimah
+SMB05,Tepung Terigu 1kg,Sembako,10000,12000,bungkus,5,1.0,0.5,14,10,365.0,Hj. Fatimah
+MIE01,Indomie Goreng,Mie Instan,2500,3000,pcs,30,8.0,2.5,7,40,240.0,Toko Barokah
+MIE02,Mie Sedap Goreng,Mie Instan,2500,3000,pcs,20,6.0,2.0,7,40,240.0,Toko Barokah
+MIE03,Indomie Soto,Mie Instan,2500,3000,pcs,15,4.0,1.5,7,40,240.0,Hj. Fatimah
+MNM01,Aqua Botol 600ml,Minuman,3000,4000,botol,24,9.0,3.0,7,24,365.0,Toko Amanah
+MNM02,Teh Pucuk Harum 350ml,Minuman,3000,4000,botol,12,4.0,1.5,7,24,180.0,Toko Moro
+MNM03,Sprite 390ml,Minuman,4000,5000,botol,8,2.5,1.0,7,12,365.0,Pak Bambang
+MNM04,Es Teh Manis,Minuman,1000,3000,gelas,0,12.0,4.0,1,40,1.0,Bu Sari
+MSC01,Kopi Kapal Api Sachet,Minuman Sachet,1200,1500,pcs,20,5.0,2.0,7,30,365.0,Hj. Fatimah
+MSC02,Milo Sachet,Minuman Sachet,700,1000,pcs,15,4.0,1.5,7,30,365.0,Toko Barokah
+RKK01,Rokok Sampoerna,Rokok,24000,27000,pack,10,6.0,1.5,7,10,,Toko Amanah
+SNK01,Chitato 68g,Snack,6500,8000,pcs,8,2.5,1.0,7,12,90.0,Pak Bambang
+SNK02,Better Chocolate,Snack,1500,2000,pcs,10,3.0,1.2,7,20,180.0,Pak Bambang
+SNK03,Oreo 133g,Snack,7500,9000,pcs,5,1.5,0.7,14,8,180.0,Pak Bambang
+MKN01,Nasi Goreng,Makanan,7000,12000,porsi,0,8.0,3.0,1,25,1.0,Bu Sari
+MKN02,Nasi Ayam Goreng,Makanan,8000,15000,porsi,0,6.0,2.5,1,20,1.0,Bu Sari
+MKN03,Gorengan Campur,Makanan,500,1000,pcs,0,15.0,5.0,1,50,1.0,Bu Sari
+BMB01,Masako Ayam,Bumbu Dapur,4500,5000,pack,15,4.0,1.5,7,30,365.0,Warung Melati
+BMB02,Kecap Manis ABC,Bumbu Dapur,8000,10000,botol,4,1.0,0.5,14,6,365.0,Hj. Fatimah
+KRT01,Rinso Anti Noda 800g,Kebutuhan RT,13000,15000,bungkus,5,1.5,0.7,14,8,,Toko Berkah
+KRT02,Sunlight 400ml,Kebutuhan RT,7500,9000,botol,6,1.8,0.8,7,10,,Toko Berkah
+KRT03,Shampoo Pantene Sachet,Perawatan Tubuh,1000,1500,pcs,15,4.5,2.0,7,30,730.0,Toko Berkah
+GAS01,Gas LPG 3kg,Kebutuhan Dapur,20000,23000,tabung,2,0.8,0.4,7,3,,Toko Barokah
+PRW01,Pasta Gigi Pepsodent 75g,Perawatan Tubuh,5000,7000,pcs,5,1.2,0.6,14,8,730.0,Toko Berkah
+SMB06,Garam Dapur 250g,Sembako,2000,3000,bungkus,10,1.5,0.7,14,20,,Hj. Fatimah

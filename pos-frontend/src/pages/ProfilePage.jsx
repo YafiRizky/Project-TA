@@ -7,6 +7,7 @@ import MainLayout from '../components/MainLayout'
 import { RiUserLine, RiLockLine, RiSaveLine, RiArrowDownSLine, RiArrowUpSLine, RiCheckLine, RiStoreLine, RiShieldKeyholeLine, RiFileCopyLine } from 'react-icons/ri'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
+import kodeposData from '../data/kodepos.json'
 
 const BUSINESS_TYPES = [
   'Warung Kelontong',
@@ -49,6 +50,8 @@ export default function ProfilePage() {
   const [selectedDistrictId, setSelectedDistrictId] = useState('')
   const [locationLoading, setLocationLoading] = useState(false)
   const [locationInitialized, setLocationInitialized] = useState(false)
+  const [postalCodes, setPostalCodes] = useState([])
+  const [useCustomPostalCode, setUseCustomPostalCode] = useState(false)
 
   // Fetch profile data
   const { data: profile, isLoading } = useQuery({
@@ -183,16 +186,52 @@ export default function ProfilePage() {
     }
   }
 
-  // Handle district change
   const handleDistrictChange = (e) => {
     const distId = e.target.value
     const distObj = idDistricts.find(d => d.id === distId)
     setSelectedDistrictId(distId)
     setBusinessForm(prev => ({
       ...prev,
-      district: distObj ? titleCase(distObj.name) : ''
+      district: distObj ? titleCase(distObj.name) : '',
+      postal_code: ''
     }))
+    // Reset postal code state
+    setPostalCodes([])
+    setUseCustomPostalCode(false)
   }
+
+  // Lookup postal codes from local JSON when district is selected
+  useEffect(() => {
+    if (!selectedDistrictId) {
+      setPostalCodes([])
+      return
+    }
+    const dist = idDistricts.find(d => d.id === selectedDistrictId)
+    if (!dist) return
+
+    const cityObj = idCities.find(c => c.id === selectedCityId)
+    const rawCityName = (cityObj?.name || '').toUpperCase().trim()
+    const cityName = rawCityName.replace(/^(KABUPATEN|KOTA)\s+/i, '')
+    const distName = (dist.name || '').toUpperCase().trim()
+
+    const key = `${cityName}|${distName}`
+    let codes = kodeposData[key] || []
+
+    if (codes.length === 0) {
+      codes = kodeposData[`${rawCityName}|${distName}`] || []
+    }
+    if (codes.length === 0) {
+      const fallbackKey = Object.keys(kodeposData).find(k => k.endsWith(`|${distName}`))
+      if (fallbackKey) codes = kodeposData[fallbackKey]
+    }
+
+    if (codes && codes.length > 0) {
+      setPostalCodes(codes)
+      setBusinessForm(prev => ({ ...prev, postal_code: codes[0] }))
+    } else {
+      setPostalCodes([])
+    }
+  }, [selectedDistrictId, idDistricts, idCities, selectedCityId])
 
   // Profile form
   const {
@@ -308,7 +347,7 @@ export default function ProfilePage() {
   const roleBadge = profileData?.role || user?.role || 'user'
 
   const inputClass = 'w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500'
-  const selectClass = `${inputClass} bg-white appearance-none cursor-pointer`
+  const selectClass = `${inputClass} bg-white appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg%20xmlns%3d%22http%3a%2f%2fwww.w3.org%2f2000%2fsvg%22%20viewBox%3d%220%200%2024%2024%22%20fill%3d%22none%22%20stroke%3d%22%239CA3AF%22%20stroke-width%3d%222%22%20stroke-linecap%3d%22round%22%20stroke-linejoin%3d%22round%22%3e%3cpolyline%20points%3d%226%209%2012%2015%2018%209%22%3e%3c%2fpolyline%3e%3c%2fsvg%3e')] bg-[length:16px] bg-[right_12px_center] bg-no-repeat pr-10`
 
   return (
     <MainLayout title="Profil">
@@ -490,25 +529,60 @@ export default function ProfilePage() {
                             value={businessForm.phone}
                             onChange={(val) => setBusinessForm({...businessForm, phone: val || ''})}
                             defaultCountry="ID"
+                            countries={['ID']}
                             international
                             withCountryCallingCode
                             countryCallingCodeEditable={false}
+                            countrySelectProps={{ disabled: true, tabIndex: -1 }}
                             className={`w-full px-3 py-2 border rounded-xl text-sm transition-colors outline-none focus-within:ring-2 border-gray-200 bg-gray-50 focus-within:bg-white focus-within:ring-blue-500/20 focus-within:border-blue-500`}
                             style={{
                               '--PhoneInputCountryFlag-height': '1.2em',
                               '--PhoneInputCountryFlag-borderColor': 'transparent',
-                              '--PhoneInputCountrySelectArrow-color': '#9CA3AF'
+                              '--PhoneInputCountrySelectArrow-opacity': '0',
+                              '--PhoneInputCountrySelectArrow-marginLeft': '0',
                             }}
                           />
                         </div>
                         <div>
                           <label className="block text-xs font-semibold text-gray-600 mb-1.5">Kode Pos</label>
-                          <input
-                            value={businessForm.postal_code}
-                            onChange={(e) => setBusinessForm({...businessForm, postal_code: e.target.value})}
-                            placeholder="Kode pos"
-                            className={inputClass}
-                          />
+                          {postalCodes.length > 0 && !useCustomPostalCode ? (
+                            <select
+                              value={businessForm.postal_code || ''}
+                              onChange={(e) => {
+                                if (e.target.value === '__custom__') {
+                                  setUseCustomPostalCode(true)
+                                  setBusinessForm({...businessForm, postal_code: ''})
+                                } else {
+                                  setBusinessForm({...businessForm, postal_code: e.target.value})
+                                }
+                              }}
+                              className={selectClass}
+                            >
+                              <option value="">Pilih kode pos</option>
+                              {postalCodes.map(code => (
+                                <option key={code} value={code}>{code}</option>
+                              ))}
+                              <option value="__custom__">Lainnya (isi manual)</option>
+                            </select>
+                          ) : (
+                            <>
+                              <input
+                                value={businessForm.postal_code}
+                                onChange={(e) => setBusinessForm({...businessForm, postal_code: e.target.value})}
+                                placeholder="Kode pos"
+                                className={inputClass}
+                              />
+                              {postalCodes.length > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => { setUseCustomPostalCode(false); setBusinessForm({...businessForm, postal_code: postalCodes[0]}) }}
+                                  className="mt-1 text-xs text-blue-600 hover:text-blue-700 font-medium"
+                                >
+                                  Kembali ke pilihan kode pos
+                                </button>
+                              )}
+                            </>
+                          )}
                         </div>
                       </div>
 

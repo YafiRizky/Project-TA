@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { productsAPI, inventoryAPI, transactionsAPI, paymentMethodsAPI, promotionsAPI } from '../services/api'
+import { productsAPI, inventoryAPI, transactionsAPI, paymentMethodsAPI, promotionsAPI, xenditAPI } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 import MainLayout from '../components/MainLayout'
 import {
@@ -9,6 +9,7 @@ import {
   RiArrowGoBackLine, RiShoppingCartLine
 } from 'react-icons/ri'
 import { fmt, formatNumberInput, parseFormattedNumber } from '../utils/formatCurrency'
+import { QRCodeSVG } from 'qrcode.react'
 
 export default function KasirPOSPage() {
   const { user, business } = useAuth()
@@ -40,6 +41,11 @@ export default function KasirPOSPage() {
   const [isValidatingStock, setIsValidatingStock] = useState(false)
   const [sessionRestoredNotice, setSessionRestoredNotice] = useState(false)
   const scannerRef = useRef(null)
+  // Xendit state (integrated into checkout flow)
+  const [xenditPayment, setXenditPayment] = useState(null)  // { reference_id, payment_type, qr_string, va_number, bank_code, payment_url, amount }
+  const [xenditStatus, setXenditStatus] = useState(null)    // 'PENDING' | 'PAID' | 'EXPIRED'
+  const [xenditLoading, setXenditLoading] = useState(false)
+  const xenditPollRef = useRef(null)
 
   // C2: Persist cart to localStorage on every change
   useEffect(() => {
@@ -228,6 +234,84 @@ export default function KasirPOSPage() {
   const total = Math.max(0, subtotal - totalDiscount)
   const change = parseFloat(amountPaid || 0) - total
 
+  // Xendit: Complete transaction after payment confirmed
+  const completeXenditTransaction = useCallback(async (statusResult) => {
+    const selectedMethod = methodOptions.find(m => m.id === paymentMethod)
+    const items = cart.map(c => ({ product_id: c.product_id, quantity: c.quantity, price_per_unit: c.price, discount: calculateItemDiscount(c) }))
+    try {
+      const data = await transactionsAPI.checkout({
+        items, payment_method: selectedMethod?.method_type || 'XENDIT',
+        amount_paid: total,
+        discount_amount: totalDiscount,
+        cashier_name: user?.full_name || user?.username || 'Kasir',
+        notes: `Xendit ${xenditPayment?.payment_type || ''} | ${statusResult?.payment_channel || ''} | ${xenditPayment?.reference_id || ''}`,
+      })
+      setReceiptData({ ...data, cart, total, subtotal, totalDiscount, paymentMethod: selectedMethod?.method_type || 'XENDIT', paymentMethodName: `${selectedMethod?.name || 'Xendit'} (Digital)`, amountPaid: total, change: 0 })
+      setShowReceipt(true)
+      setCart([])
+      setAmountPaid('')
+      setPaymentMethod(null)
+      setXenditPayment(null)
+      setXenditStatus(null)
+      queryClient.invalidateQueries(['stock-pos', bCode])
+      queryClient.invalidateQueries(['products-pos', bCode])
+    } catch (e) {
+      setError('Pembayaran Xendit berhasil, tapi gagal menyimpan transaksi. Hubungi admin.')
+    }
+  }, [cart, total, subtotal, totalDiscount, user, xenditPayment, paymentMethod, methodOptions, queryClient, bCode])
+
+  // Start Xendit payment flow (called from handleCheckout when use_xendit=true)
+  const startXenditPayment = async (selectedMethodId) => {
+    setXenditLoading(true)
+    setError('')
+    try {
+      const result = await xenditAPI.createPayment({
+        payment_method_id: selectedMethodId,
+        amount: total,
+      })
+      setXenditPayment(result)
+      setXenditStatus('PENDING')
+      // Start polling every 3 seconds
+      xenditPollRef.current = setInterval(async () => {
+        try {
+          const statusResult = await xenditAPI.checkStatus(result.reference_id)
+          setXenditStatus(statusResult.status)
+          if (statusResult.status === 'PAID') {
+            clearInterval(xenditPollRef.current)
+            setTimeout(() => completeXenditTransaction(statusResult), 1500)
+          } else if (statusResult.status === 'EXPIRED' || statusResult.status === 'FAILED') {
+            clearInterval(xenditPollRef.current)
+          }
+        } catch (e) { /* ignore polling errors */ }
+      }, 3000)
+    } catch (err) {
+      setError(err.response?.data?.error || 'Gagal membuat pembayaran Xendit')
+    } finally {
+      setXenditLoading(false)
+    }
+  }
+
+  const handleCloseXendit = () => {
+    if (xenditPollRef.current) clearInterval(xenditPollRef.current)
+    setXenditPayment(null)
+    setXenditStatus(null)
+  }
+
+  const handleSimulatePayment = async () => {
+    if (!xenditPayment?.reference_id) return
+    try {
+      await xenditAPI.simulatePayment(xenditPayment.reference_id)
+      // Polling will pick up the status change
+    } catch (e) {
+      setError('Gagal simulasi pembayaran')
+    }
+  }
+
+  // Cleanup polling on unmount
+  useEffect(() => {
+    return () => { if (xenditPollRef.current) clearInterval(xenditPollRef.current) }
+  }, [])
+
   // Checkout
   const checkoutMutation = useMutation({
     mutationFn: transactionsAPI.checkout,
@@ -296,7 +380,6 @@ export default function KasirPOSPage() {
         const msgs = insufficientItems.map(i => `${i.name} (diminta: ${i.requested}, tersedia: ${i.available})`).join(', ')
         setError(`Stok tidak mencukupi: ${msgs}`)
         setIsValidatingStock(false)
-        // Refresh local stock data
         queryClient.invalidateQueries(['stock-pos', bCode])
         return
       }
@@ -307,6 +390,13 @@ export default function KasirPOSPage() {
     }
     setIsValidatingStock(false)
 
+    // Check if this method uses Xendit → route to Xendit payment flow
+    if (selectedMethod?.use_xendit && selectedMethod.id !== 0) {
+      startXenditPayment(selectedMethod.id)
+      return
+    }
+
+    // Normal (manual) checkout flow
     const items = cart.map(c => ({ product_id: c.product_id, quantity: c.quantity, price_per_unit: c.price, discount: calculateItemDiscount(c) }))
     checkoutMutation.mutate({
       items, payment_method: methodType,
@@ -562,10 +652,18 @@ export default function KasirPOSPage() {
 
         {/* Action Buttons */}
         <div className="p-5 border-t border-gray-100 shrink-0">
-          <button onClick={handleCheckout} disabled={cart.length === 0 || checkoutMutation.isPending || isValidatingStock}
-            className="w-full bg-emerald-600 text-white py-3.5 rounded-2xl font-bold text-sm hover:bg-emerald-700 active:scale-[0.98] transition-all shadow-lg disabled:bg-gray-300 disabled:shadow-none">
-            {isValidatingStock ? 'Memvalidasi stok...' : checkoutMutation.isPending ? 'Memproses...' : 'Proses Pembayaran'}
-          </button>
+          {(() => {
+            const selectedMethod = methodOptions.find(m => m.id === paymentMethod)
+            const isXendit = selectedMethod?.use_xendit && selectedMethod.id !== 0
+            return (
+              <button onClick={handleCheckout} disabled={cart.length === 0 || checkoutMutation.isPending || isValidatingStock || xenditLoading}
+                className={`w-full py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-lg disabled:bg-gray-300 disabled:shadow-none ${
+                  isXendit ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                }`}>
+                {isValidatingStock ? 'Memvalidasi stok...' : checkoutMutation.isPending ? 'Memproses...' : xenditLoading ? 'Menghubungi Xendit...' : isXendit ? `Bayar via ${selectedMethod.name}` : 'Proses Pembayaran'}
+              </button>
+            )
+          })()}
           <button onClick={clearCart} disabled={cart.length === 0}
             className="w-full mt-2 border border-gray-300 text-gray-600 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 transition disabled:opacity-50">
             Batalkan Transaksi
@@ -698,6 +796,115 @@ export default function KasirPOSPage() {
           </div>
         </div>
       )}
+      {/* ===== XENDIT PAYMENT MODAL (QRIS / VA / E-Wallet) ===== */}
+      {xenditPayment && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6">
+            {/* Header */}
+            <div className="text-center mb-5">
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg ${
+                xenditPayment.payment_type === 'QRIS' ? 'bg-gradient-to-br from-purple-500 to-pink-500' :
+                xenditPayment.payment_type === 'VA' ? 'bg-gradient-to-br from-blue-500 to-cyan-500' :
+                'bg-gradient-to-br from-green-500 to-emerald-500'
+              }`}>
+                <span className="text-2xl text-white">
+                  {xenditPayment.payment_type === 'QRIS' ? 'QR' : xenditPayment.payment_type === 'VA' ? 'VA' : 'EW'}
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-gray-800">
+                {xenditPayment.payment_type === 'QRIS' ? 'Pembayaran QRIS' :
+                 xenditPayment.payment_type === 'VA' ? `Transfer ${xenditPayment.bank_code}` :
+                 'Pembayaran E-Wallet'}
+              </h3>
+              <p className="text-gray-500 text-sm mt-1">via Xendit Payment Gateway</p>
+            </div>
+
+            {/* Amount */}
+            <div className="bg-gray-50 rounded-2xl p-4 mb-4 text-center">
+              <p className="text-sm text-gray-500">Total Tagihan</p>
+              <p className="text-3xl font-bold text-gray-800 mt-1">Rp {fmt(Math.round(xenditPayment.amount))}</p>
+            </div>
+
+            {/* Payment Details based on type */}
+            {xenditStatus !== 'PAID' && (
+              <div className="mb-4">
+                {/* QRIS: Show QR Code */}
+                {xenditPayment.payment_type === 'QRIS' && xenditPayment.qr_string && (
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="bg-white border-2 border-gray-200 rounded-2xl p-4">
+                      <QRCodeSVG value={xenditPayment.qr_string} size={220} level="M" />
+                    </div>
+                    <p className="text-xs text-gray-400 text-center">Minta pelanggan scan QR code di atas menggunakan aplikasi e-banking atau e-wallet</p>
+                  </div>
+                )}
+
+                {/* VA: Show VA Number */}
+                {xenditPayment.payment_type === 'VA' && xenditPayment.va_number && (
+                  <div className="space-y-3">
+                    <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 text-center">
+                      <p className="text-xs text-blue-500 mb-1">Nomor Virtual Account {xenditPayment.bank_code}</p>
+                      <p className="text-2xl font-mono font-bold text-blue-700 tracking-wider select-all">{xenditPayment.va_number}</p>
+                    </div>
+                    <p className="text-xs text-gray-400 text-center">Minta pelanggan transfer ke nomor VA di atas melalui ATM, mobile banking, atau internet banking</p>
+                  </div>
+                )}
+
+                {/* E-Wallet: Show redirect URL or QR */}
+                {xenditPayment.payment_type === 'EWALLET' && (
+                  <div className="space-y-3">
+                    {xenditPayment.qr_string ? (
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="bg-white border-2 border-gray-200 rounded-2xl p-4">
+                          <QRCodeSVG value={xenditPayment.qr_string} size={220} level="M" />
+                        </div>
+                        <p className="text-xs text-gray-400 text-center">Scan QR dengan aplikasi {xenditPayment.channel_code?.replace('ID_', '')}</p>
+                      </div>
+                    ) : xenditPayment.payment_url ? (
+                      <a href={xenditPayment.payment_url} target="_blank" rel="noopener noreferrer"
+                        className="block w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3.5 rounded-2xl font-bold text-sm text-center hover:from-green-600 hover:to-emerald-600 transition shadow-md">
+                        Buka Aplikasi Pembayaran ↗
+                      </a>
+                    ) : (
+                      <p className="text-sm text-gray-500 text-center">Menunggu konfirmasi pembayaran...</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Status */}
+            <div className={`rounded-xl p-3 mb-4 text-center text-sm font-medium flex items-center justify-center gap-2 ${
+              xenditStatus === 'PAID' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+              xenditStatus === 'EXPIRED' || xenditStatus === 'FAILED' ? 'bg-red-50 text-red-600 border border-red-200' :
+              'bg-blue-50 text-blue-700 border border-blue-200'
+            }`}>
+              {xenditStatus === 'PAID' && <><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> LUNAS! Transaksi sedang disimpan...</>}
+              {(xenditStatus === 'EXPIRED' || xenditStatus === 'FAILED') && <><svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Pembayaran gagal/kadaluwarsa.</>}
+              {xenditStatus === 'PENDING' && <><span className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" /> Menunggu pembayaran...</>}
+            </div>
+
+            {/* Action Buttons */}
+            {xenditStatus !== 'PAID' && (
+              <div className="space-y-2">
+                {/* Simulate button (test mode) */}
+                <button
+                  onClick={handleSimulatePayment}
+                  className="w-full bg-amber-500 text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-amber-600 transition flex items-center justify-center gap-2"
+                >
+                  Simulasi Bayar (Test Mode)
+                </button>
+                <button
+                  onClick={handleCloseXendit}
+                  className="w-full border border-gray-300 text-gray-600 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 transition"
+                >
+                  Batalkan
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
     </MainLayout>
   )

@@ -1,0 +1,26 @@
+product_id,code,name,category,purchase_price,selling_price,unit,min_stock
+84,BRS01,Beras Premium C4 5kg,Sembako,62000,68000,karung,5
+85,BRS02,Beras Medium IR64 5kg,Sembako,54000,60000,karung,8
+86,GLA01,Gula Pasir Gulaku 1kg,Sembako,14000,16000,kg,10
+87,MYK01,Minyak Goreng Bimoli 1L,Sembako,16500,18500,botol,8
+88,MYK02,Minyak Goreng Kita 1L,Sembako,13500,15000,pouch,10
+89,TLR01,Telur Ayam Ras 1kg,Sembako,26000,29000,kg,5
+90,TPG01,Tepung Segitiga Biru 1kg,Sembako,10500,12500,kg,5
+91,MIE01,Indomie Goreng Spesial 85g,Mie Instan,2600,3100,pcs,30
+92,MIE02,Indomie Kuah Soto Ayam,Mie Instan,2500,3000,pcs,25
+93,MIE03,Mie Sedaap Goreng,Mie Instan,2500,3000,pcs,20
+94,MNM01,Aqua Air Mineral 600ml,Minuman,3000,4000,botol,24
+95,MNM02,Teh Pucuk Harum 350ml,Minuman,3100,4000,botol,15
+96,MNM03,Kopi Kapal Api Mix Sachet,Minuman,1200,1500,pcs,30
+97,MNM04,Le Minerale 600ml,Minuman,3000,4000,botol,15
+98,RKK01,Rokok Sampoerna A Mild 16,Rokok,31500,34500,pack,10
+99,RKK02,Rokok Gudang Garam Filter 12,Rokok,23000,25500,pack,10
+100,SNK01,Chitato Sapi Panggang 68g,Snack & Makanan Ringan,6800,8500,pcs,8
+101,SNK02,Oreo Chocolate Cream 133g,Snack & Makanan Ringan,7500,9500,pcs,6
+102,SNK03,Wafer Tango Cokelat 110g,Snack & Makanan Ringan,5200,7000,pcs,8
+103,BMB01,Masako Rasa Ayam 100g,Bumbu Dapur,4500,5500,pack,10
+104,KRT01,Rinso Anti Noda 770g,Kebutuhan Rumah Tangga,16500,19000,pouch,5
+105,KRT02,Sunlight Pencuci Piring 650ml,Kebutuhan Rumah Tangga,12000,14000,pouch,6
+106,ROTI01,Roti Tawar Kupas Sari Roti,Roti & Dairi,13000,16000,pcs,4
+107,ROTI02,Susu UHT Ultramilk 250ml,Roti & Dairi,5500,7000,pcs,10
+108,GAS01,Gas LPG 3kg (Melon),Gas & Energi,18500,21000,tabung,4

@@ -13,9 +13,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -61,6 +66,7 @@ INSTALLED_APPS = [
     'notifications', # Stock notification system
     'auditlog',      # Audit trail / system history log
     'promotions',    # Discount rules and promos
+    'ml',            # Machine Learning predictions & recommendations
 ]
 
 MIDDLEWARE = [
@@ -316,3 +322,20 @@ LOGGING = {
 # =====================================================================================
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024  # 2MB max upload
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024  # 5MB max request body
+
+# =====================================================================================
+# XENDIT PAYMENT GATEWAY (Test Mode)
+# =====================================================================================
+XENDIT_SECRET_KEY = os.environ.get('XENDIT_SECRET_KEY', '')
+XENDIT_WEBHOOK_TOKEN = os.environ.get('XENDIT_WEBHOOK_TOKEN', '')
+XENDIT_BASE_URL = 'https://api.xendit.co'
+# Frontend URL for Xendit success/failure redirect
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:5173')
+
+# =====================================================================================
+# STATIC FILES CONFIGURATION (PRODUCTION)
+# =====================================================================================
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+

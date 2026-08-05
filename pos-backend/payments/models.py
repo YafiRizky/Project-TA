@@ -4,6 +4,7 @@ Admin configures payment methods, kasir uses them during transactions.
 """
 from django.db import models
 from businesses.models import Business
+from .xendit_models import XenditPayment  # noqa: F401 — re-export for Django discovery
 
 
 class PaymentMethod(models.Model):
@@ -27,6 +28,9 @@ class PaymentMethod(models.Model):
     qris_image = models.ImageField(upload_to='qris/', blank=True, null=True, help_text="Gambar QR Code QRIS")
     instructions = models.TextField(blank=True, help_text="Instruksi pembayaran tambahan")
     is_active = models.BooleanField(default=True)
+    # Xendit integration fields
+    use_xendit = models.BooleanField(default=False, help_text="Gunakan Xendit untuk proses pembayaran otomatis")
+    xendit_channel = models.CharField(max_length=50, blank=True, help_text="Channel Xendit: BCA, BNI, ID_GOPAY, dll")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

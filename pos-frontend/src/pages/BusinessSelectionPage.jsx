@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { authAPI } from '../services/api'
 import { Store, Plus, Building2, LogOut, ChevronRight, Loader2, MapPin } from 'lucide-react'
 import { toast } from 'react-hot-toast'
-import { Country, State, City } from 'country-state-city'
+import kodeposData from '../data/kodepos.json'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 
@@ -45,13 +45,15 @@ export default function BusinessSelectionPage() {
   const [customBusinessType, setCustomBusinessType] = useState('')
 
   // Region states
-  const [selectedCountry, setSelectedCountry] = useState('ID')
+  const selectedCountry = 'ID'
   const [selectedProvince, setSelectedProvince] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
   const [selectedDistrictId, setSelectedDistrictId] = useState('')
   const [idProvinces, setIdProvinces] = useState([])
   const [idCities, setIdCities] = useState([])
   const [idDistricts, setIdDistricts] = useState([])
+  const [postalCodes, setPostalCodes] = useState([])
+  const [useCustomPostalCode, setUseCustomPostalCode] = useState(false)
   
   const { user, logout, updateBusinessData } = useAuth()
   const navigate = useNavigate()
@@ -68,15 +70,7 @@ export default function BusinessSelectionPage() {
       .catch(() => setIdProvinces([]))
   }, [])
 
-  // Cascade: reset all when country changes
-  useEffect(() => {
-    setSelectedProvince('')
-    setSelectedCity('')
-    setSelectedDistrictId('')
-    setIdCities([])
-    setIdDistricts([])
-    setCreateFormData(prev => ({ ...prev, province: '', city: '', district: '' }))
-  }, [selectedCountry])
+
 
   // Cascade: reset city & kecamatan when province changes + fetch cities (Indonesia)
   useEffect(() => {
@@ -108,45 +102,68 @@ export default function BusinessSelectionPage() {
     }
   }, [selectedCity, selectedCountry])
 
-  const handleCountryChange = (e) => {
-    const code = e.target.value
-    setSelectedCountry(code)
-    setCreateFormData(prev => ({ ...prev, country: code }))
-  }
-
   const handleProvinceChange = (e) => {
     const val = e.target.value
     setSelectedProvince(val)
-    if (selectedCountry === 'ID') {
-      const prov = idProvinces.find(p => p.id === val)
-      setCreateFormData(prev => ({ ...prev, province: prov ? titleCase(prov.name) : '' }))
-    } else {
-      const stateObj = State.getStatesOfCountry(selectedCountry).find(s => s.isoCode === val)
-      setCreateFormData(prev => ({ ...prev, province: stateObj ? stateObj.name : val }))
-    }
+    const prov = idProvinces.find(p => p.id === val)
+    setCreateFormData(prev => ({ ...prev, province: prov ? titleCase(prov.name) : '' }))
   }
 
   const handleCityChange = (e) => {
     const val = e.target.value
     setSelectedCity(val)
-    if (selectedCountry === 'ID') {
-      const city = idCities.find(c => c.id === val)
-      setCreateFormData(prev => ({ ...prev, city: city ? titleCase(city.name) : '' }))
-    } else {
-      setCreateFormData(prev => ({ ...prev, city: val }))
-    }
+    const city = idCities.find(c => c.id === val)
+    setCreateFormData(prev => ({ ...prev, city: city ? titleCase(city.name) : '' }))
   }
 
   const handleDistrictChange = (e) => {
     const val = e.target.value
     setSelectedDistrictId(val)
-    if (selectedCountry === 'ID') {
-      const dist = idDistricts.find(d => d.id === val)
-      setCreateFormData(prev => ({ ...prev, district: dist ? titleCase(dist.name) : '' }))
-    } else {
-      setCreateFormData(prev => ({ ...prev, district: val }))
-    }
+    const dist = idDistricts.find(d => d.id === val)
+    setCreateFormData(prev => ({ ...prev, district: dist ? titleCase(dist.name) : '' }))
+    // Reset postal code
+    setPostalCodes([])
+    setUseCustomPostalCode(false)
+    setCreateFormData(prev => ({ ...prev, postal_code: '' }))
   }
+
+  // Lookup postal codes from local JSON when district is selected
+  useEffect(() => {
+    if (!selectedDistrictId) {
+      setPostalCodes([])
+      return
+    }
+    const dist = idDistricts.find(d => d.id === selectedDistrictId)
+    if (!dist) return
+
+    // Get city name from selected city (strip KABUPATEN/KOTA prefix)
+    const cityObj = idCities.find(c => c.id === selectedCity)
+    const rawCityName = (cityObj?.name || '').toUpperCase().trim()
+    const cityName = rawCityName.replace(/^(KABUPATEN|KOTA)\s+/i, '')
+    const distName = (dist.name || '').toUpperCase().trim()
+
+    // Try exact match: "KOTA/KAB|KECAMATAN"
+    const key = `${cityName}|${distName}`
+    let codes = kodeposData[key] || []
+
+    // If no match, try with full name (including prefix)
+    if (codes.length === 0) {
+      codes = kodeposData[`${rawCityName}|${distName}`] || []
+    }
+
+    // If still no match, try searching all keys containing the district name
+    if (codes.length === 0) {
+      const fallbackKey = Object.keys(kodeposData).find(k => k.endsWith(`|${distName}`))
+      if (fallbackKey) codes = kodeposData[fallbackKey]
+    }
+
+    if (codes && codes.length > 0) {
+      setPostalCodes(codes)
+      setCreateFormData(prev => ({ ...prev, postal_code: codes[0] }))
+    } else {
+      setPostalCodes([])
+    }
+  }, [selectedDistrictId, idDistricts, idCities, selectedCity])
 
   const fetchBusinesses = async () => {
     try {
@@ -244,6 +261,7 @@ export default function BusinessSelectionPage() {
         setSelectedCity('')
         setSelectedDistrictId('')
         setCustomBusinessType('')
+        queryClient.invalidateQueries() // Force refetch semua data setelah create bisnis baru
         fetchBusinesses()
       }
     } catch (error) {
@@ -269,7 +287,7 @@ export default function BusinessSelectionPage() {
             <Store size={24} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Antigravity POS</h1>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Metracrura POS</h1>
             <p className="text-xs text-gray-500 font-medium">Business Portal</p>
           </div>
         </div>
@@ -438,33 +456,31 @@ export default function BusinessSelectionPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
                   <PhoneInput
                     defaultCountry="ID"
+                    countries={['ID']}
                     international
                     withCountryCallingCode
                     countryCallingCodeEditable={false}
+                    countrySelectProps={{ disabled: true, tabIndex: -1 }}
                     value={createFormData.phone}
                     onChange={(val) => setCreateFormData({...createFormData, phone: val})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500 outline-none transition-all"
                     style={{
                       '--PhoneInputCountryFlag-height': '1.2em',
                       '--PhoneInputCountryFlag-borderColor': 'transparent',
-                      '--PhoneInputCountrySelectArrow-color': '#9CA3AF'
+                      '--PhoneInputCountrySelectArrow-opacity': '0',
+                      '--PhoneInputCountrySelectArrow-marginLeft': '0',
                     }}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Negara *</label>
-                  <select
-                    value={selectedCountry}
-                    onChange={handleCountryChange}
-                    className={selectClass}
-                    required
-                  >
-                    <option value="">Pilih negara</option>
-                    {Country.getAllCountries().map((c) => (
-                      <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
-                    ))}
-                  </select>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Negara</label>
+                  <input
+                    type="text"
+                    value="Indonesia"
+                    readOnly
+                    className="w-full px-4 py-2 border border-gray-200 bg-gray-100 rounded-xl text-sm text-gray-600 cursor-default outline-none"
+                  />
                 </div>
                 
                 <div>
@@ -476,10 +492,7 @@ export default function BusinessSelectionPage() {
                     required
                   >
                     <option value="">Pilih provinsi</option>
-                    {selectedCountry === 'ID'
-                      ? idProvinces.map(p => <option key={p.id} value={p.id}>{titleCase(p.name)}</option>)
-                      : State.getStatesOfCountry(selectedCountry).map(s => <option key={s.isoCode} value={s.isoCode}>{s.name}</option>)
-                    }
+                    {idProvinces.map(p => <option key={p.id} value={p.id}>{titleCase(p.name)}</option>)}
                   </select>
                 </div>
 
@@ -492,10 +505,7 @@ export default function BusinessSelectionPage() {
                     required
                   >
                     <option value="">Pilih kota</option>
-                    {selectedCountry === 'ID'
-                      ? idCities.map(c => <option key={c.id} value={c.id}>{titleCase(c.name)}</option>)
-                      : City.getCitiesOfState(selectedCountry, selectedProvince).map(c => <option key={c.name} value={c.name}>{c.name}</option>)
-                    }
+                    {idCities.map(c => <option key={c.id} value={c.id}>{titleCase(c.name)}</option>)}
                   </select>
                 </div>
                 
@@ -507,22 +517,51 @@ export default function BusinessSelectionPage() {
                     className={selectClass}
                   >
                     <option value="">Pilih kecamatan</option>
-                    {selectedCountry === 'ID'
-                      ? idDistricts.map(d => <option key={d.id} value={d.id}>{titleCase(d.name)}</option>)
-                      : City.getCitiesOfState(selectedCountry, selectedProvince).map(c => <option key={c.name} value={c.name}>{c.name}</option>)
-                    }
+                    {idDistricts.map(d => <option key={d.id} value={d.id}>{titleCase(d.name)}</option>)}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
-                  <input
-                    type="text"
-                    value={createFormData.postal_code}
-                    onChange={(e) => setCreateFormData({...createFormData, postal_code: e.target.value})}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                    placeholder="Contoh: 12345"
-                  />
+                  {postalCodes.length > 0 && !useCustomPostalCode ? (
+                    <select
+                      value={createFormData.postal_code || ''}
+                      onChange={(e) => {
+                        if (e.target.value === '__custom__') {
+                          setUseCustomPostalCode(true)
+                          setCreateFormData({...createFormData, postal_code: ''})
+                        } else {
+                          setCreateFormData({...createFormData, postal_code: e.target.value})
+                        }
+                      }}
+                      className={selectClass}
+                    >
+                      <option value="">Pilih kode pos</option>
+                      {postalCodes.map(code => (
+                        <option key={code} value={code}>{code}</option>
+                      ))}
+                      <option value="__custom__">Lainnya (isi manual)</option>
+                    </select>
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        value={createFormData.postal_code}
+                        onChange={(e) => setCreateFormData({...createFormData, postal_code: e.target.value})}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+                        placeholder="Contoh: 12345"
+                      />
+                      {postalCodes.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => { setUseCustomPostalCode(false); setCreateFormData({...createFormData, postal_code: postalCodes[0]}) }}
+                          className="mt-1 text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+                        >
+                          Kembali ke pilihan kode pos
+                        </button>
+                      )}
+                    </>
+                  )}
                 </div>
 
                 

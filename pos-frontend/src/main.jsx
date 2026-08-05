@@ -10,7 +10,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
-      staleTime: 5 * 60 * 1000,
+      staleTime: 30 * 1000, // 30 detik (sebelumnya 5 menit -- menyebabkan data stale)
+      refetchOnWindowFocus: true, // Auto-refetch saat user kembali ke tab browser
     },
   },
 })

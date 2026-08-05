@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, Fragment } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { transactionsAPI } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
@@ -21,29 +21,25 @@ export default function TransactionsPage() {
   const [filterEnd, setFilterEnd] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('transactions', 10)
 
-  const { data: transactions, isLoading } = useQuery({ queryKey: ['transactions', bCode], queryFn: () => transactionsAPI.getTransactions(), retry: 1 })
+  const { data: transactionsData, isLoading } = useQuery({
+    queryKey: ['transactions', bCode, currentPage, pageSize, filterStart, filterEnd],
+    queryFn: () => transactionsAPI.getTransactions({
+      page: currentPage,
+      page_size: pageSize,
+      ...(filterStart && { start_date: filterStart }),
+      ...(filterEnd && { end_date: filterEnd }),
+    }),
+    retry: 1,
+  })
   const { data: dailySummary } = useQuery({ queryKey: ['daily-summary', bCode], queryFn: () => transactionsAPI.getDailySummary(), retry: 1 })
 
-  const allList = useMemo(() => {
-    const raw = Array.isArray(transactions) ? transactions : (transactions?.results || [])
-    // Filter by date range
-    if (!filterStart && !filterEnd) return raw
-    return raw.filter(t => {
-      const d = new Date(t.transaction_date || t.created_at)
-      const start = filterStart ? new Date(filterStart + 'T00:00:00') : null
-      const end = filterEnd ? new Date(filterEnd + 'T23:59:59') : null
-      if (start && d < start) return false
-      if (end && d > end) return false
-      return true
-    })
-  }, [transactions, filterStart, filterEnd])
+  // Server-side pagination: backend returns { count, results, next, previous }
+  const transList = transactionsData?.results || (Array.isArray(transactionsData) ? transactionsData : [])
+  const totalCount = transactionsData?.count || transList.length
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize))
 
-  // Pagination
-  const totalPages = Math.max(1, Math.ceil(allList.length / pageSize))
-  const safePageNum = Math.min(currentPage, totalPages)
-  const transList = allList.slice((safePageNum - 1) * pageSize, safePageNum * pageSize)
 
   const handleFilterChange = (field, value) => {
     if (field === 'start') setFilterStart(value)
@@ -118,7 +114,7 @@ export default function TransactionsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
         <div>
           <h2 className="text-gray-800 font-bold text-lg">Riwayat Transaksi</h2>
-          <p className="text-gray-400 text-sm">{allList.length} transaksi {(filterStart || filterEnd) ? 'dalam filter' : 'tercatat'} — klik baris untuk lihat detail</p>
+          <p className="text-gray-400 text-sm">{totalCount} transaksi {(filterStart || filterEnd) ? 'dalam filter' : 'tercatat'} — klik baris untuk lihat detail</p>
         </div>
         {/* Date filter */}
         <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2">
@@ -167,8 +163,8 @@ export default function TransactionsPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-50 text-sm bg-white">
                   {transList.length > 0 ? transList.map((t) => (
-                    <>
-                      <tr key={t.id} onClick={() => toggleExpand(t.id)} className={`hover:bg-gray-50 transition-colors cursor-pointer ${t.status === 'VOIDED' ? 'opacity-60' : ''}`}>
+                    <Fragment key={t.id}>
+                      <tr onClick={() => toggleExpand(t.id)} className={`hover:bg-gray-50 transition-colors cursor-pointer ${t.status === 'VOIDED' ? 'opacity-60' : ''}`}>
                         <td className="px-5 py-4 text-gray-400">
                           {expandedId === t.id ? <RiArrowUpSLine size={16} /> : <RiArrowDownSLine size={16} />}
                         </td>
@@ -208,7 +204,7 @@ export default function TransactionsPage() {
                                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
                                       </svg>
-                                      Void
+                                      Void Transaksi
                                     </button>
                                   )}
                                 </div>
@@ -230,7 +226,7 @@ export default function TransactionsPage() {
                               )}
 
                               {t.items && t.items.length > 0 ? (
-                                <table className="w-full text-sm text-left">
+                                <table className="w-full text-left text-xs">
                                   <thead>
                                     <tr className="border-b border-gray-100">
                                       <th className="py-2 text-[11px] uppercase tracking-wider text-gray-500 font-bold">Produk</th>
@@ -257,7 +253,7 @@ export default function TransactionsPage() {
                           </td>
                         </tr>
                       )}
-                    </>
+                    </Fragment>
                   )) : (
                     <tr>
                       <td colSpan={7} className="px-5 py-12 text-center">
@@ -278,7 +274,7 @@ export default function TransactionsPage() {
             {/* Pagination Box */}
             <div className="p-5 border-t border-gray-50 bg-white flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="text-sm text-gray-500 w-full md:w-1/3">
-                Menampilkan <span className="font-semibold text-gray-700">{allList.length === 0 ? 0 : (currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, allList.length)}</span> dari <span className="font-semibold text-gray-700">{allList.length}</span> transaksi
+                Menampilkan <span className="font-semibold text-gray-700">{totalCount === 0 ? 0 : (currentPage - 1) * pageSize + 1}-{Math.min(currentPage * pageSize, totalCount)}</span> dari <span className="font-semibold text-gray-700">{totalCount}</span> transaksi
               </div>
               <div className="flex items-center justify-center w-full md:w-1/3">
                 <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />

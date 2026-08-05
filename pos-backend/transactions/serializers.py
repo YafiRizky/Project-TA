@@ -26,11 +26,12 @@ class TransactionItemSerializer(serializers.ModelSerializer):
             'batch_code',
             'quantity',
             'price_per_unit',
+            'cost_per_unit',
             'subtotal',
             'discount',
             'created_at'
         ]
-        read_only_fields = ['id', 'transaction', 'product_name', 'product_code', 'batch_code', 'subtotal', 'created_at']
+        read_only_fields = ['id', 'transaction', 'product_name', 'product_code', 'batch_code', 'cost_per_unit', 'subtotal', 'created_at']
     
     def validate(self, data):
         """Validate quantity and prices"""
@@ -130,7 +131,7 @@ class TransactionCreateSerializer(serializers.Serializer):
         required=False
     )
     payment_method = serializers.ChoiceField(
-        choices=('CASH', 'CARD', 'QRIS', 'TRANSFER', 'EWALLET', 'MIXED'),
+        choices=('CASH', 'CARD', 'QRIS', 'TRANSFER', 'EWALLET', 'MIXED', 'XENDIT'),
         default='CASH'
     )
     amount_paid = serializers.DecimalField(

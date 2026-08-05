@@ -14,20 +14,20 @@ export function useStockAlerts() {
   const { data: productsData } = useQuery({
     queryKey: ['products-stock-check', bCode],
     queryFn: () => productsAPI.getProducts({ limit: 500 }),
-    refetchInterval: 60000,
-    staleTime: 30000,
+    refetchInterval: 120000,
+    staleTime: 120000,
     retry: 1,
   })
 
   const { data: batchesData, refetch } = useQuery({
     queryKey: ['batches-stock-check', bCode],
     queryFn: () => inventoryAPI.getBatches({ status: 'ACTIVE', limit: 1000 }),
-    refetchInterval: 60000,
-    staleTime: 30000,
+    refetchInterval: 120000,
+    staleTime: 120000,
     retry: 1,
   })
 
-  const productsList = productsData?.results || []
+  const productsList = Array.isArray(productsData) ? productsData : (productsData?.results || [])
   const batchesList = Array.isArray(batchesData) ? batchesData : (batchesData?.results || [])
 
   // Build stock map: productId -> total qty (exclude expired batches)

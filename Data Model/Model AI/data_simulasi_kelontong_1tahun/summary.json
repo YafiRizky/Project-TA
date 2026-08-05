@@ -1,0 +1,16 @@
+{
+  "business_name": "Toko Kelontong Berkah Utama",
+  "business_code": "KLN789",
+  "owner_code": "KLN123",
+  "admin_username": "admin_kelontong",
+  "kasir_username": "kasir_kelontong",
+  "start_date": "2025-08-01",
+  "end_date": "2026-08-01",
+  "total_days": 365,
+  "total_products": 25,
+  "total_transactions": 7457,
+  "total_transaction_items": 13396,
+  "total_batches": 1200,
+  "total_revenue": 371387600.0,
+  "avg_daily_revenue": 1017500.27
+}

@@ -1,0 +1,25 @@
+code,name,category,buy,sell,unit,min_stock,avg_daily,std_daily,restock_days,batch_qty,expiry_days,source
+SMB01,Gula Pasir 1kg,Sembako,13500,15500,kg,10,3,1.2,7,25,,Toko Amanah
+SMB02,Minyak Goreng 1L,Sembako,13500,15000,liter,5,2,0.8,7,8,365.0,Toko Barokah
+SMB03,Tepung Beras,Sembako,3300,4000,bungkus,8,2,1.0,7,15,180.0,Toko Barokah
+SMB04,Kecap Manis,Sembako,3300,4000,bungkus,8,2,1.0,7,15,365.0,Toko Barokah
+MIE01,Indomie Goreng,Mie Instan,2500,3000,pcs,20,7,2.5,7,40,240.0,Toko Barokah
+MIE02,Mie Sedap Goreng,Mie Instan,2500,3000,pcs,20,7,2.5,7,40,240.0,Toko Barokah
+MIE03,Mie Sedap Soto Ayam,Mie Instan,2750,3500,pcs,15,5,2.0,7,40,240.0,Toko Moro
+MIE04,Mie Sedap Cup Soto,Mie Instan,4500,5500,pcs,5,2,1.0,7,12,240.0,Toko Moro
+MNM01,Aqua Botol 600ml,Minuman,3000,4000,pcs,24,8,3.0,7,24,365.0,Toko Amanah
+MNM02,Teh Pucuk Harum,Minuman,3000,4000,pcs,12,4,1.5,7,24,180.0,Toko Moro
+MNM03,Fanta 390ml,Minuman,4000,5000,botol,8,3,1.2,7,12,365.0,Toko Moro
+MNM04,Pocari Sweat,Minuman,4000,5000,botol,8,2,1.0,7,12,365.0,Toko Moro
+MSC01,Kopi Sachet Gula Aren,Minuman Sachet,1700,2000,pcs,15,5,2.0,7,30,365.0,Toko Barokah
+MSC02,Milo Sachet,Minuman Sachet,700,1000,pcs,15,5,2.0,7,30,365.0,Toko Barokah
+RKK01,Rokok Sampoerna,Rokok,24000,27000,pack,10,5,1.5,7,10,,Toko Amanah
+SNK01,Chitato,Snack,1800,2000,pcs,10,3,1.5,7,10,120.0,Toko Moro
+SNK02,Better Caramel,Snack,1600,2000,pcs,10,2,1.0,7,12,180.0,Toko Barokah
+SNK03,Chocolatos,Snack,1000,1500,pcs,10,3,1.5,7,20,180.0,Toko Moro
+KRT01,Rinso Anti Noda Sachet,Kebutuhan RT,1200,1500,sachet,15,2,1.0,7,25,,Toko Barokah
+KRT02,Sunlight Cuci Piring,Kebutuhan RT,9000,10000,pcs,4,1,0.5,14,6,,Toko Moro
+KRT03,Sabun Cuci Baju,Kebutuhan RT,4500,5000,pcs,10,3,1.2,7,20,,Warung Melati
+BMB01,Masako Ayam,Bumbu Dapur,4500,5000,pack,15,5,1.5,7,30,365.0,Warung Melati
+GAS01,Gas LPG 3kg,Kebutuhan Dapur,20000,23000,tabung,2,1,0.5,7,3,,Toko Barokah
+PRW01,Shampoo Sachet,Perawatan Tubuh,500,1000,pcs,15,4,2.0,7,24,730.0,Toko Amanah

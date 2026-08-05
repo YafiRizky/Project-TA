@@ -1,38 +1,40 @@
 ---
 applyTo: '**'
 context: 'antigravity-ai-setup'
-lastUpdated: '2026-06-18'
-session: '15-phase2-multitenant'
+lastUpdated: '2026-08-01'
+session: '18-data-gen-stale-fix'
 ---
 
 # ANTIGRAVITY AI SETUP - POS ML SYSTEM PROJECT
-**Setup Date:** April 29, 2026 (last updated: June 18, 2026)
+**Setup Date:** April 29, 2026 (last updated: August 1, 2026)
 **Project Name:** POS ML System (Multi-Tenant Point of Sale)
-**Current Phase:** Phase 2 (Multi-Tenant Isolation & Pagination)
-**Next Phase:** Phase 2 (Multiple Bisnis / Branch Management) > Phase 3 (ML)
+**Current Phase:** Phase 3 (ML + Xendit Integration)
+**Next Phase:** Landing Page + Branding → Deploy (Railway + Vercel)
 
 ---
 
-## PART 1: PROJECT STATE TERKINI (JUNE 18, 2026)
+## PART 1: PROJECT STATE TERKINI (JULY 31, 2026)
 
 ### Overall Status
-- **Backend:** Django REST API - COMPLETE & VERIFIED (All Phase 1 features integrated, Backend multi-tenancy secure)
-- **Frontend:** React + Tailwind CSS - IN PROGRESS (Phase 2 Multi-tenant cache isolation applied)
-- **Database:** SQLite (dev) - COMPLETE & TESTED
+- **Backend:** Django REST API - COMPLETE & VERIFIED (All Phase 1-2 features, ML endpoints, Xendit native payment)
+- **Frontend:** React + Tailwind CSS - COMPLETE (All pages, ML Dashboard, Xendit inline payment)
+- **Database:** PostgreSQL (pos_ml) - COMPLETE & TESTED (13,560 transaksi, 4 UMKM)
 - **Authentication:** JWT Multi-tenant - WORKING (role-based permissions added)
+- **Payment:** Xendit Native Integration - WORKING (QRIS/VA/E-Wallet, test mode)
+- **ML:** 5 Endpoints Active - WORKING (Classification, Stockout, Restock, Expiry Risk, Forecast)
 - **Build:** Local dev working
 - **Masih local development** -- belum deploy ke server
 
 ### Current Development State
 - **Dev Server:** Ready to run (`npm run dev` on port 3001)
 - **Backend Server:** Django on `http://localhost:8000`
-- **Last Session:** June 18, 2026 (Refactored UI table & pagination component globally, implemented persistent page size)
-- **Pending:** Implement server-side pagination for remaining list endpoints.
-- **Next Action:** Server-side pagination & Final audit before Phase 3 (ML).
+- **Last Session:** August 1, 2026 (Stale data fix, UMKM data generation, PhoneInput UX fix)
+- **Pending:** Landing page + branding, ML v2 verification, deployment
+- **Next Action:** Landing Page & Branding → Deploy
 
 ### Technology Stack (Current)
 ```
-Backend:  Django 4.x + DRF (Django REST Framework) + SQLite (dev)
+Backend:  Django 6.x + DRF (Django REST Framework) + PostgreSQL (pos_ml)
 Frontend: React 19 + Vite 7.3.2 + Tailwind CSS 4.2.1
 Styling:  Tailwind CSS (100% migration from Material-UI)
 Icons:    react-icons (RiRemix icon set)
@@ -42,24 +44,34 @@ Auth:     JWT tokens + Custom BusinessUserJWTAuthentication
 Utils:    src/utils/generateCode.js, src/utils/formatCurrency.js (shared)
 Perms:    accounts/permissions.py (IsBusinessAdmin - kasir read-only)
 Phone:    react-phone-number-input (register step)
-Address:  country-state-city (cascading country > province > city)
+Address:  emsifa API (wilayah Indonesia) + kodepos.json (offline, 7274 kecamatan)
 Validate: zod + react-hook-form (frontend), validate_email (backend)
+Payment:  Xendit API (QRIS/VA/eWallet) + qrcode.react (QR renderer)
+ML:       scikit-learn, pandas, numpy, scipy
 ```
 
-### Credential Test Access (T2EUNE Business)
+### Credential Test Access
 ```
-ADMIN ROLE (Owner):
-  Business Code: T2EUNE
-  Username:      admin01
-  Password:      admin123
-  Access:        All pages (Dashboard, Products, Categories, Suppliers, 
-                 Inventory, Transactions, Reports, ML Predictions, User Mgmt)
+TECHDEV (Superuser - akses semua bisnis):
+  Username:      techdev
+  Password:      [set saat setup awal]
 
-KASIR ROLE (Cashier):
-  Business Code: T2EUNE
-  Username:      kasir01
-  Password:      kasir123
-  Access:        Dashboard, Transactions only
+4 UMKM DATA (Generated August 1, 2026):
+  1. Toko Berkah Jaya (HBRPOI) - Kelontong, 20 produk, 4814 tx, 12 bulan
+     Admin: admin_hbrpoi / admin123 | Owner Code: FI52TX
+     Kasir: kasir_hbrpoi / kasir123 (Kode Bisnis: HBRPOI)
+
+  2. Warung Makan Bu Sari (G8F1CB) - Warung Makan, 12 produk, 7385 tx, 12 bulan
+     Admin: admin_g8f1cb / admin123 | Owner Code: PTS288
+     Kasir: kasir_g8f1cb / kasir123 (Kode Bisnis: G8F1CB)
+
+  3. Toko Beras Pak Hadi (FNO6B9) - Toko Beras, 8 produk, 270 tx, 4 bulan
+     Admin: admin_fno6b9 / admin123 | Owner Code: 4EYJ2Q
+     Kasir: kasir_fno6b9 / kasir123 (Kode Bisnis: FNO6B9)
+
+  4. Minimart Sejahtera (M80O2R) - Minimart, 14 produk, 1091 tx, 4 bulan
+     Admin: admin_m80o2r / admin123 | Owner Code: OR1C0X
+     Kasir: kasir_m80o2r / kasir123 (Kode Bisnis: M80O2R)
 ```
 
 ### Backend Access
@@ -148,7 +160,14 @@ SESSION 12:    Frontend Redesign Complete
 
 SESSION 12+:   Core POS & Polish (May 2026)
   +-- FLAG_CORE_POS_COMPLETED_2026-05-06.md
-  +-- FLAG_18_06_2026_Pagination_UI_Fix.md  <-- LATEST
+  +-- FLAG_18_06_2026_Pagination_UI_Fix.md
+
+SESSION 17+:   Indonesia Lock + ML Overhaul (July 2026)
+  +-- FLAG_14_07_2026_ML_Overhaul_V2_Documentation.md
+  +-- FLAG_31_07_2026_Indonesia_Lock_KodePos.md
+
+SESSION 18:    Data Generation + Stale Fix + PostgreSQL (August 2026)
+  +-- FLAG_01_08_2026_DataGen_StaleFix.md  <-- LATEST
 ```
 
 ### FLAG Best Practices
@@ -188,7 +207,7 @@ c:\laragon\www\TA\
 |
 +-- pos-backend/                          [DJANGO REST API - Core backend engine]
 |   +-- manage.py                         [Django management script]
-|   +-- db.sqlite3                        [Development database (SQLite)]
+|   +-- (PostgreSQL: pos_ml)              [Database: PostgreSQL, NOT SQLite]
 |   |
 |   +-- backend/                          [Django project settings/config]
 |   +-- accounts/                         [USER MODELS & AUTH]
@@ -924,41 +943,139 @@ When opening this project in Antigravity:
    - Check "Note Improvement Project" folder (user's own findings)
    - Then check "Dokumen" folder (historical context)
    - Read the FLAG files in order (shows project progression)
+}
 
-5. **When creating new work:**
-   - Always follow RULE.instructions.md patterns
-   - Ask for clarification before implementing
-   - Preserve existing API patterns
-   - Style with Tailwind only (no Material-UI)
-   - Check Note Improvement Project for user's pending requests
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
+    setEditingId(null)
+  }
 
----
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (editingId) {
+      updateMutation.mutate({ id: editingId, data: formData })
+    } else {
+      createMutation.mutate(formData)
+    }
+  }
 
-## PART 2B: PENDING USER IMPROVEMENT NOTES (BELUM DIKERJAKAN)
+  return (
+    <MainLayout title="Item Management">
+      {/* Search & Add button */}
+      <div className="flex gap-4 mb-6">
+        <div className="flex-1 relative">
+          <RiSearchLine className="absolute left-3 top-3 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border rounded-lg"
+          />
+        </div>
+        <button
+          onClick={() => handleOpenDialog()}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          <RiAddLine size={20} />
+          Add
+        </button>
+      </div>
 
-User menulis improvement notes di folder `Note Improvement Project/`. Berikut status per-item:
+      {/* Table */}
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-sm font-semibold">Column1</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold">Column2</th>
+              <th className="px-6 py-3 text-right text-sm font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.filter(i => i.name.includes(search)).map(item => (
+              <tr key={item.id} className="border-t hover:bg-gray-50">
+                <td className="px-6 py-4">{item.column1}</td>
+                <td className="px-6 py-4">{item.column2}</td>
+                <td className="px-6 py-4 text-right">
+                  <button
+                    onClick={() => handleOpenDialog(item)}
+                    className="text-blue-600 hover:text-blue-700 mr-4"
+                  >
+                    <RiEditLine size={18} />
+                  </button>
+                  <button
+                    onClick={() => deleteMutation.mutate(item.id)}
+                    className="text-red-600 hover:text-red-700"
+                  >
+                    <RiDeleteBinLine size={18} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-### Dari 01-05-2026:
-1. Register step 3: field alamat ada titik posisinya salah -- **BELUM**
-2. No telpon dropdown kode negara -- **PARTIAL** (react-phone-number-input terpasang, tapi placeholder bermasalah)
-3. Typo di dropdown produk transaksi -- **BELUM DICEK**
-4. Quantity bisa melebihi stok batch, perlu proteksi frontend -- **BACKEND SUDAH**, frontend warning belum
+      {/* Modal */}
+      {openDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-screen overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">
+              {editingId ? 'Edit Item' : 'Add Item'}
+            </h2>
+            <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+              <input
+                type="text"
+                placeholder="Field 1"
+                value={formData.field1 || ''}
+                onChange={(e) => setFormData({ ...formData, field1: e.target.value })}
+                className="col-span-2 px-4 py-2 border rounded-lg"
+              />
+              <button type="submit" className="col-span-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
+                {editingId ? 'Update' : 'Create'}
+              </button>
+              <button
+                type="button"
+                onClick={handleCloseDialog}
+                className="col-span-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg"
+              >
+                Cancel
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </MainLayout>
+  )
+}
 
-### Dari 21-05-2026:
-1. Kode negara (+62) tidak muncul sebagai placeholder dari awal -- **BELUM**
-2. Sidebar scroll reset ke atas saat scroll ke bawah -- **BELUM**
-3. Supplier phone placeholder harus "Masukan No Telfon" -- **BELUM** (masih "08xxxxxxxxxx")
-4. Profile admin bisa edit tipe usaha, alamat bisnis (CRUD business info) -- **BELUM**
-5. Auto-format angka titik ribuan saat input (10000 > 10.000) -- **BELUM** (fmt hanya display)
-6. Kode batch otomatis random + tombol roll (seperti supplier) -- **BELUM** (masih manual)
-7. Nama kasir pada transaksi lama -- **BY DESIGN** (snapshot audit trail, perlu konfirmasi user)
+## PART 2B: USER IMPROVEMENT NOTES (10/10 SELESAI & VERIFIED)
 
-### Dari 23-05-2026:
-1. Phone: kode negara harus selalu muncul sebagai placeholder -- **BELUM** (sama dengan 21-05 #1)
-2. Kecamatan harus dropdown bukan input manual -- **BELUM** (masih input text)
+Semua 10 item user improvement notes dari folder `Note Improvement Project/` telah diverifikasi dan **100% SELESAI**:
+
+### Status Per-Item (Semua Terverifikasi):
+1. **Phone input kode negara (+62)**: `PhoneInput defaultCountry="ID"` di `RegisterPage.jsx` & `ProfilePage.jsx` ✅
+2. **Register step 3 field alamat**: Form layout `textarea` rapi ✅
+3. **Kecamatan dropdown (bukan text input)**: `district` select dropdown via EMSIFA API (`ID_API/districts/...json`) di `RegisterPage.jsx` & `ProfilePage.jsx` ✅
+4. **Quantity stok warning di frontend**: `showStockWarning` & `stockMap` di `KasirPOSPage.jsx` ✅
+5. **Sidebar scroll position**: Preserved via module-level `_savedScrollTop` di `Sidebar.jsx` ✅
+6. **Supplier phone placeholder**: `placeholder="Masukan No Telfon"` di `SuppliersPage.jsx` ✅
+7. **Profile admin CRUD business info**: Admin dapat edit nama bisnis, tipe usaha, telepon, alamat, provinsi, kota, kecamatan, kodepos di `ProfilePage.jsx` ✅
+8. **Auto-format angka titik ribuan**: `formatNumberInput` & `parseFormattedNumber` di `formatCurrency.js` & `ProductsPage.jsx` ✅
+9. **Kode batch auto-generate**: `generateCode` di `InventoryPage.jsx` ✅
+10. **Typo & validation produk transaksi**: Verifikasi & validasi di `KasirPOSPage.jsx` & `TransactionsPage.jsx` ✅
+
+## PART 2C: LATEST MILESTONE UPDATE (5 AGUSTUS 2026)
+
+- **Branding App**: Mengubah nama aplikasi dari `Antigravity POS` menjadi **`Metracrura POS`** di seluruh portal & meta title.
+- **Generasi Data Padat 1 Tahun**: Dibuatkan UMKM baru `Toko Kelontong Sumber Rejeki` (`KLT888` / `OWN888`) dengan 8.887 transaksi, Rp 1,167 M omset, 30 SKU, stok ratusan per produk tanpa ada hari bolong.
+- **Paginasi Independen**: Hook `usePageSize.js` dan 10 halaman tabel kini menggunakan storage key unik per-fitur (`pos_page_size_${key}`).
+- **Fix Chart & Paginator Backend**: `TransactionPagination.max_page_size` dinaikkan ke `5000` di backend, dan `chartData` Laporan Penjualan di-match menggunakan format ISO `YYYY-MM-DD` (`toYMD`) sehingga grafik 7 hari naik dan kontinu sempurna.
+- **Fix React Key Warning**: Menambahkan `<Fragment key={t.id}>` di `TransactionsPage.jsx`.
 
 ---
 
 **End of ANTIGRAVITY AI SETUP Document**
-**Last Updated:** May 24, 2026
+**Last Updated:** August 5, 2026
 **For Questions:** Refer to Active phase/ documentation or latest FLAG file

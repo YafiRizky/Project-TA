@@ -39,7 +39,7 @@ export default function InventoryPage() {
 
   // Pagination & Search states
   const [activePage, setActivePage] = useState(1)
-  const [activePageSize, setActivePageSize] = usePageSize(10)
+  const [activePageSize, setActivePageSize] = usePageSize('inventory', 10)
   const [activeSearch, setActiveSearch] = useState('')
 
   const [archivedPage, setArchivedPage] = useState(1)

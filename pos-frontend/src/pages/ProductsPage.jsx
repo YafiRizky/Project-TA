@@ -26,7 +26,7 @@ export default function ProductsPage() {
   const [deleteConfirm, setDeleteConfirm] = useState(null)
   
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('products', 10)
 
   const { data: products, isLoading, isError, error: queryError } = useQuery({
     queryKey: ['products', bCode],

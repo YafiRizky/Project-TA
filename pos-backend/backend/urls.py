@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/notifications/', include('notifications.urls')),  # Stock notifications
     path('api/auditlog/', include('auditlog.urls')),        # Audit trail / system history
     path('api/promotions/', include('promotions.urls')),# Diskon dan Promo
+    path('api/ml/', include('ml.urls')),                # Machine Learning predictions
 ]
 
 # Serve media files in development

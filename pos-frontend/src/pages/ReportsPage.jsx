@@ -27,8 +27,12 @@ export default function ReportsPage() {
   })
 
   const { data: transData, isLoading: loadingTrans } = useQuery({
-    queryKey: ['transactions-report', bCode],
-    queryFn: () => transactionsAPI.getTransactions({ limit: 50 }),
+    queryKey: ['transactions-report', bCode, startDate, endDate],
+    queryFn: () => transactionsAPI.getTransactions({ 
+      page_size: 1000,
+      start_date: startDate || undefined,
+      end_date: endDate || undefined
+    }),
   })
 
   const isLoading = loadingDaily || loadingPayment || loadingTrans
@@ -65,24 +69,40 @@ export default function ReportsPage() {
     count: data.count || 0,
   }))
 
-  // Build simple 7-day chart data from transactions
+  // Build daily trend chart data from transactions
   const chartData = (() => {
     const days = {}
-    const now = new Date()
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(now)
-      d.setDate(d.getDate() - i)
-      const key = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
-      days[key] = { name: key, revenue: 0, count: 0 }
+    let start = startDate ? new Date(startDate) : new Date()
+    let end = endDate ? new Date(endDate) : new Date()
+
+    if (!startDate) {
+      start.setDate(start.getDate() - 6)
     }
+
+    // Standardized YYYY-MM-DD formatter for local date matching
+    const toYMD = (d) => {
+      const year = d.getFullYear()
+      const month = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    }
+
+    const current = new Date(start)
+    while (current <= end) {
+      const ymd = toYMD(current)
+      const label = current.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
+      days[ymd] = { name: label, revenue: 0, count: 0 }
+      current.setDate(current.getDate() + 1)
+    }
+
     transactionsList.forEach(t => {
       const dateKey = t.transaction_date || t.created_at
       if (dateKey) {
         const d = new Date(dateKey)
-        const key = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
-        if (days[key]) {
-          days[key].revenue += parseFloat(t.total_amount || 0)
-          days[key].count += 1
+        const ymd = toYMD(d)
+        if (days[ymd]) {
+          days[ymd].revenue += parseFloat(t.total_amount || 0)
+          days[ymd].count += 1
         }
       }
     })

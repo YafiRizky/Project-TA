@@ -22,7 +22,7 @@ export default function CategoriesPage() {
   const [deleteConfirm, setDeleteConfirm] = useState(null)
   
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('categories', 10)
 
   const { data: categories, isLoading, isError, error: queryError } = useQuery({
     queryKey: ['categories', bCode],

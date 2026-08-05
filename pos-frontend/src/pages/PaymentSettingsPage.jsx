@@ -16,6 +16,26 @@ const METHOD_TYPES = [
   { value: 'CARD', label: 'Kartu Debit/Kredit', icon: RiBankCardLine, color: 'bg-rose-100 text-rose-700' },
 ]
 
+const XENDIT_CHANNELS = {
+  TRANSFER: [
+    { value: 'BCA', label: 'BCA' },
+    { value: 'BNI', label: 'BNI' },
+    { value: 'BRI', label: 'BRI' },
+    { value: 'MANDIRI', label: 'Mandiri' },
+    { value: 'PERMATA', label: 'Permata' },
+    { value: 'BSI', label: 'BSI' },
+    { value: 'CIMB', label: 'CIMB Niaga' },
+    { value: 'BJB', label: 'BJB' },
+  ],
+  EWALLET: [
+    { value: 'ID_DANA', label: 'Dana' },
+    { value: 'ID_OVO', label: 'OVO' },
+    { value: 'ID_SHOPEEPAY', label: 'ShopeePay' },
+    { value: 'ID_LINKAJA', label: 'LinkAja' },
+    { value: 'ID_ASTRAPAY', label: 'AstraPay' },
+  ],
+}
+
 // All types including cash (for display/lookup only)
 const ALL_METHOD_TYPES = [
   { value: 'CASH', label: 'Tunai', icon: RiMoneyDollarCircleLine, color: 'bg-green-100 text-green-700' },
@@ -30,7 +50,7 @@ export default function PaymentSettingsPage() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [editingMethod, setEditingMethod] = useState(null)
   const [selectedMethod, setSelectedMethod] = useState(null)
-  const [formData, setFormData] = useState({ method_type: '', name: '', account_number: '', account_name: '', instructions: '' })
+  const [formData, setFormData] = useState({ method_type: '', name: '', account_number: '', account_name: '', instructions: '', use_xendit: false, xendit_channel: '' })
   const [qrisFile, setQrisFile] = useState(null)
   const [qrisPreview, setQrisPreview] = useState(null)
   const [error, setError] = useState('')
@@ -86,7 +106,7 @@ export default function PaymentSettingsPage() {
   const closeModal = () => {
     setShowModal(false)
     setEditingMethod(null)
-    setFormData({ method_type: '', name: '', account_number: '', account_name: '', instructions: '' })
+    setFormData({ method_type: '', name: '', account_number: '', account_name: '', instructions: '', use_xendit: false, xendit_channel: '' })
     setQrisFile(null)
     setQrisPreview(null)
     setError('')
@@ -101,6 +121,8 @@ export default function PaymentSettingsPage() {
       account_number: method.account_number || '',
       account_name: method.account_name || '',
       instructions: method.instructions || '',
+      use_xendit: method.use_xendit || false,
+      xendit_channel: method.xendit_channel || '',
     })
     setQrisPreview(method.qris_image)
     setShowModal(true)
@@ -114,6 +136,8 @@ export default function PaymentSettingsPage() {
     fd.append('account_number', formData.account_number)
     fd.append('account_name', formData.account_name)
     fd.append('instructions', formData.instructions)
+    fd.append('use_xendit', formData.use_xendit)
+    fd.append('xendit_channel', formData.xendit_channel)
     if (qrisFile) fd.append('qris_image', qrisFile)
 
     if (editingMethod) {
@@ -208,6 +232,9 @@ export default function PaymentSettingsPage() {
                   <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${method.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-500'}`}>
                     {method.is_active ? 'Aktif' : 'Nonaktif'}
                   </span>
+                  {method.use_xendit && (
+                    <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 ml-1">Xendit</span>
+                  )}
                 </div>
 
                 {method.account_number && (
@@ -306,9 +333,9 @@ export default function PaymentSettingsPage() {
               )}
 
               {/* QRIS Image upload */}
-              {showQrisField && (
+              {showQrisField && !formData.use_xendit && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Gambar QR Code QRIS</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Gambar QR Code QRIS (Manual)</label>
                   <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center hover:border-blue-400 transition-colors cursor-pointer"
                     onClick={() => document.getElementById('qris-upload').click()}>
                     {qrisPreview ? (
@@ -322,6 +349,62 @@ export default function PaymentSettingsPage() {
                     )}
                     <input id="qris-upload" type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                   </div>
+                </div>
+              )}
+
+              {/* Xendit Integration Toggle */}
+              {['QRIS', 'TRANSFER', 'EWALLET'].includes(formData.method_type) && (
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-blue-800">Gunakan Xendit</p>
+                      <p className="text-xs text-blue-600 mt-0.5">Proses pembayaran otomatis via Xendit Payment Gateway</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({...formData, use_xendit: !formData.use_xendit, xendit_channel: ''})}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${formData.use_xendit ? 'bg-blue-600' : 'bg-gray-300'}`}
+                    >
+                      <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform shadow-sm ${formData.use_xendit ? 'translate-x-6' : ''}`} />
+                    </button>
+                  </div>
+
+                  {/* Channel Picker (only for TRANSFER and EWALLET when Xendit is ON) */}
+                  {formData.use_xendit && formData.method_type === 'TRANSFER' && (
+                    <div>
+                      <label className="block text-xs font-medium text-blue-700 mb-1.5">Pilih Bank</label>
+                      <select
+                        value={formData.xendit_channel}
+                        onChange={e => setFormData({...formData, xendit_channel: e.target.value})}
+                        className="w-full px-3 py-2 border border-blue-200 rounded-lg text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                      >
+                        <option value="">Pilih bank...</option>
+                        {XENDIT_CHANNELS.TRANSFER.map(ch => (
+                          <option key={ch.value} value={ch.value}>{ch.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {formData.use_xendit && formData.method_type === 'EWALLET' && (
+                    <div>
+                      <label className="block text-xs font-medium text-blue-700 mb-1.5">Pilih E-Wallet</label>
+                      <select
+                        value={formData.xendit_channel}
+                        onChange={e => setFormData({...formData, xendit_channel: e.target.value})}
+                        className="w-full px-3 py-2 border border-blue-200 rounded-lg text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                      >
+                        <option value="">Pilih e-wallet...</option>
+                        {XENDIT_CHANNELS.EWALLET.map(ch => (
+                          <option key={ch.value} value={ch.value}>{ch.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {formData.use_xendit && formData.method_type === 'QRIS' && (
+                    <p className="text-xs text-blue-600 italic">✓ QRIS akan digenerate otomatis per transaksi (tidak perlu upload gambar)</p>
+                  )}
                 </div>
               )}
 

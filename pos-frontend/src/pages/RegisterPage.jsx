@@ -6,7 +6,7 @@ import 'react-phone-number-input/style.css'
 import { z } from 'zod'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerBusiness } from '../services/api'
-import { Country, State, City } from 'country-state-city'
+import kodeposData from '../data/kodepos.json'
 import {
   RiStoreLine, RiUserLine, RiLockLine, RiBuildingLine,
   RiPhoneLine, RiMapPinLine, RiMailLine, RiCheckLine,
@@ -66,13 +66,15 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [customBusinessType, setCustomBusinessType] = useState('')
-  const [selectedCountry, setSelectedCountry] = useState('ID')
+  const selectedCountry = 'ID'
   const [selectedProvince, setSelectedProvince] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
   const [idProvinces, setIdProvinces] = useState([])
   const [idCities, setIdCities] = useState([])
   const [idDistricts, setIdDistricts] = useState([])
   const [selectedDistrictId, setSelectedDistrictId] = useState('')
+  const [postalCodes, setPostalCodes] = useState([])
+  const [useCustomPostalCode, setUseCustomPostalCode] = useState(false)
   const navigate = useNavigate()
 
   const { register, handleSubmit, control, formState: { errors, isSubmitting }, watch, trigger, setValue } = useForm({
@@ -101,17 +103,7 @@ export default function RegisterPage() {
       .catch(() => setIdProvinces([]))
   }, [])
 
-  // Cascade: reset all when country changes
-  useEffect(() => {
-    setSelectedProvince('')
-    setSelectedCity('')
-    setSelectedDistrictId('')
-    setIdCities([])
-    setIdDistricts([])
-    setValue('province', '')
-    setValue('city', '')
-    setValue('district', '')
-  }, [selectedCountry, setValue])
+
 
   // Cascade: reset city & kecamatan when province changes + fetch cities (Indonesia)
   useEffect(() => {
@@ -144,45 +136,68 @@ export default function RegisterPage() {
     }
   }, [selectedCity, selectedCountry, setValue])
 
-  const handleCountryChange = (e) => {
-    const code = e.target.value
-    setSelectedCountry(code)
-    setValue('country', code)
-  }
-
   const handleProvinceChange = (e) => {
     const val = e.target.value
     setSelectedProvince(val)
-    if (selectedCountry === 'ID') {
-      const prov = idProvinces.find(p => p.id === val)
-      setValue('province', prov ? titleCase(prov.name) : '')
-    } else {
-      const stateObj = State.getStatesOfCountry(selectedCountry).find(s => s.isoCode === val)
-      setValue('province', stateObj ? stateObj.name : val)
-    }
+    const prov = idProvinces.find(p => p.id === val)
+    setValue('province', prov ? titleCase(prov.name) : '')
   }
 
   const handleCityChange = (e) => {
     const val = e.target.value
     setSelectedCity(val)
-    if (selectedCountry === 'ID') {
-      const city = idCities.find(c => c.id === val)
-      setValue('city', city ? titleCase(city.name) : '')
-    } else {
-      setValue('city', val)
-    }
+    const city = idCities.find(c => c.id === val)
+    setValue('city', city ? titleCase(city.name) : '')
   }
 
   const handleDistrictChange = (e) => {
     const val = e.target.value
     setSelectedDistrictId(val)
-    if (selectedCountry === 'ID') {
-      const dist = idDistricts.find(d => d.id === val)
-      setValue('district', dist ? titleCase(dist.name) : '')
-    } else {
-      setValue('district', val)
-    }
+    const dist = idDistricts.find(d => d.id === val)
+    setValue('district', dist ? titleCase(dist.name) : '')
+    // Reset postal code state when district changes
+    setPostalCodes([])
+    setUseCustomPostalCode(false)
+    setValue('postal_code', '')
   }
+
+  // Lookup postal codes from local JSON when district is selected
+  useEffect(() => {
+    if (!selectedDistrictId) {
+      setPostalCodes([])
+      return
+    }
+    const dist = idDistricts.find(d => d.id === selectedDistrictId)
+    if (!dist) return
+
+    // Get city name from selected city (strip KABUPATEN/KOTA prefix)
+    const cityObj = idCities.find(c => c.id === selectedCity)
+    const rawCityName = (cityObj?.name || '').toUpperCase().trim()
+    const cityName = rawCityName.replace(/^(KABUPATEN|KOTA)\s+/i, '')
+    const distName = (dist.name || '').toUpperCase().trim()
+
+    // Try exact match: "KOTA/KAB|KECAMATAN"
+    const key = `${cityName}|${distName}`
+    let codes = kodeposData[key] || []
+
+    // If no match, try with full name (including prefix)
+    if (codes.length === 0) {
+      codes = kodeposData[`${rawCityName}|${distName}`] || []
+    }
+
+    // If still no match, try searching all keys containing the district name
+    if (codes.length === 0) {
+      const fallbackKey = Object.keys(kodeposData).find(k => k.endsWith(`|${distName}`))
+      if (fallbackKey) codes = kodeposData[fallbackKey]
+    }
+
+    if (codes && codes.length > 0) {
+      setPostalCodes(codes)
+      setValue('postal_code', codes[0])
+    } else {
+      setPostalCodes([])
+    }
+  }, [selectedDistrictId, idDistricts, idCities, selectedCity, setValue])
 
   const handleNext = async () => {
     const valid = await trigger(stepFields[step])
@@ -275,11 +290,8 @@ export default function RegisterPage() {
         : 'border-gray-200 bg-gray-50 focus:bg-white focus:ring-blue-500/20 focus:border-blue-500'
     }`
 
-  // Get the country name for display in confirmation
-  const getCountryName = (code) => {
-    const c = Country.getAllCountries().find(c => c.isoCode === code)
-    return c ? c.name : code
-  }
+  // Country is always Indonesia
+  const getCountryName = () => 'Indonesia'
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center p-4">
@@ -397,9 +409,11 @@ export default function RegisterPage() {
                       <PhoneInput
                         {...field}
                         defaultCountry="ID"
+                        countries={['ID']}
                         international
                         withCountryCallingCode
                         countryCallingCodeEditable={false}
+                        countrySelectProps={{ disabled: true, tabIndex: -1 }}
                         className={`w-full px-3 py-2.5 border rounded-xl text-sm transition-colors outline-none focus-within:ring-2 ${
                           errors.phone 
                             ? 'border-red-400 bg-red-50 focus-within:ring-red-500/20 focus-within:border-red-400' 
@@ -408,7 +422,8 @@ export default function RegisterPage() {
                         style={{
                           '--PhoneInputCountryFlag-height': '1.2em',
                           '--PhoneInputCountryFlag-borderColor': 'transparent',
-                          '--PhoneInputCountrySelectArrow-color': '#9CA3AF'
+                          '--PhoneInputCountrySelectArrow-opacity': '0',
+                          '--PhoneInputCountrySelectArrow-marginLeft': '0',
                         }}
                       />
                     )}
@@ -464,23 +479,18 @@ export default function RegisterPage() {
                   )}
                 </div>
 
-                {/* Negara */}
+                {/* Negara (locked to Indonesia) */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Negara *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Negara</label>
                   <div className="relative">
                     <RiMapPinLine size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
-                    <select
-                      value={selectedCountry}
-                      onChange={handleCountryChange}
-                      className={selectClass(errors.country)}
-                    >
-                      <option value="">Pilih negara</option>
-                      {Country.getAllCountries().map((c) => (
-                        <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      value="Indonesia"
+                      readOnly
+                      className="w-full pl-9 pr-3 py-2.5 border border-gray-200 bg-gray-100 rounded-xl text-sm text-gray-600 cursor-default outline-none"
+                    />
                   </div>
-                  {errors.country && <p className="mt-1 text-xs text-red-600">{errors.country.message}</p>}
                 </div>
 
                 {/* Provinsi */}
@@ -492,10 +502,7 @@ export default function RegisterPage() {
                     className={plainSelectClass(errors.province)}
                   >
                     <option value="">Pilih provinsi</option>
-                    {selectedCountry === 'ID'
-                      ? idProvinces.map(p => <option key={p.id} value={p.id}>{titleCase(p.name)}</option>)
-                      : State.getStatesOfCountry(selectedCountry).map(s => <option key={s.isoCode} value={s.isoCode}>{s.name}</option>)
-                    }
+                    {idProvinces.map(p => <option key={p.id} value={p.id}>{titleCase(p.name)}</option>)}
                   </select>
                   {errors.province && <p className="mt-1 text-xs text-red-600">{errors.province.message}</p>}
                 </div>
@@ -509,10 +516,7 @@ export default function RegisterPage() {
                     className={plainSelectClass(errors.city)}
                   >
                     <option value="">Pilih kota</option>
-                    {selectedCountry === 'ID'
-                      ? idCities.map(c => <option key={c.id} value={c.id}>{titleCase(c.name)}</option>)
-                      : City.getCitiesOfState(selectedCountry, selectedProvince).map(c => <option key={c.name} value={c.name}>{c.name}</option>)
-                    }
+                    {idCities.map(c => <option key={c.id} value={c.id}>{titleCase(c.name)}</option>)}
                   </select>
                   {errors.city && <p className="mt-1 text-xs text-red-600">{errors.city.message}</p>}
                 </div>
@@ -526,18 +530,11 @@ export default function RegisterPage() {
                     className={plainSelectClass(errors.district)}
                   >
                     <option value="">
-                      {selectedCountry === 'ID'
-                        ? (idDistricts.length > 0 ? 'Pilih kecamatan' : 'Pilih kota terlebih dahulu')
-                        : (selectedProvince ? 'Pilih kecamatan' : 'Pilih provinsi terlebih dahulu')}
+                      {idDistricts.length > 0 ? 'Pilih kecamatan' : 'Pilih kota terlebih dahulu'}
                     </option>
-                    {selectedCountry === 'ID'
-                      ? idDistricts.map(d => (
-                          <option key={d.id} value={d.id}>{titleCase(d.name)}</option>
-                        ))
-                      : City.getCitiesOfState(selectedCountry, selectedProvince).map(c => (
-                          <option key={c.name} value={c.name}>{c.name}</option>
-                        ))
-                    }
+                    {idDistricts.map(d => (
+                      <option key={d.id} value={d.id}>{titleCase(d.name)}</option>
+                    ))}
                   </select>
                   {errors.district && <p className="mt-1 text-xs text-red-600">{errors.district.message}</p>}
                 </div>
@@ -545,12 +542,46 @@ export default function RegisterPage() {
                 {/* Kode Pos */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Kode Pos *</label>
-                  <input
-                    {...register('postal_code')}
-                    placeholder="Contoh: 12345"
-                    maxLength={10}
-                    className={plainInputClass(errors.postal_code)}
-                  />
+                  {postalCodes.length > 0 && !useCustomPostalCode ? (
+                    <>
+                      <select
+                        value={watched.postal_code || ''}
+                        onChange={(e) => {
+                          if (e.target.value === '__custom__') {
+                            setUseCustomPostalCode(true)
+                            setValue('postal_code', '')
+                          } else {
+                            setValue('postal_code', e.target.value)
+                          }
+                        }}
+                        className={plainSelectClass(errors.postal_code)}
+                      >
+                        <option value="">Pilih kode pos</option>
+                        {postalCodes.map(code => (
+                          <option key={code} value={code}>{code}</option>
+                        ))}
+                        <option value="__custom__">Lainnya (isi manual)</option>
+                      </select>
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        {...register('postal_code')}
+                        placeholder="Contoh: 12345"
+                        maxLength={10}
+                        className={plainInputClass(errors.postal_code)}
+                      />
+                      {postalCodes.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => { setUseCustomPostalCode(false); setValue('postal_code', postalCodes[0]) }}
+                          className="mt-1 text-xs text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                          Kembali ke pilihan kode pos
+                        </button>
+                      )}
+                    </>
+                  )}
                   {errors.postal_code && <p className="mt-1 text-xs text-red-600">{errors.postal_code.message}</p>}
                 </div>
 

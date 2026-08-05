@@ -29,6 +29,7 @@ class Transaction(models.Model):
         ('TRANSFER', 'Bank Transfer'),
         ('EWALLET', 'E-Wallet'),
         ('MIXED', 'Mixed Payment'),
+        ('XENDIT', 'Xendit Digital Payment'),
     )
     
     TRANSACTION_STATUS_CHOICES = (
@@ -199,6 +200,12 @@ class TransactionItem(models.Model):
         decimal_places=2,
         default=Decimal('0.00'),
         help_text="Line item discount"
+    )
+    cost_per_unit = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="Purchase cost per unit at time of sale (from batch.purchase_cost, for P&L calculation)"
     )
     
     created_at = models.DateTimeField(default=timezone.now)

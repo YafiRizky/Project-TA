@@ -26,7 +26,7 @@ export default function UserManagementPage() {
   const [success, setSuccess] = useState('')
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('users', 10)
 
   // Fetch kasir list
   const { data, isLoading, isError } = useQuery({

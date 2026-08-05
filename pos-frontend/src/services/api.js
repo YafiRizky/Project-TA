@@ -327,6 +327,14 @@ export const transactionsAPI = {
       responseType: 'blob'
     })
     return response.data
+  },
+
+  getProfitLoss: async (startDate, endDate) => {
+    const params = new URLSearchParams()
+    if (startDate) params.append('start_date', startDate)
+    if (endDate) params.append('end_date', endDate)
+    const response = await apiClient.get(`/transactions/transactions/profit_loss/?${params.toString()}`)
+    return response.data
   }
 }
 
@@ -472,6 +480,52 @@ export const promotionsAPI = {
     const response = await apiClient.delete(`/promotions/${id}/`)
     return response.data
   }
+}
+
+// ========================
+// MACHINE LEARNING API
+// ========================
+export const mlAPI = {
+  getStockoutPrediction: async () => {
+    const response = await apiClient.get('/ml/stockout/')
+    return response.data
+  },
+  getRestockRecommendation: async (leadTime = 3) => {
+    const response = await apiClient.get(`/ml/restock/?lead_time=${leadTime}`)
+    return response.data
+  },
+  getExpiryRisk: async () => {
+    const response = await apiClient.get('/ml/expiry-risk/')
+    return response.data
+  },
+  getRevenueForecast: async (days = 30) => {
+    const response = await apiClient.get(`/ml/forecast/?days=${days}`)
+    return response.data
+  },
+  getProductClassification: async (days = 90) => {
+    const response = await apiClient.get(`/ml/classification/?days=${days}`)
+    return response.data
+  },
+}
+
+// ========================
+// XENDIT PAYMENT API
+// ========================
+export const xenditAPI = {
+  createPayment: async ({ payment_method_id, amount }) => {
+    const response = await apiClient.post('/payments/xendit/create-payment/', {
+      payment_method_id, amount
+    })
+    return response.data
+  },
+  checkStatus: async (reference_id) => {
+    const response = await apiClient.get(`/payments/xendit/check-status/${reference_id}/`)
+    return response.data
+  },
+  simulatePayment: async (reference_id) => {
+    const response = await apiClient.post(`/payments/xendit/simulate/${reference_id}/`)
+    return response.data
+  },
 }
 
 // Export the configured axios instance for custom usage

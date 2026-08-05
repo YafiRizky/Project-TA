@@ -16,7 +16,7 @@ export default function StockOpnamePage() {
   const [showModal, setShowModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = usePageSize(10)
+  const [pageSize, setPageSize] = usePageSize('stock_opname', 10)
 
   const { data: opnames, isLoading } = useQuery({
     queryKey: ['opnames', bCode],
@@ -330,9 +330,8 @@ function CreateOpnameModal({ onClose, products }) {
     })
   }
 
-  // Products that have active stock (current_stock > 0)
-  const productsWithStock = products.filter(p => (p.current_stock || 0) > 0)
-  const productsNoStock = products.filter(p => (p.current_stock || 0) === 0)
+  // Sort products: products with stock first, then products without stock
+  const sortedProducts = [...products].sort((a, b) => (b.current_stock || 0) - (a.current_stock || 0))
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -361,7 +360,7 @@ function CreateOpnameModal({ onClose, products }) {
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1.5">
                 Pilih Produk
-                <span className="text-gray-400 font-normal ml-1">(hanya produk dengan batch aktif)</span>
+                <span className="text-gray-400 font-normal ml-1">(pilih produk untuk menampilkan daftar batch)</span>
               </label>
               <select
                 value={selectedProduct}
@@ -369,17 +368,12 @@ function CreateOpnameModal({ onClose, products }) {
                 className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
               >
                 <option value="">-- Pilih Produk --</option>
-                {productsWithStock.map(p => (
+                {sortedProducts.map(p => (
                   <option key={p.id} value={p.id}>
-                    {p.name} (Stok Total: {p.current_stock})
+                    {p.name} (Stok Sistem: {p.current_stock || 0})
                   </option>
                 ))}
               </select>
-              {productsNoStock.length > 0 && (
-                <p className="text-xs text-gray-400 mt-1.5">
-                  {productsNoStock.length} produk tanpa stok disembunyikan — gunakan <strong>Restock (Input Batch)</strong> untuk menambah stok baru.
-                </p>
-              )}
             </div>
 
             {/* Batch Table */}
