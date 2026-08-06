@@ -10,13 +10,24 @@ echo "----------------------------------------------------------------------"
 echo "🌟 MEMULAI INSTALLASI AUTOMATIS MERCATURA POS DI RUMAHWEB VPS..."
 echo "----------------------------------------------------------------------"
 
-# 1. Update Packages & Dependencies (Non-interactive mode)
+# 1. Setup 1GB Swap Memory for 1GB RAM stability
+if [ ! -f /swapfile ]; then
+    sudo fallocate -l 1G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=1024
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+fi
+
+# 2. Update Packages & Dependencies (Non-interactive mode)
 export DEBIAN_FRONTEND=noninteractive
 sudo dpkg --configure -a --force-confdef --force-confold || true
 sudo apt update && sudo apt upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 sudo apt install -y python3-pip python3-venv postgresql postgresql-contrib nginx git curl build-essential libpq-dev
 
-# 2. Setup PostgreSQL Database
+# Clean default Nginx welcome page immediately
+sudo rm -f /etc/nginx/sites-enabled/default
+
+# 3. Setup PostgreSQL Database
 sudo -u postgres psql -c "CREATE DATABASE pos_ml;" || true
 sudo -u postgres psql -c "CREATE USER pos_user WITH PASSWORD 'MercaturaPos2026!';" || true
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE pos_ml TO pos_user;" || true
@@ -43,8 +54,9 @@ pip install --upgrade pip
 pip install -r requirements.txt
 pip install gunicorn psycopg2-binary
 
-# Run Migrations & Seed Data
+# Run Migrations, Collect Static & Seed Data
 python manage.py migrate
+python manage.py collectstatic --noinput || true
 python manage.py generate_umkm_data || true
 
 # 5. Build Frontend React
