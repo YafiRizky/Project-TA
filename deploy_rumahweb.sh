@@ -79,7 +79,7 @@ cd /var/www/mercatura-pos/pos-frontend
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 npm install
-VITE_API_URL="http://202.155.16.135/api" npm run build
+NODE_OPTIONS="--max-old-space-size=2048" VITE_API_URL="http://202.155.16.135/api" npm run build
 
 # 6. Configure Systemd Service for Django Gunicorn
 sudo bash -c 'cat <<EOF > /etc/systemd/system/mercatura-backend.service
