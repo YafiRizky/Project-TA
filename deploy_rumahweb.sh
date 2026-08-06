@@ -30,6 +30,7 @@ sudo rm -f /etc/nginx/sites-enabled/default
 # 3. Setup PostgreSQL Database
 sudo -u postgres psql -c "CREATE DATABASE pos_ml;" || true
 sudo -u postgres psql -c "CREATE USER pos_user WITH PASSWORD 'MercaturaPos2026!';" || true
+sudo -u postgres psql -c "ALTER USER pos_user WITH PASSWORD 'MercaturaPos2026!';" || true
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE pos_ml TO pos_user;" || true
 sudo -u postgres psql -c "ALTER USER pos_user CREATEDB;" || true
 
@@ -55,14 +56,14 @@ pip install -r requirements.txt
 pip install gunicorn psycopg2-binary python-dotenv
 
 # Create .env file for production
-cat > /var/www/mercatura-pos/pos-backend/.env <<EOF
-DJANGO_SECRET_KEY=mercatura-production-secret-key-2026-rumahweb-vps-$(date +%s)
+cat > /var/www/mercatura-pos/pos-backend/.env <<'EOF'
+DJANGO_SECRET_KEY=mercatura-production-secret-key-2026-rumahweb-vps
 DJANGO_DEBUG=False
-DJANGO_ALLOWED_HOSTS=202.155.16.135,localhost,127.0.0.1
+DJANGO_ALLOWED_HOSTS=*
 DB_NAME=pos_ml
 DB_USER=pos_user
 DB_PASSWORD=MercaturaPos2026!
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PORT=5432
 EOF
 
