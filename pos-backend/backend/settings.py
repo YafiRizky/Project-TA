@@ -211,13 +211,16 @@ SIMPLE_JWT = {
 # =====================================================================================
 # CORS CONFIGURATION
 # =====================================================================================
-# Allow React frontend to communicate with Django backend
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",      # React development server
-    "http://127.0.0.1:3000",     # Alternative React URL
-]
-
+# Allow React frontend, Vercel, and VPS IP to communicate with Django backend
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://202.155.16.135",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 # CORS headers for authentication
 CORS_ALLOW_HEADERS = [

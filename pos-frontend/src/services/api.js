@@ -1,7 +1,19 @@
 import axios from 'axios'
 
-// Base URL from environment variable with fallback for local development
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+// Base URL from environment variable with smart dynamic fallback for production VPS
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname
+    if (host === 'localhost' || host === '127.0.0.1') {
+      return 'http://localhost:8000/api'
+    }
+    return `${window.location.origin}/api`
+  }
+  return 'http://localhost:8000/api'
+}
+
+const API_BASE_URL = getApiBaseUrl()
 
 // Create axios instance with base configuration
 const apiClient = axios.create({

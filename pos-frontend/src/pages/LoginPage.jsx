@@ -70,11 +70,11 @@ export default function LoginPage() {
     }
     
     const result = await login(payload)
-    if (!result.success) {
-      if (result.errors) {
+    if (!result || !result.success) {
+      if (result && result.errors) {
         setFieldErrors(result.errors)
       } else {
-        setError(result.message)
+        setError(result?.message || 'Login gagal. Silakan periksa koneksi atau kredensial Anda.')
       }
     }
   }
