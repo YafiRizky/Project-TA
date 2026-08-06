@@ -12,6 +12,7 @@ echo "----------------------------------------------------------------------"
 
 # 1. Update Packages & Dependencies (Non-interactive mode)
 export DEBIAN_FRONTEND=noninteractive
+sudo dpkg --configure -a --force-confdef --force-confold || true
 sudo apt update && sudo apt upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 sudo apt install -y python3-pip python3-venv postgresql postgresql-contrib nginx git curl build-essential libpq-dev
 
