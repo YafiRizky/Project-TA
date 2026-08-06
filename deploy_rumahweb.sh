@@ -33,6 +33,8 @@ sudo -u postgres psql -c "CREATE USER pos_user WITH PASSWORD 'MercaturaPos2026!'
 sudo -u postgres psql -c "ALTER USER pos_user WITH PASSWORD 'MercaturaPos2026!';" || true
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE pos_ml TO pos_user;" || true
 sudo -u postgres psql -c "ALTER USER pos_user CREATEDB;" || true
+sudo -u postgres psql -d pos_ml -c "GRANT ALL ON SCHEMA public TO pos_user;" || true
+sudo -u postgres psql -d pos_ml -c "ALTER SCHEMA public OWNER TO pos_user;" || true
 
 # 3. Setup Application Directory
 sudo mkdir -p /var/www/mercatura-pos
