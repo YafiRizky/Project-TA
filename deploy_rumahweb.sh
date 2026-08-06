@@ -74,12 +74,17 @@ python manage.py migrate
 python manage.py collectstatic --noinput || true
 python manage.py generate_umkm_data || true
 
-# 5. Build Frontend React
+# 5. Build / Verify Frontend React
 cd /var/www/mercatura-pos/pos-frontend
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-npm install
-NODE_OPTIONS="--max-old-space-size=2048" VITE_API_URL="http://202.155.16.135/api" npm run build
+if [ ! -f "dist/index.html" ]; then
+    echo "Building frontend on server..."
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+    sudo apt install -y nodejs
+    npm install
+    NODE_OPTIONS="--max-old-space-size=2048" VITE_API_URL="http://202.155.16.135/api" npm run build
+else
+    echo "✅ Using pre-built React production dist (Instant finish!)."
+fi
 
 # 6. Configure Systemd Service for Django Gunicorn
 sudo bash -c 'cat <<EOF > /etc/systemd/system/mercatura-backend.service
