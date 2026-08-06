@@ -52,7 +52,19 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
-pip install gunicorn psycopg2-binary
+pip install gunicorn psycopg2-binary python-dotenv
+
+# Create .env file for production
+cat > /var/www/mercatura-pos/pos-backend/.env <<EOF
+DJANGO_SECRET_KEY=mercatura-production-secret-key-2026-rumahweb-vps-$(date +%s)
+DJANGO_DEBUG=False
+DJANGO_ALLOWED_HOSTS=202.155.16.135,localhost,127.0.0.1
+DB_NAME=pos_ml
+DB_USER=pos_user
+DB_PASSWORD=MercaturaPos2026!
+DB_HOST=localhost
+DB_PORT=5432
+EOF
 
 # Run Migrations, Collect Static & Seed Data
 python manage.py migrate
