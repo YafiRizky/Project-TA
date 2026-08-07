@@ -181,13 +181,13 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
 
   let histSlice, foreSlice
   if (forecastDays === 7) {
-    // 7 Hari: 3 hari lampau + today (4 titik) + 3 hari prediksi = 7 total
-    histSlice = hist.slice(-4)
-    foreSlice = fore.slice(0, 3)
+    // 7 Hari (Match demo 1:1): 7 hari lampau + 7 hari prediksi ke depan
+    histSlice = hist.slice(-7)
+    foreSlice = fore.slice(0, 7)
   } else if (forecastDays === 30) {
-    // 30 Hari: 10 hari lampau + today (11 titik) + 19 hari prediksi = 30 total
-    histSlice = hist.slice(-11)
-    foreSlice = fore.slice(0, 19)
+    // 30 Hari (Match demo 1:1): 30 hari lampau + 14 hari prediksi ke depan
+    histSlice = hist.slice(-30)
+    foreSlice = fore.slice(0, 14)
   } else if (forecastDays === 365) {
     // 1 Tahun: 365 hari terakhir historical + 6 bulan prediksi, BULANAN
     histSlice = hist.slice(-365)
@@ -354,10 +354,10 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
           <div>
             <h3 className="text-base font-bold text-gray-800">Grafik Revenue: Realita vs Prediksi AI</h3>
             <p className="text-xs text-gray-400 mt-0.5">
-              {forecastDays === 7 ? '3 hari lampau + hari ini + 3 hari prediksi ke depan (Harian)' :
-               forecastDays === 30 ? '10 hari lampau + hari ini + 19 hari prediksi ke depan (Harian)' :
-               forecastDays === 365 ? 'Aggregasi bulanan 12 bulan terakhir + prediksi bulanan ke depan' :
-               'Aggregasi bulanan seluruh data historis + prediksi bulanan ke depan'}
+              {forecastDays === 7 ? 'Tampilan 7 Hari Lampau (Realita + Prediksi) & 7 Hari Depan (Prediksi Proyeksi)' :
+               forecastDays === 30 ? 'Tampilan 30 Hari Lampau (Realita + Prediksi) & 14 Hari Depan (Prediksi Proyeksi)' :
+               forecastDays === 365 ? 'Tampilan Aggregasi Bulanan (1 Tahun) agar grafik bersih, rapi, dan mudah di-hover' :
+               'Tampilan Aggregasi Bulanan (Semua Data)'}
             </p>
           </div>
           <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
@@ -367,14 +367,24 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
           </div>
         </div>
 
-        <ResponsiveContainer width="100%" height={360}>
-          <ComposedChart data={chartData}>
+        <ResponsiveContainer width="100%" height={380}>
+          <ComposedChart data={chartData} margin={{ top: 15, right: 45, left: 20, bottom: 15 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="date" tick={{ fontSize: 11 }} interval={Math.max(0, Math.floor(chartData.length / 10) - 1)} />
-            <YAxis tick={{ fontSize: 11 }} tickFormatter={v => {
-              if (v >= 1000000) return `${(v / 1000000).toFixed(1)}jt`
-              return `${(v / 1000).toFixed(0)}rb`
-            }} />
+            <XAxis
+              dataKey="date"
+              tick={{ fontSize: 11, fill: '#64748b' }}
+              interval={Math.max(0, Math.floor(chartData.length / 10) - 1)}
+              padding={{ left: 25, right: 25 }}
+              dy={5}
+            />
+            <YAxis
+              width={65}
+              tick={{ fontSize: 11, fill: '#64748b' }}
+              tickFormatter={v => {
+                if (v >= 1000000) return `${(v / 1000000).toFixed(1)}jt`
+                return `${(v / 1000).toFixed(0)}rb`
+              }}
+            />
             <Tooltip content={<CustomTooltip />} />
             {/* Garis Prediksi AI (SOLID LINE) */}
             {showPredicted && (

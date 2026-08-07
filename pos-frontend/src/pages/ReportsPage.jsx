@@ -271,12 +271,19 @@ export default function ReportsPage() {
             {/* Sales Chart */}
             <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-                <h3 className="text-base font-bold text-gray-800">
-                  Tren Penjualan {useMonthlyChart
-                    ? (rangeDays === 0 ? '(Semua Data - Bulanan)' : `(${rangeDays} Hari - Bulanan)`)
-                    : `(${rangeDays} Hari Terakhir)`
-                  }
-                </h3>
+                <div>
+                  <h3 className="text-base font-bold text-gray-800">
+                    {rangeDays === 7 ? 'Tren Penjualan Harian (7 Hari Terakhir)' :
+                     rangeDays === 30 ? 'Tren Penjualan Harian (30 Hari Terakhir)' :
+                     rangeDays === 90 ? 'Tren Penjualan Bulanan (90 Hari Terakhir)' :
+                     'Tren Penjualan Bulanan (Semua Data)'}
+                  </h3>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {useMonthlyChart
+                      ? 'Otomatis mengelompokkan data per bulan agar grafik bersih, rapi, dan mudah di-hover'
+                      : 'Tampilan detail per hari (Format Tanggal DD/MM/YYYY)'}
+                  </p>
+                </div>
                 <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
                   {[{ label: '7 Hari', days: 7 }, { label: '30 Hari', days: 30 }, { label: '90 Hari', days: 90 }, { label: 'Semua', days: 0 }].map(p => (
                     <button
@@ -294,14 +301,24 @@ export default function ReportsPage() {
                 </div>
               </div>
               {chartData.some(d => d.revenue > 0) ? (
-                <ResponsiveContainer width="100%" height={250}>
-                  <LineChart data={chartData}>
+                <ResponsiveContainer width="100%" height={280}>
+                  <LineChart data={chartData} margin={{ top: 15, right: 45, left: 20, bottom: 15 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} interval={Math.max(0, Math.floor(chartData.length / 10) - 1)} />
-                    <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} tickFormatter={v => {
-                      if (v >= 1000000) return `${(v/1000000).toFixed(1)}jt`
-                      return `${(v/1000).toFixed(0)}rb`
-                    }} />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fontSize: 11, fill: '#9ca3af' }}
+                      interval={Math.max(0, Math.floor(chartData.length / 10) - 1)}
+                      padding={{ left: 25, right: 25 }}
+                      dy={5}
+                    />
+                    <YAxis
+                      width={65}
+                      tick={{ fontSize: 11, fill: '#9ca3af' }}
+                      tickFormatter={v => {
+                        if (v >= 1000000) return `${(v/1000000).toFixed(1)}jt`
+                        return `${(v/1000).toFixed(0)}rb`
+                      }}
+                    />
                     <Tooltip formatter={(v) => [`Rp ${fmt(v)}`, 'Revenue']}
                       contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', fontSize: '12px' }} />
                     <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2.5}
