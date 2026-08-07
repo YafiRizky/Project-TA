@@ -32,6 +32,9 @@ UMKM_LIST = [
         "district": "Bekasi Timur", "postal_code": "17111",
         "months_data": 12,
         "daily_transactions": (8, 15),
+        "owner_code": "OWN888",
+        "admin_username": "admin_kelontong2",
+        "kasir_username": "kasir_hbrpoi",
     },
     {
         "name": "Warung Makan Bu Sari",
@@ -42,6 +45,9 @@ UMKM_LIST = [
         "district": "Pasar Minggu", "postal_code": "12520",
         "months_data": 12,
         "daily_transactions": (10, 25),
+        "owner_code": "OWN777",
+        "admin_username": "admin_fno6b9",
+        "kasir_username": "kasir_fno6b9",
     },
     {
         "name": "Toko Beras Pak Hadi",
@@ -52,6 +58,9 @@ UMKM_LIST = [
         "district": "Semarang Barat", "postal_code": "50141",
         "months_data": 4,
         "daily_transactions": (3, 9),
+        "owner_code": "OWN666",
+        "admin_username": "admin_ak1vrj",
+        "kasir_username": "kasir_ak1vrj",
     },
     {
         "name": "Minimart Sejahtera",
@@ -62,6 +71,9 @@ UMKM_LIST = [
         "district": "Wonokromo", "postal_code": "60243",
         "months_data": 4,
         "daily_transactions": (5, 12),
+        "owner_code": "OWN555",
+        "admin_username": "admin_wwqc38",
+        "kasir_username": "kasir_wwqc38",
     },
 ]
 
@@ -203,16 +215,16 @@ class Command(BaseCommand):
             self.stdout.write(f"  {biz.business_name} ({biz.business_code})")
 
             admin = BusinessUser.objects.create(
-                business=biz, username=f"admin_{biz.business_code.lower()}",
+                business=biz, username=umkm["admin_username"],
                 role='admin', full_name=f"Admin {umkm['name']}", is_active=True,
-                owner_code=BusinessUser.generate_owner_code(),
+                owner_code=umkm["owner_code"],
             )
             admin.set_password('admin123')
             admin.save()
             admin.owned_businesses.add(biz)
 
             kasir = BusinessUser.objects.create(
-                business=biz, username=f"kasir_{biz.business_code.lower()}",
+                business=biz, username=umkm["kasir_username"],
                 role='kasir', full_name=f"Kasir {umkm['name']}", is_active=True,
             )
             kasir.set_password('kasir123')
