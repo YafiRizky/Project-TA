@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Chart Laporan Penjualan (Perfect Presets) - Mercatura POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="p-6 md:p-10">
+  <div class="max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Laporan Penjualan</h1>
+        <p class="text-gray-500 text-sm mt-1">Analisis tren dan riwayat pendapatan penjualan bisnis</p>
+      </div>
+      <div class="flex items-center gap-2 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-700">
+        <span id="granularity-badge">Granularitas: Harian (7 Hari)</span>
+      </div>
+    </div>
+
+    <!-- Summary Metrics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-xs font-medium">Total Revenue</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1" id="metric-revenue">Rp 0</p>
+        <p class="text-xs text-gray-400 mt-1">Periode yang dipilih</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-xs font-medium">Jumlah Transaksi</p>
+        <p class="text-2xl font-bold text-emerald-600 mt-1" id="metric-trx">0</p>
+        <p class="text-xs text-gray-400 mt-1">Transaksi sukses</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-xs font-medium">Total Item Terjual</p>
+        <p class="text-2xl font-bold text-amber-600 mt-1" id="metric-items">0</p>
+        <p class="text-xs text-gray-400 mt-1">Produk terkelola</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-500 text-xs font-medium">Rata-rata / Transaksi</p>
+        <p class="text-2xl font-bold text-purple-600 mt-1" id="metric-avg">Rp 0</p>
+        <p class="text-xs text-gray-400 mt-1">Nilai per transaksi</p>
+      </div>
+    </div>
+
+    <!-- Main Chart Card (Sales Report Chart) -->
+    <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm space-y-6">
+      
+      <!-- Top Control Bar -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-gray-800" id="chart-title">Tren Penjualan Harian (7 Hari Terakhir)</h2>
+          <p class="text-xs text-gray-400 mt-0.5" id="chart-subtitle">Tampilan detail per hari (Format Tanggal DD/MM/YYYY)</p>
+        </div>
+
+        <!-- Preset Buttons -->
+        <div class="flex gap-1 p-1 bg-gray-100 rounded-lg text-xs font-semibold">
+          <button id="btn-7d" onclick="setPreset('7d')" class="px-3 py-1.5 rounded-md bg-indigo-600 text-white shadow-sm transition-all">7 Hari</button>
+          <button id="btn-30d" onclick="setPreset('30d')" class="px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all">30 Hari</button>
+          <button id="btn-90d" onclick="setPreset('90d')" class="px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all">90 Hari</button>
+          <button id="btn-all" onclick="setPreset('all')" class="px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all">Semua Data</button>
+        </div>
+      </div>
+
+      <!-- Chart Canvas Area -->
+      <div class="relative h-[360px] w-full">
+        <canvas id="salesChart"></canvas>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 text-xs text-gray-500">
+        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200/80">
+          <p class="font-bold text-gray-800">Rentang Pendek (7 & 30 Hari):</p>
+          <p class="mt-0.5">Tampilan Harian (Format Tanggal DD/MM/YYYY) untuk memantau fluktuasi harian.</p>
+        </div>
+        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200/80">
+          <p class="font-bold text-gray-800">Rentang Panjang (90 Hari & Semua Data):</p>
+          <p class="mt-0.5">Tampilan Bulanan (Monthly Groupby) agar grafik tidak padat/tipis dan mudah di-hover.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fmt = (num) => new Intl.NumberFormat('id-ID').format(num);
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+    // Generate Master 365 Days Historical Sales Data
+    const generateMasterSalesData = () => {
+      const dailyRecords = [];
+      const todayDate = new Date(2026, 7, 7); // 07 August 2026
+      const startDate = new Date(2025, 7, 8); // 08 August 2025
+
+      let current = new Date(startDate);
+      let dayIndex = 0;
+
+      while (current <= todayDate) {
+        const dd = String(current.getDate()).padStart(2, '0');
+        const mm = String(current.getMonth() + 1).padStart(2, '0');
+        const yyyy = current.getFullYear();
+        const dateStr = `${dd}/${mm}/${yyyy}`;
+        const monthKey = `${monthNames[current.getMonth()]} ${yyyy}`;
+
+        const dow = current.getDay();
+        let baseRev = 700000 + Math.sin(dayIndex / 20) * 220000 + (dayIndex * 300);
+        if (dow === 0 || dow === 6) baseRev *= 1.35; // Weekend
+
+        const rev = Math.round(baseRev + (Math.random() - 0.5) * 80000);
+        const trx = Math.round(rev / 54200);
+
+        dailyRecords.push({
+          dateObj: new Date(current),
+          dateStr: dateStr,
+          monthKey: monthKey,
+          revenue: rev,
+          trxCount: trx,
+        });
+
+        current.setDate(current.getDate() + 1);
+        dayIndex++;
+      }
+
+      return dailyRecords;
+    };
+
+    const masterSales = generateMasterSalesData();
+
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    let salesChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Total Revenue',
+            data: [],
+            trxs: [],
+            borderColor: '#4f46e5', // Indigo primary
+            backgroundColor: 'rgba(79, 70, 229, 0.08)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.25,
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            pointBackgroundColor: '#4f46e5',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            titleColor: '#f8fafc',
+            bodyColor: '#cbd5e1',
+            borderColor: '#e2e8f0',
+            borderWidth: 1,
+            padding: 14,
+            callbacks: {
+              title: (items) => 'Periode: ' + items[0].label,
+              label: (context) => {
+                const val = context.parsed.y;
+                return `Total Revenue: Rp ${fmt(val)}`;
+              },
+              afterBody: (items) => {
+                const idx = items[0].dataIndex;
+                const dataset = items[0].dataset;
+                const trxCount = dataset.trxs ? dataset.trxs[idx] : 0;
+                const avgTrx = trxCount > 0 ? Math.round(items[0].parsed.y / trxCount) : 0;
+                return `Jumlah Transaksi: ${fmt(trxCount)} transaksi\nRata-rata per Transaksi: Rp ${fmt(avgTrx)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b', font: { size: 12, weight: '500' } } },
+          y: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b', font: { size: 11 }, callback: (v) => 'Rp ' + (v / 1000000).toFixed(0) + 'jt' } }
+        }
+      }
+    });
+
+    function setPreset(preset) {
+      document.querySelectorAll('#btn-7d, #btn-30d, #btn-90d, #btn-all').forEach(b => {
+        b.className = 'px-3 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all';
+      });
+      document.getElementById(`btn-${preset}`).className = 'px-3 py-1.5 rounded-md bg-indigo-600 text-white shadow-sm transition-all';
+
+      const badge = document.getElementById('granularity-badge');
+      const title = document.getElementById('chart-title');
+      const subtitle = document.getElementById('chart-subtitle');
+
+      let labels = [];
+      let revenues = [];
+      let trxs = [];
+
+      if (preset === '7d' || preset === '30d') {
+        const count = preset === '7d' ? 7 : 30;
+        badge.innerText = `Granularitas: Harian (${count} Hari)`;
+        title.innerText = `Tren Penjualan Harian (${count} Hari Terakhir)`;
+        subtitle.innerText = 'Tampilan detail per hari (Format Tanggal DD/MM/YYYY)';
+
+        const sliced = masterSales.slice(-count);
+        labels = sliced.map(r => r.dateStr);
+        revenues = sliced.map(r => r.revenue);
+        trxs = sliced.map(r => r.trxCount);
+        salesChart.data.datasets[0].pointRadius = preset === '7d' ? 5 : 3;
+
+      } else {
+        badge.innerText = preset === '90d' ? 'Granularitas: Bulanan (3 Bulan)' : 'Granularitas: Bulanan (Monthly Groupby)';
+        title.innerText = preset === '90d' ? 'Tren Penjualan Bulanan (90 Hari Terakhir)' : 'Tren Penjualan Bulanan (Semua Data - 1 Tahun)';
+        subtitle.innerText = 'Otomatis mengelompokkan data per bulan agar grafik bersih, rapi, dan mudah di-hover';
+
+        // Monthly Groupby
+        const monthMap = {};
+        masterSales.forEach(r => {
+          if (!monthMap[r.monthKey]) {
+            monthMap[r.monthKey] = { label: r.monthKey, revSum: 0, trxSum: 0 };
+          }
+          monthMap[r.monthKey].revSum += r.revenue;
+          monthMap[r.monthKey].trxSum += r.trxCount;
+        });
+
+        let monthList = Object.values(monthMap);
+        if (preset === '90d') {
+          monthList = monthList.slice(-3);
+        }
+
+        labels = monthList.map(m => m.label);
+        revenues = monthList.map(m => m.revSum);
+        trxs = monthList.map(m => m.trxSum);
+        salesChart.data.datasets[0].pointRadius = 5;
+      }
+
+      salesChart.data.labels = labels;
+      salesChart.data.datasets[0].data = revenues;
+      salesChart.data.datasets[0].trxs = trxs;
+      salesChart.update();
+
+      // Recalculate Summary Cards
+      const totalRev = revenues.reduce((a, b) => a + b, 0);
+      const totalTrx = trxs.reduce((a, b) => a + b, 0);
+      const avgTrx = totalTrx > 0 ? Math.round(totalRev / totalTrx) : 0;
+      const totalItems = Math.round(totalTrx * 2.26);
+
+      document.getElementById('metric-revenue').innerText = 'Rp ' + fmt(totalRev);
+      document.getElementById('metric-trx').innerText = fmt(totalTrx);
+      document.getElementById('metric-items').innerText = fmt(totalItems);
+      document.getElementById('metric-avg').innerText = 'Rp ' + fmt(avgTrx);
+    }
+
+    setPreset('7d');
+  </script>
+</body>
+</html>

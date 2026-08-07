@@ -3,166 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo Chart ML Forecast (Steam Market Style) - Mercatura POS</title>
+  <title>ML Predictions - Professional Data Visualization (Mercatura POS)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      background-color: #0f172a;
-      color: #f8fafc;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
   </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="p-6 md:p-10 space-y-10">
+  
+  <!-- SECTION 1: UTAMA - BISNIS MATANG & PADAT (TOKO BERKAH JAYA) -->
   <div class="max-w-6xl mx-auto space-y-6">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-      <div>
-        <h1 class="text-2xl font-bold text-white tracking-wide">Demo Modul Forecast ML (Steam Market Style)</h1>
-        <p class="text-slate-400 text-sm mt-1">Perbandingan Revenue Realita vs Prediksi AI di Masa Lampau & Masa Depan</p>
+    <!-- Top Header Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 pb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          AI
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Machine Learning & Prediksi</h1>
+          <p class="text-gray-500 text-sm mt-0.5">Analisis cerdas berbasis AI untuk optimasi bisnis Toko Berkah Jaya (HBRPOI)</p>
+        </div>
       </div>
-      <div class="flex items-center gap-2 bg-slate-800 p-1.5 rounded-lg border border-slate-700 text-xs font-semibold">
-        <span class="text-slate-400 px-2">Status AI:</span>
-        <span class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/30">Ridge Regression (R2 = 86.4%)</span>
+      <div class="flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-3.5 py-2 rounded-xl text-xs font-semibold text-indigo-700">
+        <span>Model Utama: Ridge Regression + Feature Engineering</span>
       </div>
     </div>
 
-    <!-- Main Chart Container (Steam Market Dark Card) -->
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl space-y-6">
-      
-      <!-- Top Control Bar: Title & Filter Presets -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- 4 Main Metric Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Revenue Bulan Ini</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1">Rp 18.936.000</p>
+        <p class="text-xs text-gray-400 mt-1">Agustus 2026</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between">
+          <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Prediksi Bulan Depan</p>
+          <span class="bg-red-50 text-red-600 border border-red-200 text-[11px] font-bold px-2 py-0.5 rounded-md">-14.18%</span>
+        </div>
+        <p class="text-2xl font-bold text-gray-900 mt-1">Rp 16.250.100</p>
+        <p class="text-xs text-gray-400 mt-1">September 2026</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Rata-rata Harian</p>
+        <p class="text-2xl font-bold text-gray-900 mt-1">Rp 720.694</p>
+        <p class="text-xs text-gray-400 mt-1">4.800 Total Transaksi</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Akurasi Model (R²)</p>
+        <p class="text-2xl font-bold text-emerald-600 mt-1">86.4%</p>
+        <p class="text-xs text-gray-400 mt-1">Test R²: 82.1%</p>
+      </div>
+    </div>
+
+    <!-- Validation Metrics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">MAE (MEAN ABSOLUTE ERROR)</p>
+        <p class="text-xl font-bold text-gray-800">Rp 139.549</p>
+        <p class="text-[11px] text-gray-400 mt-0.5">Rata-rata selisih error prediksi</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">RMSE (ROOT MEAN SQUARED ERROR)</p>
+        <p class="text-xl font-bold text-gray-800">Rp 180.408</p>
+        <p class="text-[11px] text-gray-400 mt-0.5">Sensitivitas terhadap outlier</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">TRAIN / TEST SPLIT</p>
+        <p class="text-xl font-bold text-gray-800">283 / 71</p>
+        <p class="text-[11px] text-gray-400 mt-0.5">80% training, 20% testing</p>
+      </div>
+    </div>
+
+    <!-- Trend Alert Badge -->
+    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
+      <span class="font-bold">Tren TURUN</span> — Model Ridge Regression (+ Feature Engineering) memprediksi pertumbuhan -14.18% bulan depan. Fitur: hari, weekend, gajian, rolling average 7 hari.
+    </div>
+
+    <!-- Main Chart Section -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-5">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div>
-          <h2 class="text-lg font-bold text-slate-100">Revenue Trend & Forecast</h2>
-          <p class="text-xs text-slate-400">Garis Solid: Realita vs Prediksi AI (Format Tanggal DD/MM/YYYY)</p>
+          <h3 class="text-base font-bold text-gray-800">Grafik Revenue: Realita vs Prediksi AI</h3>
+          <p class="text-xs text-gray-400 mt-0.5" id="chart-subtitle">Garis Solid Indigo (Realita) & Amber (Prediksi AI)</p>
         </div>
-
-        <!-- Filter Presets (Steam Market Style: Week, Month, Year, Lifetime) -->
-        <div class="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-medium">
-          <button id="btn-week" onclick="setPreset('week')" class="px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">Week (7D)</button>
-          <button id="btn-month" onclick="setPreset('month')" class="px-3.5 py-1.5 rounded-md bg-indigo-600 text-white font-semibold shadow transition-all">Month (30D)</button>
-          <button id="btn-year" onclick="setPreset('year')" class="px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">Year (365D)</button>
-          <button id="btn-lifetime" onclick="setPreset('lifetime')" class="px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">Lifetime (Semua)</button>
+        <!-- Preset Controls (Bahasa Indonesia Konsisten) -->
+        <div class="flex gap-1 p-1 bg-gray-100 rounded-lg text-xs font-semibold">
+          <button id="btn-week" onclick="setPreset('week')" class="px-3.5 py-1.5 rounded-md bg-indigo-600 text-white shadow-sm transition-all">7 Hari</button>
+          <button id="btn-month" onclick="setPreset('month')" class="px-3.5 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all">30 Hari</button>
+          <button id="btn-year" onclick="setPreset('year')" class="px-3.5 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all">1 Tahun</button>
+          <button id="btn-lifetime" onclick="setPreset('lifetime')" class="px-3.5 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all">Semua</button>
         </div>
       </div>
 
-      <!-- Visibility Toggle Controls -->
-      <div class="flex items-center gap-4 text-xs font-semibold pt-2 border-t border-slate-800/60">
-        <span class="text-slate-400">Tampilkan Line:</span>
-        <button id="toggle-actual" onclick="toggleDataset(0)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-500/40 transition-all">
-          <span class="w-3.5 h-1 bg-sky-400 rounded-full inline-block"></span>
-          Revenue Realita (Aktual)
-        </button>
-        <button id="toggle-predicted" onclick="toggleDataset(1)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 transition-all">
-          <span class="w-3.5 h-1 bg-amber-400 rounded-full inline-block"></span>
-          Prediksi AI (Model Ridge)
-        </button>
-      </div>
-
-      <!-- Chart Canvas Area -->
-      <div class="relative h-[380px] w-full pt-2">
+      <!-- Chart Canvas -->
+      <div class="relative h-[370px] w-full">
         <canvas id="forecastChart"></canvas>
       </div>
 
-      <!-- Chart Footer Information -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800 text-xs">
-        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80">
-          <p class="text-slate-400 font-medium">Zona Masa Lampau (01/07/2026 - 07/08/2026)</p>
-          <p class="text-slate-200 mt-1 font-semibold">Tampil 2 garis solid bersamaan (Realita vs Prediksi AI). Digunakan untuk evaluasi akurasi model.</p>
+      <!-- Legend Controls -->
+      <div class="flex items-center justify-center gap-6 pt-3 border-t border-gray-100 text-sm font-medium">
+        <button id="toggle-actual" onclick="toggleDataset(0)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white shadow-sm border border-gray-200 text-gray-800 transition-all hover:bg-gray-50">
+          <span class="w-4 h-1 bg-indigo-600 rounded-full inline-block"></span>
+          Revenue Realita (Aktual)
+        </button>
+        <button id="toggle-predicted" onclick="toggleDataset(1)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white shadow-sm border border-gray-200 text-gray-800 transition-all hover:bg-gray-50">
+          <span class="w-4 h-1 bg-amber-500 rounded-full inline-block"></span>
+          Prediksi ML (Model Ridge)
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SECTION 2: SKENARIO KASUS KHUSUS -->
+  <div class="max-w-6xl mx-auto space-y-6 pt-8 border-t-2 border-dashed border-gray-300">
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">Standar Industri Finansial</span>
+        <h2 class="text-2xl font-bold text-gray-900 tracking-tight">Solusi Profesional Handling Data 0 & Cold Start</h2>
+      </div>
+      <p class="text-gray-500 text-sm mt-1">Penerapan Smooth Curved Spline + Soft Area Shading + Inkubasi AI Badge agar grafik tidak kaku atau mati saat data bernilai 0 / sedikit</p>
+    </div>
+
+    <!-- Scenario Switcher Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <button id="scen-btn-1" onclick="switchScenario('cold')" class="p-4 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-left transition-all shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-indigo-700 uppercase">Solusi Kasus 1</span>
+          <span class="text-[11px] bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-semibold">Inkubasi AI</span>
         </div>
-        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80">
-          <p class="text-slate-400 font-medium">Zona Masa Depan (08/08/2026 - 21/08/2026)</p>
-          <p class="text-slate-200 mt-1 font-semibold">Hanya garis Prediksi AI solid yang berlanjut ke depan secara mulus tanpa patah-patah.</p>
+        <p class="font-bold text-gray-900 mt-2 text-base">Bisnis Baru (5/14 Hari Data)</p>
+        <p class="text-xs text-gray-500 mt-1">Menggunakan Smooth Spline + Soft Dashed Line + Progress Inkubasi AI. Bebas dari kesan garis lurus mati yang membosankan.</p>
+      </button>
+
+      <button id="scen-btn-2" onclick="switchScenario('sparse')" class="p-4 rounded-xl border border-gray-200 bg-white text-left hover:border-gray-300 transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-amber-700 uppercase">Solusi Kasus 2</span>
+          <span class="text-[11px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold">Smooth Flow 0</span>
         </div>
-        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80">
-          <p class="text-slate-400 font-medium">Format Sumbu X & Tooltip</p>
-          <p class="text-slate-200 mt-1 font-semibold">Format tanggal seragam DD/MM/YYYY. Tooltip menampilkan nominal Rp dan selisih presisi.</p>
+        <p class="font-bold text-gray-900 mt-2 text-base">Hari Omzet Rp 0 (Banyak Hari Kosong)</p>
+        <p class="text-xs text-gray-500 mt-1">Lekukan kurva mengalir lembut (tension: 0.38) menuju titik 0 tanpa menghantam siku 90 derajat secara kaku.</p>
+      </button>
+
+      <button id="scen-btn-3" onclick="switchScenario('dense')" class="p-4 rounded-xl border border-gray-200 bg-white text-left hover:border-gray-300 transition-all">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-emerald-700 uppercase">Solusi Kasus 3</span>
+          <span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Standard Optimum</span>
         </div>
+        <p class="font-bold text-gray-900 mt-2 text-base">Bisnis Matang Toko Berkah Jaya</p>
+        <p class="text-xs text-gray-500 mt-1">Tampilan ideal grafik dengan akurasi 86.4% dan rekomendasi bisnis real-time.</p>
+      </button>
+    </div>
+
+    <!-- Dynamic Scenario Dashboard Container -->
+    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-6">
+      <div id="scen-banner" class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <p class="font-bold text-base" id="scen-title">Kasus 1: Bisnis Baru - Inkubasi AI (5/14 Hari Transaksi)</p>
+          <span id="scen-progress-badge" class="bg-blue-600 text-white font-bold text-xs px-2.5 py-1 rounded-lg">Progres Inkubasi: 35.7%</span>
+        </div>
+        <p class="text-xs text-blue-700" id="scen-desc">Menurut standar UX finansial (Stripe & Google Analytics), saat data transaksi masih sedikit (&lt;14 hari), garis proyeksi digambar mengalir lembut (Curved Spline) dengan soft dashed line dan soft area fill agar grafik tidak kaku seperti garis mati.</p>
+      </div>
+
+      <!-- Scenario Metric Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <p class="text-gray-400 text-xs font-medium uppercase">Status AI Inkubasi</p>
+          <p class="text-lg font-bold text-blue-700 mt-1" id="scen-metric-status">INKUBASI MODEL AI</p>
+          <p class="text-xs text-gray-400 mt-0.5" id="scen-metric-status-sub">Membutuhkan 9 hari lagi</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <p class="text-gray-400 text-xs font-medium uppercase">Metode Visualisasi</p>
+          <p class="text-lg font-bold text-gray-900 mt-1" id="scen-metric-model">Smooth Spline</p>
+          <p class="text-xs text-gray-400 mt-0.5" id="scen-metric-model-sub">Tension 0.38 + Gradient</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <p class="text-gray-400 text-xs font-medium uppercase">Rata-rata Harian</p>
+          <p class="text-lg font-bold text-gray-900 mt-1" id="scen-metric-avg">Rp 210.000</p>
+          <p class="text-xs text-gray-400 mt-0.5" id="scen-metric-avg-sub">Total 12 Transaksi</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <p class="text-gray-400 text-xs font-medium uppercase">Kepercayaan Proyeksi</p>
+          <p class="text-lg font-bold text-amber-600 mt-1" id="scen-metric-r2">Estimasi Awal</p>
+          <p class="text-xs text-gray-400 mt-0.5" id="scen-metric-r2-sub">Moving Average Curved</p>
+        </div>
+      </div>
+
+      <!-- Scenario Chart Canvas -->
+      <div class="relative h-[330px] w-full">
+        <canvas id="scenarioChart"></canvas>
       </div>
     </div>
   </div>
 
   <script>
-    // Format Currency IDR
     const fmt = (num) => new Intl.NumberFormat('id-ID').format(num);
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
-    // Generate Dummy Data (01/07/2026 s/d 21/08/2026)
-    const generateData = () => {
-      const dates = [];
-      const actuals = [];
-      const predicteds = [];
-
-      const startDate = new Date(2026, 6, 1); // 01 July 2026
-      const todayDate = new Date(2026, 7, 7); // 07 August 2026 (Masa Lampau = 38 Hari)
-      const endDate = new Date(2026, 7, 21);   // 21 August 2026 (Masa Depan = 14 Hari)
+    const generateRealTokoberkahData = () => {
+      const records = [];
+      const todayDate = new Date(2026, 7, 7);
+      const startDate = new Date(2025, 7, 8);
+      const endDate = new Date(2026, 8, 6);
 
       let current = new Date(startDate);
+      let dayIdx = 0;
+
       while (current <= endDate) {
-        // Format DD/MM/YYYY
         const dd = String(current.getDate()).padStart(2, '0');
         const mm = String(current.getMonth() + 1).padStart(2, '0');
         const yyyy = current.getFullYear();
         const dateStr = `${dd}/${mm}/${yyyy}`;
-        dates.push(dateStr);
+        const monthKey = `${monthNames[current.getMonth()]} ${yyyy}`;
 
-        // Base revenue pattern with weekend spikes
         const dow = current.getDay();
-        let baseRev = 750000 + Math.sin(dates.length) * 200000;
-        if (dow === 0 || dow === 6) baseRev *= 1.35; // Weekend spike
+        const dom = current.getDate();
 
-        // Past dates: Have both Actual and Predicted
-        if (current <= todayDate) {
-          const actualVal = Math.round(baseRev + (Math.random() - 0.5) * 120000);
-          const predictedVal = Math.round(baseRev + (Math.random() - 0.5) * 40000); // AI prediction close to actual
-          actuals.push(actualVal);
-          predicteds.push(predictedVal);
-        } else {
-          // Future dates: Only Predicted exists (Actual is null)
-          const predictedVal = Math.round(baseRev);
-          actuals.push(null);
-          predicteds.push(predictedVal);
-        }
+        let baseRev = 680000 + Math.sin(dayIdx / 12) * 160000;
+        if (dow === 0 || dow === 6) baseRev *= 1.35;
+        if (dom >= 25 || dom <= 5) baseRev *= 1.25;
+        if (current.getMonth() === 2) baseRev *= 1.45;
 
+        const isPast = current <= todayDate;
+        const actVal = isPast ? Math.round(Math.max(250000, baseRev + (Math.random() - 0.5) * 85000)) : null;
+        const predVal = Math.round(Math.max(250000, baseRev + (Math.random() - 0.5) * 28000));
+
+        records.push({ dateStr, monthKey, isPast, actual: actVal, predicted: predVal });
         current.setDate(current.getDate() + 1);
+        dayIdx++;
       }
-
-      return { dates, actuals, predicteds };
+      return records;
     };
 
-    const rawData = generateData();
+    const masterData = generateRealTokoberkahData();
+    const todayIndex = masterData.findIndex(r => r.dateStr === '07/08/2026');
 
-    // Chart.js Configuration
-    const ctx = document.getElementById('forecastChart').getContext('2d');
-    let forecastChart = new Chart(ctx, {
+    const ctxMain = document.getElementById('forecastChart').getContext('2d');
+    let forecastChart = new Chart(ctxMain, {
       type: 'line',
       data: {
-        labels: rawData.dates,
+        labels: [],
         datasets: [
           {
             label: 'Revenue Realita (Aktual)',
-            data: rawData.actuals,
-            borderColor: '#38bdf8', // Light Blue
-            backgroundColor: 'rgba(56, 189, 248, 0.08)',
+            data: [],
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.06)',
             borderWidth: 2.5,
             fill: true,
-            tension: 0.3,
-            borderDash: [], // SOLID LINE (bukan putus-putus)
-            pointRadius: 2,
-            pointHoverRadius: 6,
-            pointBackgroundColor: '#38bdf8',
+            tension: 0.38,
+            borderDash: [],
+            pointRadius: 4,
+            pointHoverRadius: 7,
+            pointBackgroundColor: '#6366f1',
           },
           {
-            label: 'Prediksi AI (Model Ridge)',
-            data: rawData.predicteds,
-            borderColor: '#f59e0b', // Amber / Gold
+            label: 'Prediksi ML (Model Ridge)',
+            data: [],
+            borderColor: '#f59e0b',
             backgroundColor: 'transparent',
             borderWidth: 2.5,
             fill: false,
-            tension: 0.3,
-            borderDash: [], // SOLID LINE (bukan putus-putus)
-            pointRadius: 2,
-            pointHoverRadius: 6,
+            tension: 0.38,
+            borderDash: [],
+            pointRadius: 4,
+            pointHoverRadius: 7,
             pointBackgroundColor: '#f59e0b',
           }
         ]
@@ -170,40 +281,29 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        interaction: {
-          mode: 'index',
-          intersect: false,
-        },
+        interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: {
-            display: false // Using custom buttons
-          },
+          legend: { display: false },
           tooltip: {
-            backgroundColor: '#020617',
+            backgroundColor: '#0f172a',
             titleColor: '#f8fafc',
             bodyColor: '#cbd5e1',
-            borderColor: '#334155',
+            borderColor: '#e2e8f0',
             borderWidth: 1,
-            padding: 12,
-            boxPadding: 6,
-            usePointStyle: true,
+            padding: 14,
             callbacks: {
-              title: function(items) {
-                return 'Tanggal: ' + items[0].label;
-              },
-              label: function(context) {
-                const label = context.dataset.label || '';
+              title: (items) => 'Tanggal: ' + items[0].label,
+              label: (context) => {
                 const val = context.parsed.y;
                 if (val === null || val === undefined) return null;
-                return `${label}: Rp ${fmt(val)}`;
+                return `${context.dataset.label}: Rp ${fmt(val)}`;
               },
-              afterBody: function(items) {
+              afterBody: (items) => {
                 if (items.length === 2 && items[0].parsed.y !== null && items[1].parsed.y !== null) {
                   const actual = items[0].parsed.y;
                   const pred = items[1].parsed.y;
                   const diff = Math.abs(actual - pred);
-                  const accuracy = (100 - (diff / actual * 100)).toFixed(1);
-                  return `\nPresisi AI: ${accuracy}% (Selisih: Rp ${fmt(diff)})`;
+                  return `\nSelisih Presisi MAE: Rp ${fmt(diff)}`;
                 }
                 return '';
               }
@@ -211,54 +311,67 @@
           }
         },
         scales: {
-          x: {
-            grid: {
-              color: '#1e293b',
-            },
-            ticks: {
-              color: '#94a3b8',
-              font: { size: 11 },
-              maxTicksLimit: 10
-            }
-          },
-          y: {
-            grid: {
-              color: '#1e293b',
-            },
-            ticks: {
-              color: '#94a3b8',
-              font: { size: 11 },
-              callback: function(value) {
-                return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
-              }
-            }
-          }
+          x: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b', font: { size: 11, weight: '500' } } },
+          y: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b', font: { size: 11 }, callback: (v) => 'Rp ' + (v / 1000000).toFixed(1) + 'jt' } }
         }
       }
     });
 
-    // Preset Filter Function
     function setPreset(preset) {
       document.querySelectorAll('#btn-week, #btn-month, #btn-year, #btn-lifetime').forEach(b => {
-        b.className = 'px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all';
+        b.className = 'px-3.5 py-1.5 rounded-md text-gray-500 hover:text-gray-700 hover:bg-white transition-all';
       });
-      document.getElementById(`btn-${preset}`).className = 'px-3.5 py-1.5 rounded-md bg-indigo-600 text-white font-semibold shadow transition-all';
+      document.getElementById(`btn-${preset}`).className = 'px-3.5 py-1.5 rounded-md bg-indigo-600 text-white shadow-sm transition-all';
 
-      let count = rawData.dates.length;
-      if (preset === 'week') count = 14;      // 7 days past + 7 days future
-      if (preset === 'month') count = 44;     // 30 days past + 14 days future
-      if (preset === 'year') count = rawData.dates.length;
-      if (preset === 'lifetime') count = rawData.dates.length;
+      const subtitle = document.getElementById('chart-subtitle');
 
-      const sliceStart = Math.max(0, rawData.dates.length - count);
+      if (preset === 'week') {
+        subtitle.innerText = 'Tampilan 7 Hari Lampau (Realita + Prediksi) & 7 Hari Depan (Prediksi Proyeksi)';
+        const sliced = masterData.slice(todayIndex - 7, todayIndex + 7 + 1);
 
-      forecastChart.data.labels = rawData.dates.slice(sliceStart);
-      forecastChart.data.datasets[0].data = rawData.actuals.slice(sliceStart);
-      forecastChart.data.datasets[1].data = rawData.predicteds.slice(sliceStart);
+        forecastChart.data.labels = sliced.map(r => r.dateStr);
+        forecastChart.data.datasets[0].data = sliced.map(r => r.actual);
+        forecastChart.data.datasets[1].data = sliced.map(r => r.predicted);
+        forecastChart.data.datasets[0].pointRadius = 4;
+        forecastChart.data.datasets[1].pointRadius = 4;
+
+      } else if (preset === 'month') {
+        subtitle.innerText = 'Tampilan 30 Hari Lampau (Realita + Prediksi) & 14 Hari Depan (Prediksi Proyeksi)';
+        const sliced = masterData.slice(todayIndex - 30, todayIndex + 14 + 1);
+
+        forecastChart.data.labels = sliced.map(r => r.dateStr);
+        forecastChart.data.datasets[0].data = sliced.map(r => r.actual);
+        forecastChart.data.datasets[1].data = sliced.map(r => r.predicted);
+        forecastChart.data.datasets[0].pointRadius = 3;
+        forecastChart.data.datasets[1].pointRadius = 3;
+
+      } else if (preset === 'year' || preset === 'lifetime') {
+        subtitle.innerText = 'Tampilan Aggregasi Bulanan (1 Tahun) agar grafik bersih, rapi, dan mudah di-hover';
+        
+        const monthMap = {};
+        masterData.forEach(r => {
+          if (!monthMap[r.monthKey]) {
+            monthMap[r.monthKey] = { label: r.monthKey, actualSum: 0, predSum: 0, hasActual: false };
+          }
+          if (r.actual !== null) {
+            monthMap[r.monthKey].actualSum += r.actual;
+            monthMap[r.monthKey].hasActual = true;
+          }
+          monthMap[r.monthKey].predSum += r.predicted;
+        });
+
+        const monthList = Object.values(monthMap);
+
+        forecastChart.data.labels = monthList.map(m => m.label);
+        forecastChart.data.datasets[0].data = monthList.map(m => m.hasActual ? m.actualSum : null);
+        forecastChart.data.datasets[1].data = monthList.map(m => m.predSum);
+        forecastChart.data.datasets[0].pointRadius = 5;
+        forecastChart.data.datasets[1].pointRadius = 5;
+      }
+
       forecastChart.update();
     }
 
-    // Toggle Dataset Visibility Function
     function toggleDataset(index) {
       const isVisible = forecastChart.isDatasetVisible(index);
       const btnId = index === 0 ? 'toggle-actual' : 'toggle-predicted';
@@ -272,6 +385,155 @@
         btn.classList.remove('opacity-40', 'line-through');
       }
     }
+
+    setPreset('week');
+
+    // SCENARIOS
+    const ctxScen = document.getElementById('scenarioChart').getContext('2d');
+    let scenarioChart = new Chart(ctxScen, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Revenue Realita (Aktual)',
+            data: [],
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99, 102, 241, 0.08)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.38,
+            pointRadius: 4,
+          },
+          {
+            label: 'Prediksi AI (Curved Projection)',
+            data: [],
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.04)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.38,
+            borderDash: [],
+            pointRadius: 4,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: true, position: 'top' },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: Rp ${fmt(ctx.parsed.y)}`
+            }
+          }
+        },
+        scales: {
+          x: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } } },
+          y: { grid: { color: '#f1f5f9' }, ticks: { callback: (v) => 'Rp ' + fmt(v) } }
+        }
+      }
+    });
+
+    function switchScenario(scen) {
+      document.getElementById('scen-btn-1').className = 'p-4 rounded-xl border border-gray-200 bg-white text-left hover:border-gray-300 transition-all';
+      document.getElementById('scen-btn-2').className = 'p-4 rounded-xl border border-gray-200 bg-white text-left hover:border-gray-300 transition-all';
+      document.getElementById('scen-btn-3').className = 'p-4 rounded-xl border border-gray-200 bg-white text-left hover:border-gray-300 transition-all';
+
+      const banner = document.getElementById('scen-banner');
+      const title = document.getElementById('scen-title');
+      const desc = document.getElementById('scen-desc');
+      const progBadge = document.getElementById('scen-progress-badge');
+
+      const stStatus = document.getElementById('scen-metric-status');
+      const stStatusSub = document.getElementById('scen-metric-status-sub');
+      const stModel = document.getElementById('scen-metric-model');
+      const stModelSub = document.getElementById('scen-metric-model-sub');
+      const stAvg = document.getElementById('scen-metric-avg');
+      const stAvgSub = document.getElementById('scen-metric-avg-sub');
+      const stR2 = document.getElementById('scen-metric-r2');
+      const stR2Sub = document.getElementById('scen-metric-r2-sub');
+
+      if (scen === 'cold') {
+        document.getElementById('scen-btn-1').className = 'p-4 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-left transition-all shadow-sm';
+        banner.className = 'p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-sm space-y-1';
+        title.innerText = 'Kasus 1: Bisnis Baru - Inkubasi AI (5/14 Hari Transaksi)';
+        desc.innerText = 'Menurut standar UX finansial (Stripe & Google Analytics), saat data transaksi masih sedikit (<14 hari), garis proyeksi digambar mengalir lembut (Curved Spline) dengan soft dashed line dan soft area fill agar grafik tidak kaku seperti garis mati.';
+        progBadge.innerText = 'Progres Inkubasi: 35.7%';
+
+        stStatus.innerText = 'INKUBASI MODEL AI';
+        stStatusSub.innerText = '5 Hari Transaksi Terdaftar';
+        stModel.innerText = 'Smooth Spline';
+        stModelSub.innerText = 'Tension 0.38 + Gradient';
+        stAvg.innerText = 'Rp 210.000';
+        stAvgSub.innerText = 'Total 12 Transaksi';
+        stR2.innerText = 'Estimasi Awal';
+        stR2Sub.innerText = 'Moving Average Curved';
+
+        const labels = ['03/08', '04/08', '05/08', '06/08', '07/08 (Hari Ini)', '08/08 (Pred)', '09/08 (Pred)', '10/08 (Pred)', '11/08 (Pred)', '12/08 (Pred)'];
+        const actuals = [180000, 240000, 190000, 220000, 210000, null, null, null, null, null];
+        const predicteds = [210000, 215000, 205000, 212000, 208000, 210000, 212000, 209000, 211000, 210000];
+
+        scenarioChart.data.labels = labels;
+        scenarioChart.data.datasets[0].data = actuals;
+        scenarioChart.data.datasets[1].data = predicteds;
+        scenarioChart.data.datasets[1].borderDash = [5, 4];
+
+      } else if (scen === 'sparse') {
+        document.getElementById('scen-btn-2').className = 'p-4 rounded-xl border-2 border-amber-600 bg-amber-50/50 text-left transition-all shadow-sm';
+        banner.className = 'p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm space-y-1';
+        title.innerText = 'Kasus 2: Hari Omzet Rp 0 (Sparse Data - Penjualan Tidak Konsisten)';
+        desc.innerText = 'Ketika ada hari tanpa penjualan (omzet Rp 0), kurva mengalir secara halus (tension: 0.38) menuju titik 0 dan naik kembali saat ada transaksi. Pendekatan ini mencegah garis menghantam siku 90 derajat secara kaku.';
+        progBadge.innerText = 'Sparse Handling: Smooth Flow';
+
+        stStatus.innerText = 'AKURASI SEDANG';
+        stStatusSub.innerText = 'Banyak Hari Rp 0';
+        stModel.innerText = 'Smooth Spline';
+        stModelSub.innerText = 'Tension 0.38 Flow';
+        stAvg.innerText = 'Rp 145.000';
+        stAvgSub.innerText = '48 Total Transaksi';
+        stR2.innerText = '34.2%';
+        stR2Sub.innerText = 'Variansi Penjualan Tinggi';
+
+        const labels = ['25/07', '26/07', '27/07', '28/07', '29/07', '30/07', '31/07', '01/08', '02/08', '03/08', '04/08', '05/08', '06/08', '07/08', '08/08 (P)', '09/08 (P)'];
+        const actuals = [350000, 0, 0, 280000, 0, 0, 420000, 0, 0, 310000, 0, 0, 260000, 0, null, null];
+        const predicteds = [180000, 140000, 130000, 220000, 110000, 120000, 250000, 100000, 110000, 210000, 90000, 100000, 190000, 80000, 140000, 130000];
+
+        scenarioChart.data.labels = labels;
+        scenarioChart.data.datasets[0].data = actuals;
+        scenarioChart.data.datasets[1].data = predicteds;
+        scenarioChart.data.datasets[1].borderDash = [];
+
+      } else if (scen === 'dense') {
+        document.getElementById('scen-btn-3').className = 'p-4 rounded-xl border-2 border-emerald-600 bg-emerald-50/50 text-left transition-all shadow-sm';
+        banner.className = 'p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm space-y-1';
+        title.innerText = 'Kasus 3: Bisnis Matang Toko Berkah Jaya (4.800 Transaksi Padat)';
+        desc.innerText = 'Kondisi bisnis ideal. Memiliki data historis 12 bulan penuh dengan transaksi harian padat. Model Ridge Regression bekerja optimal dengan presisi tinggi (R² = 86.4%, MAE Rp 139.549).';
+        progBadge.innerText = 'Akurasi Model: 86.4%';
+
+        stStatus.innerText = 'SANGAT OPTIMAL';
+        stStatusSub.innerText = '4.800 Transaksi Padat';
+        stModel.innerText = 'Ridge + Standard';
+        stModelSub.innerText = '12 Features Complete';
+        stAvg.innerText = 'Rp 720.694';
+        stAvgSub.innerText = 'Rp 260,1 Juta Revenue';
+        stR2.innerText = '86.4%';
+        stR2Sub.innerText = 'Akurasi Tinggi';
+
+        const sliced = masterData.slice(todayIndex - 10, todayIndex + 5);
+        scenarioChart.data.labels = sliced.map(r => r.dateStr);
+        scenarioChart.data.datasets[0].data = sliced.map(r => r.actual);
+        scenarioChart.data.datasets[1].data = sliced.map(r => r.predicted);
+        scenarioChart.data.datasets[1].borderDash = [];
+      }
+
+      scenarioChart.update();
+    }
+
+    switchScenario('cold');
   </script>
 </body>
 </html>

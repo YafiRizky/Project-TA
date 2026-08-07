@@ -37,11 +37,13 @@ export default function MLPredictionsPage() {
   const [classDays, setClassDays] = useState(90)
 
   // Queries
+  // Queries
   const { data: forecastData, isLoading: loadingForecast, refetch: refetchForecast } = useQuery({
     queryKey: ['ml-forecast', business?.code, forecastDays],
     queryFn: () => mlAPI.getRevenueForecast(forecastDays),
     enabled: activeTab === 'forecast',
     staleTime: 5 * 60 * 1000,
+    placeholderData: (previousData) => previousData,
   })
 
   const { data: classData, isLoading: loadingClass, refetch: refetchClass } = useQuery({
@@ -49,6 +51,7 @@ export default function MLPredictionsPage() {
     queryFn: () => mlAPI.getProductClassification(classDays),
     enabled: activeTab === 'classification',
     staleTime: 5 * 60 * 1000,
+    placeholderData: (previousData) => previousData,
   })
 
   const { data: stockoutData, isLoading: loadingStockout, refetch: refetchStockout } = useQuery({
@@ -56,6 +59,7 @@ export default function MLPredictionsPage() {
     queryFn: mlAPI.getStockoutPrediction,
     enabled: activeTab === 'stockout',
     staleTime: 5 * 60 * 1000,
+    placeholderData: (previousData) => previousData,
   })
 
   const { data: restockData, isLoading: loadingRestock, refetch: refetchRestock } = useQuery({
@@ -63,6 +67,7 @@ export default function MLPredictionsPage() {
     queryFn: () => mlAPI.getRestockRecommendation(3),
     enabled: activeTab === 'restock',
     staleTime: 5 * 60 * 1000,
+    placeholderData: (previousData) => previousData,
   })
 
   const { data: expiryData, isLoading: loadingExpiry, refetch: refetchExpiry } = useQuery({
@@ -70,6 +75,7 @@ export default function MLPredictionsPage() {
     queryFn: mlAPI.getExpiryRisk,
     enabled: activeTab === 'expiry',
     staleTime: 5 * 60 * 1000,
+    placeholderData: (previousData) => previousData,
   })
 
   const refetchMap = {
@@ -80,12 +86,13 @@ export default function MLPredictionsPage() {
     expiry: refetchExpiry,
   }
 
-  const isLoading = {
-    forecast: loadingForecast,
-    classification: loadingClass,
-    stockout: loadingStockout,
-    restock: loadingRestock,
-    expiry: loadingExpiry,
+  // Only show full spinner on initial data load (when there's no data yet)
+  const isInitialLoading = {
+    forecast: loadingForecast && !forecastData,
+    classification: loadingClass && !classData,
+    stockout: loadingStockout && !stockoutData,
+    restock: loadingRestock && !restockData,
+    expiry: loadingExpiry && !expiryData,
   }[activeTab]
 
   return (
@@ -129,7 +136,7 @@ export default function MLPredictionsPage() {
       </div>
 
       {/* Tab Content */}
-      {isLoading ? (
+      {isInitialLoading ? (
         <div className="text-center py-20 text-gray-400">
           <div className="w-10 h-10 border-3 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="font-medium">Memproses data dengan AI...</p>
@@ -149,10 +156,10 @@ export default function MLPredictionsPage() {
 }
 
 const FORECAST_PERIODS = [
-  { label: 'Week (7D)', days: 7 },
-  { label: 'Month (30D)', days: 30 },
-  { label: 'Year (365D)', days: 365 },
-  { label: 'Lifetime', days: 0 },
+  { label: '7 Hari', days: 7 },
+  { label: '30 Hari', days: 30 },
+  { label: '1 Tahun', days: 365 },
+  { label: 'Semua', days: 0 },
 ]
 
 function ForecastTab({ data, forecastDays, setForecastDays }) {

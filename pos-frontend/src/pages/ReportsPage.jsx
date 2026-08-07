@@ -49,9 +49,11 @@ export default function ReportsPage() {
       start_date: startDate || undefined,
       end_date: endDate || undefined
     }),
+    placeholderData: (previousData) => previousData,
   })
 
-  const isLoading = loadingDaily || loadingPayment || loadingTrans
+  // Only show initial full-page spinner if there is no data loaded yet at all
+  const isInitialLoading = (loadingDaily && !dailyData) || (loadingPayment && !paymentData) || (loadingTrans && !transData)
 
   // Calculate summary
   const summary = dailyData || {}
@@ -189,7 +191,7 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      {isLoading ? (
+      {isInitialLoading ? (
         <div className="text-center py-16 text-gray-400">
           <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
           Memuat data laporan...
