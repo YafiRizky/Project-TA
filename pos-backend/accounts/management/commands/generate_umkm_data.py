@@ -154,23 +154,24 @@ class Command(BaseCommand):
         self.stdout.write("GENERATE DATA v2 -- PostgreSQL bulk_create")
         self.stdout.write("=" * 70)
 
-        # Ensure techdev superuser exists with password dev123456
-        techdev = BusinessUser.objects.filter(username='techdev').first()
+        # Ensure TechnicalAdmin superuser techdev exists with password dev123456
+        from accounts.models import TechnicalAdmin
+        techdev = TechnicalAdmin.objects.filter(username='techdev').first()
         if not techdev:
-            techdev = BusinessUser.objects.create_superuser(
+            techdev = TechnicalAdmin.objects.create_superuser(
                 username='techdev',
                 email='techdev@mercatura.com',
                 password='dev123456',
-                full_name='Technical Administrator',
-                role='admin'
+                full_name='Technical Administrator'
             )
-            self.stdout.write("  Superuser techdev dibuat (password: dev123456)")
+            self.stdout.write("  Superuser TechnicalAdmin techdev dibuat (password: dev123456)")
         else:
+            techdev.is_active = True
             techdev.is_staff = True
             techdev.is_superuser = True
             techdev.set_password('dev123456')
             techdev.save()
-            self.stdout.write("  Password superuser techdev diperbarui ke dev123456")
+            self.stdout.write("  Password superuser TechnicalAdmin techdev diperbarui ke dev123456")
 
         # ---- STEP 1: CLEAN ----
         self.stdout.write("\n[1/5] Menghapus data lama...")
