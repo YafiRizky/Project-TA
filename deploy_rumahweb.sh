@@ -125,6 +125,12 @@ server {
         try_files \$uri \$uri/ /index.html;
     }
 
+    # Prevent caching of index.html so browsers always get fresh JS asset hashes
+    location = /index.html {
+        root /var/www/mercatura-pos/pos-frontend/dist;
+        add_header Cache-Control "no-store, no-cache, must-revalidate";
+    }
+
     # Backend Django REST API
     location /api/ {
         proxy_pass http://127.0.0.1:8000/api/;
