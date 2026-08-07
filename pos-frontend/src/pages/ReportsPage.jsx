@@ -15,6 +15,22 @@ export default function ReportsPage() {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [isExporting, setIsExporting] = useState(false)
+  const [rangeDays, setRangeDays] = useState(7)
+
+  // Preset range handler
+  const applyRange = (days) => {
+    setRangeDays(days)
+    const end = new Date()
+    const endStr = end.toISOString().split('T')[0]
+    setEndDate(endStr)
+    if (days === 0) {
+      setStartDate('')
+    } else {
+      const start = new Date()
+      start.setDate(start.getDate() - (days - 1))
+      setStartDate(start.toISOString().split('T')[0])
+    }
+  }
 
   const { data: dailyData, isLoading: loadingDaily } = useQuery({
     queryKey: ['daily-summary', bCode],
@@ -235,22 +251,41 @@ export default function ReportsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             {/* Sales Chart */}
             <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <h3 className="text-base font-bold text-gray-800 mb-4">Tren Penjualan (7 Hari Terakhir)</h3>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                <h3 className="text-base font-bold text-gray-800">
+                  Tren Penjualan {rangeDays === 0 ? '(Semua Data)' : `(${rangeDays} Hari Terakhir)`}
+                </h3>
+                <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
+                  {[{ label: '7 Hari', days: 7 }, { label: '30 Hari', days: 30 }, { label: '90 Hari', days: 90 }, { label: 'Semua', days: 0 }].map(p => (
+                    <button
+                      key={p.days}
+                      onClick={() => applyRange(p.days)}
+                      className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                        rangeDays === p.days
+                          ? 'bg-indigo-600 text-white shadow-sm'
+                          : 'text-gray-500 hover:text-gray-700 hover:bg-white'
+                      }`}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
               {chartData.some(d => d.revenue > 0) ? (
                 <ResponsiveContainer width="100%" height={250}>
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} interval={Math.max(0, Math.floor(chartData.length / 10) - 1)} />
                     <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
                     <Tooltip formatter={(v) => [`Rp ${fmt(v)}`, 'Revenue']}
                       contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', fontSize: '12px' }} />
                     <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2.5}
-                      dot={{ fill: '#4f46e5', r: 4 }} activeDot={{ r: 6 }} />
+                      dot={chartData.length <= 31} activeDot={{ r: 6 }} />
                   </LineChart>
                 </ResponsiveContainer>
               ) : (
                 <div className="h-[250px] flex items-center justify-center text-gray-400 text-sm">
-                  Belum ada data penjualan dalam 7 hari terakhir
+                  Belum ada data penjualan untuk periode ini
                 </div>
               )}
             </div>

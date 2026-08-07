@@ -67,6 +67,9 @@ DB_USER=pos_user
 DB_PASSWORD=MercaturaPos2026!
 DB_HOST=127.0.0.1
 DB_PORT=5432
+XENDIT_SECRET_KEY=xnd_development_ZAfMu8FIlplfnT7D2EsLXd1UFQAGW4hYN8kGYZQruheR2kx0EwYkNsQV4AHOj
+XENDIT_WEBHOOK_TOKEN=
+FRONTEND_URL=http://202.155.16.135
 EOF
 
 # Run Migrations, Collect Static & Seed Data

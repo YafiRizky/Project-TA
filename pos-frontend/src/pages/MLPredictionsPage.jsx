@@ -33,18 +33,20 @@ const URGENCY_COLORS = { URGENT: '#ef4444', SOON: '#f59e0b', OK: '#10b981' }
 export default function MLPredictionsPage() {
   const { business } = useAuth()
   const [activeTab, setActiveTab] = useState('forecast')
+  const [forecastDays, setForecastDays] = useState(30)
+  const [classDays, setClassDays] = useState(90)
 
   // Queries
   const { data: forecastData, isLoading: loadingForecast, refetch: refetchForecast } = useQuery({
-    queryKey: ['ml-forecast', business?.code],
-    queryFn: () => mlAPI.getRevenueForecast(30),
+    queryKey: ['ml-forecast', business?.code, forecastDays],
+    queryFn: () => mlAPI.getRevenueForecast(forecastDays),
     enabled: activeTab === 'forecast',
     staleTime: 5 * 60 * 1000,
   })
 
   const { data: classData, isLoading: loadingClass, refetch: refetchClass } = useQuery({
-    queryKey: ['ml-classification', business?.code],
-    queryFn: () => mlAPI.getProductClassification(90),
+    queryKey: ['ml-classification', business?.code, classDays],
+    queryFn: () => mlAPI.getProductClassification(classDays),
     enabled: activeTab === 'classification',
     staleTime: 5 * 60 * 1000,
   })
@@ -135,8 +137,8 @@ export default function MLPredictionsPage() {
         </div>
       ) : (
         <>
-          {activeTab === 'forecast' && <ForecastTab data={forecastData} />}
-          {activeTab === 'classification' && <ClassificationTab data={classData} />}
+          {activeTab === 'forecast' && <ForecastTab data={forecastData} forecastDays={forecastDays} setForecastDays={setForecastDays} />}
+          {activeTab === 'classification' && <ClassificationTab data={classData} classDays={classDays} setClassDays={setClassDays} />}
           {activeTab === 'stockout' && <StockoutTab data={stockoutData} />}
           {activeTab === 'restock' && <RestockTab data={restockData} />}
           {activeTab === 'expiry' && <ExpiryTab data={expiryData} />}
@@ -146,126 +148,146 @@ export default function MLPredictionsPage() {
   )
 }
 
-// ============================================================
-// TAB 1: FORECAST PENDAPATAN (Linear Regression)
-// ============================================================
-function ForecastTab({ data }) {
+const FORECAST_PERIODS = [
+  { label: '7 Hari', days: 7 },
+  { label: '30 Hari', days: 30 },
+  { label: '90 Hari', days: 90 },
+  { label: '1 Tahun', days: 365 },
+]
+
+function ForecastTab({ data, forecastDays, setForecastDays }) {
+  const [showActual, setShowActual] = useState(true)
+  const [showPredicted, setShowPredicted] = useState(true)
+
   if (!data?.metrics) return <EmptyState text="Tidak ada data forecast" />
 
   const m = data.metrics
   const isUp = m.trend === 'UP'
   const isDown = m.trend === 'DOWN'
 
-  // Combine historical + forecast for chart
-  const chartData = [
-    ...(data.historical || []).slice(-30).map(h => ({
-      date: new Date(h.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
-      actual: h.revenue,
-    })),
-    ...(data.forecast || []).slice(0, 14).map(f => ({
-      date: new Date(f.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
-      predicted: f.predicted_revenue,
-    })),
-  ]
+  const todayStr = new Date().toISOString().split('T')[0]
+
+  const historicalMap = {}
+  ;(data.historical || []).forEach(h => {
+    historicalMap[h.date] = h.revenue
+  })
+
+  const forecastMap = {}
+  ;(data.forecast || []).forEach(f => {
+    forecastMap[f.date] = f.predicted_revenue
+  })
+
+  const allDates = [...new Set([
+    ...Object.keys(historicalMap),
+    ...Object.keys(forecastMap),
+  ])].sort()
+
+  const chartData = allDates.map(dateStr => {
+    const label = new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
+    const entry = { date: label, fullDate: dateStr }
+
+    if (historicalMap[dateStr] !== undefined && dateStr <= todayStr) {
+      entry.actual = historicalMap[dateStr]
+    }
+
+    if (forecastMap[dateStr] !== undefined) {
+      entry.predicted = forecastMap[dateStr]
+    }
+
+    return entry
+  })
+
+  const renderLegend = () => {
+    const items = [
+      { key: 'actual', label: 'Revenue Aktual (Realita)', color: '#6366f1', active: showActual, dashed: false },
+      { key: 'predicted', label: 'Prediksi ML (AI)', color: '#f59e0b', active: showPredicted, dashed: true },
+    ]
+    return (
+      <div className="flex items-center justify-center gap-6 mt-2">
+        {items.map(item => (
+          <button
+            key={item.key}
+            onClick={() => {
+              if (item.key === 'actual') setShowActual(p => !p)
+              if (item.key === 'predicted') setShowPredicted(p => !p)
+            }}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+              item.active
+                ? 'bg-white shadow-sm border border-gray-200 text-gray-800'
+                : 'bg-gray-100 text-gray-400 line-through'
+            }`}
+          >
+            <span
+              className="inline-block w-5 h-0.5 rounded"
+              style={{
+                backgroundColor: item.active ? item.color : '#d1d5db',
+                borderTop: item.dashed ? `2px dashed ${item.active ? item.color : '#d1d5db'}` : 'none',
+                height: item.dashed ? 0 : 2,
+              }}
+            />
+            {item.label}
+          </button>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
-      {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard
-          label="Revenue Bulan Ini"
-          value={`Rp ${fmt(Math.round(m.current_monthly_revenue))}`}
-          icon={RiBarChartBoxLine}
-          color="blue"
-        />
-        <MetricCard
-          label="Prediksi Bulan Depan"
-          value={`Rp ${fmt(Math.round(m.predicted_monthly_revenue))}`}
-          icon={RiLineChartLine}
-          color="indigo"
-          badge={`${m.growth_percentage > 0 ? '+' : ''}${m.growth_percentage}%`}
-          badgeColor={isUp ? 'green' : isDown ? 'red' : 'gray'}
-        />
-        <MetricCard
-          label="Rata-rata Harian"
-          value={`Rp ${fmt(Math.round(m.avg_daily_revenue))}`}
-          icon={RiLineChartLine}
-          color="purple"
-        />
-        <MetricCard
-          label="Akurasi Model (R²)"
-          value={`${(m.r_squared * 100).toFixed(1)}%`}
-          icon={RiBrainLine}
-          color="emerald"
-          subtitle={`Test R²: ${((m.r_squared_test || 0) * 100).toFixed(1)}%`}
-        />
+        <MetricCard label="Revenue Bulan Ini" value={`Rp ${fmt(Math.round(m.current_monthly_revenue))}`} icon={RiBarChartBoxLine} color="blue" />
+        <MetricCard label="Prediksi Bulan Depan" value={`Rp ${fmt(Math.round(m.predicted_monthly_revenue))}`} icon={RiLineChartLine} color="indigo" badge={`${m.growth_percentage > 0 ? '+' : ''}${m.growth_percentage}%`} badgeColor={isUp ? 'green' : isDown ? 'red' : 'gray'} />
+        <MetricCard label="Rata-rata Harian" value={`Rp ${fmt(Math.round(m.avg_daily_revenue))}`} icon={RiLineChartLine} color="purple" />
+        <MetricCard label="Akurasi Model (R²)" value={`${(m.r_squared * 100).toFixed(1)}%`} icon={RiBrainLine} color="emerald" subtitle={`Test R²: ${((m.r_squared_test || 0) * 100).toFixed(1)}%`} />
       </div>
 
-      {/* Validation Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">MAE (Mean Absolute Error)</p>
-          <p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(m.mae || 0))}</p>
-          <p className="text-xs text-gray-400 mt-1">Rata-rata error prediksi</p>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">RMSE (Root Mean Squared Error)</p>
-          <p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(m.rmse || 0))}</p>
-          <p className="text-xs text-gray-400 mt-1">Sensitivitas terhadap outlier</p>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Train / Test Split</p>
-          <p className="text-xl font-bold text-gray-800">{m.train_size || 0} / {m.test_size || 0}</p>
-          <p className="text-xs text-gray-400 mt-1">80% training, 20% testing</p>
-        </div>
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center"><p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">MAE</p><p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(m.mae || 0))}</p></div>
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center"><p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">RMSE</p><p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(m.rmse || 0))}</p></div>
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center"><p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Train / Test</p><p className="text-xl font-bold text-gray-800">{m.train_size || 0} / {m.test_size || 0}</p></div>
       </div>
 
-      {/* Trend Badge */}
-      <div className={`flex items-center gap-2 px-4 py-3 rounded-xl ${
-        isUp ? 'bg-emerald-50 border border-emerald-200' :
-        isDown ? 'bg-red-50 border border-red-200' :
-        'bg-gray-50 border border-gray-200'
-      }`}>
-        {isUp ? <RiArrowUpLine className="text-emerald-600" size={20} /> :
-         isDown ? <RiArrowDownLine className="text-red-600" size={20} /> :
-         <RiLineChartLine className="text-gray-600" size={20} />}
-        <span className={`font-medium text-sm ${
-          isUp ? 'text-emerald-700' : isDown ? 'text-red-700' : 'text-gray-700'
-        }`}>
-          {isUp ? 'Tren NAIK' : isDown ? 'Tren TURUN' : 'Tren STABIL'} — 
-          Model Ridge Regression (+ Feature Engineering) memprediksi pertumbuhan {m.growth_percentage}% bulan depan.
-          Fitur: hari, weekend, gajian, rolling average 7 hari.
+      <div className={`flex items-center gap-2 px-4 py-3 rounded-xl ${isUp ? 'bg-emerald-50 border border-emerald-200' : isDown ? 'bg-red-50 border border-red-200' : 'bg-gray-50 border border-gray-200'}`}>
+        {isUp ? <RiArrowUpLine className="text-emerald-600" size={20} /> : isDown ? <RiArrowDownLine className="text-red-600" size={20} /> : <RiLineChartLine className="text-gray-600" size={20} />}
+        <span className={`font-medium text-sm ${isUp ? 'text-emerald-700' : isDown ? 'text-red-700' : 'text-gray-700'}`}>
+          {isUp ? 'Tren NAIK' : isDown ? 'Tren TURUN' : 'Tren STABIL'} — Model Ridge Regression memprediksi pertumbuhan {m.growth_percentage}% bulan depan.
         </span>
       </div>
 
-      {/* Chart */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-        <h3 className="text-base font-bold text-gray-800 mb-4">
-          Grafik Revenue: Aktual vs Prediksi (Ridge Regression + Feature Engineering)
-        </h3>
-        <ResponsiveContainer width="100%" height={320}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5">
+          <h3 className="text-base font-bold text-gray-800">Grafik Revenue: Aktual vs Prediksi AI</h3>
+          <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
+            {FORECAST_PERIODS.map(p => (
+              <button key={p.days} onClick={() => setForecastDays(p.days)} className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${forecastDays === p.days ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-white'}`}>{p.label}</button>
+            ))}
+          </div>
+        </div>
+
+        <ResponsiveContainer width="100%" height={360}>
           <ComposedChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="date" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} interval={Math.max(0, Math.floor(chartData.length / 12) - 1)} />
             <YAxis tick={{ fontSize: 11 }} tickFormatter={v => `${(v / 1000000).toFixed(1)}jt`} />
-            <Tooltip
-              formatter={(v, name) => [`Rp ${fmt(Math.round(v))}`, name === 'actual' ? 'Aktual' : 'Prediksi']}
-              contentStyle={{ borderRadius: 12, border: '1px solid #e5e7eb' }}
-            />
-            <Legend formatter={v => v === 'actual' ? 'Revenue Aktual' : 'Prediksi ML'} />
-            <Area type="monotone" dataKey="actual" fill="#6366f120" stroke="#6366f1" strokeWidth={2} name="actual" />
-            <Line type="monotone" dataKey="predicted" stroke="#f59e0b" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3 }} name="predicted" />
+            <Tooltip formatter={(v, name) => [`Rp ${fmt(Math.round(v))}`, name === 'actual' ? 'Realita' : 'Prediksi AI']} contentStyle={{ borderRadius: 12, border: '1px solid #e5e7eb', fontSize: 13 }} />
+            {showPredicted && <Line type="monotone" dataKey="predicted" stroke="#f59e0b" strokeWidth={2} strokeDasharray="6 4" dot={false} name="predicted" connectNulls={false} />}
+            {showActual && <Area type="monotone" dataKey="actual" fill="rgba(99, 102, 241, 0.08)" stroke="#6366f1" strokeWidth={2.5} name="actual" connectNulls={false} />}
           </ComposedChart>
         </ResponsiveContainer>
+        {renderLegend()}
       </div>
     </div>
   )
 }
 
-// ============================================================
-// TAB 2: KLASIFIKASI PRODUK (ABC / Pareto)
-// ============================================================
-function ClassificationTab({ data }) {
+const CLASS_PERIODS = [
+  { label: '30 Hari', days: 30 },
+  { label: '90 Hari', days: 90 },
+  { label: '180 Hari', days: 180 },
+  { label: '1 Tahun', days: 365 },
+]
+
+function ClassificationTab({ data, classDays, setClassDays }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = usePageSize('ml_abc', 10)
 
@@ -306,6 +328,26 @@ function ClassificationTab({ data }) {
 
   return (
     <div className="space-y-6">
+      {/* Period Selector */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-base font-bold text-gray-800">Klasifikasi ABC (Pareto)</h3>
+        <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
+          {CLASS_PERIODS.map(p => (
+            <button
+              key={p.days}
+              onClick={() => setClassDays(p.days)}
+              className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                classDays === p.days
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-white'
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-5 rounded-xl border border-emerald-200">
