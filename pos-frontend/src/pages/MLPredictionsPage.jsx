@@ -29,6 +29,7 @@ const ABC_COLORS = { A: '#10b981', B: '#f59e0b', C: '#ef4444' }
 const PIE_COLORS = ['#10b981', '#f59e0b', '#ef4444']
 const RISK_COLORS = { CRITICAL: '#ef4444', HIGH: '#f97316', MEDIUM: '#f59e0b', LOW: '#10b981' }
 const URGENCY_COLORS = { URGENT: '#ef4444', SOON: '#f59e0b', OK: '#10b981' }
+const MONTH_NAMES_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
 
 export default function MLPredictionsPage() {
   const { business } = useAuth()
@@ -39,8 +40,8 @@ export default function MLPredictionsPage() {
   // Queries
   // Queries
   const { data: forecastData, isLoading: loadingForecast, refetch: refetchForecast } = useQuery({
-    queryKey: ['ml-forecast', business?.code, forecastDays],
-    queryFn: () => mlAPI.getRevenueForecast(forecastDays),
+    queryKey: ['ml-forecast', business?.code],
+    queryFn: () => mlAPI.getRevenueForecast(180, 3650),
     enabled: activeTab === 'forecast',
     staleTime: 5 * 60 * 1000,
     placeholderData: (previousData) => previousData,
@@ -175,49 +176,86 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
   const hist = data.historical || []
   const fore = data.forecast || []
 
-  // Slice historical based on selected preset
-  let sliceCount = 30
-  if (forecastDays === 7) sliceCount = 7
-  else if (forecastDays === 30) sliceCount = 30
-  else if (forecastDays === 365) sliceCount = 365
-  else sliceCount = hist.length
+  // Determine slice mode based on selected preset
+  const isMonthly = forecastDays === 365 || forecastDays === 0
 
-  const filteredHist = hist.slice(-sliceCount)
+  let histSlice, foreSlice
+  if (forecastDays === 7) {
+    // 7 Hari: 3 hari lampau + today (4 titik) + 3 hari prediksi = 7 total
+    histSlice = hist.slice(-4)
+    foreSlice = fore.slice(0, 3)
+  } else if (forecastDays === 30) {
+    // 30 Hari: 10 hari lampau + today (11 titik) + 19 hari prediksi = 30 total
+    histSlice = hist.slice(-11)
+    foreSlice = fore.slice(0, 19)
+  } else if (forecastDays === 365) {
+    // 1 Tahun: 365 hari terakhir historical + 6 bulan prediksi, BULANAN
+    histSlice = hist.slice(-365)
+    foreSlice = fore.slice(0, 180)
+  } else {
+    // Semua: SEMUA historical dari awal + 6 bulan prediksi, BULANAN
+    histSlice = hist
+    foreSlice = fore.slice(0, 180)
+  }
 
-  const chartData = []
-
-  // Historical dates: Have BOTH actual and predicted
-  filteredHist.forEach(h => {
-    let dateFormatted = h.date
-    if (h.date && h.date.includes('-')) {
-      const parts = h.date.split('-')
-      if (parts.length === 3) {
-        dateFormatted = `${parts[2]}/${parts[1]}/${parts[0]}`
-      }
+  // Helper: format date YYYY-MM-DD to DD/MM/YYYY
+  const fmtDate = (dateStr) => {
+    if (dateStr && dateStr.includes('-')) {
+      const parts = dateStr.split('T')[0].split('-')
+      if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`
     }
-    chartData.push({
-      date: dateFormatted,
-      rawDate: h.date,
-      actual: h.revenue,
-      predicted: h.predicted_revenue !== undefined ? h.predicted_revenue : h.revenue,
-    })
-  })
+    return dateStr
+  }
 
-  // Future dates: Only predicted
-  fore.forEach(f => {
-    let dateFormatted = f.date
-    if (f.date && f.date.includes('-')) {
-      const parts = f.date.split('T')[0].split('-')
-      if (parts.length === 3) {
-        dateFormatted = `${parts[2]}/${parts[1]}/${parts[0]}`
-      }
-    }
-    chartData.push({
-      date: dateFormatted,
-      rawDate: f.date,
-      predicted: f.predicted_revenue,
+  // Build chart data
+  let chartData = []
+
+  if (isMonthly) {
+    // Monthly groupby untuk 1 Tahun & Semua
+    const monthMap = new Map()
+
+    histSlice.forEach(h => {
+      const d = new Date(h.date)
+      const key = `${MONTH_NAMES_ID[d.getMonth()]} ${d.getFullYear()}`
+      if (!monthMap.has(key)) monthMap.set(key, { actualSum: 0, predSum: 0, hasActual: false })
+      const entry = monthMap.get(key)
+      entry.actualSum += h.revenue || 0
+      entry.predSum += (h.predicted_revenue !== undefined ? h.predicted_revenue : h.revenue) || 0
+      entry.hasActual = true
     })
-  })
+
+    foreSlice.forEach(f => {
+      const d = new Date(f.date.split('T')[0])
+      const key = `${MONTH_NAMES_ID[d.getMonth()]} ${d.getFullYear()}`
+      if (!monthMap.has(key)) monthMap.set(key, { actualSum: 0, predSum: 0, hasActual: false })
+      const entry = monthMap.get(key)
+      entry.predSum += f.predicted_revenue || 0
+    })
+
+    chartData = Array.from(monthMap.entries()).map(([key, val]) => ({
+      date: key,
+      actual: val.hasActual ? val.actualSum : null,
+      predicted: val.predSum,
+    }))
+  } else {
+    // Daily view untuk 7 Hari & 30 Hari
+    histSlice.forEach(h => {
+      chartData.push({
+        date: fmtDate(h.date),
+        rawDate: h.date,
+        actual: h.revenue,
+        predicted: h.predicted_revenue !== undefined ? h.predicted_revenue : h.revenue,
+      })
+    })
+
+    foreSlice.forEach(f => {
+      chartData.push({
+        date: fmtDate(f.date),
+        rawDate: f.date,
+        predicted: f.predicted_revenue,
+      })
+    })
+  }
 
   // Custom Dark Tooltip (Steam Market Style)
   const CustomTooltip = ({ active, payload, label }) => {
@@ -315,7 +353,12 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5">
           <div>
             <h3 className="text-base font-bold text-gray-800">Grafik Revenue: Realita vs Prediksi AI</h3>
-            <p className="text-xs text-gray-400 mt-0.5">Garis Solid: Realita vs Prediksi AI (Format Tanggal DD/MM/YYYY)</p>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {forecastDays === 7 ? '3 hari lampau + hari ini + 3 hari prediksi ke depan (Harian)' :
+               forecastDays === 30 ? '10 hari lampau + hari ini + 19 hari prediksi ke depan (Harian)' :
+               forecastDays === 365 ? 'Aggregasi bulanan 12 bulan terakhir + prediksi bulanan ke depan' :
+               'Aggregasi bulanan seluruh data historis + prediksi bulanan ke depan'}
+            </p>
           </div>
           <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
             {FORECAST_PERIODS.map(p => (
@@ -328,7 +371,10 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
           <ComposedChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis dataKey="date" tick={{ fontSize: 11 }} interval={Math.max(0, Math.floor(chartData.length / 10) - 1)} />
-            <YAxis tick={{ fontSize: 11 }} tickFormatter={v => `${(v / 1000000).toFixed(1)}jt`} />
+            <YAxis tick={{ fontSize: 11 }} tickFormatter={v => {
+              if (v >= 1000000) return `${(v / 1000000).toFixed(1)}jt`
+              return `${(v / 1000).toFixed(0)}rb`
+            }} />
             <Tooltip content={<CustomTooltip />} />
             {/* Garis Prediksi AI (SOLID LINE) */}
             {showPredicted && (

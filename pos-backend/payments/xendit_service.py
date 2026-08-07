@@ -140,13 +140,19 @@ def create_ewallet_charge(business, amount, channel_code, reference_id=None, mob
     channel = channel_code.upper()
 
     # Build channel_properties — OVO requires mobile_number per Xendit API spec
+    frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
     channel_props = {
-        'success_redirect_url': f"{getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')}/pos?payment=success",
+        'success_redirect_url': f"{frontend_url}/pos?payment=success",
+        'failure_redirect_url': f"{frontend_url}/pos?payment=failed",
     }
     if channel == 'ID_OVO':
         # OVO wajib menyertakan mobile_number (format: +628xxx)
         mobile = mobile_number or '+628123456789'  # fallback test number
         channel_props['mobile_number'] = mobile
+
+    # Webhook callback URL — kirim di payload agar tidak tergantung dashboard setting
+    webhook_url = getattr(settings, 'XENDIT_WEBHOOK_URL',
+        f"{getattr(settings, 'BACKEND_URL', 'http://202.155.16.135')}/api/payments/xendit/webhook/")
 
     payload = {
         'reference_id': reference_id,
@@ -155,6 +161,7 @@ def create_ewallet_charge(business, amount, channel_code, reference_id=None, mob
         'checkout_method': 'ONE_TIME_PAYMENT',
         'channel_code': channel,
         'channel_properties': channel_props,
+        'callback_url': webhook_url,
     }
 
     try:

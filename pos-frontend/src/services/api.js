@@ -511,8 +511,8 @@ export const mlAPI = {
     const response = await apiClient.get('/ml/expiry-risk/')
     return response.data
   },
-  getRevenueForecast: async (days = 30) => {
-    const response = await apiClient.get(`/ml/forecast/?days=${days}`)
+  getRevenueForecast: async (days = 180, lookback = 3650) => {
+    const response = await apiClient.get(`/ml/forecast/?days=${days}&lookback=${lookback}`)
     return response.data
   },
   getProductClassification: async (days = 90) => {

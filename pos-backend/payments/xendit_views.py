@@ -243,6 +243,10 @@ def webhook(request):
             'FAILED': 'FAILED',
         }
         new_status = status_map.get(webhook_status.upper() if webhook_status else '', None)
+
+        # VA callback tidak punya field 'status' — callback itu sendiri berarti PAID
+        if not new_status and data.get('callback_virtual_account_id'):
+            new_status = 'PAID'
         
         if new_status and new_status != payment.status:
             payment.status = new_status

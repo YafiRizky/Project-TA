@@ -87,32 +87,34 @@ export default function ReportsPage() {
     count: data.count || 0,
   }))
 
-  // Build daily trend chart data from transactions
-  const chartData = (() => {
-    const days = {}
-    let end = endDate ? new Date(endDate) : new Date()
+  // Build trend chart data from transactions
+  const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+  const useMonthlyChart = rangeDays >= 90 || rangeDays === 0
 
-    // Determine start date: if empty ("Semua"), derive from earliest transaction
-    let start
-    if (startDate) {
-      start = new Date(startDate)
-    } else if (transactionsList.length > 0) {
-      // Find earliest transaction date from actual data
-      let earliest = end
+  const chartData = (() => {
+    if (useMonthlyChart) {
+      // Monthly groupby untuk 90 Hari dan Semua — grafik bersih, rapi, mudah di-hover
+      const monthMap = new Map()
       transactionsList.forEach(t => {
         const dateKey = t.transaction_date || t.created_at
         if (dateKey) {
           const d = new Date(dateKey)
-          if (d < earliest) earliest = d
+          const key = `${MONTH_NAMES[d.getMonth()]} ${d.getFullYear()}`
+          if (!monthMap.has(key)) monthMap.set(key, { name: key, revenue: 0, count: 0 })
+          const entry = monthMap.get(key)
+          entry.revenue += parseFloat(t.total_amount || 0)
+          entry.count += 1
         }
       })
-      start = new Date(earliest)
-    } else {
-      start = new Date()
-      start.setDate(start.getDate() - 6)
+      return Array.from(monthMap.values())
     }
 
-    // Standardized YYYY-MM-DD formatter for local date matching
+    // Daily view untuk 7 Hari dan 30 Hari
+    const days = {}
+    let end = endDate ? new Date(endDate) : new Date()
+    let start = startDate ? new Date(startDate) : new Date()
+    if (!startDate) start.setDate(start.getDate() - 6)
+
     const toYMD = (d) => {
       const year = d.getFullYear()
       const month = String(d.getMonth() + 1).padStart(2, '0')
@@ -270,7 +272,10 @@ export default function ReportsPage() {
             <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
                 <h3 className="text-base font-bold text-gray-800">
-                  Tren Penjualan {rangeDays === 0 ? '(Semua Data)' : `(${rangeDays} Hari Terakhir)`}
+                  Tren Penjualan {useMonthlyChart
+                    ? (rangeDays === 0 ? '(Semua Data - Bulanan)' : `(${rangeDays} Hari - Bulanan)`)
+                    : `(${rangeDays} Hari Terakhir)`
+                  }
                 </h3>
                 <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
                   {[{ label: '7 Hari', days: 7 }, { label: '30 Hari', days: 30 }, { label: '90 Hari', days: 90 }, { label: 'Semua', days: 0 }].map(p => (
@@ -293,7 +298,10 @@ export default function ReportsPage() {
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#9ca3af' }} interval={Math.max(0, Math.floor(chartData.length / 10) - 1)} />
-                    <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
+                    <YAxis tick={{ fontSize: 11, fill: '#9ca3af' }} tickFormatter={v => {
+                      if (v >= 1000000) return `${(v/1000000).toFixed(1)}jt`
+                      return `${(v/1000).toFixed(0)}rb`
+                    }} />
                     <Tooltip formatter={(v) => [`Rp ${fmt(v)}`, 'Revenue']}
                       contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', fontSize: '12px' }} />
                     <Line type="monotone" dataKey="revenue" stroke="#4f46e5" strokeWidth={2.5}
