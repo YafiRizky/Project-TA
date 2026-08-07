@@ -166,6 +166,10 @@ def revenue_forecast(request):
     forecast_days = int(request.query_params.get('days', 30))
     lookback_days = int(request.query_params.get('lookback', 365))
 
+    # "Semua" mode: days=0 means show all historical data, no future forecast
+    if forecast_days == 0:
+        lookback_days = 3650  # ~10 tahun, ambil semua data yang ada
+
     cache_key = f'ml_forecast_{business_id}_{forecast_days}_{lookback_days}'
     cached = cache.get(cache_key)
     if cached:

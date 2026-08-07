@@ -125,7 +125,7 @@ def create_va_payment(business, amount, bank_code, reference_id=None):
 # =============================================================================
 # E-WALLET — GoPay, OVO, DANA, ShopeePay, LinkAja
 # =============================================================================
-def create_ewallet_charge(business, amount, channel_code, reference_id=None):
+def create_ewallet_charge(business, amount, channel_code, reference_id=None, mobile_number=None):
     """
     Buat E-Wallet charge via Xendit eWallet API.
     POST /ewallets/charges
@@ -137,15 +137,24 @@ def create_ewallet_charge(business, amount, channel_code, reference_id=None):
     if not reference_id:
         reference_id = f"EW-{business.business_code}-{uuid.uuid4().hex[:8].upper()}"
 
+    channel = channel_code.upper()
+
+    # Build channel_properties — OVO requires mobile_number per Xendit API spec
+    channel_props = {
+        'success_redirect_url': f"{getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')}/pos?payment=success",
+    }
+    if channel == 'ID_OVO':
+        # OVO wajib menyertakan mobile_number (format: +628xxx)
+        mobile = mobile_number or '+628123456789'  # fallback test number
+        channel_props['mobile_number'] = mobile
+
     payload = {
         'reference_id': reference_id,
         'currency': 'IDR',
         'amount': int(amount),
         'checkout_method': 'ONE_TIME_PAYMENT',
-        'channel_code': channel_code.upper(),
-        'channel_properties': {
-            'success_redirect_url': f"{getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')}/pos?payment=success",
-        },
+        'channel_code': channel,
+        'channel_properties': channel_props,
     }
 
     try:

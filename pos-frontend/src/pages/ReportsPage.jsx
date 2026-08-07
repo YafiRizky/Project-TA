@@ -90,10 +90,25 @@ export default function ReportsPage() {
   // Build daily trend chart data from transactions
   const chartData = (() => {
     const days = {}
-    let start = startDate ? new Date(startDate) : new Date()
     let end = endDate ? new Date(endDate) : new Date()
 
-    if (!startDate) {
+    // Determine start date: if empty ("Semua"), derive from earliest transaction
+    let start
+    if (startDate) {
+      start = new Date(startDate)
+    } else if (transactionsList.length > 0) {
+      // Find earliest transaction date from actual data
+      let earliest = end
+      transactionsList.forEach(t => {
+        const dateKey = t.transaction_date || t.created_at
+        if (dateKey) {
+          const d = new Date(dateKey)
+          if (d < earliest) earliest = d
+        }
+      })
+      start = new Date(earliest)
+    } else {
+      start = new Date()
       start.setDate(start.getDate() - 6)
     }
 
