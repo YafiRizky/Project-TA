@@ -543,12 +543,24 @@ def forecast_revenue(business_id, forecast_days=30, lookback_days=365):
     else:
         mape = 0
 
-    # ===== Historical data =====
+    # ===== Predict fitted values for all historical days =====
+    X_all_s = scaler.transform(X)
+    all_preds = model.predict(X_all_s)
+    pred_map = {}
+    for i, row in train_df.iterrows():
+        date_str = row['day'].strftime('%Y-%m-%d')
+        pred_map[date_str] = round(max(0, float(all_preds[i])), 2)
+
+    # ===== Historical data (dengan actual + predicted_revenue) =====
     historical = []
     for _, row in full_df.iterrows():
+        d_str = row['day'].strftime('%Y-%m-%d')
+        rev = round(row['revenue'], 2)
+        p_rev = pred_map.get(d_str, rev)  # Fallback ke actual jika hari ke 0-6
         historical.append({
-            'date': row['day'].strftime('%Y-%m-%d'),
-            'revenue': round(row['revenue'], 2),
+            'date': d_str,
+            'revenue': rev,
+            'predicted_revenue': p_rev,
             'trx_count': int(row['trx_count']),
         })
 

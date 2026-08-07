@@ -149,10 +149,10 @@ export default function MLPredictionsPage() {
 }
 
 const FORECAST_PERIODS = [
-  { label: '7 Hari', days: 7 },
-  { label: '30 Hari', days: 30 },
-  { label: '90 Hari', days: 90 },
-  { label: '1 Tahun', days: 365 },
+  { label: 'Week (7D)', days: 7 },
+  { label: 'Month (30D)', days: 30 },
+  { label: 'Year (365D)', days: 365 },
+  { label: 'Lifetime', days: 0 },
 ]
 
 function ForecastTab({ data, forecastDays, setForecastDays }) {
@@ -165,45 +165,95 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
   const isUp = m.trend === 'UP'
   const isDown = m.trend === 'DOWN'
 
-  const todayStr = new Date().toISOString().split('T')[0]
+  const hist = data.historical || []
+  const fore = data.forecast || []
 
-  const historicalMap = {}
-  ;(data.historical || []).forEach(h => {
-    historicalMap[h.date] = h.revenue
-  })
+  // Slice historical based on selected preset
+  let sliceCount = 30
+  if (forecastDays === 7) sliceCount = 7
+  else if (forecastDays === 30) sliceCount = 30
+  else if (forecastDays === 365) sliceCount = 365
+  else sliceCount = hist.length
 
-  const forecastMap = {}
-  ;(data.forecast || []).forEach(f => {
-    forecastMap[f.date] = f.predicted_revenue
-  })
+  const filteredHist = hist.slice(-sliceCount)
 
-  const allDates = [...new Set([
-    ...Object.keys(historicalMap),
-    ...Object.keys(forecastMap),
-  ])].sort()
+  const chartData = []
 
-  const chartData = allDates.map(dateStr => {
-    const label = new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
-    const entry = { date: label, fullDate: dateStr }
-
-    if (historicalMap[dateStr] !== undefined && dateStr <= todayStr) {
-      entry.actual = historicalMap[dateStr]
+  // Historical dates: Have BOTH actual and predicted
+  filteredHist.forEach(h => {
+    let dateFormatted = h.date
+    if (h.date && h.date.includes('-')) {
+      const parts = h.date.split('-')
+      if (parts.length === 3) {
+        dateFormatted = `${parts[2]}/${parts[1]}/${parts[0]}`
+      }
     }
-
-    if (forecastMap[dateStr] !== undefined) {
-      entry.predicted = forecastMap[dateStr]
-    }
-
-    return entry
+    chartData.push({
+      date: dateFormatted,
+      rawDate: h.date,
+      actual: h.revenue,
+      predicted: h.predicted_revenue !== undefined ? h.predicted_revenue : h.revenue,
+    })
   })
+
+  // Future dates: Only predicted
+  fore.forEach(f => {
+    let dateFormatted = f.date
+    if (f.date && f.date.includes('-')) {
+      const parts = f.date.split('T')[0].split('-')
+      if (parts.length === 3) {
+        dateFormatted = `${parts[2]}/${parts[1]}/${parts[0]}`
+      }
+    }
+    chartData.push({
+      date: dateFormatted,
+      rawDate: f.date,
+      predicted: f.predicted_revenue,
+    })
+  })
+
+  // Custom Dark Tooltip (Steam Market Style)
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const actualItem = payload.find(p => p.dataKey === 'actual')
+      const predictedItem = payload.find(p => p.dataKey === 'predicted')
+      const actual = actualItem?.value
+      const predicted = predictedItem?.value
+
+      return (
+        <div className="bg-slate-900 text-white p-3.5 rounded-xl shadow-xl border border-slate-700 text-xs space-y-2 min-w-[210px]">
+          <p className="font-bold text-slate-300 border-b border-slate-700 pb-1">Tanggal: {label}</p>
+          {actual !== undefined && actual !== null && (
+            <div className="flex items-center justify-between gap-4 text-sky-400">
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span>Realita (Aktual):</span>
+              <span className="font-bold">Rp {fmt(Math.round(actual))}</span>
+            </div>
+          )}
+          {predicted !== undefined && predicted !== null && (
+            <div className="flex items-center justify-between gap-4 text-amber-400">
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>Prediksi AI:</span>
+              <span className="font-bold">Rp {fmt(Math.round(predicted))}</span>
+            </div>
+          )}
+          {actual !== undefined && actual !== null && predicted !== undefined && predicted !== null && (
+            <div className="pt-1.5 border-t border-slate-800 flex items-center justify-between text-emerald-400 font-medium text-[11px]">
+              <span>Selisih Presisi:</span>
+              <span>Rp {fmt(Math.round(Math.abs(actual - predicted)))}</span>
+            </div>
+          )}
+        </div>
+      )
+    }
+    return null
+  }
 
   const renderLegend = () => {
     const items = [
-      { key: 'actual', label: 'Revenue Aktual (Realita)', color: '#6366f1', active: showActual, dashed: false },
-      { key: 'predicted', label: 'Prediksi ML (AI)', color: '#f59e0b', active: showPredicted, dashed: true },
+      { key: 'actual', label: 'Revenue Realita (Aktual)', color: '#6366f1', active: showActual },
+      { key: 'predicted', label: 'Prediksi ML (Model Ridge)', color: '#f59e0b', active: showPredicted },
     ]
     return (
-      <div className="flex items-center justify-center gap-6 mt-2">
+      <div className="flex items-center justify-center gap-6 mt-3">
         {items.map(item => (
           <button
             key={item.key}
@@ -218,12 +268,8 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
             }`}
           >
             <span
-              className="inline-block w-5 h-0.5 rounded"
-              style={{
-                backgroundColor: item.active ? item.color : '#d1d5db',
-                borderTop: item.dashed ? `2px dashed ${item.active ? item.color : '#d1d5db'}` : 'none',
-                height: item.dashed ? 0 : 2,
-              }}
+              className="inline-block w-5 h-1 rounded-full"
+              style={{ backgroundColor: item.active ? item.color : '#d1d5db' }}
             />
             {item.label}
           </button>
@@ -234,6 +280,7 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
 
   return (
     <div className="space-y-6">
+      {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard label="Revenue Bulan Ini" value={`Rp ${fmt(Math.round(m.current_monthly_revenue))}`} icon={RiBarChartBoxLine} color="blue" />
         <MetricCard label="Prediksi Bulan Depan" value={`Rp ${fmt(Math.round(m.predicted_monthly_revenue))}`} icon={RiLineChartLine} color="indigo" badge={`${m.growth_percentage > 0 ? '+' : ''}${m.growth_percentage}%`} badgeColor={isUp ? 'green' : isDown ? 'red' : 'gray'} />
@@ -241,12 +288,14 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
         <MetricCard label="Akurasi Model (R²)" value={`${(m.r_squared * 100).toFixed(1)}%`} icon={RiBrainLine} color="emerald" subtitle={`Test R²: ${((m.r_squared_test || 0) * 100).toFixed(1)}%`} />
       </div>
 
+      {/* Validation Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center"><p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">MAE</p><p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(m.mae || 0))}</p></div>
         <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center"><p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">RMSE</p><p className="text-xl font-bold text-gray-800">Rp {fmt(Math.round(m.rmse || 0))}</p></div>
         <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center"><p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Train / Test</p><p className="text-xl font-bold text-gray-800">{m.train_size || 0} / {m.test_size || 0}</p></div>
       </div>
 
+      {/* Trend Badge */}
       <div className={`flex items-center gap-2 px-4 py-3 rounded-xl ${isUp ? 'bg-emerald-50 border border-emerald-200' : isDown ? 'bg-red-50 border border-red-200' : 'bg-gray-50 border border-gray-200'}`}>
         {isUp ? <RiArrowUpLine className="text-emerald-600" size={20} /> : isDown ? <RiArrowDownLine className="text-red-600" size={20} /> : <RiLineChartLine className="text-gray-600" size={20} />}
         <span className={`font-medium text-sm ${isUp ? 'text-emerald-700' : isDown ? 'text-red-700' : 'text-gray-700'}`}>
@@ -254,9 +303,13 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
         </span>
       </div>
 
+      {/* Chart Box */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5">
-          <h3 className="text-base font-bold text-gray-800">Grafik Revenue: Aktual vs Prediksi AI</h3>
+          <div>
+            <h3 className="text-base font-bold text-gray-800">Grafik Revenue: Realita vs Prediksi AI</h3>
+            <p className="text-xs text-gray-400 mt-0.5">Garis Solid: Realita vs Prediksi AI (Format Tanggal DD/MM/YYYY)</p>
+          </div>
           <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
             {FORECAST_PERIODS.map(p => (
               <button key={p.days} onClick={() => setForecastDays(p.days)} className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${forecastDays === p.days ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-white'}`}>{p.label}</button>
@@ -267,11 +320,17 @@ function ForecastTab({ data, forecastDays, setForecastDays }) {
         <ResponsiveContainer width="100%" height={360}>
           <ComposedChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="date" tick={{ fontSize: 11 }} interval={Math.max(0, Math.floor(chartData.length / 12) - 1)} />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} interval={Math.max(0, Math.floor(chartData.length / 10) - 1)} />
             <YAxis tick={{ fontSize: 11 }} tickFormatter={v => `${(v / 1000000).toFixed(1)}jt`} />
-            <Tooltip formatter={(v, name) => [`Rp ${fmt(Math.round(v))}`, name === 'actual' ? 'Realita' : 'Prediksi AI']} contentStyle={{ borderRadius: 12, border: '1px solid #e5e7eb', fontSize: 13 }} />
-            {showPredicted && <Line type="monotone" dataKey="predicted" stroke="#f59e0b" strokeWidth={2} strokeDasharray="6 4" dot={false} name="predicted" connectNulls={false} />}
-            {showActual && <Area type="monotone" dataKey="actual" fill="rgba(99, 102, 241, 0.08)" stroke="#6366f1" strokeWidth={2.5} name="actual" connectNulls={false} />}
+            <Tooltip content={<CustomTooltip />} />
+            {/* Garis Prediksi AI (SOLID LINE) */}
+            {showPredicted && (
+              <Line type="monotone" dataKey="predicted" stroke="#f59e0b" strokeWidth={2.5} dot={false} name="predicted" connectNulls={false} />
+            )}
+            {/* Garis Realita (SOLID LINE) */}
+            {showActual && (
+              <Area type="monotone" dataKey="actual" fill="rgba(99, 102, 241, 0.08)" stroke="#6366f1" strokeWidth={2.5} name="actual" connectNulls={false} />
+            )}
           </ComposedChart>
         </ResponsiveContainer>
         {renderLegend()}

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Chart ML Forecast (Steam Market Style) - Mercatura POS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+<body class="p-6 md:p-12">
+  <div class="max-w-6xl mx-auto space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div>
+        <h1 class="text-2xl font-bold text-white tracking-wide">Demo Modul Forecast ML (Steam Market Style)</h1>
+        <p class="text-slate-400 text-sm mt-1">Perbandingan Revenue Realita vs Prediksi AI di Masa Lampau & Masa Depan</p>
+      </div>
+      <div class="flex items-center gap-2 bg-slate-800 p-1.5 rounded-lg border border-slate-700 text-xs font-semibold">
+        <span class="text-slate-400 px-2">Status AI:</span>
+        <span class="bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded border border-emerald-500/30">Ridge Regression (R2 = 86.4%)</span>
+      </div>
+    </div>
+
+    <!-- Main Chart Container (Steam Market Dark Card) -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl space-y-6">
+      
+      <!-- Top Control Bar: Title & Filter Presets -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-100">Revenue Trend & Forecast</h2>
+          <p class="text-xs text-slate-400">Garis Solid: Realita vs Prediksi AI (Format Tanggal DD/MM/YYYY)</p>
+        </div>
+
+        <!-- Filter Presets (Steam Market Style: Week, Month, Year, Lifetime) -->
+        <div class="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-medium">
+          <button id="btn-week" onclick="setPreset('week')" class="px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">Week (7D)</button>
+          <button id="btn-month" onclick="setPreset('month')" class="px-3.5 py-1.5 rounded-md bg-indigo-600 text-white font-semibold shadow transition-all">Month (30D)</button>
+          <button id="btn-year" onclick="setPreset('year')" class="px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">Year (365D)</button>
+          <button id="btn-lifetime" onclick="setPreset('lifetime')" class="px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all">Lifetime (Semua)</button>
+        </div>
+      </div>
+
+      <!-- Visibility Toggle Controls -->
+      <div class="flex items-center gap-4 text-xs font-semibold pt-2 border-t border-slate-800/60">
+        <span class="text-slate-400">Tampilkan Line:</span>
+        <button id="toggle-actual" onclick="toggleDataset(0)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-500/40 transition-all">
+          <span class="w-3.5 h-1 bg-sky-400 rounded-full inline-block"></span>
+          Revenue Realita (Aktual)
+        </button>
+        <button id="toggle-predicted" onclick="toggleDataset(1)" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 transition-all">
+          <span class="w-3.5 h-1 bg-amber-400 rounded-full inline-block"></span>
+          Prediksi AI (Model Ridge)
+        </button>
+      </div>
+
+      <!-- Chart Canvas Area -->
+      <div class="relative h-[380px] w-full pt-2">
+        <canvas id="forecastChart"></canvas>
+      </div>
+
+      <!-- Chart Footer Information -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800 text-xs">
+        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80">
+          <p class="text-slate-400 font-medium">Zona Masa Lampau (01/07/2026 - 07/08/2026)</p>
+          <p class="text-slate-200 mt-1 font-semibold">Tampil 2 garis solid bersamaan (Realita vs Prediksi AI). Digunakan untuk evaluasi akurasi model.</p>
+        </div>
+        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80">
+          <p class="text-slate-400 font-medium">Zona Masa Depan (08/08/2026 - 21/08/2026)</p>
+          <p class="text-slate-200 mt-1 font-semibold">Hanya garis Prediksi AI solid yang berlanjut ke depan secara mulus tanpa patah-patah.</p>
+        </div>
+        <div class="bg-slate-950 p-3.5 rounded-lg border border-slate-800/80">
+          <p class="text-slate-400 font-medium">Format Sumbu X & Tooltip</p>
+          <p class="text-slate-200 mt-1 font-semibold">Format tanggal seragam DD/MM/YYYY. Tooltip menampilkan nominal Rp dan selisih presisi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Format Currency IDR
+    const fmt = (num) => new Intl.NumberFormat('id-ID').format(num);
+
+    // Generate Dummy Data (01/07/2026 s/d 21/08/2026)
+    const generateData = () => {
+      const dates = [];
+      const actuals = [];
+      const predicteds = [];
+
+      const startDate = new Date(2026, 6, 1); // 01 July 2026
+      const todayDate = new Date(2026, 7, 7); // 07 August 2026 (Masa Lampau = 38 Hari)
+      const endDate = new Date(2026, 7, 21);   // 21 August 2026 (Masa Depan = 14 Hari)
+
+      let current = new Date(startDate);
+      while (current <= endDate) {
+        // Format DD/MM/YYYY
+        const dd = String(current.getDate()).padStart(2, '0');
+        const mm = String(current.getMonth() + 1).padStart(2, '0');
+        const yyyy = current.getFullYear();
+        const dateStr = `${dd}/${mm}/${yyyy}`;
+        dates.push(dateStr);
+
+        // Base revenue pattern with weekend spikes
+        const dow = current.getDay();
+        let baseRev = 750000 + Math.sin(dates.length) * 200000;
+        if (dow === 0 || dow === 6) baseRev *= 1.35; // Weekend spike
+
+        // Past dates: Have both Actual and Predicted
+        if (current <= todayDate) {
+          const actualVal = Math.round(baseRev + (Math.random() - 0.5) * 120000);
+          const predictedVal = Math.round(baseRev + (Math.random() - 0.5) * 40000); // AI prediction close to actual
+          actuals.push(actualVal);
+          predicteds.push(predictedVal);
+        } else {
+          // Future dates: Only Predicted exists (Actual is null)
+          const predictedVal = Math.round(baseRev);
+          actuals.push(null);
+          predicteds.push(predictedVal);
+        }
+
+        current.setDate(current.getDate() + 1);
+      }
+
+      return { dates, actuals, predicteds };
+    };
+
+    const rawData = generateData();
+
+    // Chart.js Configuration
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+    let forecastChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: rawData.dates,
+        datasets: [
+          {
+            label: 'Revenue Realita (Aktual)',
+            data: rawData.actuals,
+            borderColor: '#38bdf8', // Light Blue
+            backgroundColor: 'rgba(56, 189, 248, 0.08)',
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.3,
+            borderDash: [], // SOLID LINE (bukan putus-putus)
+            pointRadius: 2,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#38bdf8',
+          },
+          {
+            label: 'Prediksi AI (Model Ridge)',
+            data: rawData.predicteds,
+            borderColor: '#f59e0b', // Amber / Gold
+            backgroundColor: 'transparent',
+            borderWidth: 2.5,
+            fill: false,
+            tension: 0.3,
+            borderDash: [], // SOLID LINE (bukan putus-putus)
+            pointRadius: 2,
+            pointHoverRadius: 6,
+            pointBackgroundColor: '#f59e0b',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            display: false // Using custom buttons
+          },
+          tooltip: {
+            backgroundColor: '#020617',
+            titleColor: '#f8fafc',
+            bodyColor: '#cbd5e1',
+            borderColor: '#334155',
+            borderWidth: 1,
+            padding: 12,
+            boxPadding: 6,
+            usePointStyle: true,
+            callbacks: {
+              title: function(items) {
+                return 'Tanggal: ' + items[0].label;
+              },
+              label: function(context) {
+                const label = context.dataset.label || '';
+                const val = context.parsed.y;
+                if (val === null || val === undefined) return null;
+                return `${label}: Rp ${fmt(val)}`;
+              },
+              afterBody: function(items) {
+                if (items.length === 2 && items[0].parsed.y !== null && items[1].parsed.y !== null) {
+                  const actual = items[0].parsed.y;
+                  const pred = items[1].parsed.y;
+                  const diff = Math.abs(actual - pred);
+                  const accuracy = (100 - (diff / actual * 100)).toFixed(1);
+                  return `\nPresisi AI: ${accuracy}% (Selisih: Rp ${fmt(diff)})`;
+                }
+                return '';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: '#1e293b',
+            },
+            ticks: {
+              color: '#94a3b8',
+              font: { size: 11 },
+              maxTicksLimit: 10
+            }
+          },
+          y: {
+            grid: {
+              color: '#1e293b',
+            },
+            ticks: {
+              color: '#94a3b8',
+              font: { size: 11 },
+              callback: function(value) {
+                return 'Rp ' + (value / 1000000).toFixed(1) + 'jt';
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Preset Filter Function
+    function setPreset(preset) {
+      document.querySelectorAll('#btn-week, #btn-month, #btn-year, #btn-lifetime').forEach(b => {
+        b.className = 'px-3.5 py-1.5 rounded-md text-slate-400 hover:text-white transition-all';
+      });
+      document.getElementById(`btn-${preset}`).className = 'px-3.5 py-1.5 rounded-md bg-indigo-600 text-white font-semibold shadow transition-all';
+
+      let count = rawData.dates.length;
+      if (preset === 'week') count = 14;      // 7 days past + 7 days future
+      if (preset === 'month') count = 44;     // 30 days past + 14 days future
+      if (preset === 'year') count = rawData.dates.length;
+      if (preset === 'lifetime') count = rawData.dates.length;
+
+      const sliceStart = Math.max(0, rawData.dates.length - count);
+
+      forecastChart.data.labels = rawData.dates.slice(sliceStart);
+      forecastChart.data.datasets[0].data = rawData.actuals.slice(sliceStart);
+      forecastChart.data.datasets[1].data = rawData.predicteds.slice(sliceStart);
+      forecastChart.update();
+    }
+
+    // Toggle Dataset Visibility Function
+    function toggleDataset(index) {
+      const isVisible = forecastChart.isDatasetVisible(index);
+      const btnId = index === 0 ? 'toggle-actual' : 'toggle-predicted';
+      const btn = document.getElementById(btnId);
+
+      if (isVisible) {
+        forecastChart.hide(index);
+        btn.classList.add('opacity-40', 'line-through');
+      } else {
+        forecastChart.show(index);
+        btn.classList.remove('opacity-40', 'line-through');
+      }
+    }
+  </script>
+</body>
+</html>
