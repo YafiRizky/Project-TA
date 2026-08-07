@@ -1,5 +1,5 @@
 # CURRENT STATUS: MERCATURA POS PROJECT
-Tanggal Update: 06 Agustus 2026
+Tanggal Update: 08 Agustus 2026
 
 ## FASE AKTIF: PHASE 3 - PRODUCTION DEPLOYMENT & TESTING (COMPLETED)
 
@@ -12,15 +12,18 @@ Tanggal Update: 06 Agustus 2026
 | **Backend REST API**| Django 6.0 + Gunicorn | Deployed | Live di `http://202.155.16.135/api` |
 | **Database** | PostgreSQL 16 (`pos_ml`) | Deployed | 13.558 Transaksi, 4 Toko UMKM |
 | **ML Engine** | Scikit-learn + Pandas | Deployed | 5 Modul ML AI aktif di server |
-| **Payment Gateway**| Xendit API (QRIS/VA) | Configured | Siap menerima callback realtime |
+| **Payment Gateway**| Xendit API (QRIS/VA/eWallet) | Active & Automated | Payload `callback_url` otomatis + handler VA teruji |
 
 ---
 
-## CATATAN FLAG TERAKHIR (06 AGUSTUS 2026)
+## CATATAN FLAG TERAKHIR (08 AGUSTUS 2026)
 
-- **Flag**: `FLAG_06_08_2026_Rumahweb_VPS_Deployment_Success.md`
-- **Pencapaian**: Seluruh aplikasi Mercatura POS (Frontend, Backend API, Database PostgreSQL, dan 5 Modul Machine Learning AI) telah resmi terpasang All-in-One dan online 24/7 di server Rumahweb Cloud VPS.
-- **Kestabilan**: Laptop lokal sudah bisa dimatikan dan aplikasi tetap aktif melayani pengguna dari internet.
+- **Flag**: `FLAG_08_08_2026_ChartTimeline_XenditFix_1to1Demo.md`
+- **Pencapaian**: 
+  - Visualisasi grafik ML Predictions dan Laporan Penjualan telah diselaraskan 1:1 dengan acuan demo (`demo_chart_steam_market.html` & `demo_chart_reports.html`).
+  - Masalah teks sumbu X dan Y yang terpotong di Recharts berhasil dieliminasi penuh via margin, XAxis padding (`left:25, right:25`), dan YAxis width (`65`).
+  - Xendit E-Wallet charge disempurnakan dengan `callback_url` otomatis di payload dan perbaikan handler webhook Virtual Account.
+- **Kestabilan**: Aplikasi 100% siap dipakai dan ditunjukkan saat sidang TA.
 
 ---
 
@@ -30,12 +33,9 @@ Tanggal Update: 06 Agustus 2026
    - Menghubungkan nama domain (seperti `mercatura.my.id`) ke IP `202.155.16.135`.
    - Mengaktifkan sertifikat SSL HTTPS via Certbot.
 
-2. **Pengujian Callback Payment Gateway Xendit**:
-   - Memasukkan URL `http://202.155.16.135/api/payments/xendit/callback/` ke Dashboard Developer Xendit.
-
-3. **Dokumentasi & Laporan Tugas Akhir**:
+2. **Dokumentasi & Laporan Tugas Akhir**:
    - Memasukkan tangkapan layar pengujian live dari VPS ke Bab 4 Hasil dan Pembahasan.
    - Menyusun Bab 5 Kesimpulan dan Saran.
 
-4. **Persiapan Skenario Sidang**:
+3. **Persiapan Skenario Sidang**:
    - Menyiapkan skenario pengujian live untuk presentasi di depan dosen penguji.
