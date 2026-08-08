@@ -298,7 +298,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-lg">
         {/* Brand */}
         <div className="text-center mb-6">
-          <img src="/logo.png" alt="Mercatura POS" className="inline-block w-12 h-12 rounded-2xl mb-2 shadow-lg shadow-blue-600/30 object-contain bg-slate-800 p-1.5" />
+          <img src="/logo.png" alt="Mercatura POS" className="inline-block w-14 h-14 rounded-2xl mb-2 shadow-xl object-contain" />
           <h1 className="text-xl font-bold text-white">Daftarkan Bisnis</h1>
           <p className="text-slate-400 text-sm mt-0.5">Mercatura POS ML System</p>
         </div>

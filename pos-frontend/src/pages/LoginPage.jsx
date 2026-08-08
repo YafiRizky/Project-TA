@@ -105,7 +105,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Mercatura POS" className="inline-block w-14 h-14 rounded-2xl mb-3 shadow-lg shadow-blue-600/30 object-contain bg-slate-800 p-1.5" />
+          <img src="/logo.png" alt="Mercatura POS" className="inline-block w-16 h-16 rounded-2xl mb-3 shadow-xl object-contain" />
           <h1 className="text-2xl font-bold text-white tracking-tight">Mercatura POS</h1>
           <p className="text-slate-400 text-sm mt-1">Multi-Tenant Point of Sale & ML System</p>
         </div>
