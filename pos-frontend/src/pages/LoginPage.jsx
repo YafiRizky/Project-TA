@@ -105,11 +105,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="text-center mb-8">
-          <div className={`inline-flex items-center justify-center w-14 h-14 ${accentBg} rounded-2xl mb-4 shadow-lg ${accentShadow}`}>
-            <RiStoreLine size={28} className="text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">POS ML System</h1>
-          <p className="text-slate-400 text-sm mt-1">Multi-Tenant Point of Sale</p>
+          <img src="/logo.png" alt="Mercatura POS" className="inline-block w-14 h-14 rounded-2xl mb-3 shadow-lg shadow-blue-600/30 object-contain bg-slate-800 p-1.5" />
+          <h1 className="text-2xl font-bold text-white tracking-tight">Mercatura POS</h1>
+          <p className="text-slate-400 text-sm mt-1">Multi-Tenant Point of Sale & ML System</p>
         </div>
 
         {/* Card */}

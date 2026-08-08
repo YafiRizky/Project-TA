@@ -175,9 +175,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
       {/* Header - anchored at top */}
       <div className="shrink-0">
         <div className="flex items-center gap-3 px-5 py-5">
-          <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm ${isOwner ? 'bg-blue-600' : 'bg-emerald-600'}`}>
-            <RiStoreLine size={18} />
-          </div>
+          <img src="/logo.png" alt="Mercatura POS" className="w-8 h-8 rounded-lg object-contain bg-slate-800 p-0.5 border border-slate-700 shrink-0" />
           <div className="min-w-0">
             <p className="text-white font-semibold text-sm truncate leading-tight">
               {business?.name || 'POS System'}
