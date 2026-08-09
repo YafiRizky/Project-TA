@@ -4,7 +4,7 @@ import MainLayout from '../components/MainLayout'
 import { transactionsAPI } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts'
-import { RiMoneyDollarCircleLine, RiShoppingCartLine, RiArchiveLine, RiLineChartLine, RiFileExcel2Line, RiFilePdfLine, RiDownload2Line, RiBarChartBoxLine } from 'react-icons/ri'
+import { RiMoneyDollarCircleLine, RiShoppingCartLine, RiArchiveLine, RiLineChartLine, RiFileExcel2Line, RiFilePdfLine, RiDownload2Line, RiBarChartBoxLine, RiInformationLine } from 'react-icons/ri'
 import { fmt } from '../utils/formatCurrency'
 
 const COLORS = ['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444']
@@ -533,8 +533,8 @@ export default function ReportsPage() {
 
             {/* Summary Notice */}
             <div className="mb-6 bg-blue-50/70 border border-blue-100 rounded-xl p-3 text-xs text-blue-800">
-              <p className="font-semibold flex items-center gap-1">
-                ℹ️ Periode Ekspor:
+              <p className="font-semibold flex items-center gap-1.5">
+                <RiInformationLine size={16} className="text-blue-600 shrink-0" /> Periode Ekspor:
               </p>
               <p className="mt-0.5 text-blue-700">
                 {modalStartDate || modalEndDate ? (

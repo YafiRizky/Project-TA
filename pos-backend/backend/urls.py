@@ -5,6 +5,8 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
+from transactions.views import TransactionViewSet
+
 def api_health(request):
     """Health check endpoint"""
     return JsonResponse({
@@ -19,6 +21,12 @@ urlpatterns = [
     
     # Django admin for TechnicalAdmin only
     path('admin/', admin.site.urls),
+    
+    # Direct export_data fail-safe endpoints (both with and without trailing slashes)
+    path('api/transactions/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_slashed'),
+    path('api/transactions/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_noslash'),
+    path('api/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_short_slashed'),
+    path('api/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_short_noslash'),
     
     # API endpoints for React frontend
     path('api/', api_health, name='api_health'),
