@@ -1,41 +1,39 @@
 # CURRENT STATUS: MERCATURA POS PROJECT
-Tanggal Update: 08 Agustus 2026
+Tanggal Update: 09 Agustus 2026
 
-## FASE AKTIF: PHASE 3 - PRODUCTION DEPLOYMENT & TESTING (COMPLETED)
+## FASE AKTIF: PHASE 3 - PRODUCTION DEPLOYMENT & TESTING (COMPLETED & DOMAIN LIVE)
 
 ### Status Komponen Utama
 
 | Komponen | Teknologi | Status | Catatan |
 | :--- | :--- | :--- | :--- |
+| **Domain Resmi** | Custom Domain (`.cloud`) | Active & Live | `https://www.mercaturapos.cloud` & `https://mercaturapos.cloud` |
+| **SSL Sertifikat** | Let's Encrypt Certbot (HTTPS) | Active | Enkripsi SSL gembok hijau aktif 100% |
 | **Server VPS** | Rumahweb Cloud VPS Ubuntu 24.04 | Active | IP Public: `202.155.16.135` |
-| **Frontend Web** | React Vite + Tailwind CSS | Deployed | Live di `http://202.155.16.135` (Served via Nginx) |
-| **Backend REST API**| Django 6.0 + Gunicorn | Deployed | Live di `http://202.155.16.135/api` |
+| **Frontend Web** | React Vite + Tailwind CSS | Deployed | Served via Nginx (Static Dist) |
+| **Backend REST API**| Django 6.0 + Gunicorn | Deployed | Endpoint API di `https://www.mercaturapos.cloud/api/` |
 | **Database** | PostgreSQL 16 (`pos_ml`) | Deployed | 13.558 Transaksi, 4 Toko UMKM |
 | **ML Engine** | Scikit-learn + Pandas | Deployed | 5 Modul ML AI aktif di server |
 | **Payment Gateway**| Xendit API (QRIS/VA/eWallet) | Active & Automated | Payload `callback_url` otomatis + handler VA teruji |
 
 ---
 
-## CATATAN FLAG TERAKHIR (08 AGUSTUS 2026)
+## CATATAN FLAG TERAKHIR (09 AGUSTUS 2026)
 
-- **Flag**: `FLAG_08_08_2026_ChartTimeline_XenditFix_1to1Demo.md`
+- **Flag**: `FLAG_09_08_2026_Domain_SSL_DashboardNotifTable.md`
 - **Pencapaian**: 
-  - Visualisasi grafik ML Predictions dan Laporan Penjualan telah diselaraskan 1:1 dengan acuan demo (`demo_chart_steam_market.html` & `demo_chart_reports.html`).
-  - Masalah teks sumbu X dan Y yang terpotong di Recharts berhasil dieliminasi penuh via margin, XAxis padding (`left:25, right:25`), dan YAxis width (`65`).
-  - Xendit E-Wallet charge disempurnakan dengan `callback_url` otomatis di payload dan perbaikan handler webhook Virtual Account.
-- **Kestabilan**: Aplikasi 100% siap dipakai dan ditunjukkan saat sidang TA.
+  - Domain kustom `mercaturapos.cloud` dan `www.mercaturapos.cloud` berhasil dihubungkan ke VPS `202.155.16.135` dan dilengkapi sertifikat SSL HTTPS gratis (Certbot Let's Encrypt).
+  - Peringatan stok & kadaluarsa di Dashboard Admin & Kasir diredesain dari bentuk banner menjadi Tabel Berstruktur yang dilengkapi komponen `Pagination.jsx` standar.
+  - Masalah penumpukan batch diselesaikan secara bersih: batch kadaluarsa yang stoknya 0 otomatis di-filter out dari peringatan aktif tanpa mengotori UI/UX bell notifikasi.
+- **Kestabilan**: Sistem 100% siap digunakan dan dipresentasikan pada sidang Tugas Akhir.
 
 ---
 
 ## DAFTAR PEKERJAAN YANG TERSISA (BACKLOG TA)
 
-1. **Konfigurasi Domain dan SSL HTTPS (Opsional)**:
-   - Menghubungkan nama domain (seperti `mercatura.my.id`) ke IP `202.155.16.135`.
-   - Mengaktifkan sertifikat SSL HTTPS via Certbot.
-
-2. **Dokumentasi & Laporan Tugas Akhir**:
-   - Memasukkan tangkapan layar pengujian live dari VPS ke Bab 4 Hasil dan Pembahasan.
+1. **Dokumentasi & Laporan Tugas Akhir**:
+   - Memasukkan tangkapan layar pengujian live dari domain `https://www.mercaturapos.cloud` ke Bab 4 Hasil dan Pembahasan.
    - Menyusun Bab 5 Kesimpulan dan Saran.
 
-3. **Persiapan Skenario Sidang**:
+2. **Persiapan Skenario Sidang**:
    - Menyiapkan skenario pengujian live untuk presentasi di depan dosen penguji.
