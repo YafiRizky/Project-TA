@@ -5,7 +5,13 @@ import { useStockAlerts } from '../hooks/useStockAlerts'
 
 export default function MainLayout({ children, title = 'POS ML System' }) {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { lowStockCount, lowStockProducts, expiringBatchesCount, expiringBatches } = useStockAlerts()
+  const {
+    unreadLowStockProducts,
+    unreadExpiringBatches,
+    totalUnreadCount,
+    markAlertAsRead,
+    markAllAlertsAsRead
+  } = useStockAlerts()
 
   return (
     <div className="flex h-full min-h-screen bg-gray-50">
@@ -19,9 +25,11 @@ export default function MainLayout({ children, title = 'POS ML System' }) {
         <TopBar
           title={title}
           onMenuClick={() => setMobileOpen(true)}
-          alertCount={lowStockCount + expiringBatchesCount}
-          lowStockProducts={lowStockProducts}
-          expiringBatches={expiringBatches}
+          alertCount={totalUnreadCount}
+          lowStockProducts={unreadLowStockProducts}
+          expiringBatches={unreadExpiringBatches}
+          onMarkRead={markAlertAsRead}
+          onMarkAllRead={markAllAlertsAsRead}
         />
         <main className="flex-1 p-4 sm:p-6 overflow-auto">
           {children}

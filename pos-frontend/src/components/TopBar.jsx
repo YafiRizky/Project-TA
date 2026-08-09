@@ -5,7 +5,15 @@ import { RiMenuLine, RiCloseLine } from 'react-icons/ri'
 import { useAuth } from '../contexts/AuthContext'
 import { notificationsAPI } from '../services/api'
 
-export default function TopBar({ title, onMenuClick, alertCount = 0, lowStockProducts = [], expiringBatches = [] }) {
+export default function TopBar({
+  title,
+  onMenuClick,
+  alertCount = 0,
+  lowStockProducts = [],
+  expiringBatches = [],
+  onMarkRead,
+  onMarkAllRead
+}) {
   const { user, isAdmin } = useAuth()
   const navigate = useNavigate()
   const isOwner = isAdmin()
@@ -50,7 +58,6 @@ export default function TopBar({ title, onMenuClick, alertCount = 0, lowStockPro
 
   const handleItemClick = (product) => {
     if (isOwner) {
-      // Admin: navigate to inventory with auto-edit
       navigate(`/inventory?highlight=${product.id}&autoEdit=true`)
       setShowPanel(false)
     }
@@ -64,6 +71,20 @@ export default function TopBar({ title, onMenuClick, alertCount = 0, lowStockPro
       notif_type: type,
       message: `${product.name} (${product.code}) - Stok: ${product.currentStock} ${product.unit}`,
     })
+  }
+
+  const handleMarkItemRead = (alertId, e) => {
+    e.stopPropagation() // CRITICAL: STAYS OPEN
+    if (onMarkRead) {
+      onMarkRead(alertId)
+    }
+  }
+
+  const handleMarkAllReadClick = (e) => {
+    e.stopPropagation() // STAYS OPEN
+    if (onMarkAllRead) {
+      onMarkAllRead()
+    }
   }
 
   // Bell SVG icon (custom, clean design)
@@ -119,7 +140,7 @@ export default function TopBar({ title, onMenuClick, alertCount = 0, lowStockPro
             <button
               onClick={handleBellClick}
               className="relative p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
-              title={alertCount > 0 ? `${alertCount} produk stok rendah/habis` : 'Tidak ada alert'}
+              title={alertCount > 0 ? `${alertCount} laporan stok belum dibaca` : 'Tidak ada alert'}
             >
               <BellIcon size={20} />
               {alertCount > 0 && (
@@ -131,75 +152,108 @@ export default function TopBar({ title, onMenuClick, alertCount = 0, lowStockPro
 
             {/* Dropdown notification panel */}
             {showPanel && (
-              <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50">
-                <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-                  <h3 className="font-bold text-gray-800 text-sm">Notifikasi Stok</h3>
-                  <button onClick={() => setShowPanel(false)} className="p-1 rounded hover:bg-gray-100 text-gray-400">
-                    <RiCloseLine size={16} />
-                  </button>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="absolute right-0 top-full mt-2 w-96 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50"
+              >
+                <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                  <div className="min-w-0 flex-1 pr-2">
+                    <h3 class="font-bold text-gray-800 text-sm truncate">Notifikasi Stok</h3>
+                    <p class="text-[10px] text-gray-400">
+                      {alertCount > 0 ? `${alertCount} laporan belum dibaca` : 'Tidak ada laporan baru'}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    {alertCount > 0 && (
+                      <button
+                        onClick={handleMarkAllReadClick}
+                        className={`text-xs ${isOwner ? 'text-blue-600 hover:text-blue-800' : 'text-emerald-600 hover:text-emerald-800'} font-semibold transition-colors whitespace-nowrap`}
+                      >
+                        Tandai Semua Dibaca
+                      </button>
+                    )}
+                    <button onClick={() => setShowPanel(false)} className="p-1 rounded hover:bg-gray-200 text-gray-400 shrink-0">
+                      <RiCloseLine size={16} />
+                    </button>
+                  </div>
                 </div>
-                <div className="max-h-72 overflow-y-auto">
+
+                <div className="max-h-80 overflow-y-auto divide-y divide-gray-50 text-xs">
                   {lowStockProducts.length > 0 || expiringBatches.length > 0 ? (
                     <>
                       {lowStockProducts.map((p) => (
                         <div
-                          key={p.id}
+                          key={p.alertId || p.id}
                           onClick={() => handleItemClick(p)}
-                          className={`px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${isOwner ? 'cursor-pointer' : ''}`}
+                          className={`px-4 py-3 hover:bg-gray-50 transition-colors flex items-center justify-between gap-2 ${isOwner ? 'cursor-pointer' : ''}`}
                         >
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="font-medium text-gray-800 text-sm truncate flex-1">{p.name}</span>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ml-2 ${statusBadge(p.stockStatus)}`}>
-                            {p.stockStatus}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-400">{p.code} &bull; Stok: {p.currentStock} {p.unit} (min: {p.minStock})</span>
-                          {!isOwner && (
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="font-medium text-gray-800 text-xs truncate">{p.name}</span>
+                              <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-bold ${statusBadge(p.stockStatus)} shrink-0`}>
+                                {p.stockStatus}
+                              </span>
+                            </div>
+                            <span className="text-[11px] text-gray-400">{p.code} &bull; Stok: {p.currentStock} {p.unit}</span>
+                          </div>
+
+                          <div className="flex items-center gap-1 shrink-0">
+                            {!isOwner && (
+                              <button
+                                onClick={(e) => handleSendNotif(p, e)}
+                                disabled={sendNotifMutation.isPending}
+                                className="px-2 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded text-[10px] font-semibold transition-colors"
+                              >
+                                {sendNotifMutation.isPending ? '...' : 'Kirim Notif'}
+                              </button>
+                            )}
                             <button
-                              onClick={(e) => handleSendNotif(p, e)}
-                              disabled={sendNotifMutation.isPending}
-                              className="text-[10px] font-semibold px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors shrink-0 ml-2"
+                              onClick={(e) => handleMarkItemRead(p.alertId, e)}
+                              className="px-2 py-1 rounded bg-gray-100 hover:bg-slate-800 hover:text-white text-gray-600 text-[10px] font-semibold transition-all"
                             >
-                              {sendNotifMutation.isPending ? '...' : 'Kirim Notif'}
+                              Tandai Dibaca
                             </button>
-                          )}
-                          {isOwner && (
-                            <span className="text-[10px] text-blue-500 font-medium ml-2 shrink-0">Klik untuk isi stok</span>
-                          )}
+                          </div>
                         </div>
-                      </div>
                       ))}
+
                       {expiringBatches.map((b) => (
                         <div
-                          key={`batch-${b.id}`}
+                          key={b.alertId || `batch-${b.id}`}
                           onClick={() => {
                             if (isOwner) {
                               navigate(`/inventory?highlight=${b.product_id || b.product}`)
                               setShowPanel(false)
                             }
                           }}
-                          className={`px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${isOwner ? 'cursor-pointer' : ''}`}
+                          className={`px-4 py-3 hover:bg-gray-50 transition-colors flex items-center justify-between gap-2 ${isOwner ? 'cursor-pointer' : ''}`}
                         >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-medium text-gray-800 text-sm truncate flex-1">{b.productName}</span>
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ml-2 ${b.expStatus === 'KADALUARSA' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}`}>
-                              {b.expStatus}
-                            </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="font-medium text-gray-800 text-xs truncate">{b.productName}</span>
+                              <span className={`inline-flex items-center px-1.5 py-0.2 rounded-full text-[9px] font-bold ${b.expStatus === 'KADALUARSA' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'} shrink-0`}>
+                                {b.expStatus}
+                              </span>
+                            </div>
+                            <span className="text-[11px] text-gray-400">Exp: {b.expiry_date ? new Date(b.expiry_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '–'} &bull; Sisa {b.quantity} item</span>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs text-gray-400">Exp: {b.expiry_date ? new Date(b.expiry_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '–'} &bull; Sisa {b.quantity} item &bull; {b.daysLeft < 0 ? 'Sudah lewat' : `${b.daysLeft} hari lagi`}</span>
-                            {isOwner && (
-                              <span className="text-[10px] text-blue-500 font-medium ml-2 shrink-0">Cek Inventory</span>
-                            )}
+
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              onClick={(e) => handleMarkItemRead(b.alertId, e)}
+                              className="px-2 py-1 rounded bg-gray-100 hover:bg-slate-800 hover:text-white text-gray-600 text-[10px] font-semibold transition-all"
+                            >
+                              Tandai Dibaca
+                            </button>
                           </div>
                         </div>
                       ))}
                     </>
                   ) : (
-                    <div className="px-4 py-8 text-center text-gray-400 text-sm">
-                      <div className="flex justify-center mb-2"><BellIcon size={28} /></div>
-                      <p>Semua stok dan masa kadaluarsa aman</p>
+                    <div className="px-4 py-8 text-center text-gray-400 text-xs">
+                      <div className="flex justify-center mb-2"><BellIcon size={24} /></div>
+                      <p className="font-medium text-gray-600">Semua notifikasi telah dibaca</p>
+                      <p className="text-gray-400 text-[11px] mt-0.5">Tidak ada laporan baru</p>
                     </div>
                   )}
                 </div>
