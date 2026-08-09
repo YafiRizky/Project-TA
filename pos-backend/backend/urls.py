@@ -22,11 +22,15 @@ urlpatterns = [
     # Django admin for TechnicalAdmin only
     path('admin/', admin.site.urls),
     
-    # Direct export_data fail-safe endpoints (both with and without trailing slashes)
-    path('api/transactions/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_slashed'),
-    path('api/transactions/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_noslash'),
-    path('api/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_short_slashed'),
-    path('api/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='direct_export_data_short_noslash'),
+    # Direct export_data fail-safe endpoints (both with and without /api/ prefix, with and without trailing slashes)
+    path('api/transactions/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='export1'),
+    path('api/transactions/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='export2'),
+    path('api/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='export3'),
+    path('api/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='export4'),
+    path('transactions/transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='export5'),
+    path('transactions/transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='export6'),
+    path('transactions/export_data/', TransactionViewSet.as_view({'get': 'export_data'}), name='export7'),
+    path('transactions/export_data', TransactionViewSet.as_view({'get': 'export_data'}), name='export8'),
     
     # API endpoints for React frontend
     path('api/', api_health, name='api_health'),
