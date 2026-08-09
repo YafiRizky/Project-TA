@@ -72,6 +72,16 @@ class TransactionViewSet(viewsets.ModelViewSet):
             return [IsAuthenticated(), IsBusinessAdmin()]
         return [IsAuthenticated()]
     
+    def perform_content_negotiation(self, request, force=False):
+        """
+        Bypass format-suffix content negotiation for custom binary exports (CSV/XLSX/PDF)
+        to prevent DRF DefaultContentNegotiation from throwing Http404 on ?format=csv or ?format=pdf
+        """
+        if request.query_params.get('format') in ['csv', 'pdf', 'excel', 'xlsx']:
+            renderers = self.get_renderers()
+            return (renderers[0], renderers[0].media_type)
+        return super().perform_content_negotiation(request, force)
+    
     def get_serializer_class(self):
         """Use different serializer for checkout action"""
         if self.action == 'checkout':
@@ -619,7 +629,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
             elements = []
             
             styles = getSampleStyleSheet()
-            title = Paragraph(f"Laporan Penjualan - {request.user.business.name}", styles['Title'])
+            title = Paragraph(f"Laporan Penjualan - {request.user.business.business_name}", styles['Title'])
             elements.append(title)
             
             data = [['Kode Transaksi', 'Tanggal', 'Kasir', 'Metode Bayar', 'Total (Rp)']]
