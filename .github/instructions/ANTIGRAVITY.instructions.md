@@ -1076,6 +1076,26 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
 
 ---
 
+## PART 2D: LATEST MILESTONE UPDATE (10 AGUSTUS 2026)
+
+- **Single-Format Dedicated Modals & UI**:
+  - Implemented dedicated export modals for CSV/XLSX (emerald theme) and PDF (red theme) in `ReportsPage.jsx` and mockup.
+  - Removed inner format switcher tabs to ensure unambiguous single-format modal flow.
+  - Replaced emoji icons with RemixIcon `<RiInformationLine />` component for professional design compliance.
+- **Native Excel (.xlsx) Export via OpenPyXL**:
+  - Replaced plain text CSV export in Django backend (`pos-backend/transactions/views.py`) with native `.xlsx` Excel Workbooks using `openpyxl`.
+  - Auto-fit dynamic column widths (`max_len + 4`), bold emerald headers (`#059669`), formatted currency values as numeric types for `=SUM()` compatibility.
+- **Multi-Page Landscape PDF Export**:
+  - ReportLab multi-page landscape PDF export with custom page numbers (`Halaman X dari Y`), headers on every page, and exact summary rows.
+- **Universal Backend Route Matching & DRF Fixes**:
+  - Resolved DRF content-negotiation `Http404` by overriding `perform_content_negotiation` in `TransactionViewSet`.
+  - Fixed `request.user.business.business_name` attribute reference in PDF report titles.
+  - Registered fail-safe routes in `backend/urls.py` and `transactions/urls.py`.
+- **Live VPS Deployment Verified**:
+  - Re-compiled React production bundle `pos-frontend/dist` and verified live 200 OK responses on `www.mercaturapos.cloud` on August 10, 2026.
+
+---
+
 **End of ANTIGRAVITY AI SETUP Document**
-**Last Updated:** August 5, 2026
+**Last Updated:** August 10, 2026
 **For Questions:** Refer to Active phase/ documentation or latest FLAG file
