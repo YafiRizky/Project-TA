@@ -20,6 +20,9 @@ from inventory.models import ProductBatch, InventoryMovement
 from accounts.permissions import IsBusinessAdmin
 from auditlog.utils import log_action
 import csv
+import openpyxl
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 from django.http import HttpResponse
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, landscape
@@ -520,7 +523,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
             }
         })
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='export_data')
     def export_data(self, request):
         """Export transaction data to CSV or PDF"""
         if not hasattr(request.user, 'business'):
@@ -537,23 +540,75 @@ class TransactionViewSet(viewsets.ModelViewSet):
             # include entire end_date
             queryset = queryset.filter(transaction_date__lte=f"{end_date} 23:59:59")
             
-        if export_format == 'csv':
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = f'attachment; filename="transactions_export.csv"'
-            
-            writer = csv.writer(response)
-            writer.writerow(['Kode Transaksi', 'Tanggal', 'Kasir', 'Metode Bayar', 'Total Pembayaran', 'Status'])
-            
-            for txn in queryset:
-                writer.writerow([
+        if export_format in ['csv', 'excel', 'xlsx']:
+            wb = openpyxl.Workbook()
+            ws = wb.active
+            ws.title = "Laporan Penjualan"
+
+            header_font = Font(name="Calibri", size=11, bold=True, color="FFFFFF")
+            header_fill = PatternFill(start_color="059669", end_color="059669", fill_type="solid") # Emerald
+            header_align = Alignment(horizontal="center", vertical="center")
+
+            headers = ['No', 'Kode Transaksi', 'Tanggal & Waktu', 'Kasir', 'Metode Bayar', 'Total Pembayaran (Rp)', 'Status']
+            ws.append(headers)
+
+            for col_idx in range(1, len(headers) + 1):
+                cell = ws.cell(row=1, column=col_idx)
+                cell.font = header_font
+                cell.fill = header_fill
+                cell.alignment = header_align
+
+            thin_border = Border(
+                left=Side(style='thin', color='CBD5E1'),
+                right=Side(style='thin', color='CBD5E1'),
+                top=Side(style='thin', color='CBD5E1'),
+                bottom=Side(style='thin', color='CBD5E1')
+            )
+
+            total_amount_sum = 0
+            for idx, txn in enumerate(queryset, start=1):
+                amt = float(txn.total_amount)
+                total_amount_sum += amt
+                ws.append([
+                    idx,
                     txn.transaction_code,
                     txn.transaction_date.strftime('%Y-%m-%d %H:%M:%S'),
                     txn.cashier_name,
                     txn.payment_method,
-                    txn.total_amount,
+                    amt, # Numeric value for SUM formulas in Excel!
                     txn.status
                 ])
-                
+
+            # Total Summary row
+            ws.append(['', f'TOTAL ({len(queryset)} TRANSAKSI)', '', '', '', total_amount_sum, ''])
+
+            # Style cells & format number
+            for row_idx, row in enumerate(ws.iter_rows(min_row=2, max_row=ws.max_row), start=2):
+                is_total = (row_idx == ws.max_row)
+                for cell in row:
+                    cell.border = thin_border
+                    if is_total:
+                        cell.font = Font(name="Calibri", size=11, bold=True, color="059669")
+                        cell.fill = PatternFill(start_color="ECFDF5", end_color="ECFDF5", fill_type="solid")
+                    if cell.column == 6: # Total Pembayaran
+                        cell.number_format = '#,##0'
+
+            # Dynamic Auto-fit Column Width (wch + padding)!
+            for col in ws.columns:
+                max_len = 0
+                col_letter = get_column_letter(col[0].column)
+                for cell in col:
+                    val_str = str(cell.value or '')
+                    if len(val_str) > max_len:
+                        max_len = len(val_str)
+                ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
+
+            filename = "transactions_export.xlsx" if export_format in ['excel', 'xlsx'] else "transactions_export.csv"
+            response = HttpResponse(
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            wb.save(response)
             return response
             
         elif export_format == 'pdf':
