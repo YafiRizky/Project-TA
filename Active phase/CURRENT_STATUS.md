@@ -10,7 +10,7 @@ Tanggal Update: 09 Agustus 2026
 | **Domain Resmi** | Custom Domain (`.cloud`) | Active & Live | `https://www.mercaturapos.cloud` & `https://mercaturapos.cloud` |
 | **SSL Sertifikat** | Let's Encrypt Certbot (HTTPS) | Active | Enkripsi SSL gembok hijau aktif 100% |
 | **Server VPS** | Rumahweb Cloud VPS Ubuntu 24.04 | Active | IP Public: `202.155.16.135` |
-| **Frontend Web** | React Vite + Tailwind CSS | Deployed | Served via Nginx (Static Dist) |
+| **Frontend Web** | React Vite + Tailwind CSS | Deployed & Updated | Single-line Bell, Stay-Open Dropdown, Unread Dashboard Table & Pagination |
 | **Backend REST API**| Django 6.0 + Gunicorn | Deployed | Endpoint API di `https://www.mercaturapos.cloud/api/` |
 | **Database** | PostgreSQL 16 (`pos_ml`) | Deployed | 13.558 Transaksi, 4 Toko UMKM |
 | **ML Engine** | Scikit-learn + Pandas | Deployed | 5 Modul ML AI aktif di server |
@@ -22,9 +22,11 @@ Tanggal Update: 09 Agustus 2026
 
 - **Flag**: `FLAG_09_08_2026_Domain_SSL_DashboardNotifTable.md`
 - **Pencapaian**: 
-  - Domain kustom `mercaturapos.cloud` dan `www.mercaturapos.cloud` berhasil dihubungkan ke VPS `202.155.16.135` dan dilengkapi sertifikat SSL HTTPS gratis (Certbot Let's Encrypt).
-  - Peringatan stok & kadaluarsa di Dashboard Admin & Kasir diredesain dari bentuk banner menjadi Tabel Berstruktur yang dilengkapi komponen `Pagination.jsx` standar.
-  - Masalah penumpukan batch diselesaikan secara bersih: batch kadaluarsa yang stoknya 0 otomatis di-filter out dari peringatan aktif tanpa mengotori UI/UX bell notifikasi.
+  - Domain kustom `mercaturapos.cloud` dan `www.mercaturapos.cloud` dihubungkan ke VPS `202.155.16.135` dengan sertifikat SSL HTTPS (Let's Encrypt Certbot).
+  - Redesain penuh Peringatan Stok & Kadaluarsa di Dashboard Admin & Kasir menjadi Tabel Unread-Only (laporan yang sudah dibaca otomatis hilang dari dashboard).
+  - Pop-up Bell Notifikasi disempurnakan: header 1 baris sejajar (`Notifikasi Stok`), container `w-96`, dan **TETAP TERBUKA (stay-open)** saat mengklik tombol *Tandai Dibaca*.
+  - Integrasi tombol *Kirim Notif* dari Kasir ke Admin via backend `StockNotification` API.
+  - Komponen `Pagination.jsx` standar dan tampilan *All-Clear State* saat seluruh laporan sudah dibaca.
 - **Kestabilan**: Sistem 100% siap digunakan dan dipresentasikan pada sidang Tugas Akhir.
 
 ---
