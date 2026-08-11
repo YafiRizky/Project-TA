@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+
+# Exclude internal authenticated application paths from public crawling
+Disallow: /reports
+Disallow: /inventory
+Disallow: /products
+Disallow: /kasir
+Disallow: /transactions
+Disallow: /settings
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://www.mercaturapos.cloud/sitemap.xml
