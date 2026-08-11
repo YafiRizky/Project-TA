@@ -206,6 +206,10 @@ class StockOpnameViewSet(viewsets.ModelViewSet):
             return StockOpname.objects.filter(business=self.request.user.business).prefetch_related('items', 'items__batch', 'items__batch__product')
         return StockOpname.objects.none()
         
+    def perform_create(self, serializer):
+        opname = serializer.save()
+        log_action(self.request, 'CREATE', 'Stock Opname', f'Membuat Stock Opname {opname.document_number}', target_id=opname.id)
+        
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated, IsBusinessAdmin])
     def approve(self, request, pk=None):
         opname = self.get_object()

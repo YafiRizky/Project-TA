@@ -543,7 +543,7 @@ def register_business(request):
             admin_user = BusinessUser.objects.create_business_admin(
                 username=user_data['username'],
                 password=user_data['password'],
-                business=None,  # Primary business is null for admin
+                business=business,  # Set primary business for owner
                 email=user_data['email'],
                 full_name=user_data['full_name']
             )
@@ -559,7 +559,7 @@ def register_business(request):
         access_token = AccessToken()
         access_token['user_id'] = admin_user.id
         access_token['username'] = admin_user.username  
-        access_token['business_code'] = None  # Admins start without active business context
+        access_token['business_code'] = business.business_code  # Primary business code
         access_token['role'] = admin_user.role
         access_token['user_type'] = 'BusinessUser'
         access_token.set_exp(lifetime=timedelta(minutes=60))  # 1 hour expiry

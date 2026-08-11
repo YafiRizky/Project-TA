@@ -44,11 +44,16 @@ class BusinessUserAdmin(admin.ModelAdmin):
     Django admin configuration for BusinessUser
     Allows TechnicalAdmin to view/manage business users
     """
-    list_display = ('username', 'business', 'role', 'owner_code', 'full_name', 'email', 'is_active', 'created_at')
+    list_display = ('username', 'get_business_display', 'role', 'owner_code', 'full_name', 'email', 'is_active', 'created_at')
     list_filter = ('role', 'is_active', 'business', 'created_at')
     search_fields = ('username', 'full_name', 'email', 'owner_code', 'business__business_name', 'business__business_code')
     readonly_fields = ('created_at', 'last_login')
     raw_id_fields = ('business',)
+
+    @admin.display(description='Business')
+    def get_business_display(self, obj):
+        b = obj.effective_business
+        return b if b else '-'
     
     fieldsets = (
         ('Business Association', {

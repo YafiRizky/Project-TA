@@ -252,7 +252,10 @@ function CreateOpnameModal({ onClose, products }) {
       queryClient.invalidateQueries({ queryKey: ['opnames'] })
       onClose()
     },
-    onError: () => toast.error('Gagal membuat Stock Opname')
+    onError: (err) => {
+      const msg = err.response?.data?.error || err.response?.data?.detail || 'Gagal membuat Stock Opname'
+      toast.error(msg)
+    }
   })
 
   const handleProductSelect = (prodId) => {

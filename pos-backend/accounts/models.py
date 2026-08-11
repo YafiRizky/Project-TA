@@ -227,8 +227,24 @@ class BusinessUser(AbstractBaseUser):
         return True
     
     @property
+    def effective_business(self):
+        """Self-healing resolution for primary business context"""
+        if self.business:
+            return self.business
+        if self.role == 'admin' and self.owned_businesses.exists():
+            b = self.owned_businesses.first()
+            try:
+                self.business = b
+                self.save(update_fields=['business'])
+            except Exception:
+                pass
+            return b
+        return None
+
+    @property
     def business_code(self):
-        return self.business.business_code
+        b = self.effective_business
+        return b.business_code if b else None
 
     @staticmethod
     def generate_owner_code():

@@ -1107,6 +1107,9 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
 - **Void Transaction & Report Synchronization**:
   - Filtered `completedTransactionsList` (`t.status !== 'VOIDED'`) in `ReportsPage.jsx` across daily/monthly sales trend charts, top products, and summary fallbacks.
   - Ensured real-time chart auto-adjustment whenever transactions are voided, keeping reports, charts, and Machine Learning calculations 100% linear and dynamic.
+- **Stock Opname 500 Error Fix & Safe Creation**:
+  - Resolved `500 Internal Server Error` on `POST /api/inventory/opname/` by implementing safe business relation lookup (`getattr(user, 'business', None)`) in `StockOpnameSerializer.create()`.
+  - Wrapped stock opname document & batch item creation in `transaction.atomic()`, added `perform_create` audit logging, and updated frontend `onError` toast handlers for clear feedback.
 
 ---
 

@@ -134,21 +134,31 @@ class StockOpnameSerializer(serializers.ModelSerializer):
         
         request = self.context.get('request')
         from django.utils import timezone
+        from django.db import transaction
         
-        business = request.user.business
+        business = getattr(request.user, 'business', None)
+        if not business and hasattr(request.user, 'business_user'):
+            business = request.user.business_user.business
+            
+        if not business:
+            raise serializers.ValidationError({'error': 'Tidak ada bisnis yang terkait dengan akun Anda.'})
+            
         count = StockOpname.objects.filter(business=business).count() + 1
         date_str = timezone.now().strftime('%Y%m%d')
         document_number = f"SO-{date_str}-{count:04d}"
         
-        opname = StockOpname.objects.create(
-            business=business,
-            document_number=document_number,
-            created_by=request.user.username,
-            **validated_data
-        )
+        username = getattr(request.user, 'full_name', None) or getattr(request.user, 'username', 'System')
         
-        for item_data in items_data:
-            StockOpnameItem.objects.create(opname=opname, **item_data)
+        with transaction.atomic():
+            opname = StockOpname.objects.create(
+                business=business,
+                document_number=document_number,
+                created_by=username,
+                **validated_data
+            )
+            
+            for item_data in items_data:
+                StockOpnameItem.objects.create(opname=opname, **item_data)
             
         return opname
 
