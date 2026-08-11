@@ -1094,8 +1094,22 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
 - **Live VPS Deployment Verified**:
   - Re-compiled React production bundle `pos-frontend/dist` and verified live 200 OK responses on `www.mercaturapos.cloud` on August 10, 2026.
 
+## PART 2E: LATEST MILESTONE UPDATE (11 AGUSTUS 2026)
+
+- **Google Search Console Domain Verification**:
+  - Successfully verified domain ownership for `https://www.mercaturapos.cloud` via HTML file verification method (`google8b72da0e9037818d.html`).
+- **SEO Metadata & OpenGraph Setup**:
+  - Enhanced `pos-frontend/index.html` with primary SEO meta tags (title, description, keywords, robots, canonical URL) and OpenGraph tags for social sharing.
+- **Search Engine Crawling Infrastructure**:
+  - Configured `robots.txt` in `pos-frontend/public/` and `pos-frontend/dist/` to allow indexing of public pages while protecting internal app routes.
+  - Generated `sitemap.xml` for `https://www.mercaturapos.cloud/` and submitted to Google Search Console (Status: **Success**, 3 discovered pages).
+
+- **Void Transaction & Report Synchronization**:
+  - Filtered `completedTransactionsList` (`t.status !== 'VOIDED'`) in `ReportsPage.jsx` across daily/monthly sales trend charts, top products, and summary fallbacks.
+  - Ensured real-time chart auto-adjustment whenever transactions are voided, keeping reports, charts, and Machine Learning calculations 100% linear and dynamic.
+
 ---
 
 **End of ANTIGRAVITY AI SETUP Document**
-**Last Updated:** August 10, 2026
+**Last Updated:** August 11, 2026
 **For Questions:** Refer to Active phase/ documentation or latest FLAG file

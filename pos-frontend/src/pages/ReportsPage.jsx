@@ -59,16 +59,16 @@ export default function ReportsPage() {
   const summary = dailyData || {}
   const transactions = transData?.results || transData || []
   const transactionsList = Array.isArray(transactions) ? transactions : []
+  const completedTransactionsList = transactionsList.filter(t => t.status !== 'VOIDED' && t.status !== 'voided')
 
-  const totalRevenue = parseFloat(summary.total_revenue || 0) || transactionsList.reduce((sum, t) => sum + parseFloat(t.total_amount || 0), 0)
-  const totalTransactions = summary.transaction_count || transactionsList.length
-  const totalItems = summary.item_count || transactionsList.reduce((sum, t) => sum + (t.items?.length || 0), 0)
+  const totalRevenue = parseFloat(summary.total_revenue || 0) || completedTransactionsList.reduce((sum, t) => sum + parseFloat(t.total_amount || 0), 0)
+  const totalTransactions = summary.transaction_count || completedTransactionsList.length
+  const totalItems = summary.item_count || completedTransactionsList.reduce((sum, t) => sum + (t.items?.length || 0), 0)
   const avgTransaction = totalTransactions > 0 ? totalRevenue / totalTransactions : 0
 
   // Estimasi profit: jumlahkan (selling_price - cost_per_unit) * qty per item
   // cost_per_unit bisa dari item.cost_per_unit (jika backend kirim) atau dari item.purchase_cost
-  const totalEstimatedCost = transactionsList
-    .filter(t => t.status !== 'VOIDED')
+  const totalEstimatedCost = completedTransactionsList
     .reduce((sum, t) => {
       return sum + (t.items || []).reduce((s, item) => {
         const cost = parseFloat(item.cost_per_unit || item.purchase_cost || 0)
@@ -87,7 +87,7 @@ export default function ReportsPage() {
     count: data.count || 0,
   }))
 
-  // Build trend chart data from transactions
+  // Build trend chart data from completed transactions
   const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
   const useMonthlyChart = rangeDays >= 90 || rangeDays === 0
 
@@ -95,7 +95,7 @@ export default function ReportsPage() {
     if (useMonthlyChart) {
       // Monthly groupby untuk 90 Hari dan Semua — grafik bersih, rapi, mudah di-hover
       const monthMap = new Map()
-      transactionsList.forEach(t => {
+      completedTransactionsList.forEach(t => {
         const dateKey = t.transaction_date || t.created_at
         if (dateKey) {
           const d = new Date(dateKey)
@@ -130,7 +130,7 @@ export default function ReportsPage() {
       current.setDate(current.getDate() + 1)
     }
 
-    transactionsList.forEach(t => {
+    completedTransactionsList.forEach(t => {
       const dateKey = t.transaction_date || t.created_at
       if (dateKey) {
         const d = new Date(dateKey)
@@ -144,10 +144,10 @@ export default function ReportsPage() {
     return Object.values(days)
   })()
 
-  // Top products from transaction items
+  // Top products from completed transaction items
   const topProducts = (() => {
     const productMap = {}
-    transactionsList.forEach(t => {
+    completedTransactionsList.forEach(t => {
       (t.items || []).forEach(item => {
         const name = item.product_name || item.product?.name || `Product ${item.product}`
         if (!productMap[name]) productMap[name] = { name, qty: 0, revenue: 0 }

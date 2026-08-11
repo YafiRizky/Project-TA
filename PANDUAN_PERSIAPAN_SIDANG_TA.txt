@@ -1,0 +1,76 @@
+==============================================================================
+PANDUAN LENGKAP PERSIAPAN SIDANG TUGAS AKHIR (TA) - MERCATURA POS
+Website Domain: https://www.mercaturapos.cloud
+==============================================================================
+
+------------------------------------------------------------------------------
+1. DAFTAR URL WEBSITE UTAMA (PRODUKSI VPS LIVE)
+------------------------------------------------------------------------------
+- Landing Page Utama          : https://www.mercaturapos.cloud/
+- Login Portal                : https://www.mercaturapos.cloud/login
+- Registrasi Bisnis Baru      : https://www.mercaturapos.cloud/register
+- Kasir POS (Point of Sale)   : https://www.mercaturapos.cloud/kasir
+- Laporan Penjualan & Ekspor  : https://www.mercaturapos.cloud/reports
+- Prediksi Machine Learning   : https://www.mercaturapos.cloud/ml-predictions
+- Manajemen Produk & Harga    : https://www.mercaturapos.cloud/products
+- Manajemen Stok Batch (FIFO) : https://www.mercaturapos.cloud/inventory
+- Stok Opname Fisik           : https://www.mercaturapos.cloud/stock-opname
+- Riwayat Transaksi & Void    : https://www.mercaturapos.cloud/transactions
+- Portal Django Tech Admin    : https://www.mercaturapos.cloud/admin/
+
+
+------------------------------------------------------------------------------
+2. KREDENSIAL AKUN PENGUJI AN (DEMO SIDANG TA)
+------------------------------------------------------------------------------
+
+[A] AKUN DEMO UTAMA (UMKM Padat 1 Tahun - 8.887 Transaksi, Rp 1,167 M Omset)
+    Sangat cocok untuk demonstrasi Grafik Laporan, Tren Penjualan 1 Tahun, & ML:
+    - Kode Admin (Owner) : KLT888
+    - Username Admin     : OWN888
+    - Password           : MercaturaPos2026!
+
+[B] AKUN DEMO TAMBAHAN (Toko Berkah Jaya)
+    - Kode Admin (Owner) : HBRPOI
+    - Username Admin     : admin_hbrpoi
+    - Password           : MercaturaPos2026!
+
+[C] AKUN KASIR (Role Operator Transaksi Kasir)
+    - Kode Kasir         : HBRPOI
+    - Username Kasir     : budi_kasir (atau siti_kasir / ahmad_kasir)
+    - Password           : MercaturaPos2026!
+
+[D] AKUN TECHNICAL ADMIN (Superuser Sistem Backend)
+    - URL Portal         : https://www.mercaturapos.cloud/admin/
+    - Username           : techadmin
+    - Password           : MercaturaPos2026!
+
+
+------------------------------------------------------------------------------
+3. PERINTAH (COMMAND) PENTING DI TERMINAL VPS (root@mercatura)
+------------------------------------------------------------------------------
+
+1. Update Otomatis Website (Setiap Ada Push Kode Terbaru di GitHub):
+   cd /var/www/mercatura-pos && ./update.sh
+
+2. Cek Status Service Backend (Gunicorn) & Web Server (Nginx):
+   sudo systemctl status mercatura-backend
+   sudo systemctl status nginx
+
+3. Restart Manual Service Backend & Web Server:
+   sudo systemctl restart mercatura-backend && sudo systemctl restart nginx
+
+4. Memantau Log Error Real-time (Journalctl):
+   journalctl -u mercatura-backend -f
+
+5. Clear Cache Python Bytecode (.pyc):
+   cd /var/www/mercatura-pos && find . -name "*.pyc" -delete
+
+6. Regenerasi / Reset Data Simulasi UMKM 1 Tahun:
+   cd /var/www/mercatura-pos/pos-backend && source .venv/bin/activate && python manage.py generate_umkm_data
+
+7. Memeriksa Penggunaan RAM & Beban CPU Server:
+   free -h && htop
+
+==============================================================================
+Dokumen ini dibuat otomatis untuk persiapan demo & pengujian Sidang TA.
+==============================================================================
