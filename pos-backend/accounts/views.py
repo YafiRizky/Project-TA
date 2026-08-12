@@ -6,6 +6,7 @@ import logging
 from rest_framework import status, serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -109,15 +110,12 @@ class BusinessTokenObtainPairSerializer(TokenObtainPairSerializer):
 class BusinessTokenObtainPairView(TokenObtainPairView):
     """
     JWT login endpoint for BusinessUser (React frontend)
-    Rate-limited to 15 attempts/minute per IP to prevent brute force.
     """
     serializer_class = BusinessTokenObtainPairSerializer
-    throttle_classes = [LoginRateThrottle]
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@ratelimit(key='ip', rate='10/m', method='POST', block=False)
 def business_login(request):
     """
     Business user login endpoint
@@ -130,13 +128,6 @@ def business_login(request):
     - login_as: 'admin' or 'kasir' - validates role before login
     """
     try:
-        # Rate limit check
-        if getattr(request, 'limited', False):
-            logger.warning('Rate limit exceeded for IP: %s', request.META.get('REMOTE_ADDR'))
-            return Response({
-                'error': 'Terlalu banyak percobaan login. Silakan tunggu 1 menit.'
-            }, status=status.HTTP_429_TOO_MANY_REQUESTS)
-        
         business_code = request.data.get('business_code')
         owner_code = request.data.get('owner_code')
         username = request.data.get('username')
@@ -457,12 +448,16 @@ def logout(request):
     Frontend will clear tokens from localStorage
     """
     return Response({
+        'success': True,
+        'message': 'Logout berhasil'
+    }, status=status.HTTP_200_OK)
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
-@throttle_classes([RegisterRateThrottle])
 def register_business(request):
     """
-    Business registration endpoint with rate limiting & probe filtering
+    Business registration endpoint with Honeypot & probe filtering
     
     Creates new business + admin user account
     
@@ -479,6 +474,13 @@ def register_business(request):
     }
     """
     try:
+        # Honeypot check (Bot Trap)
+        if request.data.get('website_hp'):
+            return Response({
+                'success': False,
+                'error': 'Pendaftaran ditolak.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         # Check suspicious bot probe keywords
         if is_suspicious_input(
             request.data.get('username'),
@@ -613,6 +615,8 @@ def register_business(request):
             }
         }, status=status.HTTP_201_CREATED)
         
+    except APIException:
+        raise
     except Exception as e:
         logger.error('Registration error: %s', str(e), exc_info=True)
         return Response({

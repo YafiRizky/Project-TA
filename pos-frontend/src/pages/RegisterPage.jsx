@@ -228,6 +228,7 @@ export default function RegisterPage() {
       city: data.city || '',
       district: data.district || '',
       postal_code: data.postal_code || '',
+      website_hp: data.website_hp || '',
     }
 
     try {

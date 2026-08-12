@@ -183,17 +183,6 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle',
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '60/minute',
-        'user': '300/minute',
-        'register': '5/hour',
-        'login': '15/minute',
-        'kasir_create': '20/hour',
-    },
 }
 
 # Security Headers Hardening
