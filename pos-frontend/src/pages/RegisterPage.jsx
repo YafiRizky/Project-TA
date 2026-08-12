@@ -257,7 +257,7 @@ export default function RegisterPage() {
         setFieldErrors(err.response.data.errors)
         setStep(0)
       } else {
-        setError(err.response?.data?.message || 'Pendaftaran gagal. Coba lagi.')
+        setError(err.response?.data?.error || err.response?.data?.detail || err.response?.data?.message || 'Pendaftaran gagal. Coba lagi.')
       }
     }
   }

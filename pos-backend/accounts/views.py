@@ -577,21 +577,17 @@ def register_business(request):
             admin_user.owned_businesses.add(business)
         
         # Generate JWT tokens for auto-login
-        from rest_framework_simplejwt.tokens import AccessToken
+        from rest_framework_simplejwt.tokens import RefreshToken
         
-        access_token = AccessToken()
-        access_token['user_id'] = admin_user.id
-        access_token['username'] = admin_user.username  
-        access_token['business_code'] = business.business_code  # Primary business code
-        access_token['role'] = admin_user.role
-        access_token['user_type'] = 'BusinessUser'
-        access_token.set_exp(lifetime=timedelta(minutes=60))  # 1 hour expiry
+        refresh = RefreshToken.for_user(admin_user)
+        refresh['business_code'] = business.business_code
+        refresh['role'] = admin_user.role
+        refresh['user_type'] = 'BusinessUser'
         
-        refresh_token = AccessToken()
-        refresh_token['user_id'] = admin_user.id
-        refresh_token['token_type'] = 'refresh'
-        refresh_token['user_type'] = 'BusinessUser'
-        refresh_token.set_exp(lifetime=timedelta(days=7))
+        access = refresh.access_token
+        access['business_code'] = business.business_code
+        access['role'] = admin_user.role
+        access['user_type'] = 'BusinessUser'
         
         return Response({
             'success': True,
@@ -612,16 +608,16 @@ def register_business(request):
                 'owner_code': admin_user.owner_code,
             },
             'tokens': {
-                'access': str(access_token),
-                'refresh': str(refresh_token),
+                'access': str(access),
+                'refresh': str(refresh),
             }
         }, status=status.HTTP_201_CREATED)
         
     except Exception as e:
-        logger.error('Registration error: %s', str(e))
+        logger.error('Registration error: %s', str(e), exc_info=True)
         return Response({
             'success': False,
-            'error': 'Terjadi kesalahan server. Silakan coba lagi.'
+            'error': f'Terjadi kesalahan server: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
