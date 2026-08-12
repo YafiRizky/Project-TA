@@ -1111,8 +1111,16 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
   - Resolved `500 Internal Server Error` on `POST /api/inventory/opname/` by implementing safe business relation lookup (`getattr(user, 'business', None)`) in `StockOpnameSerializer.create()`.
   - Wrapped stock opname document & batch item creation in `transaction.atomic()`, added `perform_create` audit logging, and updated frontend `onError` toast handlers for clear feedback.
 
+## PART 2F: LATEST MILESTONE UPDATE (12 AGUSTUS 2026)
+
+- **Security Hardening & DRF Rate Limiting**:
+  - Configured `DEFAULT_THROTTLE_CLASSES` (`AnonRateThrottle` & `UserRateThrottle`) in `backend/settings.py`.
+  - Added scoped rate limits: `register: 5/hour`, `login: 15/minute`, `kasir_create: 20/hour`.
+  - Implemented `PROBE_KEYWORDS` filtering (`is_suspicious_input`) in `accounts/views.py` to auto-reject bot scanner payloads (Log4j, SSTI, OAST, Vigolium, pentest).
+  - Enforced security HTTP headers: `SECURE_BROWSER_XSS_FILTER`, `SECURE_CONTENT_TYPE_NOSNIFF`, `X_FRAME_OPTIONS = 'DENY'`.
+
 ---
 
 **End of ANTIGRAVITY AI SETUP Document**
-**Last Updated:** August 11, 2026
+**Last Updated:** August 12, 2026
 **For Questions:** Refer to Active phase/ documentation or latest FLAG file

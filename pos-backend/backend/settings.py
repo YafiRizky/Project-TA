@@ -183,9 +183,23 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
-    # NOTE: Pagination dihapus dari global. Diterapkan per-ViewSet yang butuh (Transaction, AuditLog).
-    # Ini mencegah frontend error karena semua response dibungkus {count, next, results}.
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/minute',
+        'user': '300/minute',
+        'register': '5/hour',
+        'login': '15/minute',
+        'kasir_create': '20/hour',
+    },
 }
+
+# Security Headers Hardening
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
 
 
 # =====================================================================================

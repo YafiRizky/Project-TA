@@ -23,6 +23,19 @@ from django_ratelimit.exceptions import Ratelimited
 from .models import BusinessUser
 from businesses.models import Business
 from auditlog.utils import log_action
+from rest_framework.decorators import throttle_classes
+from .throttling import RegisterRateThrottle, LoginRateThrottle, KasirCreationThrottle
+
+PROBE_KEYWORDS = ['pentest', 'enum_probe', 'probe', 'eval(', '<script', 'jndi:', 'oast.pro', 'redirect-confusion', 'nslookup', 'vigolium']
+
+def is_suspicious_input(*values):
+    """Check if any input string contains suspicious bot probe keywords."""
+    for val in values:
+        if val:
+            val_str = str(val).lower()
+            if any(k in val_str for k in PROBE_KEYWORDS):
+                return True
+    return False
 
 logger = logging.getLogger(__name__)
 
@@ -96,8 +109,10 @@ class BusinessTokenObtainPairSerializer(TokenObtainPairSerializer):
 class BusinessTokenObtainPairView(TokenObtainPairView):
     """
     JWT login endpoint for BusinessUser (React frontend)
+    Rate-limited to 15 attempts/minute per IP to prevent brute force.
     """
     serializer_class = BusinessTokenObtainPairSerializer
+    throttle_classes = [LoginRateThrottle]
 
 
 @api_view(['POST'])
@@ -442,16 +457,12 @@ def logout(request):
     Frontend will clear tokens from localStorage
     """
     return Response({
-        'success': True,
-        'message': 'Logout berhasil'
-    }, status=status.HTTP_200_OK)
-
-
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@throttle_classes([RegisterRateThrottle])
 def register_business(request):
     """
-    Business registration endpoint
+    Business registration endpoint with rate limiting & probe filtering
     
     Creates new business + admin user account
     
@@ -468,6 +479,18 @@ def register_business(request):
     }
     """
     try:
+        # Check suspicious bot probe keywords
+        if is_suspicious_input(
+            request.data.get('username'),
+            request.data.get('full_name'),
+            request.data.get('email'),
+            request.data.get('business_name')
+        ):
+            return Response({
+                'success': False,
+                'error': 'Pendaftaran ditolak oleh sistem keamanan.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         # Validate required fields
         required_fields = ['business_name', 'business_type', 'username', 'password']
         missing_fields = [field for field in required_fields if not request.data.get(field)]
