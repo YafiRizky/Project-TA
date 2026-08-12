@@ -247,7 +247,7 @@ export default function PaymentSettingsPage() {
                     <span className="text-gray-400">A/N:</span> {method.account_name}
                   </div>
                 )}
-                {method.qris_image && (
+                {method.method_type === 'QRIS' && method.qris_image && (
                   <div className="mt-2 mb-2">
                     <img src={method.qris_image} alt="QRIS" className="w-24 h-24 object-contain rounded-lg border border-gray-200" />
                   </div>

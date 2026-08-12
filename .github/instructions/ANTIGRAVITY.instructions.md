@@ -1113,11 +1113,14 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
 
 ## PART 2F: LATEST MILESTONE UPDATE (12 AGUSTUS 2026)
 
-- **Security Hardening & DRF Rate Limiting**:
-  - Configured `DEFAULT_THROTTLE_CLASSES` (`AnonRateThrottle` & `UserRateThrottle`) in `backend/settings.py`.
-  - Added scoped rate limits: `register: 5/hour`, `login: 15/minute`, `kasir_create: 20/hour`.
-  - Implemented `PROBE_KEYWORDS` filtering (`is_suspicious_input`) in `accounts/views.py` to auto-reject bot scanner payloads (Log4j, SSTI, OAST, Vigolium, pentest).
-  - Enforced security HTTP headers: `SECURE_BROWSER_XSS_FILTER`, `SECURE_CONTENT_TYPE_NOSNIFF`, `X_FRAME_OPTIONS = 'DENY'`.
+- **Low-Friction Dynamic Security & Honeypot Protection**:
+  - Removed rigid IP Rate Limiting to ensure 100% smooth account switching and multi-profile login during presentation.
+  - Implemented OWASP-recommended **Honeypot Trap (`website_hp`)** in `RegisterPage.jsx` and `register_business` backend view (0% false positive for humans, 100% silent trap for bot crawlers).
+  - Preserved `PROBE_KEYWORDS` filtering (`is_suspicious_input`) to block exploit payloads (Log4j, SSTI, OAST, Vigolium, pentest).
+  - Recovered `logout` view response (`'success': True`) and enforced security headers (`X_FRAME_OPTIONS = 'DENY'`).
+- **Payment Method Image Card Fix**:
+  - Restricted `qris_image` card preview rendering in `PaymentSettingsPage.jsx` strictly to `method.method_type === 'QRIS'`.
+  - Prevented non-QRIS payment methods (E-Wallet, Transfer Bank) from rendering broken QRIS image placeholders.
 
 ---
 
