@@ -1,12 +1,12 @@
 ---
 applyTo: '**'
 context: 'antigravity-ai-setup'
-lastUpdated: '2026-08-01'
-session: '18-data-gen-stale-fix'
+lastUpdated: '2026-08-13'
+session: '19-dataset-3umkm-1year-restructure'
 ---
 
 # ANTIGRAVITY AI SETUP - POS ML SYSTEM PROJECT
-**Setup Date:** April 29, 2026 (last updated: August 1, 2026)
+**Setup Date:** April 29, 2026 (last updated: August 13, 2026)
 **Project Name:** POS ML System (Multi-Tenant Point of Sale)
 **Current Phase:** Phase 3 (ML + Xendit Integration)
 **Next Phase:** Landing Page + Branding → Deploy (Railway + Vercel)
@@ -1122,8 +1122,16 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
   - Restricted `qris_image` card preview rendering in `PaymentSettingsPage.jsx` strictly to `method.method_type === 'QRIS'`.
   - Prevented non-QRIS payment methods (E-Wallet, Transfer Bank) from rendering broken QRIS image placeholders.
 
+## PART 2G: LATEST MILESTONE UPDATE (13 AGUSTUS 2026)
+
+- **Dataset Restructuring (3 Business Profiles Over 1 Year)**:
+  - Updated `generate_umkm_data.py` to support 3 distinct business profiles: **Ramai** (`HBRPOI` - Toko Berkah Jaya), **Menengah** (`ELEK01` - Berkah Elektro), and **Sepi** (`ANTK01` - Galeri Antik Barokah).
+  - Configured 1-year data simulation range (13 August 2025 to 13 August 2026) across all 3 businesses.
+  - Preserved superuser `techdev` (dev123456) and associated with all 3 businesses.
+  - Populated `PaymentMethod` (CASH, QRIS Toko, TRANSFER BCA, EWALLET GoPay), `StockOpname` documents (`SO-20260801`), `ProductBatch`, and `Transaction` items (98% COMPLETED, 2% VOIDED) to ensure 0% empty pages on frontend.
+
 ---
 
 **End of ANTIGRAVITY AI SETUP Document**
-**Last Updated:** August 12, 2026
+**Last Updated:** August 13, 2026
 **For Questions:** Refer to Active phase/ documentation or latest FLAG file
