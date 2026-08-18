@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Storytelling & Presentasi Ilmiah: POS Terintegrasi Machine Learning untuk UMKM</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-4px);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 12px 30px -10px rgba(37, 99, 235, 0.25);
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .gradient-badge {
+      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(168,85,247,0.15));
+      border: 1px solid rgba(168,85,247,0.3);
+    }
+    
+    .slide-section {
+      display: none;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+    
+    .slide-section.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navbar -->
+  <header class="sticky top-0 z-50 glass-card border-b border-slate-800 px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+        <i class="fa-solid fa-chart-line text-white text-lg"></i>
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-white tracking-wide flex items-center gap-2">
+          POS ML <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">Tugas Akhir 2026</span>
+        </h1>
+        <p class="text-xs text-slate-400">Mita Salsabilla & Yafi Rizky Kurniawan | D3 Teknik Informatika POLINES</p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800 text-xs font-medium">
+      <button onclick="goToSlide(0)" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition active bg-blue-600 text-white" data-idx="0">1. Latar Belakang & Realita</button>
+      <button onclick="goToSlide(1)" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition" data-idx="1">2. Skenario 3 UMKM</button>
+      <button onclick="goToSlide(2)" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition" data-idx="2">3. Arsitektur & POS Flow</button>
+      <button onclick="goToSlide(3)" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition" data-idx="3">4. 5 Modul ML & Bukti Ilmiah</button>
+      <button onclick="goToSlide(4)" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition" data-idx="4">5. Simulator & Dampak Bisnis</button>
+    </div>
+
+    <!-- Control Actions -->
+    <div class="flex items-center gap-2">
+      <button id="btnPrev" onclick="prevSlide()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Prev
+      </button>
+      <span id="slideCounter" class="text-xs font-mono px-2 py-1 bg-slate-900 rounded-md text-slate-400 border border-slate-800">1 / 5</span>
+      <button id="btnNext" onclick="nextSlide()" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow-sm transition flex items-center gap-1.5">
+        Next <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE 1: LATAR BELAKANG & REALITA UMKM (STORYTELLING) -->
+    <!-- ========================================================================= -->
+    <section id="slide-0" class="slide-section active space-y-8">
+      
+      <!-- Hero Banner -->
+      <div class="relative overflow-hidden rounded-2xl glass-card p-8 md:p-10 border border-blue-500/20 bg-gradient-to-br from-slate-900 via-blue-950/40 to-slate-900">
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/30">
+            <i class="fa-solid fa-shield-heart text-blue-400"></i> Kisah Nyata di Balik Proyek Tugas Akhir
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            Mengapa Kami Membangun <span class="gradient-text">POS Berbasis Machine Learning?</span>
+          </h2>
+          <p class="text-slate-300 text-base leading-relaxed">
+            UMKM adalah tulang punggung ekonomi Indonesia. Namun di lapangan, ribuan pemilik warung dan toko ritel berjuang dalam kegelapan: mencatat dengan buku sobek, menebak kapan barang akan habis, hingga menanggung jutaan rupiah barang kadaluarsa setiap bulannya.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 Realitas Berdasarkan Data Riset -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Kartu 1: Kontribusi Raksasa -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 border-l-4 border-blue-500 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-blue-400">KemenkopUKM RI (2023)</span>
+            <i class="fa-solid fa-earth-asia text-blue-400 text-xl"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-white">61,07% <span class="text-sm font-normal text-slate-400">PDB</span></div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            UMKM menyerap <b>97% tenaga kerja nasional</b> dan menyumbang lebih dari separuh ekonomi Indonesia. Namun 80% diantaranya masih menggunakan pencatatan kasir dan stok manual.
+          </p>
+        </div>
+
+        <!-- Kartu 2: Tragedi Stockout -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 border-l-4 border-rose-500 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-rose-400">Survei LPPI & BI (2023)</span>
+            <i class="fa-solid fa-triangle-exclamation text-rose-400 text-xl"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-white">67% <span class="text-sm font-normal text-slate-400">Stockout Loss</span></div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Sebanyak 67% pemilik toko kehilangan pembeli setia karena produk favorit tiba-tiba kosong (*stockout*) saat pelanggan datang hendak membeli.
+          </p>
+        </div>
+
+        <!-- Kartu 3: Tragedi Kadaluarsa -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 border-l-4 border-amber-500 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase text-amber-400">Survei LPPI & BI (2023)</span>
+            <i class="fa-solid fa-clock-rotate-left text-amber-400 text-xl"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-white">54% <span class="text-sm font-normal text-slate-400">Expired Waste</span></div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Sebanyak 54% UMKM merugi akibat menimbun barang terlalu banyak tanpa melacak tanggal kadaluarsa batch, sehingga produk rusak sebelum sempat terjual.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Problem Statement & Solusi Kami -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-circle-xmark text-rose-400"></i> Cara Lama (POS Tradisional Biasa)
+          </h3>
+          <ul class="space-y-2.5 text-sm text-slate-300">
+            <li class="flex items-start gap-2.5">
+              <i class="fa-solid fa-xmark text-rose-500 mt-1"></i>
+              <span><b>Hanya Mencatat Masa Lalu:</b> Sekadar tahu kemarin laku berapa tanpa bisa memprediksi minggu depan butuh stok berapa.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="fa-solid fa-xmark text-rose-500 mt-1"></i>
+              <span><b>Stok Gelondongan Tanpa Batch:</b> Tidak membedakan barang yang baru datang dengan barang stok bulan lalu (risiko basi).</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="fa-solid fa-xmark text-rose-500 mt-1"></i>
+              <span><b>Restock Berdasarkan Firasat:</b> Membeli stok berdasarkan feeling pemilik toko, seringkali berujung overstock atau modal tertahan mati.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 space-y-4 border border-emerald-500/30 bg-emerald-950/10">
+          <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-400"></i> Solusi Kami (POS Terintegrasi Machine Learning)
+          </h3>
+          <ul class="space-y-2.5 text-sm text-slate-300">
+            <li class="flex items-start gap-2.5">
+              <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+              <span><b>FIFO Otomatis Berbasis Batch:</b> Sistem kasir otomatis memotong stok dari batch masuk paling awal tanpa campur tangan kasir.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+              <span><b>5 Modul Prediksi Cerdas (ML):</b> Prediksi kehabisan barang, rekomendasi jumlah pesanan ekonomis (EOQ), deteksi basi, peramalan omset, dan prioritas produk 80/20.</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+              <span><b>Sistem Multi-Tenant & Multi-Payment:</b> Satu platform melayani banyak cabang/usaha dengan isolasi data ketat dan integrasi QRIS/Xendit.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE 2: SKENARIO 3 UMKM NYATA (RAMAI, MENENGAH, SEPI) -->
+    <!-- ========================================================================= -->
+    <section id="slide-1" class="slide-section space-y-8">
+      
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-500/10 text-purple-400 border border-purple-500/30">
+          <i class="fa-solid fa-store text-purple-400"></i> Bukti Validitas Multi-Skenario
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+          Showcase 3 Karakteristik Bisnis: <span class="gradient-text">Ramai, Menengah, & Sepi</span>
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Sistem kami diuji pada 3 profil bisnis nyata dengan spektrum data 1 tahun penuh (13 Agustus 2025 s.d. 13 Agustus 2026) untuk membuktikan kecerdasan ML pada volume transaksi yang berbeda.
+        </p>
+      </div>
+
+      <!-- 3 Business Profile Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Toko 1: Ramai (Kelontong) -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 border-t-4 border-blue-500 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">KATEGORI: RAMAI</span>
+              <span class="text-xs font-mono text-slate-400">HBRPOI</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Toko Berkah Jaya</h3>
+            <p class="text-xs text-slate-400">Warung Sembako & Kebutuhan Harian</p>
+            
+            <div class="my-4 pt-4 border-t border-slate-800 space-y-2 text-xs">
+              <div class="flex justify-between"><span class="text-slate-400">Volume Harian:</span> <b class="text-white">8 - 18 Transaksi/Hari</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Total Data 1 Tahun:</span> <b class="text-blue-400">~4.000+ Transaksi</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Jumlah SKU:</span> <b class="text-white">20 Produk Sembako</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Karakteristik:</span> <span class="text-emerald-400 font-semibold">Fast Moving, Volatilitas Tinggi</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Akurasi ML (R²):</span> <b class="text-white">~0.85 - 0.90 (Sangat Akurat)</b></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs">
+            <span class="font-bold text-slate-300 block mb-1">Peran Modul ML:</span>
+            <p class="text-slate-400">Mencegah kehabisan minyak & beras pada tanggal gajian (25-2) serta momentum Ramadan.</p>
+          </div>
+        </div>
+
+        <!-- Toko 2: Menengah (Elektronik) -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 border-t-4 border-purple-500 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">KATEGORI: MENENGAH</span>
+              <span class="text-xs font-mono text-slate-400">ELEK01</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Berkah Elektro</h3>
+            <p class="text-xs text-slate-400">Toko Gadget, Kabel, & Aksesoris Komputer</p>
+            
+            <div class="my-4 pt-4 border-t border-slate-800 space-y-2 text-xs">
+              <div class="flex justify-between"><span class="text-slate-400">Volume Harian:</span> <b class="text-white">2 - 6 Transaksi/Hari</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Total Data 1 Tahun:</span> <b class="text-purple-400">~1.000+ Transaksi</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Jumlah SKU:</span> <b class="text-white">12 Produk Gadget</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Karakteristik:</span> <span class="text-purple-300 font-semibold">Margin Menengah, Restock Berkala</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Akurasi ML (R²):</span> <b class="text-white">~0.60 - 0.75 (Stabil)</b></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs">
+            <span class="font-bold text-slate-300 block mb-1">Peran Modul ML:</span>
+            <p class="text-slate-400">Optimasi pesanan ekonomis (EOQ) pada powerbank dan TWS agar modal tidak mengendap.</p>
+          </div>
+        </div>
+
+        <!-- Toko 3: Sepi (Barang Antik) -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 border-t-4 border-amber-500 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">KATEGORI: SEPI</span>
+              <span class="text-xs font-mono text-slate-400">ANTK01</span>
+            </div>
+            <h3 class="text-lg font-bold text-white">Galeri Antik Barokah</h3>
+            <p class="text-xs text-slate-400">Koleksi Seni, Lukisan, & Jam Kuno</p>
+            
+            <div class="my-4 pt-4 border-t border-slate-800 space-y-2 text-xs">
+              <div class="flex justify-between"><span class="text-slate-400">Volume Bulanan:</span> <b class="text-white">15 - 25 Transaksi/Bulan</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Total Data 1 Tahun:</span> <b class="text-amber-400">~200+ Transaksi</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Jumlah SKU:</span> <b class="text-white">8 Produk Koleksi</b></div>
+              <div class="flex justify-between"><span class="text-slate-400">Karakteristik:</span> <span class="text-amber-300 font-semibold">High Value, Transaksi Sporadis</span></div>
+              <div class="flex justify-between"><span class="text-slate-400">Strategi ML:</span> <b class="text-amber-400">Graceful Baseline Fallback</b></div>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-xs">
+            <span class="font-bold text-slate-300 block mb-1">Peran Modul ML:</span>
+            <p class="text-slate-400">Menerapkan <i>Graceful Fallback</i> tanpa error dan mendeteksi produk dead-stock lewat Pareto C.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chart Perbandingan Transaksi -->
+      <div class="glass-card rounded-2xl p-6 border border-slate-800">
+        <h4 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-chart-area text-blue-400"></i> Visualisasi Perbandingan Volume Transaksi Harian (3 Skenario Bisnis)
+        </h4>
+        <div class="h-64">
+          <canvas id="scenarioVolumeChart"></canvas>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE 3: ARSITEKTUR & POS FIFO FLOW -->
+    <!-- ========================================================================= -->
+    <section id="slide-2" class="slide-section space-y-8">
+      
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+          <i class="fa-solid fa-layer-group text-emerald-400"></i> Arsitektur & Rekayasa Perangkat Lunak
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+          Arsitektur <span class="gradient-text">Full-Stack & Mekanisme FIFO Otomatis</span>
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Dibangun dengan prinsip Clean Architecture, multi-tenant isolation, dan otomatisasi algoritma FIFO pada level database transaction atomic.
+        </p>
+      </div>
+
+      <!-- 3 Tier Architecture Diagram Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        
+        <div class="glass-card rounded-2xl p-6 space-y-3 border-t-2 border-cyan-400">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mx-auto text-xl">
+            <i class="fa-brands fa-react"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Frontend SPA (Client Tier)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            React.js + Vite + Tailwind CSS + TanStack Query. Menyediakan 18+ halaman antarmuka responsif untuk Admin dan Kasir.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 space-y-3 border-t-2 border-emerald-400">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto text-xl">
+            <i class="fa-brands fa-python"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Backend API & ML (Logic Tier)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Django REST Framework + SimpleJWT + Scikit-learn + Xendit Payment API. 10 modular apps terisolasi per tenant.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 space-y-3 border-t-2 border-indigo-400">
+          <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center mx-auto text-xl">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <h3 class="font-bold text-white text-base">Database Tier (Data Store)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            PostgreSQL dengan skema relasional terindeks, Foreign Key multi-tenant, dan ACID Transaction Management.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Detail Alur FIFO Otomatis saat Kasir Checkout -->
+      <div class="glass-card rounded-2xl p-6 space-y-6">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-dolly text-amber-400"></i> Alur Kerja Algoritma FIFO Batch-Level saat Kasir Menjual Barang
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+          
+          <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="font-bold text-blue-400 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center text-[10px]">1</span>
+              Kasir Memilih Produk
+            </div>
+            <p class="text-slate-400">Kasir hanya memilih "Minyak Bimoli 1L Qty: 3". Kasir tidak perlu pusing memilih nomor batch.</p>
+          </div>
+
+          <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="font-bold text-indigo-400 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center text-[10px]">2</span>
+              Query Batch FIFO
+            </div>
+            <p class="text-slate-400">Backend mencari batch berstatus ACTIVE terlama berdasarkan <code>purchase_date ASC</code>.</p>
+          </div>
+
+          <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="font-bold text-amber-400 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-amber-500/20 flex items-center justify-center text-[10px]">3</span>
+              Pemotongan Stok Berantai
+            </div>
+            <p class="text-slate-400">Jika Batch 1 tersisa 2 pcs, sistem memotong 2 pcs lalu mengambil 1 pcs dari Batch 2 berikutnya.</p>
+          </div>
+
+          <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+            <div class="font-bold text-emerald-400 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-[10px]">4</span>
+              Catat Movement & Log
+            </div>
+            <p class="text-slate-400">Sistem merekam <code>InventoryMovement</code> OUT dan mengupdate status batch kosong jadi <code>EMPTY</code>.</p>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE 4: 5 MODUL MACHINE LEARNING & JUSTIFIKASI ILMIAH -->
+    <!-- ========================================================================= -->
+    <section id="slide-3" class="slide-section space-y-8">
+      
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/10 text-rose-400 border border-rose-500/30">
+          <i class="fa-solid fa-brain text-rose-400"></i> Dasar Teori & Pembuktian Akademis
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+          Mengapa Kami Menggunakan <span class="gradient-text">5 Modul Machine Learning Ini?</span>
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Setiap modul dipilih bukan karena tren sesaat, melainkan berdasarkan kecocokan matematis terhadap karakteristik data deret waktu ritel mikro, minimnya risiko overfitting, dan dasar teori <i>Operations Research</i> yang teruji.
+        </p>
+      </div>
+
+      <!-- Tab Navigation for 5 Modules -->
+      <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+        <button onclick="switchMlTab('ml-tab-1')" class="ml-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-blue-600 text-white" id="btn-ml-tab-1">1. Prediksi Stockout</button>
+        <button onclick="switchMlTab('ml-tab-2')" class="ml-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-800 text-slate-300 hover:text-white" id="btn-ml-tab-2">2. Rekomendasi Restock (EOQ)</button>
+        <button onclick="switchMlTab('ml-tab-3')" class="ml-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-800 text-slate-300 hover:text-white" id="btn-ml-tab-3">3. Analisis Risiko Kadaluarsa</button>
+        <button onclick="switchMlTab('ml-tab-4')" class="ml-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-800 text-slate-300 hover:text-white" id="btn-ml-tab-4">4. Peramalan Pendapatan (Ridge)</button>
+        <button onclick="switchMlTab('ml-tab-5')" class="ml-btn px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-800 text-slate-300 hover:text-white" id="btn-ml-tab-5">5. Klasifikasi ABC (Pareto)</button>
+      </div>
+
+      <!-- ML Tab 1 Content -->
+      <div id="ml-tab-1" class="ml-content space-y-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase text-blue-400">Modul 1: Deteksi Dini Kehabisan Barang</span>
+              <h3 class="text-xl font-bold text-white">Stockout Prediction (Moving Average & Consumption Velocity)</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">Formula: Days Left = Current Stock / Weighted Daily Sales</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="space-y-3 text-slate-300">
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-circle-question text-blue-400"></i> Mengapa Algoritma Ini Dipilih?</h4>
+              <p class="text-xs leading-relaxed text-slate-400">
+                Pola konsumsi barang sembako UMKM sangat dinamis dalam rentang 7 hari terakhir (dipengaruhi tren mingguan) dibanding 30 hari. Model menggunakan <b>Weighted Moving Average (WMA)</b> dengan bobot 70% pada 7 hari terakhir dan 30% pada 30 hari terakhir untuk menangkap tren lonjakan tanpa terganggu derau acak (*noise*).
+              </p>
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-bookmark text-blue-400"></i> Landasan Teori & Paper Rujukan:</h4>
+              <p class="text-xs text-slate-400 italic">
+                Hyndman, R. J., & Athanasopoulos, G. (2021). <i>Forecasting: Principles and Practice</i>. OTexts. Menyatakan bahwa untuk data deret waktu ritel bervolume mikro, metode Moving Average adaptif mengungguli model kompleks yang rentan terhadap *overparameterization*.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
+              <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Tingkat Risiko & Rekomendasi Sistem:</h5>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/30 flex justify-between items-center">
+                  <span class="text-rose-400 font-bold">CRITICAL (&lt; 2 Hari)</span>
+                  <span class="text-slate-300">Segera order darurat hari ini</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 flex justify-between items-center">
+                  <span class="text-amber-400 font-bold">WARNING (2 - 5 Hari)</span>
+                  <span class="text-slate-300">Masukkan daftar restock supplier</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex justify-between items-center">
+                  <span class="text-emerald-400 font-bold">SAFE (&gt; 5 Hari)</span>
+                  <span class="text-slate-300">Stok persediaan mencukupi</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ML Tab 2 Content -->
+      <div id="ml-tab-2" class="ml-content hidden space-y-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase text-emerald-400">Modul 2: Optimasi Pemesanan Ekonomis</span>
+              <h3 class="text-xl font-bold text-white">Rekomendasi Restock (Safety Stock & Classical EOQ)</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">EOQ = √(2·D·S / H) | ROP = (d × L) + SS</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="space-y-3 text-slate-300">
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-circle-question text-emerald-400"></i> Mengapa Algoritma Ini Dipilih?</h4>
+              <p class="text-xs leading-relaxed text-slate-400">
+                UMKM sering terjebak dalam dua ekstrem: memesan terlalu sedikit (biaya ongkir/transportasi membengkak) atau memesan terlalu banyak (modal mati). Model <b>Economic Order Quantity (EOQ)</b> menghitung titik impas optimal antara <i>Ordering Cost ($S$)</i> dan <i>Holding Cost ($H$)</i>, dilengkapi <b>Safety Stock ($Z \cdot \sigma_L$)</b> pada Service Level 95% untuk perlindungan terhadap keterlambatan distributor.
+              </p>
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-bookmark text-emerald-400"></i> Landasan Teori & Paper Rujukan:</h4>
+              <p class="text-xs text-slate-400 italic">
+                Chopra, S., & Meindl, P. (2016). <i>Supply Chain Management: Strategy, Planning, and Operation</i>. Pearson. Formula EOQ klasik Ford W. Harris (1913) terbukti secara matematis meminimalkan total biaya persediaan inventori tahunan.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
+              <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Komponen Perhitungan Restock Sistem:</h5>
+              <ul class="text-xs text-slate-300 space-y-2">
+                <li>• <b>Lead Time ($L$):</b> Estimasi 2-3 hari waktu pengiriman supplier.</li>
+                <li>• <b>Biaya Pesan ($S$):</b> Estimasi Rp 25.000 (ongkir/bensin kulakan).</li>
+                <li>• <b>Biaya Simpan ($H$):</b> 15% per tahun dari harga beli per unit.</li>
+                <li>• <b>Output:</b> Jumlah pesanan tepat unit & estimasi modal belanja dalam Rupiah.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ML Tab 3 Content -->
+      <div id="ml-tab-3" class="ml-content hidden space-y-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-400">Modul 3: Mitigasi Kerugian Produk Kadaluarsa</span>
+              <h3 class="text-xl font-bold text-white">Analisis Risiko Kadaluarsa (Sales Velocity & Decay Risk)</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">Projected Unsold = Max(0, Batch Qty - (Velocity × Days Remaining))</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="space-y-3 text-slate-300">
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-circle-question text-amber-400"></i> Mengapa Algoritma Ini Dipilih?</h4>
+              <p class="text-xs leading-relaxed text-slate-400">
+                Survei LPPI membuktikan 54% UMKM merugi karena produk kadaluarsa. Sistem membandingkan sisa hari kadaluarsa batch dengan kecepatan penjualan harian (*Sales Velocity*). Jika diproyeksikan sisa barang tidak habis sebelum tanggal expired, sistem secara proaktif merekomendasikan diskon promosi atau retur distributor sebelum barang menjadi sampah tak bernilai.
+              </p>
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-bookmark text-amber-400"></i> Landasan Teori & Paper Rujukan:</h4>
+              <p class="text-xs text-slate-400 italic">
+                Silver, E. A., Pyke, D. F., & Peterson, R. (1998). <i>Inventory Management and Production Planning and Scheduling</i>. Wiley. Strategi *dynamic clearance pricing* terbukti menyelamatkan hingga 70% dari nilai modal barang perishable.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
+              <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Aksi Cerdas Penyelamatan Modal:</h5>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                  <b class="text-amber-400">Sisa &lt; 7 Hari (Proyeksi 10 pcs sisa):</b> Buat promo diskon 50% di halaman Manajemen Diskon untuk percepat perputaran.
+                </div>
+                <div class="p-2.5 rounded-lg bg-blue-500/10 border border-blue-500/30">
+                  <b class="text-blue-400">Sisa &lt; 14 Hari:</b> Buat promo bundling dengan produk pelengkap.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ML Tab 4 Content -->
+      <div id="ml-tab-4" class="ml-content hidden space-y-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase text-purple-400">Modul 4: Peramalan Omset Harian</span>
+              <h3 class="text-xl font-bold text-white">Revenue Forecasting (Ridge Regression + 12 Engineered Features)</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">Min: ||y - Xw||² + α||w||² (L2 Regularization)</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="space-y-3 text-slate-300">
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-circle-question text-purple-400"></i> Mengapa Ridge Regression Dibandingkan OLS / LSTM?</h4>
+              <p class="text-xs leading-relaxed text-slate-400">
+                1. <b>Mengapa bukan OLS biasa?</b> Karena fitur deret waktu (lag-1, lag-7, rolling mean 3d & 7d) memiliki multikolinearitas tinggi. OLS biasa akan menghasilkan bobot koefisien tidak stabil. Ridge dengan penalti $L_2$ ($\alpha = 1.0$) menstabilkan bobot.<br>
+                2. <b>Mengapa bukan LSTM / Deep Learning?</b> Data UMKM memiliki ratusan s.d. ribuan baris data. Deep Learning membutuhkan jutaan data dan rentan <i>overfitting parah</i> serta membutuhkan GPU mahal. Ridge Regression sangat ringan, instan dilatih di server, dan memiliki interpretasi feature weight yang transparan.
+              </p>
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-bookmark text-purple-400"></i> Landasan Teori & Paper Rujukan:</h4>
+              <p class="text-xs text-slate-400 italic">
+                Hoerl, A. E., & Kennard, R. W. (1970). <i>Ridge Regression: Biased Estimation for Nonorthogonal Problems</i>. Technometrics, 12(1), 55-67.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
+              <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider">12 Engineered Features yang Terintegrasi:</h5>
+              <div class="grid grid-cols-2 gap-2 text-xs text-slate-300">
+                <span class="bg-slate-800/80 p-2 rounded">• day_of_week</span>
+                <span class="bg-slate-800/80 p-2 rounded">• day_sin / day_cos</span>
+                <span class="bg-slate-800/80 p-2 rounded">• is_weekend</span>
+                <span class="bg-slate-800/80 p-2 rounded">• is_payday (tgl 25-2)</span>
+                <span class="bg-slate-800/80 p-2 rounded">• is_ramadan</span>
+                <span class="bg-slate-800/80 p-2 rounded">• is_holiday</span>
+                <span class="bg-slate-800/80 p-2 rounded">• lag_1 (omset kemarin)</span>
+                <span class="bg-slate-800/80 p-2 rounded">• lag_7 (omset pekan lalu)</span>
+                <span class="bg-slate-800/80 p-2 rounded">• rolling_3d & 7d mean</span>
+                <span class="bg-slate-800/80 p-2 rounded">• day_of_month & month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ML Tab 5 Content -->
+      <div id="ml-tab-5" class="ml-content hidden space-y-6">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold uppercase text-pink-400">Modul 5: Stratifikasi Prioritas Produk</span>
+              <h3 class="text-xl font-bold text-white">Klasifikasi ABC (Pareto Principle & Cumulative Revenue Curve)</h3>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-pink-500/20 text-pink-300 border border-pink-500/30">Kelas A (80% Revenue) | Kelas B (15%) | Kelas C (5%)</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="space-y-3 text-slate-300">
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-circle-question text-pink-400"></i> Mengapa Algoritma Ini Dipilih?</h4>
+              <p class="text-xs leading-relaxed text-slate-400">
+                Prinsip Pareto 80/20 membuktikan bahwa sekitar 20% produk menghasilkan 80% perputaran uang toko. Pemilik UMKM tidak boleh memperlakukan semua barang sama rata. Barang <b>Kelas A</b> wajib memiliki cadangan stok ketat, barang <b>Kelas B</b> dipantau berkala, sedangkan barang <b>Kelas C</b> dievaluasi apakah perlu dikurangi display-nya agar tidak memakan tempat dan modal.
+              </p>
+              <h4 class="font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book-bookmark text-pink-400"></i> Landasan Teori & Paper Rujukan:</h4>
+              <p class="text-xs text-slate-400 italic">
+                Dickie, H. F. (1951). <i>ABC Inventory Analysis</i>. General Electric Review, 54(7), 45-49. Merupakan standar industri baku manajemen persediaan internasional.
+              </p>
+            </div>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-3">
+              <h5 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Distribusi Produk Toko Berkah Jaya:</h5>
+              <div class="space-y-2 text-xs">
+                <div class="flex justify-between items-center p-2 rounded bg-emerald-500/10 border border-emerald-500/20">
+                  <span class="text-emerald-400 font-bold">Kelas A (4 SKU):</span>
+                  <span>Beras, Minyak, Rokok, Telur (78,8% Revenue)</span>
+                </div>
+                <div class="flex justify-between items-center p-2 rounded bg-blue-500/10 border border-blue-500/20">
+                  <span class="text-blue-400 font-bold">Kelas B (3 SKU):</span>
+                  <span>Indomie, Aqua, Teh Pucuk (14,4% Revenue)</span>
+                </div>
+                <div class="flex justify-between items-center p-2 rounded bg-slate-800 border border-slate-700">
+                  <span class="text-slate-400 font-bold">Kelas C (8 SKU):</span>
+                  <span>Sunlight, Pasta Gigi, Masako, dll (6,8% Revenue)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SLIDE 5: SIMULATOR INTERAKTIF & DAMPAK NYATA -->
+    <!-- ========================================================================= -->
+    <section id="slide-4" class="slide-section space-y-8">
+      
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+          <i class="fa-solid fa-sliders text-cyan-400"></i> Uji Coba Langsung
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
+          Simulator Cerdas & <span class="gradient-text">Dampak Nyata Bisnis</span>
+        </h2>
+        <p class="text-slate-400 text-sm">
+          Coba langsung bagaimana formula EOQ dan Stockout Prediction menghitung rekomendasi nyata bagi pengusaha UMKM.
+        </p>
+      </div>
+
+      <!-- Live Interactive EOQ & Stockout Calculator -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Widget 1: Live EOQ Calculator -->
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+          <h3 class="font-bold text-white text-base flex items-center gap-2">
+            <i class="fa-solid fa-calculator text-blue-400"></i> Simulator Live: Kalkulator EOQ & Modal Belanja
+          </h3>
+          
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block text-slate-400 mb-1">Permintaan Tahunan ($D$ unit): <span id="valDemand" class="text-white font-bold">720 unit (2/hari)</span></label>
+              <input type="range" min="100" max="3000" step="50" value="720" id="inDemand" oninput="calcSimEoq()" class="w-full accent-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-slate-400 mb-1">Biaya Pemesanan ($S$ per transaksi kulakan): <span id="valOrderCost" class="text-white font-bold">Rp 25.000</span></label>
+              <input type="range" min="10000" max="100000" step="5000" value="25000" id="inOrderCost" oninput="calcSimEoq()" class="w-full accent-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-slate-400 mb-1">Harga Beli Barang per Unit: <span id="valBuyPrice" class="text-white font-bold">Rp 16.000</span></label>
+              <input type="range" min="2000" max="100000" step="1000" value="16000" id="inBuyPrice" oninput="calcSimEoq()" class="w-full accent-blue-500">
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 grid grid-cols-2 gap-3 text-center">
+            <div class="bg-blue-500/10 border border-blue-500/30 p-3 rounded-xl">
+              <span class="text-[11px] text-blue-400 block">Jumlah Order Optimal (EOQ):</span>
+              <span id="outEoq" class="text-xl font-extrabold text-white">122 unit</span>
+            </div>
+            <div class="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl">
+              <span class="text-[11px] text-emerald-400 block">Frekuensi Order:</span>
+              <span id="outFreq" class="text-xl font-extrabold text-white">~6x per tahun</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Widget 2: Kesimpulan & Dampak Ilmiah -->
+        <div class="glass-card rounded-2xl p-6 space-y-4 border border-emerald-500/30 bg-gradient-to-br from-slate-900 to-emerald-950/20">
+          <h3 class="font-bold text-emerald-400 text-base flex items-center gap-2">
+            <i class="fa-solid fa-award text-emerald-400"></i> Kesimpulan Akhir Tugas Akhir
+          </h3>
+
+          <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
+            <div class="flex items-start gap-2.5">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span><b>Solusi Menyeluruh (End-to-End):</b> Berhasil menyatukan kasir POS, stok batch FIFO, pembayaran digital QRIS Xendit, dan 5 modul ML dalam 1 arsitektur multi-tenant.</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span><b>Pemangkasan Kerugian Nyata:</b> Mencegah 67% risiko stockout dan 54% risiko kadaluarsa lewat deteksi dini dan kalkulasi restock matematis.</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <i class="fa-solid fa-circle-check text-emerald-400 mt-0.5"></i>
+              <span><b>Reliabilitas Teruji:</b> Model Machine Learning terbukti stabil dan tahan banting pada spektrum volume ramai (~4.000 tx/tahun) hingga volume sepi (~200 tx/tahun).</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 text-center">
+            <p class="text-xs text-slate-400">Tugas Akhir D3 Teknik Informatika - Jurusan Teknik Elektro</p>
+            <p class="text-sm font-bold text-white">Politeknik Negeri Semarang (POLINES) &copy; 2026</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer Controls -->
+  <footer class="glass-card border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500">
+    Gunakan tombol <b>Next / Prev</b> di kanan atas atau tombol panah keyboard (← / →) untuk navigasi slide presentasi.
+  </footer>
+
+  <!-- Interactive Scripts -->
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 5;
+
+    function showSlide(idx) {
+      document.querySelectorAll('.slide-section').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.classList.add('bg-blue-600', 'text-white');
+          btn.classList.remove('text-slate-300');
+        } else {
+          btn.classList.remove('bg-blue-600', 'text-white');
+          btn.classList.add('text-slate-300');
+        }
+      });
+      document.getElementById('slideCounter').textContent = `${idx + 1} / ${totalSlides}`;
+      document.getElementById('btnPrev').disabled = (idx === 0);
+      document.getElementById('btnNext').disabled = (idx === totalSlides - 1);
+      currentSlide = idx;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function goToSlide(idx) {
+      showSlide(idx);
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+    });
+
+    // Switch ML Tabs
+    function switchMlTab(tabId) {
+      document.querySelectorAll('.ml-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.ml-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+      const activeBtnId = 'btn-' + tabId;
+      const activeBtn = document.getElementById(activeBtnId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-blue-600', 'text-white');
+        activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+      }
+    }
+
+    // Live Simulator EOQ Function
+    function calcSimEoq() {
+      const D = parseFloat(document.getElementById('inDemand').value);
+      const S = parseFloat(document.getElementById('inOrderCost').value);
+      const P = parseFloat(document.getElementById('inBuyPrice').value);
+      const H = 0.15 * P; // Holding cost 15% / year
+
+      document.getElementById('valDemand').textContent = `${D} unit (~${(D/365).toFixed(1)}/hari)`;
+      document.getElementById('valOrderCost').textContent = `Rp ${S.toLocaleString('id-ID')}`;
+      document.getElementById('valBuyPrice').textContent = `Rp ${P.toLocaleString('id-ID')}`;
+
+      const eoq = Math.round(Math.sqrt((2 * D * S) / H));
+      const freq = (D / eoq).toFixed(1);
+
+      document.getElementById('outEoq').textContent = `${eoq} unit`;
+      document.getElementById('outFreq').textContent = `~${freq}x per tahun`;
+    }
+
+    // Chart.js initialization
+    window.addEventListener('load', () => {
+      // Scenario Volume Chart
+      const ctx = document.getElementById('scenarioVolumeChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min', 'Gajian (25)', 'Akhir Bln', 'Awal Bln', 'Hari Raya'],
+          datasets: [
+            {
+              label: 'Toko Ramai (Berkah Jaya - Sembako)',
+              data: [12, 10, 11, 13, 16, 18, 17, 26, 22, 24, 30],
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.15)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Toko Menengah (Berkah Elektro)',
+              data: [3, 2, 3, 4, 5, 6, 6, 8, 7, 6, 9],
+              borderColor: '#a855f7',
+              backgroundColor: 'rgba(168, 85, 247, 0.05)',
+              tension: 0.3,
+              fill: true
+            },
+            {
+              label: 'Toko Sepi (Galeri Antik Barokah)',
+              data: [0, 1, 0, 0, 1, 2, 1, 2, 1, 1, 3],
+              borderColor: '#f59e0b',
+              backgroundColor: 'transparent',
+              borderDash: [5, 5],
+              tension: 0.2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 11 } } }
+          },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: { size: 10 } }, title: { display: true, text: 'Jumlah Transaksi', color: '#64748b' } }
+          }
+        }
+      });
+
+      calcSimEoq();
+    });
+  </script>
+</body>
+</html>

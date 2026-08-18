@@ -1,0 +1,309 @@
+
+/* ============================================
+   METACRURA LANDING PAGE - SKY CYCLE SYSTEM
+   Fixed Height Version (No Infinite Scroll)
+   ============================================ */
+
+/* RESET & BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ============================================
+   HERO SECTION - FIXED 100vh
+   ============================================ */
+.landing-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;           /* FIXED: tidak lebih dari viewport */
+  min-height: 600px;       /* Minimum agar tidak terlalu kecil di mobile */
+  max-height: 100vh;       /* FIXED: tidak melebihi viewport */
+  overflow: hidden;        /* FIXED: semua elemen sky terkunci di dalam */
+}
+
+/* Sky Gradient Layer */
+.sky-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: background 4s ease;
+  z-index: 1;
+}
+
+/* Stars Layer - Night only */
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 4s ease;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;      /* FIXED: stars tidak keluar */
+}
+
+/* Clouds Layer - Day only */
+.clouds-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 4s ease;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;      /* FIXED: clouds tidak keluar */
+}
+
+/* Sun/Moon Orbit System */
+.orbit-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.celestial-body {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  transition: all 4s ease;
+  z-index: 5;
+}
+
+.sun-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  opacity: 0;
+  transition: opacity 4s ease;
+  pointer-events: none;
+}
+
+/* Horizon Glow */
+.horizon-glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 4s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ============================================
+   CONTENT LAYER - LOCKED IN HERO
+   ============================================ */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;            /* FIXED: mengikuti parent 100vh */
+  padding: 40px 24px;
+  text-align: center;
+  overflow: hidden;        /* FIXED: konten tidak overflow */
+}
+
+/* Navigation */
+.hero-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  z-index: 20;
+}
+
+/* Main Content - Centered */
+.hero-main {
+  margin-top: 0;           /* FIXED: tidak ada margin berlebihan */
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Stats Row */
+.stats-row {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.6;
+  transition: opacity 4s ease;
+}
+
+/* ============================================
+   FEATURES SECTION - SEPARATE BELOW HERO
+   ============================================ */
+.features-section {
+  position: relative;
+  width: 100%;
+  padding: 80px 40px;
+  transition: background 4s ease;
+  /* FIXED: tidak ada min-height berlebihan */
+}
+
+.features-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ============================================
+   TIME CONTROL BAR - FIXED BOTTOM
+   ============================================ */
+.time-control-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes shimmer {
+  0% { transform: translateX(-150%); }
+  50% { transform: translateX(150%); }
+  100% { transform: translateX(-150%); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes float-cloud {
+  0% { transform: translateX(-200px); }
+  100% { transform: translateX(calc(100vw + 200px)); }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+@keyframes ray-rotate {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+/* ============================================
+   RESPONSIVE - MOBILE FIXES
+   ============================================ */
+@media (max-width: 768px) {
+  .landing-hero {
+    min-height: 500px;
+  }
+
+  .hero-nav {
+    padding: 16px 20px;
+  }
+
+  .hero-main h1 {
+    font-size: 36px !important;
+  }
+
+  .stats-row {
+    gap: 16px;
+  }
+
+  .time-control-bar {
+    padding: 10px 14px;
+    gap: 8px;
+    bottom: 16px;
+  }
+
+  .time-control-bar button {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .orbit-system {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-hero {
+    min-height: 480px;
+  }
+
+  .hero-main h1 {
+    font-size: 28px !important;
+  }
+
+  .hero-main p {
+    font-size: 15px !important;
+  }
+
+  .orbit-system {
+    width: 300px;
+    height: 300px;
+  }
+
+  .celestial-body {
+    width: 80px !important;
+    height: 80px !important;
+  }
+}

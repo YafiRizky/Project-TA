@@ -1130,8 +1130,19 @@ Semua 10 item user improvement notes dari folder `Note Improvement Project/` tel
   - Preserved superuser `techdev` (dev123456) and associated with all 3 businesses.
   - Populated `PaymentMethod` (CASH, QRIS Toko, TRANSFER BCA, EWALLET GoPay), `StockOpname` documents (`SO-20260801`), `ProductBatch`, and `Transaction` items (98% COMPLETED, 2% VOIDED) to ensure 0% empty pages on frontend.
 
+## PART 2H: POST-DEFENSE REVISIONS MILESTONE (19 AGUSTUS 2026)
+
+- **Independent Discount Entity in ERD & Django Admin**:
+  - Registered `DiscountRule` in `pos-backend/promotions/admin.py` with filters, search fields, and product many-to-many picker.
+  - Updated `LAPORAN KITA/Diagram_HTML/diagram_erd.html` to integrate `discount_rule` with 1:N relation to `business`, N:M to `product`, and 1:N to `transaction_item`.
+- **Interactive Storytelling Presentation & Academic Justification Documents**:
+  - Created `LAPORAN_PRESENTASI_INTERAKTIF_POS_ML.html` (interactive HTML5 slide deck with live EOQ calculator, volume charts, 3 business scenarios, and 5 ML deep-dives).
+  - Created `DOKUMENTASI_LENGKAP_DAN_JUSTIFIKASI_ML.md` (comprehensive 18+ page frontend catalog, 10 backend apps, complete REST API directory, and deep academic justification of 5 ML algorithms with research paper citations).
+  - Created `LAPORAN KITA/REVISI_LAPORAN_BAB1_SD_BAB5_DAN_UML.md` (complete copy-pasteable revision guide for Chapters 1-5, formal references, and full OMG UML diagrams: Use Case, Class Diagram, Sequence, Component, Deployment).
+
 ---
 
 **End of ANTIGRAVITY AI SETUP Document**
-**Last Updated:** August 13, 2026
+**Last Updated:** August 19, 2026
 **For Questions:** Refer to Active phase/ documentation or latest FLAG file
+

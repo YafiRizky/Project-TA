@@ -1,249 +1,4776 @@
-
-v 
- 
- 
-vi 
- 
-2 
- 
-1. LATAR BELAKANG 
-Kalori  yang  tepat  berdampak  sangat  penting  bagi  kelangsungan  hidup 
-manusia.  Kalori  dapat  dikontrol  dengan  pola  makan  yang  teratur.  Banyak 
-masyarakat  tidak memperhatikan pola  makan, sehingga berdampak pada 
-gangguan  kesehatan.  Kalori  yang  masuk  ke  dalam  tubuh,  harus  disesuaikan 
-dengan kebutuhan sehari - hari. Kekurangan kalori akan mengakibatkan tubuh 
-lemas dan menurunkan tingkat imun tubuh. Di lain sisi, tubuh yang kelebihan 
-kalori dapat menyebabkan penumpukan lemak pada tubuh sehingga 
-meningkatkan  risiko  obesitas  dan  penyakit  kronis  lainnya  (Afika,  Henny, 
-2021). 
-Jumlah angka obesitas di dunia mengalami peningkatan signifikan. 
-Berdasarkan  data  Riskesdas  (Badan  Litbangkes  Kementerian  Kesehatan  RI, 
-2020),  sebesar  1,4%  remaja    mengalami kelebihan  berat  badan  dan  obesitas. 
-Menurut  penelitian  Giuseppe  (Grosso,  Giuseppe,  2021),  kenaikan  obesitas 
-mencapai  5%  selama  pandemi  pada  tahun  2021.    Hal  tersebut  disebabkan 
-karena pola makan masyarakat yang kurang sehat, sehingga asupan kalori yang 
-masuk pada tubuh tidak terkontrol. 
- 
-2. PERUMUSAN MASALAH 
-Berdasarkan uraian diatas, penulis menemukan permasalahan yang ada, yaitu: 
-2.1. Bagaimana cara  untuk  mengatur  pola  makanan  pada  masyarakat agar 
-tercegah dari berbagai penyakit? 
-2.2. Bagaimana membuat sistem untuk memprediksi jumlah kalori 
-berdasarkan citra makanan? 
- 
-3. BATASAN MASALAH 
+SPOONYCAL : PENGHITUNG KALORI BERBASIS CITRA 
+MAKANAN MENGGUNAKAN INTERNET OF THINGS (IOT) 
+DAN DEEP LEARNING
+Disusun oleh :
+Alfino Almero Suroso (3.34.19.3.02)
+Primafadhil Sulistyo (3.34.19.3.21)
+PROGRAM STUDI D3 TEKNIK INFORMATIKA 
+JURUSAN TEKNIK ELEKTRO 
+POLITEKNIK NEGERI SEMARANG 
+2022
+ii
+SPOONYCAL : PENGHITUNG KALORI BERBASIS CITRA 
+MAKANAN MENGGUNAKAN INTERNET OF THINGS (IOT) 
+DAN DEEP LEARNING
+Tugas akhir ini disusun untuk melengkapi sebagian persyaratan menjadi 
+Ahli Madya
+Disusun oleh :
+Alfino Almero Suroso (3.34.19.3.02)
+Primafadhil Sulistyo (3.34.19.3.21)
+PROGRAM STUDI D3 TEKNIK INFORMATIKA 
+JURUSAN TEKNIK ELEKTRO 
+POLITEKNIK NEGERI SEMARANG 
+2022
+iii
+iv
+v
+vi
+ABSTRAK
+Alfino Almero Suroso dan Primafadhil Sulistyo “SPOONYCAL : Penghitung Kalori Berbasis Citra 
+Makanan Menggunakan Internet of Things (IoT) dan Deep Learning”, Tugas Akhir DIII Program 
+Studi Teknik Informatika, Jurusan Teknik Elektro, Politeknik Negeri Semarang, dibawah bimbingan 
+Dr. Ir. Kurnianingsih, S.T., M.T. dan Angga Wahyu Wibowo, S.Kom., M.Eng September 2022. 
+Kalori yang masuk ke dalam tubuh, harus disesuaikan dengan kebutuhan sehari - hari. Kekurangan 
+kalori akan mengakibatkan tubuh lemas dan menurunkan tingkat imun tubuh. Oleh karena itu, 
+pentingnya menjaga asupan kalori guna meminimalisir resiko terkena penyakit kronis. Namun dalam 
+melakukan kegiatan ini, banyak orang masih merasa kesulitan dalam mengatur asupan kalori yang 
+masuk ke dalam tubuh. SPOONYCAL mampu merancang sistem untuk memperingatkan dalam 
+mengatur pola makanan pada masyarakat agar lebih terkontrol. Selain itu, sistem juga dapat 
+melakukan perhitungan kalori pada makanan secara terintegritas dan personal. Dengan rancangan 
+sistem diatas pengguna dapat mengetahui mengetahui total kalori yang dimakan untuk 
+Meminimalisir terjadinya penyakit yang diakibatkan oleh kekurangan maupun kelebihan kalori pada 
+tubuh. Dalam proses pengembangan sistem digunakan metode yang dilakukan secara berurutan atau 
+biasa dikenal dengan metode waterfall. Dari analisis kebutuhan menghasilkan kebutuhan fungsional 
+yang digambarkan dalam use case diagram serta hasil perencanaan sistem digambarkan dalam 
+activity diagram dan pemodelan basis data. Dalam proses pembuatan sistem, digunakan framework 
+Flutter, bahasa pemrograman dart, model deep learning, weight sensor, dan juga database mysql 
+untuk penyimpanan data. Berdasarkan hasil pengujian yang meliputi pengujian black box 
+menunjukkan seluruh fungsionalitas fitur sistem berjalan dengan baik dan berdasarkan hasil 
+kuisioner dari 15 responden yang terdiri atas pengelola serta masyarakat, didapatkan hasil persentase 
+kepuasan pengguna sebesar 93,16% dan dapat disimpulkan bahwa sistem sangat memuaskan. 
+Berdasarkan hasil penelitian ini, SPOONYCAL dapat memudahkan pengguna dalam mengontrol 
+pola makan.
+Kata Kunci : Kalori, deep learning, weight sensor 
+vii
+ABSTRACT
+Alfino Almero Suroso dan Primafadhil Sulistyo “SPOONYCAL : Penghitung Kalori Berbasis Citra 
+Makanan Menggunakan Internet of Things (IoT) dan Deep Learning”, Tugas Akhir DIII Program 
+Studi Teknik Informatika, Jurusan Teknik Elektro, Politeknik Negeri Semarang, dibawah bimbingan 
+Dr. Ir. Kurnianingsih, S.T., M.T. dan Angga Wahyu Wibowo, S.Kom., M.Eng September 2022.
+Calories that enter the body, must be adjusted to daily needs. Lack of calories will cause the body to 
+weaken and lower the body's immune level. Therefore, it is important to maintain calorie intake to 
+minimize the risk of chronic disease. However, in doing this activity, many people still find it 
+difficult to regulate the calorie intake that enters the body. SPOONYCAL is able to design a system 
+to regulate food patterns in the community so that it is more controlled. In addition, the system can 
+also calculate calories in food in terintegritas and on time. With the system design above the user 
+can find out the number of calories eaten to minimize the occurrence of diseases caused by lack of 
+calories in the body. In the system development process, a sequential method is used or commonly 
+known as the waterfall method. From the needs analysis, it produces functional requirements which 
+are described in use case diagrams and the results of system planning are described in activity 
+diagrams and database modeling. In the process of making the system, the framework used is Flutter, 
+the dart programming language, deep learning models, weight sensors, and also a mysql database for 
+data storage. Based on the testing which includes black box testing, it shows that all the functionality 
+of the system features are running well and based on the results of the questionnaire from 15
+respondents consisting of managers and the community, the percentage of user satisfaction is 93,16% 
+and it can be said that the system is very satisfying. Results Based on this study, SPOONYCAL can 
+make it easier for users to control their eating patterns.
+Keywords : Calories, deep learning, weight sensor, 
+viii
+ix
+DAFTAR ISI
+HALAMAN JUDUL .........................................................................................i
+PERNYATAAN KEASLIAN TUGAS AKHIR..............................................iii
+HALAMAN PERSETUJUAN..........................................................................iv
+HALAMAN PENGESAHAN...........................................................................v
+ABSTRAK .........................................................................................................vi
+ABSTRACT ........................................................................................................vii
+KATA PENGANTAR.......................................................................................viii
+DAFTAR ISI......................................................................................................ix
+DAFTAR GAMBAR.........................................................................................xi
+DAFTAR TABEL..............................................................................................xiv
+BAB I PENDAHULUAN..................................................................................1
+1.1.Latar Belakang ........................................................................................1
+1.2.Perumusan Masalah ................................................................................1
+1.3.Tujuan .....................................................................................................2
+1.4.Manfaat ...................................................................................................2
+1.5.Batasan Masalah......................................................................................2
+1.6.Sistematika ..............................................................................................2
+BAB II TINJAUAN PUSTAKA.......................................................................4
+2.1.Penelitian Terkait ....................................................................................4
+2.2.Teknologi yang Digunakan.....................................................................8
+BAB III KEGIATAN PELAKSANAAN.........................................................15
+3.1.Analisis Kebutuhan .................................................................................15
+3.2.Perancangan Sistem ................................................................................18
+3.3.Penulisan Kode Program.........................................................................45
+3.4.Perancangan Pengujian Sistem ...............................................................48
+3.5.Pemeliharaan Sistem...............................................................................55
+BAB IV ANALISIS DAN PEMBAHASAN....................................................56
+4.1.Analisis Sistem........................................................................................56
+4.2.Analisis Fungsionalitas Sistem ...............................................................67
+4.3.Analisis Kepuasan Pengguna ..................................................................92
+x
+4.4.Analisis Aspek Bisnis .............................................................................94
+BAB V KESIMPULAN.....................................................................................96
+DAFTAR PUSTAKA........................................................................................97
+LAMPIRAN.......................................................................................................101
+xi
+DAFTAR GAMBAR
+Gambar 3. 1 Fase Metode Waterfall................................................................15
+Gambar 3. 2 Gambaran Umum Sistem SPOONYCAL ...................................16
+Gambar 3. 3 Block Diagram Sistem ................................................................18
+Gambar 3. 4 Use Case Diagram Sistem...........................................................20
+Gambar 3. 5 Activity Diagram Pendaftaran Akun Spoonycal Mobile.............21
+Gambar 3. 6 Activity Diagram Login Akun Spoonycal Mobile ......................22
+Gambar 3. 7 Activity Diagram Edit Akun Spoonycal Mobile .........................22
+Gambar 3. 8 Activity Diagram Penggunaan Deteksi Citra Makanan ..............23
+Gambar 3. 9 Activity Diagram Penggunaan SPOONYCAL............................24
+Gambar 3. 10 Flowchart Alur Cara Kerja Sistem..............................................25
+Gambar 3. 11 Diagram ERD Database Spoonycal Mobile ...............................27
+Gambar 3. 12 Rancangan Halaman Splash Screen............................................30
+Gambar 3. 13 Rancangan Kepemilikan Akun ...................................................30
+Gambar 3. 14 Rancangan Halaman Login .........................................................30
+Gambar 3. 15 Rancangan Halaman Register.....................................................31
+Gambar 3. 16 Rancangan Halaman Selamat Datang .........................................31
+Gambar 3. 17 Rancangan Input Jenis Kelamin..................................................32
+Gambar 3. 18 Rancangan Input Berat Badan.....................................................32
+Gambar 3. 19 Rancangan Input Tinggi Badan...................................................33
+Gambar 3. 20 Rancangan Input Umur...............................................................33
+Gambar 3. 21 Rancangan Rekomendasi Kalori Harian .....................................34
+Gambar 3. 22 Rancangan Halaman Beranda .....................................................35
+Gambar 3. 23 Rancangan Halaman Beranda - Pemilihan Metode ....................35
+Gambar 3. 24 Rancangan Identifikasi Citra Makanan.......................................36
+Gambar 3. 25 Rancangan Pairing SPOONYCAL .............................................36
+Gambar 3. 26 Rancangan Pemilihan Makanan..................................................37
+Gambar 3. 27 Rancangan Pemilihan Makanan - Icon Pencarian.......................37
+Gambar 3. 28 Rancangan Penghitungan Kalori Makanan - Awal.....................38
+Gambar 3. 29 Rancangan Penghitungan Kalori Makanan - Hasil Perhitungan.39
+Gambar 3. 30 Rancangan Isi Piring ...................................................................39
+xii
+Gambar 3. 31 Rancangan Kirim Catatan Kalori................................................40
+Gambar 3. 32 Rancangan Warning....................................................................40
+Gambar 3. 33 Rancangan Laporan.....................................................................41
+Gambar 3. 34 Rancangan Profil.........................................................................41
+Gambar 3. 35 Rancangan Edit Profil .................................................................42
+Gambar 3. 36 Rancangan Bantuan.....................................................................42
+Gambar 3. 37 Prototipe SPOONYCAL Tampak Luar ......................................43
+Gambar 3. 38 Letak Komponen Prototipe SPOONYCAL ................................43
+Gambar 3. 39 Arsitektur Resnet50.....................................................................44
+Gambar 3. 40 Tahap Preprocessing Dataset Makanan ......................................44
+Gambar 3. 41 Kode Program Proses Kirim Catatan ..........................................45
+Gambar 3. 42 Kode Program Pembuatan API Kirim Catatan ...........................46
+Gambar 3. 43 Kode Program Prototipe49..........................................................47
+Gambar 3. 44 Kode Program Pembuatan Modeling Resnet50 ..........................48
+Gambar 4. 1 Contoh Response API .................................................................57
+Gambar 4. 2 Grafik Nilai loss Model yang Dilatih..........................................58
+Gambar 4. 3 Pengujian Sensor Load Cell dengan Objek Tempe Goreng........59
+Gambar 4. 4 Grafik Pengujian Sensor Load Cell dengan Objek Tempe Goreng
+.....................................................................................................60
+Gambar 4. 5 Pengujian Sensor Load Cell dengan Objek Tahu Goreng ..........61
+Gambar 4. 6 Grafik Pengujian Sensor Load Cell dengan Objek Tahu Goreng
+.....................................................................................................62
+Gambar 4. 7 Pengujian Sensor Load Cell dengan Objek Ayam Goreng.........62
+Gambar 4. 8 Pengujian Sensor Load Cell dengan Objek Ayam Goreng.........63
+Gambar 4. 9 Pengujian Sensor Load Cell dengan Objek Nasi ........................64
+Gambar 4. 10 Grafik Pengujian Sensor Load Cell dengan Objek Nasi.............65
+Gambar 4. 11 Pengujian Sensor Load Cell dengan Objek Telur Dadar ............65
+Gambar 4. 12 Grafik Pengujian Sensor Load Cell dengan Objek Telur Dadar.66
+Gambar 4. 13 Grafik Perbandingan Pengukuran Sensor dengan Timbangan....67
+Gambar 4. 14 Prototipe Alat SPOONYCAL Tampak Dari Depan...................68
+Gambar 4. 15 Prototipe Alat SPOONYCAL Tampak Dari Atas......................69
+Gambar 4. 16 Prototipe Alat SPOONYCAL Tampak Dari Samping...............69
+xiii
+Gambar 4. 17 Prototipe Alat SPOONYCAL Tampak Dari Dalam ..................70
+Gambar 4. 18 Pmenghitung Berat Real Makanan..............................................70
+Gambar 4. 19 Menyendok Makanan Memakai SPOONYCAL.........................71
+xiv
+DAFTAR TABEL
+Tabel 3. 1 Tabel user....................................................................................27
+Tabel 3. 2 Tabel catatans..............................................................................28
+Tabel 3. 3 Tabel makanans...........................................................................29
+Tabel 3. 4 Pengujian Aplikasi Spoonycal Mobile........................................48
+Tabel 3. 5 Pengujian Alat.............................................................................52
+Tabel 3. 6 Tabel Daftar Pertanyaan Kuesioner ............................................54
+Tabel 3. 7 Tabel Panduan Penilaian Kuesioner............................................55
+Tabel 3. 8 Tabel Indikator Kepuasan Pengguna ..........................................55
+Tabel 4. 1 Metrik Pemodelan Resnet50 .......................................................59
+Tabel 4. 2 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell 
+Pada Tempe Goreng....................................................................60
+Tabel 4. 3 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cel 
+Pada Tahu Goreng.......................................................................61
+Tabel 4. 4 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell 
+Pada Ayam Goreng. ....................................................................62
+Tabel 4. 5 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell 
+Pada Nasi.....................................................................................64
+Tabel 4. 6 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell 
+Pada Telur Dadar.........................................................................66
+Tabel 4. 7 Rata - rata Error Pengujian Sensor Load Cell.............................67
+Tabel 4. 8 Skema Pengujian Fungsionalitas Alat.........................................68
+Tabel 4. 9 Rekapitulasi Hasil Pengujian Berdasarkan Skema .....................68
+Tabel 4. 10 Rekapitulasi Pengujian Alat........................................................72
+Tabel 4. 11 Tabel Spesifikasi Smartphone Penguji Aplikasi Android...........74
+Tabel 4. 12 Tabel Hasil Rekap Tampilan pada Android................................74
+Tabel 4. 13 Tabel Rekapitulasi Kuesioner Pengguna ....................................87
+Tabel 4. 14 Rekapitulasi Kepuasan Pengguna ...............................................94
+1
+BAB I - PENDAHULUAN
+1.
+1.1. Latar Belakang
+Kalori yang tepat berdampak sangat penting bagi kelangsungan hidup manusia. 
+Kalori dapat dikontrol dengan pola makan yang teratur. Banyak masyarakat tidak 
+memperhatikan pola makan, sehingga berdampak pada gangguan kesehatan. Kalori 
+yang masuk ke dalam tubuh, harus disesuaikan dengan kebutuhan sehari - hari. 
+Kekurangan kalori akan mengakibatkan tubuh lemas dan menurunkan tingkat imun 
+tubuh. Di lain sisi, tubuh yang kelebihan kalori dapat menyebabkan penumpukan 
+lemak pada tubuh sehingga meningkatkan risiko obesitas dan penyakit kronis 
+lainnya (Henny Afika, 2021).
+Jumlah angka obesitas di dunia mengalami peningkatan signifikan. Berdasarkan 
+data Riskesdas (Tim Riskesdas 2018, 2019),sebesar 1,4% remaja mengalami 
+kelebihan berat badan dan obesitas. Menurut penelitian Giuseppe (Grosso, 2021), 
+kenaikan obesitas mencapai 5% selama pandemi pada tahun 2021. Hal tersebut 
+disebabkan karena pola makan masyarakat yang kurang sehat, sehingga asupan 
+kalori yang masuk pada tubuh tidak terkontrol. 
+Berdasarkan permasalahan tersebut, diketahui bahwa pentingnya mengontrol kalori 
+yang masuk pada tubuh agar dapat terhindar dari penyakit. Maka dari itu, penulis 
+membuat SPOONYCAL yaitu sistem penghitung kalori berbasis citra makanan 
+dengan memanfaatkan Internet of Things (IoT) dan Deep Learning. Sistem ini dapat 
+membantu pengguna dalam menghitung jumlah rekomendasi asupan kalori harian 
+berbasis aplikasi mobile. Sistem ini juga dapat memperingatkan pengguna apabila 
+kalori yang dimakan melebihi batas kalori harian. 
+1.2. Perumusan Masalah
+Berdasarkan uraian latar belakang tersebut didapat pokok permasalahan yaitu 
+terbatasnya pengadaan alat untuk menghitung kalori berbasis citra makanan. 
+Sehingga dapat disimpulkan bahwa rumusan masalah utama pada Tugas Akhir ini 
+adalah :
+1) Bagaimana cara membuat suatu sistem yang dapat memberikan 
+rekomendasi kalori harian ?
+2
+2) Bagaimana cara membuat sistem manajemen kalori pada makanan yang 
+mudah digunakan oleh masyarakat ?
+1.3. Tujuan
+Tujuan pembuatan sistem ini adalah:
+1) Merancang sistem untuk memperingatkan masyarakat dalam mengatur dan 
+mengontrol jumlah asupan kalori yang dikonsumsi.
+2) Merancang suatu sistem perhitungan kalori pada makanan secara personal
+dan terintegritas.
+1.4. Manfaat
+Manfaat pembuatan sistem ini adalah :
+1) Memberikan informasi kepada pengguna untuk mengetahui total kalori 
+yang dimakan.
+2) Meminimalisir terjadinya penyakit kronis dan obesitas yang diakibatkan 
+oleh kelebihan kalori pada tubuh.
+1.5. Batasan Masalah
 Dalam pembuatan Tugas Akhir ini, masalah yang akan dibahas dibatasi oleh 
-beberapa faktor, antara lain: 
-3.1. Pengguna  harus  menginputkan  makanan  agar  dapat  dihitung  total 
-kalorinya. 
-3.2. Alat dan sistem pendeteksi kalori makanan harus terkoneksi agar bisa 
-mendeteksi jumlah kalori yang masuk secara realtime. 
-4 
- 
-c. Desain Perangkat Keras  
-Setelah  diketahui  kebutuhan  fungsi  dari  sistem,  maka  metode 
-selanjutnya  adalah  melakukan  perancangan  perangkat  keras.  Hal 
-ini diawali dengan pemilihan komponen alat yang akan digunakan, 
-perancangan rangkaian sistem perangkat keras yang akan 
-digunakan kelak. 
-d. Pengujian 
-Pada  metode  ini,  sistem  yang  telah  dibuat  akan  diujikan  secara 
-langsung pada objek penelitian. Sistem pendeteksi kalori makanan 
-dan Alat yang berupa sendok dipakai oleh manusia. Sistem 
-pendeteksi kalori makanan tersebut mampu memotret makanan dan 
-menghitung kalori makanan berdasarkan data pada server. 
-Sedangkan, sendok tersebut berisikan sensor pengukur berat yang 
-digunakan untuk menghitung berat saat makanan diangkat. 
-e. Analisa Hasil Pengujian 
-Metode  ini melakukan analisa  terhadap  hasil  pengujian alat  yang 
-telah dilakukan. Maka jika ada error dapat ditelusuri penyebabnya 
-lalu dapat dilakukan perbaikan.  
-f. Penerapan Alat 
-Sistem ini dapat diterapkan oleh pengguna saat hendak memakan 
-makanan  dengan  tujuan  untuk  mengetahui  total  kalori  yang  akan 
-dimakannya.  Pengguna  dapat  mengambil  tindakan  lebih  lanjut 
-berdasarkan  jumlah  kalori  yang  telah  dimakan.  Pengguna  juga 
-diwajibkan  untuk  menginputkan  berat  badan,  tinggi,  dan  usia 
-mereka  untuk  mendapatkan  rekomendasi total  kalori  harian  yang 
-dibutuhkan.  Selain  itu,  pengguna  akan  diberikan  pilihan  dalam 
-penghitungan kalori nantinya. Mereka dapat memilih perhitungan 
-kalori  menggunakan  Sistem  pendeteksi  kalori  makanan  saja  atau 
-juga  dengan  menggunakan  sendok.  Dengan  ini,  pengguna  bisa 
-mengetahui  kalori  pada  makanan  dan  yang  harus  dimakannya 
-dalam hariannya. 
- 
-5 
- 
-6.2. Cara kerja 
-Sistem  yang  dibangun  terdiri  dari  dua  bagian,  yang  pertama  yaitu 
-aplikasi pendeteksi kalori makanan per 100 gram dan sistem Internet of 
-Things guna menghitung berat makanan yang ada pada sendok. 
-Aplikasi  pendeteksi  kalori,  dibangun  menggunakan  platform  android 
-yang digunakan oleh pengguna. Pertama, pengguna memasukkan jenis 
-kelamin, tinggi badan, berat badan, dan usia. Data tersebut akan diolah 
-oleh  aplikasi  untuk  memberikan  informasi  seputar  kalori  harian  yang 
-dibutuhkan.  Setelah  itu,  pengguna memasuki  tampilan  utama aplikasi 
-penghitung kalori. Sistem akan menampilkan jumlah kalori secara real 
-time dan batas kalori harian yang dibutuhkan.  
-Untuk mengetahui informasi kalori yang terdapat pada makanan, 
-pengguna  dapat  memotret  berbagai  makanan  menggunakan  aplikasi 
-pendeteksi kalori. Nantinya sistem akan memunculkan estimasi kalori 
-yang ada pada makanan setiap 100 gram dari hasil potretnya. Estimasi 
-kalori  yang  ditampilkan  tersebut  nantinya  akan  membantu  pengguna 
-untuk memperkirakan total kalori yang hendak diambil sebelum 
-menuju proses berikutnya.  
-Setelah itu, pengguna dapat melakukan perhitungan kalori pada setiap 
-jenis makanan menggunakan SPOONYCAL. Pengguna harus 
-mengkoneksikan  terlebih  dahulu  sendok  menuju  aplikasi.  Kemudian, 
-pengguna  memilih  jenis  makanan  pada  search  bar  yang  ada  pada 
-aplikasi. Setelah dipilih, pengguna mengambil makanan agar dihitung 
-total  beratnya.  Jika  perhitungan  berat  sudah  selesai  maka  pengguna 
-akan mendapatkan total kalori dari jenis makanan yang telah dihitung 
-beratnya.  Selanjutnya,  pengguna  dapat  mengulangi  proses  ini  sampai 
-isi  makanan  sudah  lengkap  dan  total  kalori  yang  dibutuhkan  sudah 
-tercukupi.  
-Selanjutnya, kebutuhan kalori harian akan berkurang berdasarkan 
-jumlah kalori yang telah dihitung. Data ini akan masuk pada tab laporan 
-pada aplikasi. Aplikasi juga dapat memberikan warning guna 
-6 
- 
-memperingatkan  pengguna  untuk  tidak  membatasi  asupan  makanan 
-yang dimakan.  
-Komponen  yang  digunakan  untuk  merancang  sistem  ini  sebagai 
-berikut : 
-• Mikrokontroler NodeMCU Wemos R1 
-• Sensor Berat 
-• RF Transmitter and Receiver 
-• Baterai Rechargeable 
-• Kabel Jumper 
-Berikut merupakan gambar rancang bangun yang akan dibuat :  
- 
- 
-7. TINJAUAN PUSTAKA 
-Berikut ini merupakan beberapa penelitian yang sebelumnya telah dibuat dan 
-berhubungan  dengan  topik  pembahasan,  kemudian  dijadikan  bahan  untuk 
-melakukan pengembangan ini adalah sebagai berikut: 
-1)  Pada  penelitian  yang  dikembangkan  di  Universitas  Widya  Dharma  oleh 
-Soebandi  dkk  pada  tahun  2019,  merancang  sistem  aplikasi  perhitungan 
-jumlah kebutuhan kalori harian berbasis mobile berdasarkan makanan yang 
-dimakan setiap harinya. Pengguna akan dianalisis kebutuhan kalori 
-hariannya berdasarkan tinggi, berat badan, dan usia. Setelah itu menginput 
-data makanan yang dimakan secara manual ke aplikasi agar dapat dihitung 
-jumlah kalori yang masuk. 
-2)  Penelitian yang dikembangkan oleh Mochamad Dandi dkk pada tahun 2021 
-di Universitas Telkom Bandung dengan menerapkan metode CNN 
-(Convolutional  Neural  Network)  untuk  menghitung  nutrisi  pada  makanan 
-7 
- 
-berbasis  android.  Sistem  tersebut  memungkinakan  pengguna  untuk  dapat 
-mengetahui jumlah gizi, kalori, dan kalori melalui foto  makanan. TIngkat 
-akurasi yang dihasilkan sebesar 66%. 
-3)  Penelitian yang dikembangkan di Universitas Putera Batam oleh Teddy dkk 
-pada tahun 2019, membuat sebuah sistem pakar dalam menentukan 
-maksimal  kalori  harian  berbasis  mobile  untuk  memberikan  peringatan 
-kepada  pengguna  saat  asupan  yang  dimakan  melebihi  batas  kebutuhan, 
-sehingga membantu orang - orang dalam menjaga kesehatan dengan 
-mencegah penimbunan lemak dan gula pada tubuh. 
-4)  Penelitian yang dilakukan P. Kamakshi Priyaa dkk pada  tahun 2019 
-memberikan solusi sistem yang dikembangkan berbasis  Internet of Things 
-(IoT)  menggunakan  sensor  berat  dan  pemancar  sinyal  untuk  menyimpan 
-asupan kalori yang didapatkan tubuh setiap harinya. Memanfaatkan 
-arsitektur  Arduino  Uno  sebagai  basis  alat,  dan  menggunakan  Machine 
-Learning  untuk  menganalisis  data  yang  didapatkan.  Alat  tersebut  akan 
-menghitung berat makanan yang akan dimakan, lalu mengirimkan data yang 
-didapat  oleh  sensor  menuju  cloud  untuk  diolah  lebih  lanjut  agar  dapat 
-ditampilkan  di  aplikasi  mobile.  Mengkombinasikannya  dengan  metode 
-Convutional Neural Network (CNN) agar dapat mengidentifikasi makanan 
-berdasarkan foto, lalu mengkalkulasikannya terhadap berat makanan 
-tersebut. 
-5)  Penelitian yang dilakukan oleh Jean-Claude dkk.pada tahun 2021 
-mengemukakan bahwa asupan kalori yang diterima tubuh sangat 
-berpengaruh terhadap bentuk badan dan kondisi imun seseorang. 
-Berdasarkan uji sampel dari berbagai jenis kelamin dan usia, menunjukkan 
-bahwa orang yang memiliki asupan kalori di bawah standar normal 
-cenderung mudah terkena penyakit. 
- 
- 
-8. JADWAL KEGIATAN 
-Jadwal kegiatan berlangsung kurang lebih selama 6 bulan yakni bulan Maret 
-2022 s.d. Agustus 2022, dalam tahapan sebagai berikut : 
-8 
- 
- 
-No 
- 
-Jenis Kegiatan 
- 
-Bulan 
-  1 2 3 4 5 6 
-1 Observasi        
-2 Studi Pustaka       
-3 Penyediaan Alat dan Bahan       
-4 Desain Sistem dan Perangkat 
-Keras 
-      
-5 Penulisan Kode Program       
-6 Perakitan Alat       
-7 Pengujian Alat       
-8 Analisa Hasil Pengujian Alat       
-9 Penerapan Alat dan Evaluasi       
-10 Pembuatan Laporan       
- 
- : Pelaksanaan 
- 
- 
-  
-9 
- 
-9. RINCIAN BIAYA 
- 
-No Uraian Jumlah Harga Satuan Jumlah Harga 
-A.  Pembuatan Alat 
-1 Arduino Advance Kit 1 Set Rp. 500.000 Rp.500.000 
- 2 Obeng Set 1 Set Rp.100.000 Rp.100.000 
- 3 RF Transmitter Receiver 2 Pcs Rp.75.000 Rp.150.000 
- 4 Sensor Berat 3 Pcs Rp.40.000 Rp.120.000 
- 5 Baterai Rechargeable 2 Pcs Rp.75.000 Rp.150.000 
- 6 Pembungkus Besi 1 Roll Rp.100.000 Rp.100.000 
-Sub Total Rp.1.120.000 
-B.  Biaya Operasional 
-1 Jasa printing 3 dimensi 1 Paket Rp.50.000 Rp.50.000 
-2 Pembuatan laporan 1 Paket Rp. 100.000  Rp. 100.000 
-3 Penggandaan laporan 2 Paket Rp. 50.000 Rp. 100.000 
-4 Jilid Laporan 3 Paket Rp. 25.000 Rp. 75.000 
- 5 Internet  Rp. 100.000 Rp. 100.000 
-Sub Total  Rp. 425.000 
-Total Biaya Rp. 1.545.000 
-  
-10 
- 
-DAFTAR PUSTAKA 
- 
-Afika,  Henny.  2021.  Hubungan  Gaya  Hidup  Dengan  Kejadian  Obesitas  Pada 
-Remaja Era Milenial Di Kota Medan. Tesis. Fakultas Kesehatan Masyarakat. 
-Universitas Sumatera Utara, Medan. 
-Kementrian Kesehatan RI. 2020. Laporan Hasil riset Kesehatan Dasar (Riskesdas). 
-Badan  Penelitian  dan  Pengembangan  Kesehatan.  Diakses  6  Mei  2022. 
-https://www.litbang.kemkes.go.id/laporan-riset-kesehatan-dasar-riskesdas/  
-Dandi,  Mochamad.,  TSP,  H.F.  dan  Rizal,  Syamsul.  2021.  Perancangan  Aplikasi  
-Perhitungan Nutrisi Pada Makanan Berbasis Android Dengan Metode  
-Convolutional  Neural  Network  (CNN).  e-Proceeding  of  Engineering,Vol.8, 
-No.5: 5000. 
-Grosso, G. (2021). Obesity during COVID-19: An underrated pandemic? 
-EClinicalMedicine, 39, 101062. 
-https://doi.org/10.1016/j.eclinm.2021.101062.  
-Mbarushimana,  J.-C.,  Gustafson,  C.  R.,  Gitungwa,  H.,  Zeballos,  E.  (2021).  The 
-relationship  between  bodyweight  status  and  weight  perception  explains 
-differences  in  calories  ordered  in  a  food  choice  exercise.  Nutrients,  13(6), 
-1794. https://doi.org/10.3390/nu13061794. 
-Priyaa, P.K., Sathyapriya, S., Arockiam, L. 2019.Nutrition monitoring and calorie 
-estimation using internet of things (IOT). International Journal of Innovative 
-Technology and Exploring Engineering, 8(11), 2669–2672. 
-https://doi.org/10.35940/ijitee.k2072.0981119. 
-Santya,  T.,  Suharyanto,  C.  E.,  Simanjuntak,  P.,  &amp;  Alfandianto,  A.  (2019). 
-Sistem Pakar menentukan maksimal Kalori Harian berbasis mobile. 
-Innovation in Research of Informatics (INNOVATICS), 1(2). 
-https://doi.org/10.37058/innovatics.v1i2.920. 
-Soebandi.,  Tendean,  Sandi.  dan  Bujali,  Xaperius.  2019.  Perancangan  Aplikasi 
-Perhitungan Jumlah Kebutuhan Kalori Harian.  Jurnal InTeksis Vol 7, no 2: 
+beberapa faktor, antara lain:
+1) Pengguna harus menginputkan makanan agar dapat dihitung total kalorinya.
+2) Alat dan sistem pendeteksi kalori makanan harus terkoneksi agar bisa
+mendeteksi jumlah kalori yang masuk secara terintegritas.
+3) Pengguna harus menunggu total kalori setelah makanan selesai dihitung 
+semuanya.
+1.6. Sistematika
+Sistematika penulisan pada Tugas Akhir ini dibagi menjadi beberapa bab yang 
+meliputi:
+BAB I PENDAHULUAN
+Berisi latar belakang yang juga meliputi perumusan masalah, tujuan, dan manfaat 
+pembuatan Tugas Akhir, batasan masalah sistem, dan sistematika penulisan laporan 
+Tugas Akhir.
+3
+BAB II KAJIAN PUSTAKA
+Berisi beberapa penelitian yang telah dilakukan oleh ahli dan berkaitan dengan 
+Tugas Akhir serta membantu dalam pembuatan Tugas Akhir. Selain itu terdapat 
+perbandingan sistem dengan yang telah ada serta ditambahkan dengan dasar teori 
+seputar teknologi yang digunakan.
+BAB III KEGIATAN PELAKSANAAN
+Berisi kegiatan pelaksanaan pembuatan sistem menggunakan metode waterfall, 
+mencakup kebutuhan, perancangan, penulisan kode program, perancangan 
+pengujian, dan pemeliharaan sistem. 
+BAB IV ANALISIS DAN PEMBAHASAN
+Berisi hasil dari analisis dan rekapitulasi pengujian terhadap sistem yang telah 
+dikerjakan dalam Tugas Akhir ini.
+BAB V KESIMPULAN
+Berisi kesimpulan dibuatnya laporan Tugas Akhir.
+DAFTAR PUSTAKA
+Daftar yang menampilkan sumber pustaka yang dijadikan panduan pengerjaan 
+laporan Tugas Akhir.
+LAMPIRAN
+Dokumen tambahan yang ditambahkan (dilampirkan) ke laporan Tugas Akhir.
+4
+BAB II - KAJIAN PUSTAKA
+2.
+Bab ini membahas mengenai penelitian terkait dengan konsep serupa yang telah 
+dilakukan oleh peneliti sebelumnya sebagai pembanding dalam pembuatan Tugas 
+Akhir Sistem Penghitung Kalori Berdasarkan Citra Makanan. Selain itu, akan 
+dipaparkan beberapa teknologi yang digunakan dalam pembuatan Tugas Akhir ini.
+2.1. Penelitian Terkait
+Penelitian (Soebandi et al., 2020) pada tahun 2019, merancang sistem aplikasi 
+perhitungan jumlah kebutuhan kalori harian berbasis mobile berdasarkan makanan 
+yang dimakan setiap harinya. Pengguna akan dianalisis kebutuhan kalori hariannya 
+berdasarkan tinggi, berat badan, dan usia. Setelah itu menginput data makanan yang 
+dimakan secara manual ke aplikasi agar dapat dihitung jumlah kalori yang masuk.
+Mochamad Dandi dkk (Dandi et al., 2021) pada tahun 2021, menerapkan metode 
+CNN (Convolutional Neural Network) untuk menghitung nutrisi pada makanan 
+berbasis android. Sistem tersebut memungkinkan pengguna untuk dapat 
+mengetahui jumlah gizi, kalori, dan kalori melalui foto makanan. Tingkat akurasi 
+yang dihasilkan sebesar 66%.
+Penelitian yang dikembangkan oleh Teddy dkk (Santya et al., 2019) pada tahun 
+2019, membuat sebuah sistem pakar dalam menentukan maksimal kalori harian 
+berbasis mobile untuk memberikan peringatan kepada pengguna saat asupan yang 
+dimakan melebihi batas kebutuhan, sehingga membantu orang - orang dalam 
+menjaga kesehatan dengan mencegah penimbunan lemak dan gula pada tubuh.
+P. Kamakshi Priyaa dkk (Kamakshi Priyaa et al., 2019) pada tahun 2019 
+memberikan solusi sistem yang dikembangkan berbasis Internet of Things (IoT) 
+menggunakan sensor berat dan pemancar sinyal untuk menyimpan asupan kalori 
+yang didapatkan tubuh setiap harinya. Memanfaatkan arsitektur Arduino Uno 
+sebagai basis alat, dan menggunakan Machine Learning untuk menganalisis data 
+yang didapatkan. Alat tersebut akan menghitung berat makanan yang akan 
+dimakan, lalu mengirimkan data yang didapat oleh sensor menuju cloud untuk 
+diolah lebih lanjut agar dapat ditampilkan di aplikasi mobile.
+5
+Mengkombinasikannya dengan metode Convutional Neural Network (CNN) agar 
+dapat mengidentifikasi makanan berdasarkan foto, lalu mengkalkulasikannya 
+terhadap berat makanan tersebut.
+Isaac dkk (Machorro-Cano et al., 2019) melakukan pembuatan sistem yang 
+bernama PISIoT. PISIoT merupakan Smart Health Platform yang berguna untuk 
+mengontrol penyakit Obesitas dan berat badan berlebih berbasis Machine Learning
+dan Internet of Things (IoT). Berat badan pengguna akan dijadikan sebagai 
+parameter utama, lalu diproses menuju aplikasi berbasis website dan mobile. 
+Berdasarkan hasil tersebut, nantinya dapat digunakan sebagai pengontrol kalori 
+yang masuk ke dalam tubuh pengguna.
+Penelitian (Mbarushimana et al., 2021) pada tahun 2021, mengemukakan bahwa 
+asupan kalori yang diterima tubuh sangat berpengaruh terhadap bentuk badan dan 
+kondisi imun seseorang. Berdasarkan uji sampel dari berbagai jenis kelamin dan 
+usia, menunjukkan bahwa orang yang memiliki asupan kalori di bawah standar 
+normal cenderung mudah terkena penyakit.
+Anggraeni dkk (Anggraeni et al., 2018) pada tahun 2018 mengembangkan sebuah 
+sistem yang dapat membantu menurunkan berat badan seseorang berbasis aplikasi 
+berbasis Android. Aplikasi akan membaca berat badan pengguna, lalu 
+dikalkulasikan berdasarkan tinggi badan, umur, dan jenis kelamin supaya dapat 
+menampilkan total kebutuhan kalori harian pengguna.
+Penelitian yang dilakukan oleh Indra dkk (Sucipta et al., 2021) menciptakan sebuah 
+prototipe guna memantau tetes cairan infus berbasis Internet of Things (IoT) yang 
+dapat terkoneksi dengan perangkat Android. Mikrokontroler yang digunakan 
+merupakan ESP32 dengan Sensor Optocoupler yang dapat mengontrol jalannya 
+arus cairan dari selang infus.
+Laavanya dkk (Rachakonda et al., 2019) membuat sebuah sistem berbasis Internet 
+of Things untuk membantu memantau kecenderungan dalam memakan makanan 
+atau dapat disebut Stress Eating. Sistem tersebut dapat mendeteksi makanan apa 
+6
+saja yang dimakan oleh pengguna, lalu diproses terhadap total kebutuhan kalori 
+menggunakan Object Detection.
+Penelitian yang dilakukan oleh (Mrs.D.Siva Senthil, 2021) mengembangkan sebuah 
+sistem berbasis Internet of Things (IoT) untuk menghitung kalori berdasarkan 
+makanan yang dapat disimpan pada aplikasi Android. Sistem tersebut juga dapat 
+melihat kalori pada makanan dengan memindai barcode pada kemasan, lalu 
+memunculkan pop up total kalori pada makanan tersebut.
+Berdasarkan uraian tersebut yang membahas beberapa penelitian seputar 
+pengaplikasian Internet of Things dan Deep Learning pada bidang kesehatan yang 
+telah dilakukan oleh para peneliti, belum terdapat sebuah sistem yang dapat 
+melakukan perhitungan kalori secara terintegritas berbasis mobile. Oleh karena itu, 
+dalam tugas akhir membuat SPOONYCAL : Penghitung Kalori ini akan 
+mewujudkan sebuah sistem yang lebih memudahkan pengguna dalam menghitung 
+kalori harian untuk mencegah terjadinya penumpukan lemak dan meminimalisir 
+resiko penyakit kronis lainnya.
+Tabel 2.1 Perbandingan Sistem Aplikasi
+No Sistem
+Fitur / Teknologi
+1 2 3 4 5
+1 Perancangan Aplikasi Perhitungan 
+Jumlah Kebutuhan Kalori Harian
+√ √ - - -
+2 Perancangan Aplikasi Perhitungan 
+Nutrisi Pada Makanan Berbasis 
+Android Dengan Metode 
+Convolutional Neural Network (CNN)
+√ - - √ -
+3 Sistem Pakar menentukan maksimal 
+Kalori Harian berbasis mobile
+√ √ √ √ -
+4 Nutrition monitoring and calorie 
+estimation using Internet of Things
+(IoT)
+- √ - - √
+5 The relationship between bodyweight 
+status and weight perception explains 
+differences in calories ordered in a food 
+- - √ - -
+7
+choice exercise
+6 Sistem Pakar Menentukan Maksimal 
+Kalori Harian Berbasis Mobile
+√ √ √ - -
+7 Calorie Counter Information System 
+Development for Weight Loss Program 
+based on Android
+√ √ √ - -
+8 Prototipe Pemantauan Tetes Cairan 
+Infus Berbasis IoT Terkoneksi 
+Perangkat Android
+√ - - - √
+9 Stress-Log: An IoT-based Smart 
+System to Monitor Stress-Eating
+- √ - √ -
+10 IOT CALORIE MONITORING 
+SYSTEM USING WEIGHING SENSO
+√ √ √ - √
+11 SPOONYCAL : Penghitung Kalori 
+Berbasis Citra Makanan Menggunakan 
+Internet of Things (IoT) dan Deep 
+Learning
+√ √ √ √ √
+Keterangan :
+1) Berbasis mobile
+2) Memberikan rekomendasi kalori harian
+3) Mengontrol pengguna jika kalori yang masuk ke dalam tubuh berlebihan atau 
+kurang
+4) Perhitungan kalori setiap 100 gram model Deep Learning
+5) Perhitungan kalori secara terintegritas berbasis IoT
+Berdasarkan Tabel 2.1 dapat dilihat bahwa dari beberapa sistem yang dibuat oleh 
+peneliti dan berkaitan dengan tugas akhir ini belum ada yang membuat sistem 
+penghitung kalori yang dapat terintegrasi dengan alat berbasis Internet of Things
+(IoT) yang terkoneksi melalui aplikasi mobile, pengguna juga dapat menganalisis 
+kalori menggunakan citra makanan. Kalori yang telah dihitung akan disimpan 
+menuju database dan dapat dilihat kembali oleh pengguna. Selain itu, sistem ini 
+dilengkapi dengan fitur yang dapat mengkalkulasikan kebutuhan kalori harian 
+pengguna berdasarkan jenis kelamin, berat badan, dan tinggi badan. Kebutuhan 
+kalori harian tersebut nantinya menjadi acuan dalam mengontrol asupan kalori yang 
 8
+dimakan, sehingga memudahkan pengguna dalam meminimalisir terjadinya 
+kelebihan kalori saat menggunakan SPOONYCAL. 
+2.2. Teknologi yang Digunakan
+Pada bagian ini membahas tentang teknologi yang digunakan dalam 
+mengembangkan sistem SPOONYCAL : Penghitung Kalori Berbasis Citra 
+Makanan yang diantaranya sebagai berikut.
+2.2.1. Python
+Python merupakan bahasa pemrograman yang ditafsirkan tingkat tinggi, yang 
+dikenal luas karena mudah dipelajari, namun mampu memanfaatkan kekuatan 
+tingkat sistem bahasa pemrograman bila diperlukan. Python dan ekosistem 
+pendukungnya menciptakan kelayakan pembelajaran yang mendalam, serta 
+kebutuhan infrastruktur cloud dan solusi pemrosesan data skalabel yang mampu 
+menangani volume data, yang memungkinkan alur kerja yang dulunya sulit 
+diselesaikan dalam waktu yang wajar.(Raschka et al., 2020). Pada sistem ini Python 
+digunakan untuk bahasa pemrograman utama pada proses deep learning.
+2.2.2. Flutter
+Flutter merupakan framework UI mobile terbuka dan gratis yang dibuat oleh 
+Google dan dirilis pada Mei 2017. Singkatnya, ini memungkinkan pengguna 
+membuat aplikasi mobile asli hanya dengan satu basis kode. Dengan ini, pengguna 
+dapat menggunakan satu bahasa pemrograman dan satu basis kode untuk membuat 
+dua aplikasi berbeda (untuk iOS dan Android). Flutter terdiri dari dua bagian 
+penting, yaitu SDK (Software Development Kit) untuk membantu mengembangkan 
+aplikasi dan Framework untuk menggunakan fungsi pengulangan sesuai kebutuhan 
+pengguna. (Thomas, 2019). Pada sistem ini Flutter digunakan sebagai framework 
+utama dalam pembuatan aplikasi mobile.
+2.2.3. Dart
+Dart merupakan sebuah bahasa pemrograman yang dikembangkan oleh Google dan 
+merupakan bahasa pemrograman resmi buat Flutter, sebuah UI toolkit dan software
+multiplatform asal Google. Penggunaan bahasa Dart itu gratis (open source) dan 
+dikembangkan oleh komunitas developer pakar yang aktif dan terbuka. (Hanif & 
+9
+Sinambela, 2021). Pada sistem ini dart digunakan sebagai bahasa utama dalam 
+pengembangan UI pada mobile.
+2.2.4. MySQL
+MySQL adalah DBMS yang terbuka dengan dua bentuk lisensi, yaitu free software 
+program (perangkat lunak bebas) dan Shareware (perangkat lunak berpemilik yang 
+penggunaannya terbatas). Jadi MySQL adalah database server yang free of charge 
+dengan lisensi GNU preferred Public License (GPL) sehingga dapat Anda pakai 
+untuk keperluan pribadi atau komersil tanpa harus membayar lisensi yang ada. 
+MySQL memakai bahasa SQL menjadi bahasa penghubung antara software 
+aplikasi dengan database server.(Jantce et al., 2020). Pada sistem ini MySQL 
+digunakan sebagai database utama.
+2.2.5. Figma
+Figma dapat memudahkan kerja sama antar tim pada proses menghasilkan, 
+menguji, dan mengirim desain jadi lebih praktis. Penyimpanan dari pekerjaan figma 
+berbasis cloud, jadi dapat tersimpan secara online.(Ferdi et al., 2021). Pada sistem 
+ini, Figma digunakan untuk merancang desain aplikasi Spoonycal Mobile. 
+2.2.6. Deep Learning
+Deep Learning merupakan cabang yang berasal dari Machine Learning, terinspirasi 
+berasal dari manusia dengan menerapkan jaringan syaraf buatan yang mempunyai 
+banyak hidden layer. Salah satu library jaringan syaraf buatan yang terdapat pada 
+Deep Learning ini adalah Keras. Keras merupakan library jaringan syaraf tiruan 
+tingkat tinggi yang ditulis dengan bahasa python dan mampu berjalan di atas CNN, 
+TensorFlow, CNTK, atau Theano.(Santoso, 2018). Pada sistem ini, Library yang 
+digunakan pada Deep Learning yaitu Keras dengan model CNN untuk melakukan 
+Image Classification.
+2.2.7. Image Classification
+Image Classification atau Klasifikasi Gambar (sering disebut sebagai Pengenalan 
+Gambar) merupakan tugas untuk mengasosiasikan satu (klasifikasi label tunggal) 
+atau lebih (klasifikasi multi-label) ke gambar tertentu. Image Classification
+memiliki tugas yang solid untuk membandingkan arsitektur dan metodologi modern 
+10
+dalam domain visi komputer. (Bandyopadhyay, 2022). Pada sistem ini, Image 
+Classification digunakan sebagai pratinjau total kalori pada makanan setiap 100 
+gramnya.
+2.2.8. Convolutional Neural Network (CNN)
+Convolutional Neural Network CNN memiliki banyak lapisan; termasuk lapisan 
+convolutional, lapisan non-linier, lapisan pooling serta lapisan yg terhubung penuh. 
+Lapisan convolutional dan sepenuhnya terhubung memiliki parameter tetapi lapisan 
+penyatuan serta non-linier tidak mempunyai parameter. CNN mempunyai kinerja 
+yg sangat baik dalam dilema pembelajaran mesin (Albawi et al., 2017). Pada sistem 
+ini, Convolutional Neural Network digunakan sebagai model dari Image 
+Classification. 
+2.2.9. Webview
+Webview digunakan sebagai perantara untuk menampilkan website pada aplikasi 
+mobile. Halaman web yang ditampilkan akan diambil menggunakan URL (Uniform 
+Resource Locator). Disamping itu, untuk menggunakan Webview, pengguna juga 
+memerlukan koneksi internet agar dapat menampilkan dan berinteraksi dengan 
+website.
+2.2.10.IoT (Internet of Things)
+Rangkaian yang menghubungkan berbagai objek dan komponen yang memiliki 
+kemampuan untuk mengendalikan, komunikasi, kerja sama antar hardware
+maupun software melalui jaringan internet yang sering disebut dengan (Internet of 
+Things). IoT memungkinkan untuk membaca maupun mengirim suatu I/O (Input / 
+Output) melalui koneksi internet tanpa bantuan komputer dan manusia.
+2.2.11.Android Studio
+Android Studio adalah Integrated Development Enviroment (IDE) untuk sistem 
+operasi android yang didesain khusus untuk pengembangan aplikasi android. 
+Berbasis Intellij IDEA yang menawarkan banyak fitur untuk mempermudah 
+pengguna dalam membangun aplikasi mobile.
+11
+2.2.12.Visual Studio Code
+Visual Studio Code merupakan software editor ringan yang mendukung berbagai 
+jenis bahasa pemrograman seperti Javascript, Typescript, dan Node.js. Selain itu, 
+Visual Studio Code juga mendukung bahasa pemrograman lain dengan ekosistem 
+yang sangat luas. Editor ini adalah fitur lengkap lingkungan pengembangan terpadu 
+(IDE) dirancang untuk pengembang yang bekerja dengan teknologi cloud yang 
+terbuka Microsoft (Shengyu Fu, 2022).
+2.2.13.API
+API merupakan suatu dokumentasi yang terdiri dari interface, fungsi, kelas, struktur 
+dan sebagainya untuk membangun sebuah perangkat lunak. Dengan adanya API 
+ini, maka memudahkan programmer untuk “membongkar” suatu software, 
+kemudian dapat dikembangkan atau diintegrasikan dengan perangkat lunak yang 
+lain(Ramadhani, 2016). API digunakan sebagai perantara dalam menghubungkan 
+antar aplikasi maupun platform agar dapat terhubung satu sama lain.
+2.2.14.Arduino IDE
+Arduino IDE merupakan editor teks untuk menulis kode, logika, dan fungsi yang 
+nantinya dapat diaplikasikan menuju mikrokontroler. Software ini dapat terhubung 
+ke perangkat keras yang mendukung Arduino IDE untuk mengunggah program dan 
+berkomunikasi dengannya(Amestica et al., 2019). Arduino IDE mendukung 
+berbagai jenis board mulai dari Arduino, ESP8266, hingga ESP32. Mendukung 
+bahasa pemrograman Java dan C#, sehingga memudahkan pengguna dalam 
+membuat program yang dapat dijalankan pada Arduino.
+2.2.15.ESP8266
+ESP8266 adalah compact board berbasis mikrokontroler yang ditanamkan chip Wi￾Fi yang dapat diakses melalui protokol TCP/IP (Amestica et al., 2019). Pada 
+dasarnya ESP8266 dapat diprogram menggunakan compiler Arduino IDE, hanya 
+saja mendukung aksebilitas agar dapat terkoneksi melalui jaringan Wi-Fi. ESP8266 
+memiliki spesifikasi seperti pada Tabel 2.3
+12
+Tabel 2.3 Spesifikasi ESP8266
+Fitur Spesifikasi
+Mikrokontroler ESP8266
+Operating Voltage 3.3 – 5V
+WiFi IEEE 802.11 b/g/n
+Frequency 2.4 GHz - 22.5 Ghz
+Digital I/O Pins 13 pin
+2.2.16.Load Cell Sensor
+Load Cell Sensor merupakan sensor untuk menghitung berat yang disusun 
+berdasarkan strain gauge, konduktor, dan jembatan wheatstone (Wahyudi Wahyudi 
+et al., 2017). Load Cell Sensor menghitung massa benda yang terdapat pada gauge, 
+lalu meneruskannya menuju modul selanjutnya. Berikut merupakan spesifikasi 
+Load Cell Sensor;
+● Vsuplai : max DC 10V.
+● Beban : max 5000 gr (5 Kg)
+● Output : 0,1 mV ~ 1,0 mV / V (skala 1:1000 terhadap tegangan masukan, 
+margin error ≤1,5%)
+● Suhu operasional : -20 ~ +65°C.
+● Bahan : Aluminium alloy.
+● Dimensi : 8 cm x 1,25 cm x 1, 25 cm.
+● Berat : 30 gr.
+2.2.17.HX711 Module
+Modul HX711 merupakan modul amplifier yang biasa digunakan pada rangkaian 
+timbangan digital menjadi modul konversi frekuensi analog ke digital pada load 
+cell (Varshitha et al., 2021). Berikut merupakan spesifikasi HX711 module;
+● Voltase : DC 5V.
+● Arus : 10 mA.
+● Input : 2 channel Analog dari load cell (bisa dipakai untuk 2 load cell)
+13
+● Output : TTL (serial tersinkronisasi, DI dan SCK)
+● Akurasi data : 24 bit (24-bit ADC)
+● Frekuensi pembacaan (refresh rate) : 80 Hz.
+● Dimensi : panjang 38 mm x lebar 21 mm.
+● Berat : 20 gr
+2.2.18.Kabel Jumper
+Kabel Jumper merupakan kabel yang digunakan untuk menghubungkan komponen 
+dengan komponen lain pada mikrokontroler. Kabel ini dapat digunakan juga 
+sebagai penghubung jalur rangkaian yang terputus maupun sarana pengiriman arus 
+menuju suatu komponen.
+2.2.19.Rechargeable Battery 18650
+Rechargeable Battery 18650 merupakan salah satu jenis baterai yang memiliki fitur 
+dapat diisi ulang atau rechargeable. Baterai jenis ini memiliki arsitektur sama 
+seperti baterai Lithium-Ion dengan siklus hidup lebih baik. Berikut spesifikasi 
+Rechargeable Battery 18650 yang digunakan;
+● Voltase : 3.6V.
+● Kapasitas : 2,850 mAh.
+● Voltase Pengisian Daya : 4.2V
+● Durasi Pengisian Daya : 3 jam 
+● Metode Pengisian Daya: CC and CV.
+2.2.20.18650 Battery Shield
+Sebuah shield yang berfungsi untuk membantu memasok sumber menuju 
+mikrokontroler pada rangkaian IoT (Internet of Things). 18650 Battery Shield juga 
+memiliki modul yang mencegah terjadinya arus pendek saat mengisi ulang daya 
+baterai. Berikut spesifikasi 18650 Battery Shield yang digunakan pada 
+SPOONYCAL :
+● Voltase : 3 - 5V.
+● Jenis Kabel : USB Type-A.
+● Voltase Pengisian Daya : 5 - 8V.
+● Jumlah Port: 3x 3V dan 3x 5V.
+14
+2.2.21.Metode Waterfall
+Metode waterfall adalah metode Software Development Life Cycle (SDLC) yang
+dikemukakan oleh Royce dengan melakukan pendekatan secara sistematis 
+(Sherrell, 2013). Metode waterfall merupakan pendekatan logika berdasarkan 
+beberapa fase yang harus diselesaikan secara sistematis dan berurutan.
+2.2.22.Google Colab
+Google Colab membantu menyediakan sarana untuk mengeksekusi kode program 
+berbahasa Python. Tool ini memberikan fasilitas untuk melakukan pemrosesan dan 
+pengolahan data, sehingga dapat digunakan untuk pelatihan model teknik Machine 
+Learning maupun Deep Learning. Secara default, Google Colab tersedia secara 
+gratis dengan tiga jenis compiler, diantaranya None, GPU, dan TPU.
+2.2.23.UML
+Unified Modelling Language (UML) merupakan suatu diagram untuk 
+memvisualisasikan dan mendokumentasikan yang akan terjadi analisa serta desain 
+yang berisi sintak dalam memodelkan sistem secara visual (Braun, et. al. 2001).
+2.2.24.ERD
+Entity Relationship Diagram (ERD) digunakan untuk menggambarkan relasi antar 
+entitas beserta atibutnya. Suatu model untuk menjelaskan hubungan antar data 
+dalam database berdasarkan objek-objek dasar data yang mempunyai hubungan 
+antar relasi.. secara visual (Braun, et. al. 2001).
+15
+BAB III KEGIATAN PELAKSANAAN
+Bab ini membahas mengenai kegiatan pelaksanaan Tugas Akhir dengan 
+menggunakan metode waterfall. Pemodelan metode waterfall dapat dilihat pada 
+Gambar 3.1.
+Gambar 3.1 Fase Metode Waterfall (Sherrell, 2013)
+Gambar 3.1 merupakan ilustrasi fase pada metode waterfall menurut Sherrell. 
+Terdapat 5 fase pada metode waterfall, diantaranya Requirements Definition, 
+System and Software Design, Implementation and Unit Testing, Integration and 
+System Testing dan Operation and Maintenance. Uraian tentang penjelasan masing 
+- masing fase sebagai berikut :
+1) Requirements Analysis and Definition
+Tahapan ini merupakan proses analisis informasi yang dibutuhkan pengguna. 
+batasan serta tujuan sistem. Isu didapatkan dari diskusi secara langsung dengan 
+pengguna. Selanjutnya hal – hal tersebut bisa didefinisikan secara detail serta 
+berfungsi sebagai spesifikasi sistem.
+2) System and Software Design
+Spesifikasi sistem yang telah terbentuk pada requirements analysis and definition
+selanjutnya akan dianalisa di termin ini untuk lalu diimplementasikan pada desain 
+pengembangan. Proses perancangan sistem mengalokasikan kebutuhan pengguna 
+ke dalam aplikasi dan perangkat keras sistem menggunakan cara membentuk sistem 
+arsitektur secara keseluruhan. Perancangan sistem melibatkan proses identifikasi 
+dan menyebutkan abstraksi fundamental sistem berikut hubungannya.
+16
+3) Implementing and Unit Testing
+Pada tahap ini, perancangan sistem direalisasikan pada program atau unit program 
+yang nantinya akan digabungkan pada termin berikutnya. pada tahap ini juga 
+dilakukan pengujian serta pemeriksaan terhadap fungsionalitas modul yang sudah 
+dibuat.
+4) Integration and System Testing
+Unit program maupun program yang terpisah diintegrasikan dan diuji menjadi 
+kesatuan sistem untuk memastikan bahwa kebutuhan dari perangkat lunak tersebut 
+sudah dipenuhi. Sesudah proses integrasi selesai, selanjutnya dilakukan 
+pemeriksaan dan pengujian sistem secara keseluruhan untuk pengidentifikasian 
+kemungkinan adanya kegagalan serta kesalahan sistem.
+5) Operation and Maintenance
+Umumnya, termin ini artinya termin terpanjang dari SDLC sebab sistem diinstal 
+serta ditaruh ke pada lingkungan yang nyata. Pemeliharaan mencakup perbaikan 
+kesalahan atau error, perbaikan implementasi unit sistem, peningkatan serta 
+penyesuaian sistem sesuai dengan kebutuhan. 
+3.
+3.1. Analisis Kebutuhan
+Langkah pertama dari tahap analisis sistem yaitu melakukan validasi dan 
+memastikan kebutuhan pengguna dan sistem sudah tercakup secara keseluruhan. 
+Langkah berikutnya yaitu menyusun analisa kebutuhan perangkat keras maupun 
+perangkat lunak sistem SPOONYCAL. Berikut adalah gambaran umum sistem 
+SPOONYCAL. seperti pada Gambar 3.2.
+Gambar 3.2 Gambaran Umum Sistem SPOONYCAL
+17
+3.1.1. Analisis Kebutuhan Fungsional
+Analisis kebutuhan fungsional pada SPOONYCAL adalah sebagai berikut :
+1) Aplikasi untuk pengguna dapat menampilkan rekomendasi kebutuhan kalori 
+harian berdasarkan usia, jenis kelamin, berat, dan tinggi badan.
+2) Aplikasi untuk pengguna dapat mengidentifikasi kalori pada makanan 
+berbasis citra.
+3) Aplikasi untuk pengguna dapat mencatat riwayat asupan kalori yang 
+dimakan setiap harinya.
+4) Aplikasi untuk pengguna dapat memberikan peringatan ketika asupan kalori 
+yang dimakan melebihi kebutuhan kalori harian.
+5) Alat untuk pengguna dapat menghitung kalkulasi kalori pada asupan 
+makanan yang akan dimakan.
+3.1.2. Analisis Kebutuhan Non Fungsional
+Kebutuhan non fungsional bertujuan untuk memenuhi kebutuhan fungsional 
+diatas. Berikut ini adalah kebutuhan non fungsional SPOONYCAL.
+3.1.2.1.Analisis Kebutuhan Perangkat Keras
+Perangkat keras yang dibutuhkan dalam pembuatan SPOONYCAL adalah sebagai 
+berikut:
+1) Komputer / Laptop
+2) Ponsel Android
+3) Mikrokontroler ESP8266
+4) Load Cell Sensor
+5) HX711 Module
+6) Kabel Jumper
+7) Battery Shield 18650
+8) Battery 18650
+3.1.2.2.Analisis Kebutuhan Perangkat Lunak
+Perangkat lunak yang dibutuhkan dalam pembuatan SPOONYCAL adalah 
+sebagai berikut:
+1) Android Studio
+2) Microsoft Visual Studio Code
+18
+3) Figma
+4) Proteus
+5) Arduino IDE
+6) Firebase
+7) MySQL
+3.2. Perancangan Sistem
+Berdasarkan pada identifikasi kebutuhan yang sebelumnya diperoleh maka 
+dibuatlah rancangan sistem, rancangan database, dan rancangan antarmuka sebagai 
+berikut.
+3.2.1. Diagram Block
+Block Diagram digunakan untuk mengetahui gambaran umum bagaimana 
+SPOONYCAL ini bekerja dalam bentuk blok – blok yang saling terhubung seperti 
+Gambar 3.3 berikut ini.
+Gambar 3.3 Block Diagram Sistem
+Pada Gambar 3.3 yang menunjukkan gambaran umum dari sistem, dapat diketahui 
+bahwa kamera dan alat SPOONYCAL akan menjadi sumber input data yang akan 
+digunakan sebagai variabel utama dalam proses penghitungan kalori. Data tersebut 
+19
+diolah menggunakan logika pada aplikasi SPOONYCAL, lalu diteruskan menuju 
+Firebase dan web server sebelum disimpan di database. Pengguna dapat mengakses 
+riwayat data kalori yang telah disimpan melalui aplikasi. Alat SPOONYCAL yang 
+digunakan terdiri dari rangkaian Load Cell Sensor, HX711 Module, ESP8266, 
+Rechargeable Battery, dan Battery Shield yang membentuk sebuah sendok. Alat 
+SPOONYCAL berguna menerima input berat makanan yang dibaca oleh Load Cell 
+Sensor, sedangkan kamera berfungsi untuk menerima input berupa gambar.
+3.2.2. UML (Unified Modelling Language)
+Unified Modelling Language (UML) merupakan suatu diagram untuk 
+memvisualisasikan dan mendokumentasikan yang akan terjadi analisa serta desain 
+yang berisi sintak dalam memodelkan sistem secara visual (Braun, et. al. 2001). 
+Pembuatan diagram UML dapat membantu mengeksplorasi potensi desain, dan 
+memvalidasi desain arsitektur perangkat lunak atau pembuat program.
+3.2.2.1.Use Case Diagram
+Use Case Diagram merupakan salah satu jenis dari berbagai jenis diagram UML. 
+Diagram ini menggambarkan tipikal interaksi antara user (pengguna) sebuah sistem 
+menggunakan suatu sistem tersendiri melalui sebuah cerita bagaimana sistem 
+tersebut dipakai. Use Case Diagram SPOONYCAL dipaparkan pada gambar 3.4. 
+Dapat diketahui bahwa sistem memiliki 2 aktor yaitu penggun dan admin. Setiap 
+aktor memiliki peran dan tugasnya masing - masing. Admin dapat melakukan 
+pengelolaan terhadap sistem meliputi data pada API (Aplication Programming 
+Interface) aplikasi dan akun pengguna. Kemudian untuk pengguna dapat 
+melakukan berbagai aktivitas diantaranya melakukan pendaftaran maupun login
+akun pada aplikasi, mendeteksi kalori menggunakan citra makanan, melakukan 
+pencatatan kalori pada makanan yang dihitung menggunakan SPOONYCAL, dan 
+melakukan pengubahan pada informasi akun. Pengguna juga dapat melihat laporan 
+kalori yang telah dicatat pada aplikasi Spoonycal Mobile dalam bentuk list maupun 
+diagram batang berdasarkan tanggal.
+20
+Gambar 3.4 Use Case Diagram Sistem
+3.2.2.2.Activity Diagram
+Activity Diagram menggambarkan alur dari proses dan aktivitas yang terjadi saat 
+menggunakan sebuah sistem. Berikut merupakan diagram yang terdapat pada 
+sistem SPOONYCAL ditampilkan berdasarkan aktivitas yang dapat dilakukan oleh 
+pengguna dengan aplikasi Spoonycal Mobile maupun alat SPOONYCAL.
+a) Activity Diagram Pendaftaran Akun Spoonycal
+Activity Diagram Pendaftaran Akun Spoonycal untuk pengguna ditampilkan pada 
+Gambar 3.5
+21
+Gambar 3.5 Activity Diagram Pendaftaran Akun Spoonycal
+Pada Gambar 3.5 pengguna dapat melakukan proses registrasi melalui halaman 
+register. Pengguna akan diarahkan untuk memasukkan data pribadi seperti jenis 
+kelamin, tinggi badan, berat badan, dan usia. Keempat variabel tersebut akan 
+dijadikan sebagai parameter untuk mengkalkulasikan jumlah total kebutuhan kalori. 
+Jumlah total kebutuhan kalori yang didapatkan akan dijadikan nilai untuk variabel 
+kalori_harian pengguna. Setelah mendapatkan data kalori harian, pengguna 
+memasukkan username, email dan password sebagai identifikasi unik pada akun 
+yang akan didaftarkan.
+b) Activity Diagram Login
+Activity Diagram Login Akun Spoonycal untuk pengguna ditampilkan pada 
+Gambar 3.6
+22
+Gambar 3.6 Activity Diagram Login Akun Spoonycal Mobile
+Pada Gambar 3.6 pengguna dapat melakukan login menggunakan akun Spoonycal
+Mobile yang telah didaftarkan dengan memasukkan email dan password yang telah 
+terdaftar. Jika email dan password yang dimasukkan pengguna cocok, maka akan 
+diarahkan menuju halaman beranda. Sebaliknya, jika email dan password salah, 
+maka sistem tidak akan mengarahkan pengguna menuju halaman selanjutnya.
+c) Activity Diagram Edit Profil
+Activity Diagram Edit Akun Spoonycal untuk pengguna ditampilkan pada Gambar 
+3.7
+Gambar 3.7 Activity Diagram Edit Akun Spoonycal Mobile
+23
+Pada Gambar 3.7 pengguna dapat mengubah beberapa informasi seputar akun yang 
+telah terdaftar pada Spoonycal Mobile dengan mengakses halaman profil, 
+kemudian memilih edit profil. Selanjutnya pengguna dapat memasukkan field pada 
+informasi yang akan diubah, lalu menekan tombol selesai. Jika seluruh field tidak 
+terisi, maka pengguna tidak dapat mengubah informasi akunnya dan perlu untuk 
+mengisi kembali field yang masih kosong.
+d) Activity Diagram Deteksi Citra Makanan
+Activity Diagram Deteksi Citra Makanan untuk pengguna ditampilkan pada 
+Gambar 3.8
+Gambar 3.8 Activity Diagram Penggunaan Deteksi Citra Makanan
+Pada Gambar 3.8 pengguna dapat menggunakan fitur untuk mendeteksi objek 
+makanan dengan memilih ikon kamera, kemudian memasukkan input berupa foto 
+makanan. Pengguna dapat memilih sumber foto dari galeri, file, maupun kamera. 
+Foto tersebut akan diolah menggunakan model Resnet50 yang nantinya akan 
+menampilkan hasil pengolahan citra berupa boundary box dan jumlah kalori per 
+100 gram pada setiap makanan yang terdeteksi.
+24
+e) Activity Diagram Penggunaan SPOONYCAL
+Activity Diagram Penggunaan SPOONYCAL untuk pengguna ditampilkan pada 
+Gambar 3.9
+Gambar 3.9 Activity Diagram Penggunaan SPOONYCAL
+Pada Gambar 3.9 pengguna dapat melakukan pencatatan kalori pada makanan yang 
+dimakan menggunakan SPOONYCAL. Pengguna diarahkan untuk 
+mengkoneksikan SPOONYCAL dengan aplikasi Spoonycal Mobile menggunakan 
+jaringan hotspot, lalu memilih makanan yang akan dihitung. Setelah itu sistem akan 
+mengarahkan pengguna menuju halaman perhitungan kalori.
+Pengguna dapat menekan tombol Tangkap Kalori untuk menghitung kalori dari 
+makanan yang ditimbang secara terintegritas, apabila telah selesai menghitung 
+kalori, pengguna dapat memilih Hitung Kalori Makanan Lainnya untuk menghitung 
+kalori pada makanan yang berbeda atau Selesai Hitung Kalori. 
+Pengguna akan ditampilkan sebuah listview yang menampilkan makanan - makanan 
+yang telah dihitung menggunakan SPOONYCAL. Apabila total kalori makanan 
+25
+yang dihitung tidak melebihi jumlah kebutuhan kalori harian, maka pencatatan 
+asupan kalori berhasil. Sebaliknya, jika makanan yang dihitung kalorinya melebihi 
+jumlah kebutuhan kalori harian, maka akan muncul sebuah pop-up warning yang 
+berisi peringatan untuk mengurangi makanan yang akan dimakan oleh pengguna.
+3.2.2.3.Flowchart
+Alur cara kerja SPOONYCAL memiliki susunan yang runtun, dimana terdapat 
+prosedur yang diatur pada flowchart pada Gambar 3.10
+Gambar 3.10 Flowchart Alur Cara Kerja Sistem
+26
+Pada Gambar 3.10 menunjukkan prosedur cara kerja Spoonycal Mobile. Dimulai 
+dari melakukan registrasi dengan data pengguna diantaranya Jenis Kelamin, Tinggi 
+Badan, Berat Badan, Umur, Username, Email, dan Password. Setelah registrasi, 
+pengguna akan mendapatkan jumlah total kebutuhan kalori harian dan langsung 
+diarahkan menuju halaman beranda. Ketika melakukan perhitungan kalori, 
+pengguna dapat memilih fitur yang digunakan, diantaranya menggunakan citra 
+makanan atau alat SPOONYCAL. Jika memilih citra makanan, maka pengguna 
+diharuskan untuk memasukkan foto makanan yang akan dideteksi dari galeri atau 
+kamera. Secara otomatis foto tersebut akan diolah menggunakan Deep Learning, 
+lalu ditampilkan objek dan jumlah kalori per 100 gram untuk setiap makanan yang 
+terdeteksi. Sedangkan apabila pengguna memilih metode SPOONYCAL untuk 
+mencatat kalori, sistem akan mengarahkan menuju halaman untuk mengkonfigurasi 
+hotspot pada smartphone dengan SSID dan password bernama SPOONYCAL agar 
+dapat terkoneksi dengan alat SPOONYCAL. Setelah itu pengguna dapat langsung 
+memilih makanan yang akan dihitung kalorinya secara terintegritas, lalu memasuki 
+halaman perhitungan kalori. Secara langsung sistem akan mengkalkulasikan berat 
+makanan yang dibaca oleh sensor pada SPOONYCAL. Jika pengguna telah selesai 
+melakukan perhitungan kalori, sistem akan melakukan pengecekan terhadap sisa 
+jumlah total kebutuhan kalori harian, apabila kalori yang dihitung melebihi sisa 
+total kebutuhan kalori harian, akan muncul pop up warning yang mengharuskan 
+pengguna untuk mengurangi isi makanannya, sebaliknya jika kalori yang dihitung 
+tidak melebihi sisa total kebutuhan kalori harian, sistem akan menyimpan kalori 
+yang dihitung pengguna menuju database.
+3.2.3. Perancangan Database
+Database yang digunakan dalam sistem Spoonycal dijelaskan dalam dua metode, 
+yaitu Struktur Tabel pada Database dan Diagram ERD (Entity Relational 
+Diagram). 
+27
+3.2.3.1.Entity Relationship Diagram (ERD)
+Entity Relationship Diagram (ERD) digunakan untuk menggambarkan relasi antar 
+entitas beserta atibutnya. ERD Sistem SPOONYCAL ditampilkan pada Gambar
+3.11.
+Gambar 3.11 Diagram ERD Database Spoonycal Mobile
+Berdasarkan Gambar 3.11 dapat diketahui bahwa entitas users memiliki relasi one
+to many terhadap entitas catatan. Sedangkan pada entitas makanans tidak memiliki 
+relasi dengan entitas manapun dan berdiri dengan sendirinya.
+3.2.3.2.Struktur Tabel Database
+1) Tabel users
+Tabel 3.1 merupakan tabel yang digunakan untuk menyimpan seluruh data 
+pengguna. 
+Tabel 3.1 Tabel users
+No Field Tipe Data Panjang Keterangan
+1 Id big integer 20 Primary Key
+2 Name varchar 255
+3 Email varchar 255
+4 Password varchar
+5 Umur double 255
+28
+6 Gender varchar 255
+7 Tinggi double
+8 Berat double
+9 Umur double
+10 kalori_harian double
+11 remember_token varchar 100
+12 created_at timestamp
+13 updated_at timestamp
+2) Tabel catatans
+Tabel 3.2 merupakan tabel yang digunakan untuk menyimpan seluruh data catatan 
+kalori yang telah didaftarkan oleh pengguna menggunakan alat SPOONYCAL. 
+Tabel 3.2 Tabel catatans
+No Field Tipe Data Panjang Keterangan
+1 Id big integer 20 Primary Key
+2 Tanggal date
+3 Waktu time
+4 kalori_masuk double
+5 sisa_kalori double
+6 target_kalori double
+7 user_id big integer 20 Foreign Key
+8 created_at timestamp
+9 updated_at timestamp
+3) Tabel makanans
+Tabel 3.3 merupakan tabel yang digunakan untuk menyimpan seluruh data 
+makanan yang dapat digunakan untuk menghitung catatan kalori harian.
+29
+Tabel 3.3 Tabel makanans
+No Field Tipe Data Panjang Keterangan
+1 Id big integer 20 Primary Key
+2 Makanan varchar 255
+3 kalori_per_gram double
+4 created_at timestamp
+5 updated_at timestamp
+3.2.4. Perancangan Antarmuka Aplikasi Android
+Pada bagian ini dijelaskan rancangan antarmuka aplikasi Spoonycal Mobile yang 
+dibuat menggunakan software Figma. Antarmuka yang akan ditampilkan dibuat 
+sesederhana mungkin untuk membuat aplikasi lebih user friendly. Berikut beberapa 
+bagian screen dalam aplikasi android :
+1) Halaman Splash Screen
+Tampilan Splash Screen akan muncul ketika pengguna pertama kali membuka 
+aplikasi. Halaman Splash Screen dapat dilihat pada Gambar 3.12.
+Gambar 3.12 Rancangan Halaman Splash Screen
+30
+2) Halaman Kepemilikan Akun
+Tampilan yang muncul setelah halaman Splash Screen muncul. Pengguna harus 
+memilih antara sudah memiliki akun atau belum. Jika sudah memiliki akun, 
+pengguna akan diarahkan menuju halaman Login. Jika belum memiliki akun, 
+pengguna akan diarahkan menuju halaman Register. Halaman Kepemilikan Akun 
+dapat dilihat pada Gambar 3.13.
+Gambar 3.13 Rancangan Kepemilikan Akun
+3) Halaman Login
+Halaman login pengguna yang telah memiliki akun Spoonycal Mobile
+menggunakan email dan password agar dapat mengakses fitur yang ada pada 
+aplikasi. Halaman Login dapat dilihat pada Gambar 3.14.
+Gambar 3.14 Rancangan Halaman Login
+31
+4) Halaman Register
+Tampilan halaman pendaftaran untuk pengguna baru yang belum memiliki akun 
+Spoonycal Mobile. Pengguna dapat membuat akun baru menggunakan username,
+email dan password. Halaman Register dapat dilihat pada Gambar 3.15.
+Gambar 3.15 Rancangan Halaman Register
+5) Halaman Selamat Datang
+Halaman Selamat Datang untuk pengguna yang akan melakukan registrasi. 
+Selanjutnya, pengguna diminta untuk menginputkan data-data mereka. Halaman 
+Selamat Datang dapat dilihat pada Gambar 3.16.
+Gambar 3.16 Rancangan Halaman Selamat Datang
+32
+6) Halaman Input Jenis Kelamin
+Halaman Input Jenis Kelamin akan muncul setelah pengguna memilih tombol 
+“mengerti” pada Halaman Selamat Datang. Pengguna akan diarahkan untuk 
+memasukkan jenis kelaminnya. Halaman Input Jenis Kelamin dapat dilihat pada 
+Gambar 3.17.
+Gambar 3.17 Rancangan Input Jenis Kelamin
+7) Halaman Input Berat Badan
+Halaman Input Berat Badan akan muncul setelah memasukkan jenis kelamin. 
+Pengguna akan diarahkan untuk memasukkan berat badannya saat ini. Halaman 
+Input Jenis Kelamin dapat dilihat pada Gambar 3.18.
+Gambar 3.18 Rancangan Input Berat Badan
+33
+8) Halaman Input Tinggi Badan
+Halaman Input Tinggi Badan akan muncul setelah memasukkan berat badan. 
+Pengguna akan diarahkan untuk memasukkan tinggi badannya saat ini. Halaman 
+Input Jenis Kelamin dapat dilihat pada Gambar 3.19.
+Gambar 3.19 Rancangan Input Tinggi Badan
+9) Halaman Input Umur
+Halaman Input Umur akan muncul setelah memasukkan tinggi badan. Pengguna 
+akan diarahkan untuk memasukkan umurnya saat ini. Halaman Input Umur dapat 
+dilihat pada Gambar 3.20.
+Gambar 3.20 Rancangan Input Umur
+34
+10) Halaman Rekomendasi Kalori Harian
+Halaman Rekomendasi Kalori Harian akan muncul setelah memasukkan umur. 
+Pengguna akan diarahkan diberikan rekomendasi kalori hariannya saat ini 
+berdasarkan perhitungan jenis kelamin, berat badan, tinggi badan, dan usia. 
+Halaman Rekomendasi Kalori Harian dapat dilihat pada Gambar 3.21.
+Gambar 3.21 Rancangan Rekomendasi Kalori Harian
+11) Halaman Beranda
+Halaman beranda muncul setelah pengguna login ke aplikasi Spoonycal Mobile dan 
+melengkapi data pribadi. Halaman Beranda juga dapat diakses dengan menekan 
+tombol Navigation Bar Beranda . Pada header halaman, terdapat informasi 
+pengguna berupa username dan email. Dibawahnya terdapat grafik yang 
+menampilkan kalori yang dibutuhkan pengguna. Grafik tersebut akan berubah 
+seiring masuknya asupan kalori pada makanan yang telah dihitung oleh sistem. 
+Selain itu, terdapat laporan kalori harian yang telah dikonsumsi beserta waktunya. 
+Di samping itu, juga terdapat icon tambah yang berisi tombol kamera dan sendok. 
+Kedua tombol tersebut mengarahkan pengguna menuju fitur identifikasi citra 
+makanan (kamera) dan penghitungan kalori makanan menggunakan sendok 
+(sendok). Pada tampilan paling bawah terdapat tombol navigasi menu beranda, 
+laporan, dan profil. Halaman Beranda dapat dilihat pada Gambar 3.22.
+35
+Gambar 3.22 Rancangan Halaman Beranda
+Gambar 3.23 Rancangan Halaman Beranda - Pemilihan Metode
+12) Halaman Identifikasi Citra Makanan
+Halaman identifikasi citra makanan muncul setelah pengguna memilih icon kamera 
+pada beranda. Pengguna akan diarahkan untuk menggunakan kamera untuk 
+memotret makanan atau mengambil makanan dari data lokal pengguna. Setelah itu, 
+secara otomatis sistem akan menampilkan estimasi kalori pada jenis makanan yang 
+36
+teridentifikasi dalam citra tersebut setiap 100 gramnya. Halaman Identifikasi 
+Makanan dapat dilihat pada Gambar 3.24.
+Gambar 3.24 Rancangan Identifikasi Citra Makanan
+13) Halaman Pairing SPOONYCAL
+Halaman Pairing Spoonycal akan muncul setelah pengguna memilih icon sendok 
+pada halaman beranda. Pengguna akan diarahkan untuk mengkoneksikan 
+SPOONYCAL dengan aplikasi melalui sambungan hotspot. Pengguna harus 
+mengaktifkan SPOONYCAL dengan mengubah tombol power menuju on. 
+Halaman Pairing SPOONYCAL dapat dilihat pada Gambar 3.25.
+Gambar 3.25 Rancangan Pairing SPOONYCAL
+37
+14) Halaman Pemilihan Makanan
+Halaman Pemilihan Makanan akan muncul setelah pengguna menekan tombol 
+Perangkat Sudah Tersambung pada halaman Pairing SPOONYCAL. Pengguna 
+dapat memilih jenis makanan yang akan dilakukan penghitungan kalori pada 
+makanan yang tersedia atau menekan icon search pada header. Halaman Pemilihan 
+Makanan dapat dilihat pada Gambar 3.26 dan Gambar 3.27.
+Gambar 3.26 Rancangan Pemilihan Makanan
+Gambar 3.27 Rancangan Pemilihan Makanan - Icon Pencarian
+38
+15) Halaman Penghitungan Kalori Makanan
+Halaman Penghitungan Kalori Makanan akan muncul setelah pengguna menekan 
+tombol Perangkat Sudah Tersambung pada halaman Pairing SPOONYCAL. 
+Halaman penghitungan kalori makanan menampilkan berat makanan yang telah 
+dibaca menggunakan sensor pada sendok SPOONYCAL secara terintegritas. Pada 
+text berwarna merah di bawah header cardbox, merepresentasikan berat yang 
+dibaca oleh sensor berat secara terintegritas. Di dalam cardbox, terdapat 2 textbox 
+yang masing - masing memiliki fungsi untuk menampilkan total berat dalam satuan 
+gram dan total kalori pada satuan kal. Jika pengguna sudah mengangkat makanan 
+dengan benar, pengguna dapat menekan tangkap kalori untuk mendapatkan kalori 
+yang diinginkan. Selain itu, pengguna bisa menangkap kalori kembali tanpa harus 
+keluar dari halaman ini. Jika sudah selesai, pengguna dapat menekan tombol selesai 
+untuk menuju Halaman Isi Piring. Halaman Penghitungan Kalori Makanan dapat 
+dilihat pada Gambar 3.28, dan Gambar 3.29.
+Gambar 3.28 Rancangan Penghitungan Kalori Makanan - Awal
+39
+Gambar 3.29 Rancangan Penghitungan Kalori Makanan - Hasil Perhitungan
+16) Halaman Isi Piring
+Halaman Isi Piring akan muncul setelah pengguna menekan tombol selesai pada 
+Halaman Perhitungan Kalori Makanan. Pengguna dapat menghapus makanan yang 
+terdapat piring dengan menekan icon silang pada masing-masing list makanan. Jika 
+sudah lengkap, pengguna dapat menekan tombol “Isi piring saya sudah lengkap!”. 
+Halaman Isi Piring dapat dilihat pada Gambar 3.30.
+Gambar 3.30 Rancangan Isi Piring
+17) Pop Up Kirim Catatan Kalori
+Pop Up Kirim Catatan Kalori akan muncul jika total kalori pada isi piring pengguna 
+belum melebihi batas sisa kalori harian pada hari ini. Pengguna dapat mengirimkan 
+40
+data catatan kalorinya dan kembali menuju beranda. Pop Up Kirim Catatan Kalori 
+dapat dilihat pada Gambar 3.31.
+Gambar 3.31 Rancangan Kirim Catatan Kalori
+18) Pop Up Warning
+Pop Up Warning akan muncul jika total kalori pada isi piring pengguna melebihi 
+batas sisa kalori harian pada hari ini. Pengguna diwajibkan untuk kembali dan 
+mengurangi makanan pada piring pengguna. Pop Up Warning dapat dilihat pada 
+Gambar 3.32.
+Gambar 3.32 Rancangan Warning
+19) Halaman Laporan
+Halaman Laporan dapat diakses dengan menekan tombol Navigation Bar Laporan. 
+Halaman Laporan menampilkan record asupan kalori setiap hari yang telah 
+dihitung menggunakan SPOONYCAL. Pengguna dapat melihat hasil rekam kalori
+41
+beserta makanan dalam jangka waktu setiap hari yang telah di-input. Halaman 
+Laporan dapat dilihat pada Gambar 3.33.
+Gambar 3.33 Rancangan Laporan
+20) Halaman Profil
+Halaman profil dapat diakses dengan menekan tombol Navigation Bar Profil. 
+Halaman profil berfungsi untuk menampilkan profil berupa username dan email 
+pengguna yang terdaftar pada aplikasi. Terdapat listtile Edit Profil, Bantuan dan 
+Keluar pada halaman profil ini. Halaman Profil dapat dilihat pada Gambar 3.34.
+Gambar 3.34 Rancangan Profil
+42
+21) Halaman Edit Profil
+Halaman Edit Profil akan muncul setelah pengguna menekan listtile Edit Profil 
+pada halaman profil. Halaman edit profil berfungsi membantu pengguna dalam 
+mengubah informasi dan data diri pada aplikasi. Secara otomatis, target kalori 
+harian pengguna akan berubah setelah data diri pengguna disimpan. Halaman Edit 
+Profil dapat dilihat pada Gambar 3.35.
+Gambar 3.35 Rancangan Edit Profil
+22) Halaman Bantuan
+Halaman Bantuan akan muncul setelah pengguna menekan listtile Bantuan pada 
+halaman profil. Halaman Bantuan berisikan kontak developer, tentang Spoonycal, 
+dan Instruksi Penggunaan dari aplikasi Spoonycal Mobile. Halaman Bantuan dapat 
+dilihat pada Gambar 3.36.
+Gambar 3.36 Rancangan Bantuan
+43
+3.2.5. Perancangan Prototipe
+Perancangan prototipe SPOONYCAL : Sistem Penghitung Kalori Harian berbasis 
+Citra Makanan Menggunakan Internet Of Things (IoT) dan Deep Learning dibuat 
+secara tiga dimensi. Jenis komponen dan desain alat yang digunakan dapat dilihat 
+pada Gambar 3.37.
+Gambar 3.37 Prototipe SPOONYCAL Tampak Luar
+Gambar 3.38 Letak Komponen Prototipe SPOONYCAL
+Prototipe SPOONYCAL dibuat dalam bentuk menyerupai sendok yang portable
+dan efisien. Prototipe memiliki panjang 2x cm, lebar 4 cm, dan tinggi 4,5 cm dimana 
+di dalamnya terdapat ruang untuk meletakkan mikrokontroler Wemos D1 Mini, 
+Modul HX711, Sensor Load Cell, dan Battery Shield. Material yang digunakan 
+sebagai cangkang SPOONYCAL adalah PLTA+.
+44
+3.2.6. Perancangan Model Deep Learning
+Perancangan Model Deep Learning pada fitur Deteksi Citra Makanan 
+menggunakan metode Transfer Learning dengan model Resnet50. Arsitektur 
+Resnet50 ditampilkan pada Gambar 3.39.
+Gambar 3.39 Arsitektur Resnet50
+Model Resnet50 tersebut dikembangkan oleh tim mmdet. Berbasis Convulotional 
+Neural Network (CNN) yang memproses pixel pada foto yang dimasukkan 
+pengguna melalui Spoonycal Mobile dan ditampilkan hasil dari proses pengolahan 
+citra. Dataset yang digunakan dalam perancangan model sebanyak 127 gambar 
+dengan pembagian 111 gambar sebagai train, 6 gambar sebagai validation, dan 10 
+gambar sebagai test. Ketika melakukan tahap pre-processing dan augmentation 
+pada dataset menggunakan bantuan Roboflow. Prosedur preprcessing data pada 
+SPOONYCAL dapat dilihat pada Gambar 3.40.
+Gambar 3.40 Tahap Preprocessing Dataset Makanan (Albawi et al., 2017)
+45
+Setelah melakukan pelatihan pada Resnet50 terhadap dataset, model yang telah 
+dilatih akan di-deploy menggunakan Face Hugging dan ditampilkan pada aplikasi 
+Spoonycal Mobile menggunakan Webview.
+3.3. Penulisan Kode Program
+Pada tahap ini, merupakan tahap implementasi yaitu penulisan kode program sesuai 
+dengan rancangan yang telah dibuat.
+3.3.1. Penulisan Kode Program Aplikasi Android
+Pada sistem Spoonycal Mobile, aplikasi android dibuat menggunakan bahasa 
+pemrograman Dart, Framework Flutter, dan dikelola menggunakan software Visual 
+Studio Code. Aplikasi android Spoonycal Mobile mempunyai salah satu fitur Kirim 
+Catatan. Fitur ini digunakan ketika pengguna sudah mengisi piring mereka dengan 
+lengkap dan selanjutnya akan melakukan proses pengiriman data kalori. Berikut 
+merupakan kode program dari fitur Kirim Catatan.
+Gambar 3.41 Kode Program Proses Kirim Catatan
+3.3.2. Penulisan Kode Program Pembuatan API
+Pembuatan API (Application Programming Interface) yang digunakan pada sistem 
+Spoonycal menggunakan bantuan framework Laravel. Penggunaan API tersebut 
+46
+bertujuan untuk membantu proses pemanggilan data dari database yang akan 
+ditampilkan pada User Interface pada aplikasi Spoonycal Mobile. API dibuat 
+menggunakan bahasa pemrograman PHP dan diketik menggunakan software 
+Microsoft Visual Studio Code.
+Gambar 3.42 Kode Program Pembuatan API Kirim Catatan
+Gambar 3.42 merupakan salah satu kode dalam program pembuatan API, dimana 
+kode tersebut merupakan controller yang menangani proses pencatatan kalori yang 
+dihitung oleh pengguna menggunakan alat SPOONYCAL. Keseluruhan kode 
+program pembuatan API dapat dilihat pada lampiran Laporan Tugas Akhir.
+3.3.3. Penulisan Kode Program Prototipe
+Pada alat SPOONYCAL, logika program dibuat menggunakan bantuan software
+Arduino IDE dengan bahasa C. Program yang telah dibuat akan di-deploy pada 
+mikrokontroler Wemos D1 Mini menggunakan kabel USB agar dapat membaca 
+output yang dihasilkan oleh Sensor Load Cell dan mengirimkannya menuju aplikasi 
+Spoonycal Mobile menggunakan protokol HTTP.
+47
+Gambar 3.43 Kode Program Prototipe
+Gambar 3.43 merupakan kode program untuk mengaktifkan Wemos D1 Mini agar 
+dapat menangkap Wifi dengan konfigurasi SSID dan password bernilai 
+SPOONYCAL, lalu membaca output yang dihasilkan Sensor Load Cell dan 
+mengirimkannya menuju aplikasi mobile. Kode Program Prototipe SPOONYCAL
+dapat dilihat secara lengkap di lampiran Laporan Tugas Akhir ini.
+3.3.4. Penulisan Kode Program Model Deep Learning
+Pelatihan model Deep Learning pada Spoonycal menggunakan bantuan Google 
+Colab sebagai media untuk training dan testing dengan bahasa pemrograman 
+Python. Basis model yang digunakan adalah Resnet50 yang diimpor dari library 
+IceVision. Hasil dari pemodelan tersebut digunakan untuk fitur deteksi citra 
+makanan guna membantu proses pengolahan pixel menjadi label dan boundary box
+pada aplikasi Spoonycal Mobile. 
+Gambar 3.44 Kode Program Pembuatan Modeling Resnet50
+48
+Gambar 3.44 merupakan notebook pada Google Colab yang digunakan untuk 
+melatih model Resnet50 terhadap training dataset berdasarkan label yang telah 
+didefinisikan. Untuk kode program pelatihan model deep learning yang lain dapat 
+dilihat pada lampiran Laporan Tugas Akhir ini.
+3.4. Perancangan Pengujian Sistem
+Pada bagian ini akan dijelaskan pengujian sistem yang telah dirancang. Pengujian 
+yang dilakukan adalah pengujian keseluruhan sistem yang terdiri dari pengujian 
+aplikasi android, pengujian alat, dan pengujian pengguna.
+3.5. Pengujian Aplikasi
+Penghitung Kalori Berbasis Citra Makanan Menggunakan Internet of Things (IoT) 
+dan Deep Learning terhubung dengan aplikasi Spoonycal Mobile yang merupakan 
+Aplikasi Android.
+Pengujian dilakukan dengan cara membuka seluruh tampilan pada aplikasi, 
+melakukan pembuatan user, melakukan perhitungan kalori, mengirim data catatan 
+kalori, hingga menampilkan laporan kalori harian. Berikut merupakan tabel 
+penjelasan pengujian aplikasi Spoonycal Mobile.
+Tabel 3.4 Pengujian Aplikasi Spoonycal Mobile
+No Pengujian Tujuan Cara Indikator 
+Keberhasilan
+1 Uji Splash 
+Screen
+Sebagai halaman 
+awal untuk masuk 
+ke Halaman 
+Kepemilikan 
+Akun atau 
+Beranda
+Membuka 
+Aplikasi 
+Spoonycal 
+Mobile
+Dapat 
+menampilkan 
+Splash Screen 
+kurang lebih 1,5 
+detik lalu menuju 
+ke Halaman 
+Kepemilikan 
+Akun atau 
+Beranda
+2 Uji 
+Kepemilikan 
+Akun
+Memilih tombol 
+antara sudah 
+memiliki akun 
+atau belum 
+Menunggu 
+Splash Screen 
+selesai berproses
+Dapat 
+menampilkan 
+tombol antara 
+sudah memiliki 
+akun atau belum
+49
+3 Uji Register Mendapat akun 
+agar dapat 
+melakukan proses 
+masuk dan 
+perhitungan 
+kalori
+Mengisi 
+username, email 
+pengguna, dan 
+password
+Dapat melakukan 
+registrasi menuju 
+beranda dan 
+melakukan proses 
+perhitungan kalori
+4 Uji Login Syarat utama agar 
+pengguna dapat 
+melakukan proses 
+masuk dan 
+melakukan proses 
+perhitungan 
+kalori
+Mengisi email 
+dan password 
+yang telah 
+didaftarkan pada 
+proses registrasi
+Dapat masuk ke 
+halaman beranda 
+dan melakukan 
+proses perhitungan 
+kalori
+5 Uji Akses 
+Selamat 
+Datang
+Menginputkan 
+data jenis kelamin 
+pengguna
+Memilih gambar 
+jenis kelamin 
+laki-laki atau 
+perempuan
+Dapat memilih 
+salah satu gambar 
+jenis kelamin 
+pengguna
+6 Uji Input 
+Jenis 
+Kelamin
+Menginputkan 
+data berat badan 
+pengguna
+Mengisi data 
+pada field yang 
+tersedia
+Dapat mengisi 
+data berat badan 
+pengguna
+7 Uji Input 
+Berat Badan
+Menginputkan 
+data tinggi badan 
+pengguna
+Mengisi data 
+pada field yang 
+tersedia
+Dapat mengisi 
+data tinggi badan 
+pengguna
+8 Uji Input 
+Umur
+Menginputkan 
+data usia 
+pengguna
+Mengisi data 
+pada field yang 
+tersedia
+Dapat mengisi 
+data usia 
+pengguna
+9 Uji 
+Mendapatka
+n 
+Rekomendas
+i Kalori 
+Harian
+Mendapat 
+rekomendasi 
+kalori harian 
+pengguna
+Mengisi data 
+jenis kelamin, 
+berat badan, 
+tinggi badan, dan 
+usia pengguna
+Dapat 
+menampilkan 
+tampilan 
+rekomendasi 
+kalori harian 
+pengguna
+10 Uji Akses 
+Beranda
+Menampilkan 
+tampilan beranda 
+dan data kalori 
+harian yang telah 
+Klik tab beranda Dapat 
+menampilkan 
+tampilan beranda
+50
+dimakan 
+pengguna
+11 Uji Akses 
+Beranda -
+Pemilihan 
+Metode
+Menampilkan 
+metode 
+perhitungan 
+kalori makanan
+Klik button 
+tambah
+Dapat 
+menampilkan 
+pilihan 
+perhitungan kalori 
+makanan
+12 Uji 
+Identifikasi 
+Citra 
+Makanan
+Menampilkan 
+pratinjau kalori 
+makanan pada 
+piring pengguna
+Memfoto atau 
+mengambil foto 
+dari galeri, file 
+makanan 
+pengguna dengan 
+cahaya yang 
+cukup
+Dapat 
+menampilkan 
+pratinjau kalori 
+makanan pada 
+piring pengguna
+13 Uji 
+Menyambun
+gkan 
+SPOONYC
+AL
+Menyambungkan 
+perangkat android 
+dengan 
+SPOONYCAL
+Menyalakan 
+hotspot pada 
+Android dengan 
+isi SSID serta 
+PASSWORD
+yaitu 
+SPOONYCAL
+dan menyalakan 
+alat 
+SPOONYCAL
+Dapat 
+menyambungkan 
+perangkat Android 
+dengan 
+SPOONYCAL
+14 Uji Akses 
+Pemilihan 
+Makanan
+Memilih 
+makanan yang 
+akan dihitung 
+kalorinya
+Memilih 
+makanan atau 
+Mengetikkan 
+keyword pada 
+Icon pencarian
+Dapat melakukan 
+pemilihan dan 
+pencarian 
+makanan sesuai 
+keinginan 
+pengguna
+15 Uji 
+Penghitunga
+n Kalori 
+Makanan 
+Awal
+Menampilkan 
+tampilan hitung 
+berat makanan 
+secara 
+terintegritas
+Memilih 
+makanan pada 
+halaman 
+pemilihan 
+makanan
+Dapat 
+menampilkan 
+tampilan hitung 
+berat makanan 
+secara 
+terintegritas
+16 Uji Menampilkan Mengangkat Dapat 
+51
+Penghitunga
+n Kalori 
+Makanan 
+Hasil
+data gram dan kal 
+secara 
+terintegritas pada 
+makanan yang 
+telah dipilih
+makanan 
+menggunakan 
+Spoonycal
+dengan posisi 
+stabil dan 
+menekan tombol 
+tangkap kalori
+menampilkan data 
+gram dan kal 
+secara 
+terintegritas pada 
+makanan yang 
+telah dipilih
+17 Uji 
+Penghapusan 
+Hasil Data 
+Kalori 
+Makanan
+Menghapus data 
+kalori yang sudah 
+ditangkap
+Menekan tombol 
+hapus pada 
+Halaman 
+Perhitungan 
+Kalori
+Dapat menghapus 
+data kalori yang 
+sudah ditangkap
+18 Uji Halaman 
+Isi Piring
+Menampilkan list 
+isi piring 
+makanan 
+pengguna yang 
+telah dihitung 
+berat dan kalori
+Menekan tombol 
+selesai pada 
+Halaman 
+Perhitungan 
+Kalori
+Dapat 
+menampilkan list 
+isi piring makanan 
+beserta kalorinya
+19 Uji 
+Pengiriman 
+Catatan 
+Kalori
+Menampilkan 
+pop up agar dapat 
+mengirim data 
+sekarang sesuai 
+total kalori yang 
+ditangkap
+Menekan tombol 
+“Isi piring saya 
+sudah lengkap!” 
+pada Halaman Isi 
+Piring
+Dapat 
+mengirimkan data 
+catatan kalori dan 
+kembali menuju 
+beranda
+20 Uji Warning Menampilkan 
+pop up warning 
+jika total kalori 
+pada piring 
+melebihi sisa 
+kalori harian pada 
+hari ini
+Menekan tombol 
+“Isi piring saya 
+sudah lengkap!” 
+pada Halaman Isi 
+Piring
+Dapat 
+menampilkan pop 
+up warning
+21 Uji Akses 
+Laporan
+Menampilkan bar 
+chart setiap hari 
+dari kalori yang 
+dihabiskan oleh 
+pengguna
+Klik tab laporan Dapat 
+menampilkan bar 
+chart setiap hari 
+kalori pengguna
+52
+3.5.1. Kalibrasi Sensor Berat
+Pengaplikasian sensor berat berupa Sensor Load Cell pada alat SPOONYCAL perlu 
+dilakukan kalibrasi dengan cara membandingkan standar massa yang dibaca oleh 
+sensor dan standar massa real objek makanan yang ditimbang dengan timbangan. 
+Kalibrasi digunakan untuk menghitung tingkat keakuratan Sensor Load Cell pada 
+alat SPOONYCAL untuk mengetahui persentase error dari pengukuran tersebut. 
+Berikut rumus yang digunakan untuk mencari persentase error Sensor Load Cell 
+terhadap timbangan.
+Rerata ( X̅) = 
+∑ 𝑋𝑖
+𝑛
+Selisih Pengukuran = (|X̅pengukuran sensor - X̅pengukuran timbangan)
+Error (%) = 
+𝑆𝑒𝑙𝑖𝑠𝑖ℎ 𝑃𝑒𝑛𝑔𝑢𝑘𝑢𝑟𝑎𝑛
+𝑋̅ 
+Keterangan :
+X̅ = rata - rata
+∑ Xi = jumlah nilai data
+n = banyaknya data
+3.5.2. Pengujian Alat
+Sistem Penghitung Kalori Harian bernama SPOONYCAL ini dilengkapi dengan 
+alat berbentuk sendok yang didalamnya tertanam komponen - komponen yang 
+membantu dalam membaca data berat dari objek makanan. Berikut merupakan tabel 
+skema pengujian dan tabel penjelasan pengujian komponen pada alat tersebut.
+Tabel 3.5 Pengujian Alat
+Pengujian Tujuan Indikator Cara Pengujian
+Wemos D1 Mini Sebagai 
+mikrokontroler 
+yang mengatur 
+sensor dan 
+menangkap 
+koneksi WiFi 
+guna transfer 
+data
+Indikasi 
+keberhasilan 
+ditandai dengan 
+terhubungnya 
+Wemos D1 Mini 
+menuju jaringan 
+hotspot
+pengguna dan 
+Memprogram 
+Wemos D1 Mini 
+agar dapat 
+menangkap 
+jaringan hotspot
+sesuai SSID dan 
+password yang 
+telah 
+53
+berfungsinya 
+komponen -
+komponen yang 
+terhubung
+didefinisikan.
+Sensor Load 
+Cell
+Mengukur 
+massa objek 
+makanan yang 
+ada pada sendok
+Indikasi 
+keberhasilan 
+ditandai dengan 
+munculnya 
+output yang 
+dibaca oleh 
+Sensor Load 
+Cell
+Menghubungkan 
+kabel merah, 
+hitam, putih, dan 
+hijau pada 
+Sensor Load 
+Cell menuju pin 
+HX711 dengan 
+susunan E+, E-, 
+A-, dan A+
+Modul HX711 Mengkonversi 
+output yang 
+dibaca oleh 
+Sensor Load 
+Cell menjadi 
+satuan berat
+Indikasi 
+keberhasilan 
+ditandai dengan 
+munculnya 
+output yang 
+dibaca oleh 
+Sensor Load 
+Cell dalam 
+bentuk angka 
+dalam satuan 
+gram 
+Menghubungkan 
+pin GND pada 
+modul HX711 
+menuju pin 
+GND pada 
+Wemos D1 
+Mini. 
+Menghubungkan 
+pin DT pada 
+modul HX711 
+menuju pin D6 
+pada Wemos D1 
+Mini. 
+Menghubungkan 
+pin SCK pada 
+modul HX711 
+menuju pin D7 
+pada Wemos D1 
+Mini. 
+Menghubungkan 
+pin VCC dari 
+modul HX711 
+menuju pin 
+VCC pada 
+Wemos D1 Mini
+18650 Battery Sebagai power Indikasi Menghubungkan 
+54
+Shield supply atau 
+pemasok sumber 
+daya untuk 
+menghidupkan 
+alat 
+SPOONYCAL
+keberhasilan 
+ditandai dengan 
+jalannya arus 
+listrik untuk 
+menyalakan 
+mikrokontroler 
+Wemos D1 Mini
+pin VCC dan 
+GND dari 
+Battery Shield 
+menuju VCC 
+dan GND pada 
+Wemos D1 Mini
+3.5.3. Rancangan Pengujian Pengguna
+Dalam perancangan pengujian kepuasan pengguna, dibuat daftar berisi beberapa 
+pertanyaan yang akan disajikan dalam bentuk kuesioner. Berdasarkan pertanyaan 
+tersebut, diberi indikator penilaian yang selanjutnya hasil pengisian kuesioner 
+tersebut dihitung, dan hasilnya diukur dengan menggunakan indikator kepuasan 
+pengguna. Untuk daftar pertanyaan kuesioner dapat dilihat pada Tabel 3.6. 
+Sedangkan untuk indikator penilaian kuesioner dan indikator kepuasan pengguna 
+dapat dilihat pada Tabel 3.7 dan 3.8.
+Tabel 3.6 Tabel Daftar Pertanyaan Kuesioner
+NO PERTANYAAN
+1 Seberapa puaskah Anda terhadap kebermanfaatan SPOONYCAL : 
+Penghitung Kalori Berbasis Citra Makanan Menggunakan Internet of 
+Things (IoT) dan Deep Learning ?
+2 Seberapa puaskah Anda terhadap kemudahan dalam melakukan proses 
+perhitungan kalori menggunakan aplikasi Spoonycal Mobile?
+3 Seberapa puaskah Anda terhadap tampilan aplikasi Spoonycal Mobile dan 
+fungsionalitas?
+4 Seberapa puaskah Anda terhadap kemudahan pemakaian alat 
+SPOONYCAL dari segi fungsionalitas?
+5 Seberapa puaskah Anda terhadap akurasi sensor berat yang dihasilkan?
+6 Seberapa puaskah Anda terhadap sinkronisasi aplikasi Spoonycal Mobile
+dengan alat SPOONYCAL?
+7 Seberapa puaskah Anda terhadap hasil rekomendasi kalori harian yang 
+dihasilkan pada aplikasi Spoonycal Mobile?
+55
+8 Seberapa puaskah Anda terhadap hasil Pop Up Warning yang dihasilkan 
+pada aplikasi Spoonycal Mobile?
+Berikut rumus yang digunakan untuk mencari persentase kepuasaan pengguna 
+terhadap pengujian SPOONYCAL.
+Skoring kepuasan = 
+𝑇𝑜𝑡𝑎𝑙 𝐾𝑒𝑝𝑢𝑎𝑠𝑎𝑎𝑛 𝑅𝑒𝑠𝑝𝑜𝑛𝑑𝑒𝑛
+𝑇𝑜𝑡𝑎𝑙 𝐾𝑒𝑝𝑢𝑎𝑠𝑎𝑛 𝑅𝑒𝑠𝑝𝑜𝑛𝑑𝑒𝑛 𝑀𝑎𝑘𝑠𝑖𝑚𝑢𝑚
+× 100%
+Tabel 3.7 Tabel Panduan Penilaian Kuesioner
+Keterangan Nilai
+Sangat Puas 5
+Puas 4
+Tidak Puas 3
+Mengecewakan 2
+Buruk 1
+Tabel 3.8 Tabel Indikator Kepuasan Pengguna
+Predikat Nilai
+Sangat Baik 76 – 100 %
+Baik 51 – 75%
+Cukup 26 – 50 %
+Kurang 0 - 25 %
+3.6. Pemeliharaan Sistem 
+Pada tahap pemeliharaan sistem, baik aplikasi maupun alat yang sudah selesai akan 
+digunakan oleh pengguna. Selain itu juga akan dilakukan pemeliharaan mencakup 
+perbaikan bug (kesalahan) pada sistem, kerusakan pada alat dan peningkatan fitur -
+fitur sesuai dengan kebutuhan pengguna.
+56
+BAB IV - ANALISIS DAN PEMBAHASAN
+1.s
+2..
+3..
+4..
+Bab ini membahas mengenai analisis dan pembahasan sistem berdasarkan rangkain 
+yang sudah dibuat sebelumnya. Analisis dan pembahasan yang sudah dibuat terdiri 
+dari pengujian sistem dan analisis kepuasan pengguna.
+1.s
+2..
+3..
+4.
+4.1. Analisis Sistem
+Pada bagian ini berisi pembahasan serta analisis aplikasi android Spoonycal Mobile
+dan alat SPOONYCAL. Aplikasi android ini dibangun menggunakan framework 
+Flutter dan dibantu dengan MySQL sebagai tempat datanya atau database nya yang 
+dibuat menggunakan bahasa pemrograman PHP dengan framework Laravel. Kedua 
+platform terhubung menggunakan REST API (Representional State Transfer 
+Application Programming Interface) yang memungkinkan antar platform untuk 
+mengirimkan data satu sama lain. REST merupakan metode komunikasi 
+menggunakan protokol HTTP untuk pertukaran data dan sering digunakan pada 
+pengembangan aplikasi. REST API ini di-deploy menggunakan bantuan website 
+Heroku dengan layanan Free.
+Pengkalibrasian pada sensor - sensor dalam alat Internet of Things (IoT) dilakukan 
+dengan membandingkan hasil output keluaran berdasarkan nilai real oleh alat ukur 
+sesuai standar pengukuran. Hal tersebut dilakukan untuk mengetahui akurasi dari 
+hasil pembacaan data dengan nilai sebenarnya. 
+4.1.1. REST API
+Proses request API pada sistem ini yaitu setelah server menerima permintaan yang 
+benar dan telah valid, maka server akan memproses permintaan menghubungkan 
+dengan database Heroku. REST API pada aplikasi terdapat beberapa poin berikut.
+1) URL Endpoint
+Setiap request data dengan API pada aplikasi ini membutuhkan suatu URL. 
+Permintaan request API diakses melalui alamat URL https://Spoonycal￾ta.herokuapp.com/api/(route).
+57
+2) HTTP Verb
+Setiap request yang dilakukan, terdapat sebuah method atau verbs yang digunakan 
+untuk menjelaskan maksud request yang diberikan. Pada aplikasi ini menggunakan 
+GET untuk membaca dan mendapatkan data dan POST untuk membuat serta 
+memperbarui data.
+3) Response
+Jika sistem berhasil memvalidasi permintaan yang masuk, maka
+sistem akan mengembalikan permintaan yang dibutuhkan. Output Response yang 
+dihasilkan berupa format JSON. Contoh response dari permintaan yang valid 
+ditampilkan seperti gambar 4.1.
+Gambar 4.1 Contoh Response API
+58
+4.1.2. Evalusi Model Deep Learning
+Model Resnet50 yang telah didefinisikan, akan dilakukan pelatihan terhadap 
+training dataset. Proses training membutuhkan dataset citra makanan beserta 
+labelnya. Secara otomatis model akan menganalisis pola (pattern) yang ada pada 
+dataset citra makanan sebagai paramater untuk melakukan prediksi objek makanan 
+pada waktu yang akan mendatang. Output yang dihasilkan oleh model yang telah 
+dilatih berupa boundary box yang dilengkapi dengan label dan confussion matrix.
+Pemodelan Deep Learning pada Resnet50 menggunakan variabel loss dan 
+COCOMATRIX sebagai evaluasi. Loss menggambarkan ketidaksesuaian hasil 
+prediksi model yang telah dilatih terhadap dataset sebenarnya dan COCOMATRIX 
+sebagai akurasi model terhadap test dataset. Hasil evaluasi dari model yang telah 
+dilatih dapat dilihat pada Gambar 4.2.
+Gambar 4.2 Grafik Nilai loss Model yang Dilatih
+Pada Gambar 4.2 dapat dilihat bahwa loss yang dihasilkan cenderung menurun 
+seiring tingginya learning rate. Peristiwa tersebut menujukkan bahwa semakin 
+lama model melakukan pelatihan, semakin minim tingkat kesalahan model. Di lain 
+sisi, nilai metric yang didapatkan setelah melakukan training pada model Deep 
+Learning Resnet50, dapat dilihat pada tabel 4.1.
+59
+Tabel 4.1 Metrik Pemodelan Resnet50
+Epoch Train_loss Valid_loss COCOMetric time
+0 1.866363 1.967637 0.223308 00:23
+1 1.755655 1.970377 0.288311 00:21
+2 1.698034 1.969194 0.219635 00:21
+3 1.670944 1.982087 0.261470 00:21
+4 1.596454 1.835029 0.343752 00:21
+5 1.514519 1.745317 0.387439 00:21
+6 1.416470 1.764427 0.406147 00:21
+7 1.304743 1.632119 0.435178 00:21
+8 1.183752 1.659833 0.440318 00:21
+9 1.142449 1.644395 0.443395 00:21
+6 1.416470 1.764427 0.406147 00:21
+4.1.3. Kalibrasi Sensor Load Cell
+Sensor utama yang digunakan pada SPOONYCAL ialah sensor Load Cell. Sensor 
+ini berguna untuk menghitung massa benda yang ditimbang. Proses kalibrasi sensor 
+Load Cell menggunakan dua aspek utama, skala dan offset. Pengujian ini 
+mengambil sampel dengan menghitung massa lima jenis makanan, diantaranya 
+tempe goreng, tahu goreng, ayam goreng, nasi, dan telur dadar. Setiap makanan 
+diletakkan pada SPOONYCAL dan diamati data yang muncul pada aplikasi. 
+Setelah itu data tersebut dibandingkan dengan berat real yang telah dihitung 
+menggunakan timbangan dan dihitung persentase error pembacaan data sensor
+Pengujian Sensor Load Cell dengan Objek Tempe dapat dilihat pada Gambar 4.3.
+Gambar 4.3 Pengujian Sensor Load Cell dengan Objek Tempe Goreng
+60
+Tabel 4.2 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell Pada 
+Tempe Goreng
+No Pengukuran Timbangan Pengukuran SPOONYCAL
+1 17 16
+2 17 17
+3 17 16
+4 17 16
+5 17 17
+6 10 9.6
+7 10 9.6
+8 10 9.6
+9 10 10
+10 10 10
+Rata - rata 13.5 13.08
+Gambar 4.4 Grafik Pengujian Sensor Load Cell dengan Objek Tempe Goreng
+0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+0 2 4 6 8 10 12
+Berat (gr)
+Pengujian
+Grafik Pengujian Tempe Timbangan
+SPOONYCAL
+61
+Dari Tabel 4.2 tersebut dapat dihitung persentase error pengukuran jarak 
+menggunakan Sensor Load Cell pada objek Tempe Goreng sebesar 0.031 %.
+Gambar 4.5 Pengujian Sensor Load Cell dengan Objek Tahu Goreng
+Tabel 4.3 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell Pada 
+Tahu Goreng
+No Pengukuran Timbangan Pengukuran SPOONYCAL
+1 54 55
+2 54 55.2
+3 54 55.3
+4 54 54.7
+5 29 54.5
+6 29 30
+7 29 29.5
+8 29 29.4
+9 29 29
+10 29 29
+Rata - rata 41.5 42.6
+62
+Gambar 4.6 Grafik Pengujian Sensor Load Cell dengan Objek Tahu Goreng
+Dari Tabel 4.3 tersebut dapat dihitung persentase error pengukuran jarak 
+menggunakan Sensor Load Cell pada objek Tahu Goreng sebesar 0.081 %.
+Gambar 4.7 Pengujian Sensor Load Cell dengan Objek Ayam Goreng
+Tabel 4.4 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell Pada 
+Ayam Goreng.
+No Pengukuran Timbangan Pengukuran SPOONYCAL
+1 71 72
+0
+10
+20
+30
+40
+50
+60
+0 2 4 6 8 10 12
+Berat (gr)
+Pengujian
+Grafik Pengujian Tahu Timbangan
+SPOONYCAL
+63
+2 71 72.5
+3 71 71.5
+4 71 71
+5 71 71
+6 36 37
+7 36 36.8
+8 36 36
+9 36 36
+10 36 36
+Rata - rata 53.5 53.98
+Gambar 4.8 Pengujian Sensor Load Cell dengan Objek Ayam Goreng
+Dari Tabel 4.4 tersebut dapat dihitung persentase error pengukuran jarak 
+menggunakan Sensor Load Cell pada objek Ayam Goreng sebesar 0.008 %.
+0
+10
+20
+30
+40
+50
+60
+70
+80
+0 2 4 6 8 10 12
+Berat (gr)
+Pengujian
+Grafik Pengujian Ayam Goreng Timbangan
+SPOONYCAL
+64
+Gambar 4.9 Pengujian Sensor Load Cell dengan Objek Nasi
+Tabel 4.5 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell Pada 
+Nasi
+No Pengukuran Timbangan Pengukuran SPOONYCAL
+1 40 39.8
+2 40 40
+3 40 40
+4 40 40
+5 40 40
+6 22 23
+7 22 24.2
+8 22 23
+9 22 22.5
+10 22 22
+Rata - rata 31 31.45
+65
+Gambar 4.10 Grafik Pengujian Sensor Load Cell dengan Objek Nasi
+Dari Tabel 4.5 tersebut dapat dihitung persentase error pengukuran jarak 
+menggunakan Sensor Load Cell pada objek Nasi sebesar 0.014 %.
+Gambar 4.11 Pengujian Sensor Load Cell dengan Objek Telur Dadar
+Tabel 4.6 Perbandingan Hasil Pengukuran dan Error Rate Sensor Load Cell Pada 
+Telur Dadar
+No Pengukuran Timbangan Pengukuran SPOONYCAL
+1 59 60
+0
+5
+10
+15
+20
+25
+30
+35
+40
+45
+0 2 4 6 8 10 12
+Berat (gr)
+Pengujian
+Grafik Pengujian Nasi Timbangan
+SPOONYCAL
+66
+2 59 61.5
+3 59 60.3
+4 59 59
+5 59 60.2
+6 31 30
+7 31 31
+8 31 31
+9 31 31
+10 31 31
+Rata - rata 45 45.5
+Gambar 4.12 Grafik Pengujian Sensor Load Cell dengan Objek Telur Dadar
+Dari Tabel 4.6 tersebut dapat dihitung persentase error pengukuran jarak 
+menggunakan Sensor Load Cell pada objek Telur Dadar sebesar 0.011 %.
+Berdasarkan pengujian objek pada Sensor Load Cell tersebut, diperoleh rata - rata 
+error yang berbeda. Berikut tabel hasil rata - rata error dari pengujian masing -
+masing objek menggunakan Sensor Load Cell.
+0
+10
+20
+30
+40
+50
+60
+70
+0 2 4 6 8 10 12
+Berat (gr)
+Pengujian
+Grafik Pengujian Telur Dadar Timbangan
+SPOONYCAL
+67
+Tabel 4.7 Rata - rata Error Pengujian Sensor Load Cell
+Objek Berat Objek (gr) Rata - rata Error (%)
+Tahu Goreng 13.8 0.031
+Tempe 
+Goreng 42.6 0.081
+Ayam Goreng 53.98 0.008
+Nasi 31.45 0.014
+Telur Dadar 45.5 0.011
+Gambar 4.13 Grafik Perbandingan Pengukuran Sensor dengan Timbangan
+Berdasarkan hasil pengujian didapatkan persentase error pengukuran berat yang 
+dibaca oleh Sensor Load Cell sebesar 0.029% dan persentase akurasi sebesar 
+0.961%. 
+4.2. Analisis Fungsionalitas Sistem
+Pada bagian ini dibahas mengenai analisis Penghitung Kalori Berbasis Citra 
+Makanan Menggunakan Internet of Things (IoT) dan Deep Learning meliputi 
+analisis alat dan analisis aplikasi yang digunakan.
+0
+0,01
+0,02
+0,03
+0,04
+0,05
+0,06
+0,07
+0,08
+0,09
+Tahu Goreng Tempe Goreng Ayam Goreng Nasi Telur Dadar
+Rata - rata Error (%)
+68
+4.2.1. Analisis Fungsionalitas Alat
+Pengujian fungsionalitas alat SPOONYCAL dilakukan dengan melakukan 
+beberapa skema kasus berdasarkan kemungkinan tindakan yang dilakukan 
+pengguna. Tabel 4.8 ini merupakan skema pengujian alat yang digunakan.
+Tabel 4.8 Skema Pengujian Fungsionalitas Alat
+No Pengujian Alur Pengujian Indikator Keberhasilan
+1 Skema 1 Mengkonfigurasi 
+pengaturan jaringan 
+hotspot pada Android 
+dengan SSID dan 
+password sesuai 
+ketentuan. 
+Mengkoneksikan alat 
+SPOONYCAL dengan 
+aplikasi Spoonycal 
+Mobile melalui WiFi.
+Pada pengaturan hotspot
+Android, terdapat nama 
+perangkat “ESP8266” 
+yang tersambung. Muncul 
+pop up pada aplikasi 
+Spoonycal Mobile bahwa 
+alat SPOONYCAL telah 
+terkoneksi dengan aplikasi.
+2 Skema 2 Pengujian untuk 
+menampilkan titik awal 
+alat SPOONYCAL
+dengan tidak 
+memberikan beban atau 
+massa apapun pada 
+sensor.
+Aplikasi menampilkan 
+nilai berat yang dibaca 
+oleh Sensor Load Cell 
+sebesar nilai 0 (nol) 
+sebagai pertanda bahwa 
+alat SPOONYCAL tidak 
+memiliki massa apapun.
+3 Skema 3 Menghitung berat satu 
+jenis makanan 
+menggunakan alat 
+SPOONYCAL dengan 
+kondisi tidak 
+menyentuh permukaan 
+atau terangkat.
+Aplikasi menampilkan 
+nilai berat sebesar nilai 0 
+(nol).
+69
+4 Skema 4 Pengujian untuk 
+mengkalkulasikan berat 
+makanan yang dibaca 
+oleh Sensor Load Cell 
+menjadi satuan kalori 
+setelah pengguna 
+menekan tombol 
+“Tangkap Kalori”.
+Aplikasi menampilkan 
+nilai kalori yang telah 
+dikalkulasikan berdasarkan 
+berat yang dihitung oleh 
+Sensor Load Cell dan 
+diolah secara terintegritas
+pada aplikasi Spoonycal 
+Mobile.
+Skema pengujian alat pada Tabel 4.7 tersebut diterapkan pada alat SPOONYCAL
+guna menghitung berat makanan sebagai variabel untuk perhitungan kalori harian. 
+Komponen utama berupa mikrokontroler yang diletakkan pada papan PCb yang 
+telah dilapisi lapisan sehingga berbentuk seperti sendok. Gambar 4.6 berikut 
+merupakan bentuk alat SPOONYCAL.
+Gambar 4.14 Prototipe Alat SPOONYCAL Tampak Dari Depan
+Gambar 4.15 Prototipe Alat SPOONYCAL Tampak Dari Atas
+70
+Gambar 4.16 Prototipe Alat SPOONYCAL Tampak Dari Samping
+Gambar 4.17 Prototipe Alat SPOONYCAL Tampak Dari Dalam
+Pada alat SPOONYCAL yang dihubungkan dengan aplikasi Spoonycal Mobile
+melalui modul WiFi. Alat SPOONYCAL akan membuat koneksi hotspot yang 
+dapat disambungkan menggunakan Smartphone Android. Jaringan tersebut 
+nantinya akan menjadi penghubung dalam mengirim data yang didapatkan oleh 
+sensor agar dapat ditampilkan pada aplikasi Spoonycal Mobile. Proses perhitungan 
+berat pada objek makanan menggunakan timbangan dapat dilihat pada Gambar 
+4.18.
+71
+Gambar 4.18 Menghitung Berat Real Makanan 
+Setelah melakukan pairing antara alat dan aplikasi, pengguna akan diarahkan 
+menuju halaman untuk memilih jenis makanan yang akan dihitung kalori 
+berdasarkan beratnya. Pengguna yang telah melakukan pemilihan jenis makanan 
+yang akan ditimbang, diarahkan menuju halaman kalkulasi kalori. Pada halaman ini 
+nilai awal yang dibaca oleh Sensor Load Cell sebesar 0 gr. Proses menyendok 
+makanan menggunakan SPOONYCAL dapat dilihat pada Gambar 4.19.
+Gambar 4.19 Menyendok Makanan Memakai SPOONYCAL
+Data - data yang diterima oleh sensor Load Cell akan dikirimkan melalui ke aplikasi 
+melalui protokol http. Pengiriman data tersebut akan dilakukan secara terintegritas
+agar nilai yang dihasilkan tetap sinkron satu antara lain.
+Berdasarkan pengujian yang telah dilakukan, dapat diperoleh rekapitulasi hasil 
+pengujian sesuai skema yang digunakan pada Tabel 4.9.
+72
+Tabel 4.9 Rekapitulasi Hasil Pengujian Berdasarkan Skema
+No Pengujian Hasil Pengujian
+1 Skema 1 Berhasil, ditandai dengan 
+SPOONYCAL dapat tersambung 
+dengan hotspot dan terkoneksi dengan 
+aplikasi Spoonycal Mobile.
+2 Skema 2 Berhasil, ditandai dengan aplikasi 
+Spoonycal Mobile menampilkan nilai 0 
+(nol) sesuai dengan kondisi awal dimana 
+SPOONYCAL tidak memiliki massa 
+objek.
+3 Skema 3 Berhasil, ditandai dengan apikasi 
+Spoonycal Mobile menampilkan nilai 
+berat yang dihitung sebesar 0 (nol)
+4 Skema 4 Berhasil, ditandai dengan munculnya 
+nilai kalori yang telah dikalkulasikan 
+terhadap berat yang dihitung 
+SPOONYCAL pada aplikasi Spoonycal 
+Mobile.
+Selain rekapitulasi hasil pengujian berdasarkan skema, dapat diambil juga 
+rekapitulasi pengujian alat seperti yang terangkum pada Tabel 4.10.
+Tabel 4.10 Rekapitulasi Pengujian Alat
+Pengujian Tujuan Hasil
+Wemos D1 Mini Sebagai mikrokontroler 
+yang mengatur sensor dan 
+menangkap koneksi WiFi 
+guna transfer data.
+Berhasil, ditandai dengan 
+tersambungnya perangkat 
+dengan hotspot dan 
+bekerjanya komponen 
+sesuai kode program yang 
+73
+diatur.
+Sensor Load Cell Mengukur massa objek 
+makanan yang ada pada 
+sendok.
+Berhasil, Sensor Load 
+Cell dapat membaca 
+massa berat objek 
+makanan.
+HX711 Module Mengkonversi output yang 
+dibaca oleh Sensor Load 
+Cell menjadi satuan berat.
+Berhasil, ditandai dengan 
+output yang muncul dapat 
+dibaca dan otomatis 
+berbentuk numerik.
+18650 Battery 
+Shield
+Sebagai power supply atau 
+pemasok sumber daya 
+untuk menghidupkan alat 
+SPOONYCAL.
+Berhasil, ditandai dengan 
+18650 Battery Shield 
+dapat menghubungkan 
+daya sebagai sumber 
+pemasok mikrokontroler.
+Berdasarkan Tabel 4.9 dan Tabel 4.10 dapat diketahui bahwa pengujian alat 
+SPOONYCAL secara skema dan komponen telah berhasil. Hal tersebut ditandai 
+dengan tercapainya indikator keberhasilan pengujian alat.
+4.2.2. Analisis Fungsionalitas Aplikasi
+Aplikasi android Spoonycal Mobile dapat diakses dan digunakan untuk menghitung 
+kalori pada makanan yang alatnya dirancang menjadi sebuah sendok. Pratinjau 
+perhitungan kalori juga dapat dilakukan menggunakan kamera smartphone guna 
+mengetahui kebutuhan kalori harian dari pengguna. Aplikasi dilakukan pada device
+dengan sistem operasi Android 10 dan Android 11. Pengujian tampilan aplikasi 
+android dilakukan dengan menggunakan dua smartphone android yang memiliki 
+spesifikasi yang berbeda seperti yang terlihat pada Tabel 4.11
+74
+Tabel 4.11 Tabel Spesifikasi Smartphone Penguji Aplikasi Android
+Smartphone Resolusi Layar Versi Android
+Xiaomi Redmi Note 
+8 Pro
+1080 x 2340 pixels 11.0 (Android Red Velvet 
+Cake)
+Huawei Nova 5T 1080 x 2340 pixels 10.0 (Android 10)
+Berikut adalah hasil rekap pengujian tampilan aplikasi pada dua perangkat android 
+sesuai yang tercantum pada Tabel 4.12 Hasil rekap tampilan aplikasi android dapat 
+dilihat pada Tabel 4.12
+Tabel 4.12. Tabel Hasil Rekap Tampilan pada Android
+Pengujian
+Smartphone Penguji
+Xiaomi Redmi Note 8 Pro Huawei Nova 5T
+Uji Splash 
+Screen
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan.
+75
+Uji Kepemilikan 
+Akun
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Register
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+76
+Uji Login
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Akses 
+Selamat Datang
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+77
+Uji Input Jenis 
+Kelamin
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Input Berat 
+Badan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+78
+Uji Input Tinggi 
+Badan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Input Umur
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+79
+Uji Mendapatkan 
+Rekomendasi 
+Kalori Harian
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Akses 
+Beranda
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+80
+Uji Akses 
+Beranda -
+Pemilihan 
+Metode
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Identifikasi 
+Citra Makanan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+81
+Uji 
+Menyambungkan 
+SPOONYCAL
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Akses 
+Pemilihan 
+Makanan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+82
+Uji 
+Penghitungan 
+Kalori Makanan 
+Awal
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji 
+Penghitungan 
+Kalori Makanan 
+Hasil
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+83
+Uji Penghapusan 
+Hasil Data 
+Kalori Makanan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Halaman Isi 
+Piring
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+84
+Uji Pengiriman 
+Catatan Kalori
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Warning
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+85
+Uji Akses 
+Laporan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Akses Profil
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+86
+Uji Edit Profil
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+Uji Akses 
+Bantuan
+Keterangan : Pengujian tampilan berjalan dengan baik pada 
+tiap perangkat android dan telah sesuai dengan tampilan yang 
+direncanakan
+87
+Berdasarkan pengujian yang telah dilakukan, dapat diperoleh rekapitulasi hasil 
+pengujian aplikasi android menggunakan dua smartphone android yang berbeda 
+seperti yang tercantum pada Tabel 4.1
+Tabel 4.13. Tabel Rekapitulasi Kuesioner Pengguna
+Pengujian Tujuan Cara
+Indikator 
+Keberhasilan
+Hasil 
+Pengujian
+Uji Splash 
+Screen
+Sebagai 
+halaman awal 
+untuk masuk ke 
+Halaman 
+Kepemilikan 
+Akun atau 
+Beranda
+Membuka 
+Aplikasi 
+Spoonycal 
+Mobile
+Dapat 
+menampilkan 
+Splash Screen 
+kurang lebih 1,5 
+detik lalu menuju 
+ke Halaman 
+Kepemilikan Akun 
+atau Beranda
+Berhasil
+Uji 
+Kepemilikan 
+Akun
+Memilih 
+tombol antara 
+sudah memiliki 
+akun atau 
+belum 
+Menunggu 
+Splash Screen 
+selesai 
+berproses
+Dapat 
+menampilkan 
+tombol antara 
+sudah memiliki 
+akun atau belum
+Berhasil
+Uji Register Mendapat akun 
+agar dapat 
+melakukan 
+proses masuk 
+dan 
+perhitungan 
+kalori
+Mengisi 
+username, 
+email 
+pengguna, dan 
+password
+Dapat melakukan 
+registrasi menuju 
+beranda dan 
+melakukan proses 
+perhitungan kalori
+Berhasil
+Uji Login Syarat utama 
+agar pengguna 
+dapat 
+melakukan 
+proses masuk 
+Mengisi email 
+dan password
+yang telah 
+didaftarkan 
+pada proses 
+Dapat masuk ke 
+halaman beranda 
+dan melakukan 
+proses perhitungan 
+kalori
+Berhasil
+88
+dan melakukan 
+proses 
+perhitungan 
+kalori
+registrasi
+Uji Akses 
+Selamat 
+Datang
+Menginputkan 
+data jenis 
+kelamin 
+pengguna
+Memilih 
+gambar jenis 
+kelamin laki￾laki atau 
+perempuan
+Dapat memilih 
+salah satu gambar 
+jenis kelamin 
+pengguna
+Berhasil
+Uji Input Jenis 
+Kelamin
+Menginputkan 
+data berat 
+badan 
+pengguna
+Mengisi data 
+pada field
+yang tersedia
+Dapat mengisi data 
+berat badan 
+pengguna
+Berhasil
+Uji Input 
+Berat Badan
+Menginputkan 
+data tinggi 
+badan 
+pengguna
+Mengisi data 
+pada field
+yang tersedia
+Dapat mengisi data 
+tinggi badan 
+pengguna
+Berhasil
+Uji Input 
+Umur
+Menginputkan 
+data usia 
+pengguna
+Mengisi field
+data pada yang 
+tersedia
+Dapat mengisi data 
+usia pengguna
+Berhasil
+Uji 
+Mendapatkan 
+Rekomendasi 
+Kalori Harian
+Mendapat 
+rekomendasi 
+kalori harian 
+pengguna
+Mengisi data 
+jenis kelamin, 
+berat badan, 
+tinggi badan, 
+dan usia 
+pengguna
+Dapat 
+menampilkan 
+tampilan 
+rekomendasi kalori 
+harian pengguna
+Berhasil
+Uji Akses 
+Beranda
+Menampilkan 
+tampilan 
+beranda dan 
+data kalori 
+Klik tab 
+beranda
+Dapat 
+menampilkan 
+tampilan beranda
+Berhasil
+89
+harian yang 
+telah dimakan 
+pengguna
+Uji Akses 
+Beranda -
+Pemilihan 
+Metode
+Menampilkan 
+metode 
+perhitungan 
+kalori makanan
+Klik button
+tambah
+Dapat 
+menampilkan 
+pilihan perhitungan 
+kalori makanan
+Berhasil
+Uji 
+Identifikasi 
+Citra Makanan
+Menampilkan 
+pratinjau kalori 
+makanan pada 
+piring 
+pengguna
+Memfoto atau 
+mengambil 
+foto dari 
+galeri, file
+makanan 
+pengguna 
+dengan cahaya 
+yang cukup
+Dapat 
+menampilkan 
+pratinjau kalori 
+makanan pada 
+piring pengguna
+Berhasil
+Uji 
+Menyambung
+kan 
+SPOONYCAL
+Menyambungk
+an perangkat 
+android dengan 
+SPOONYCAL
+Menyalakan 
+hotspot pada 
+Android 
+dengan isi 
+SSID serta 
+PASSWORD 
+yaitu 
+SPOONYCA
+L dan 
+menyalakan 
+alat 
+SPOONYCA
+L
+Dapat 
+menyambungkan 
+perangkat Android 
+dengan 
+SPOONYCAL
+Berhasil
+Uji Akses 
+Pemilihan 
+Makanan
+Memilih 
+makanan yang 
+akan dihitung 
+Memilih 
+makanan atau 
+Mengetikkan 
+Dapat melakukan 
+pemilihan dan 
+pencarian makanan 
+Berhasil
+90
+kalorinya keyword pada 
+Icon pencarian
+sesuai keinginan 
+pengguna
+Uji 
+Penghitungan 
+Kalori 
+Makanan 
+Awal
+Menampilkan 
+tampilan hitung 
+berat makanan 
+secara 
+terintegritas
+Memilih 
+makanan pada 
+halaman 
+pemilihan 
+makanan
+Dapat 
+menampilkan 
+tampilan hitung 
+berat makanan 
+secara terintegritas
+Berhasil
+Uji 
+Penghitungan 
+Kalori 
+Makanan 
+Hasil
+Menampilkan 
+data gram dan 
+kal secara 
+terintegritas
+pada makanan 
+yang telah 
+dipilih
+Mengangkat 
+makanan 
+menggunakan 
+Spoonycal
+dengan posisi 
+stabil dan 
+menekan 
+tombol 
+tangkap kalori
+Dapat 
+menampilkan data 
+gram dan kal secara 
+terintegritas pada 
+makanan yang 
+telah dipilih
+Berhasil
+Uji 
+Penghapusan 
+Hasil Data 
+Kalori 
+Makanan
+Menghapus 
+data kalori 
+yang sudah 
+ditangkap
+Menekan 
+tombol hapus 
+pada Halaman 
+Perhitungan 
+Kalori
+Dapat menghapus 
+data kalori yang 
+sudah ditangkap
+Berhasil
+Uji Halaman 
+Isi Piring
+Menampilkan 
+list isi piring 
+makanan 
+pengguna yang 
+telah dihitung 
+berat dan kalori
+Menekan 
+tombol selesai 
+pada Halaman 
+Perhitungan 
+Kalori
+Dapat 
+menampilkan list 
+isi piring makanan 
+beserta kalorinya
+Berhasil
+Uji 
+Pengiriman 
+Catatan Kalori
+Menampilkan 
+pop up agar 
+dapat mengirim 
+data sekarang 
+Menekan 
+tombol “Isi 
+piring saya 
+sudah 
+Dapat mengirimkan 
+data catatan kalori 
+dan kembali 
+menuju beranda
+Berhasil
+91
+sesuai total 
+kalori yang 
+ditangkap
+lengkap!” 
+pada Halaman 
+Isi Piring
+Uji Warning Menampilkan 
+pop up warning 
+jika total kalori 
+pada piring 
+melebihi sisa 
+kalori harian 
+pada hari ini
+Menekan 
+tombol “Isi 
+piring saya 
+sudah 
+lengkap!” 
+pada Halaman 
+Isi Piring
+Dapat 
+menampilkan pop 
+up warning
+Berhasil
+Uji Akses 
+Laporan
+Menampilkan 
+bar chart setiap 
+hari dari kalori 
+yang 
+dihabiskan oleh 
+pengguna
+Klik tab 
+laporan
+Dapat 
+menampilkan bar 
+chart setiap hari 
+kalori pengguna
+Uji Akses 
+Profil
+Menampilkan 
+profil pengguna 
+dan listtile edit 
+profil, bantuan, 
+dan keluar
+Klik tab profil Dapat 
+menampilkan profil 
+pengguna dan 
+listtile edit profil, 
+bantuan, dan keluar
+Berhasil
+Uji Edit Profil Mengubah 
+informasi profil 
+pengguna 
+Klik listtile 
+edit profil dan 
+Mengubah 
+nama, berat, 
+tinggi, dan 
+usia
+Dapat mengubah 
+informasi profil 
+pengguna dan 
+secara otomatis 
+merubah target 
+kalori harian 
+pengguna
+Berhasil
+Uji Bantuan Menampilkan 
+kontak 
+developer, 
+Klik listtile 
+bantuan
+Dapat 
+menampilkan 
+kontak developer, 
+Berhasil
+92
+tentang 
+Spoonycal, dan 
+Instruksi 
+Penggunaan 
+dari aplikasi 
+Spoonycal 
+Mobile.
+tentang Spoonycal, 
+dan Instruksi 
+Penggunaan dari 
+aplikasi Spoonycal 
+Mobile.
+4.3. Analisis Kepuasan Pengguna
+Pengujian ini dilakukan pada tanggal 14 Agustus 2022 sampai 17 Agustus 2022 
+pada ahli bidang kesehatan serta masyarakat. Berikut adalah pertanyaan yang 
+diajukan kepada 15 responden yang berbeda.
+1. Seberapa puaskah Anda terhadap kebermanfaatan SPOONYCAL : 
+Penghitung Kalori Berbasis Citra Makanan Menggunakan Internet of 
+Things (IoT) dan Deep Learning?
+2. Seberapa puaskah Anda terhadap kemudahan dalam melakukan proses 
+perhitungan kalori menggunakan aplikasi Spoonycal Mobile?
+3. Seberapa puaskah Anda terhadap tampilan aplikasi Spoonycal Mobile.dan 
+fungsionalitas?
+4. Seberapa puaskah Anda terhadap kemudahan pemakaian alat 
+SPOONYCAL dari segi fungsionalitas?
+5. Seberapa puaskah Anda terhadap akurasi sensor berat yang dihasilkan?
+6. Seberapa puaskah Anda terhadap sinkronisasi aplikasi Spoonycal Mobile
+dengan alat SPOONYCAL?
+7. Seberapa puaskah Anda terhadap hasil rekomendasi kalori harian yang 
+dihasilkan pada aplikasi Spoonycal Mobile?
+8. Seberapa puaskah Anda terhadap hasil Pop Up Warning yang dihasilkan 
+pada aplikasi Spoonycal Mobile?
+Berikut adalah hasil penilaian dari 15 responden yang berbeda mengenai 
+SPOONYCAL : Penghitung Kalori Berbasis Citra Makanan Menggunakan 
+Internet of Things (IoT) dan Deep Learning, seperti yang tercantum pada Tabel 
+4.14.
+93
+Tabel 4.14 Rekapitulasi Kepuasan Pengguna
+No Nama 
+Responden Pekerjaan
+Pertanyaan
+Total Nilai
+1 2 3 4 5 6 7 8
+1 Dhea Aghestya Ahli Gizi 4 5 5 5 5 5 5 4 38
+2
+Lathifa Nur 
+Annisa Apoteker 5 5 4 5 3 4 4 4 34
+3 Sri Sulasmi Pensiunan 5 5 5 5 4 5 5 4 38
+4
+Aiunul 
+Churotin PNS 5 5 5 4 5 5 4 5 38
+5
+Dimas Sulistyo 
+Nugroho PNS 4 4 5 5 4 5 5 5 37
+6
+Wahyu Aji 
+Prasetyo
+Karyawan 
+Swasta 5 5 5 4 4 4 5 5 37
+7
+Surya Jati 
+Kusuma
+Karyawan 
+Swasta 5 4 5 5 4 5 5 5 38
+8
+Meylinda 
+Sulistya Putri
+Karyawan 
+Swasta 5 4 4 4 5 5 5 4 36
+9 Alia Mahda Mahasiswa 4 4 4 4 4 4 4 5 33
+10 Annas Subagyo Mahasiswa 5 4 5 5 5 5 5 5 39
+11
+Hanung 
+Setiawan Mahasiswa 4 5 4 5 5 5 5 5 38
+12 Jihadt Akbar Mahasiswa 5 5 5 5 5 5 4 5 39
+13
+Kurnia Rizqi 
+Prihapsari Mahasiswa 5 5 5 5 4 5 5 5 39
+14
+Reza Setyo 
+Atmojo Mahasiswa 5 4 5 5 4 4 5 5 37
+15
+Yoga Karunia 
+Fajar Mahasiswa 5 5 5 4 4 5 5 5 38
+Jumlah nilai maksimal untuk indikator penilaian = 5 × 8 = 40
+Jumlah responden yang mengisi kuesioner = 15
+Jumlah kepuasan maksimal = 15 × 40 = 600
+Skoring kepuasan = 
+𝑇𝑜𝑡𝑎𝑙 𝐾𝑒𝑝𝑢𝑎𝑠𝑎𝑎𝑛 𝑅𝑒𝑠𝑝𝑜𝑛𝑑𝑒𝑛
+𝑇𝑜𝑡𝑎𝑙 𝐾𝑒𝑝𝑢𝑎𝑠𝑎𝑛 𝑅𝑒𝑠𝑝𝑜𝑛𝑑𝑒𝑛 𝑀𝑎𝑘𝑠𝑖𝑚𝑢𝑚
+× 100%
+= 
+559
+600
+× 100 %
+= 93.16 %
+94
+4.4. Analisis Aspek Bisnis
+Pembuatan SPOONYCAL : Sistem Penghitung Kalori Berbasis Citra Makanan 
+Menggunakan Internet of Things (IoT) dan Deep Learning dapat dijadikan sebagai 
+peluang bisnis. Pada bagian ini akan dibahas mengenai aspek bisnis pada 
+SPOONYCAL dimulai dari bahan baku yang dibutuhkan, hingga harga jual yang 
+ditawarkan kepada masyarakat. Tabel 4.15 menjabarkan mengenai bahan baku dan 
+harga beli komponen pada sistem SPOONYCAL dalam satu bulan waktu produksi.
+Tabel 4.15 Biaya Variabel SPOONYCAL per Satu Bulan Produksi
+No Biaya 
+Variabel
+Rincian Volume Harga Satuan
+(Rp)
+Total (Rp)
+1 Bahan 
+Baku
+Wemos D1 Mini 20 Pcs 50.000 1.000.000
+HX711 Modul 20 Pcs 15.000 300.000
+Sensor Load Cell 20 Pcs 40.000 800.000
+18650 Battery Shield 20 Pcs 35.000 700.000
+Battery 18650 20 Pcs 20.000 400.000
+Kabel Serabut 5 Set 10.000 50.000
+Casing 3D Print 20 Pcs 30.000 600.000
+2 Peralatan Solder 1 Pcs 15.000 15.000
+Timah 1 Roll 25.000 25.000
+Lem Tembak 1 Pcs 18.000 18.000
+Multimeter 1 Pcs 42.000 42.000
+Sedot Timah 1 Pcs 13.000 13.000
+3 Kemasan Kardus 20 Pcs 2.000 40.000
+Bubble Warp 1 Roll 20.000 20.000
+Total 335.000 4.023.000
+Setelah menentukan harga biaya variabel produksi SPOONYCAL selama satu 
+bulan, kemudian menentukan harga jual per barang. Dalam penjualan 
+SPOONYCAL, margin profit yang didapatkan sebesar 40%. Berikut perhitungan 
+dalam mendapatkan margin profit setiap penjualan satu alat SPOONYCAL.
+Harga Jual = 
+𝐵𝑖𝑎𝑦𝑎 𝑉𝑎𝑟𝑖𝑎𝑏𝑒𝑙 𝑆𝑎𝑡𝑢 𝐵𝑢𝑙𝑎𝑛
+( 1 − 𝐷𝑒𝑠𝑖𝑚𝑎𝑙 𝑀𝑎𝑟𝑔𝑖𝑛 𝑃𝑟𝑜𝑓𝑖𝑡) × 20
+=
+4.023.000
+( 1 − 0.4) × 20
+95
+= 
+4.023.000
+12
+= Rp.335.250,00
+Profit = 𝐻𝑎𝑟𝑔𝑎 𝐽𝑢𝑎𝑙 −
+𝐵𝑖𝑎𝑦𝑎 𝑉𝑎𝑟𝑖𝑎𝑏𝑒𝑙 𝑆𝑎𝑡𝑢 𝐵𝑢𝑙𝑎𝑛
+20
+= 335.250 -
+4.023.000
+20
+= 335.250 – 201.150
+= Rp.134.100,00
+Berdasarkan perhitungan terhadap Harga Jual dan Biaya Variabel yang dikeluarkan 
+untuk Satu Bulan produksi, didapatkan profit sebesar Rp.134.100,00 untuk satu 
+barang yang terjual.
+96
+BAB V - KESIMPULAN
+Dari hasil pembuatan Tugas Akhir SPOONYCAL : Penghitung Kalori Berbasis 
+Citra Makanan Menggunakan Internet of Things (IoT) dan Deep Learning, 
+didapatkan kesimpulan sebagai berikut :
+1) SPOONYCAL dengan aplikasi android yang berfungsi untuk masyarakat 
+dalam merancang sistem dalam mengatur pola makanan agar lebih 
+terkontrol dan melakukan perhitungan kalori secara terintegritas serta 
+personal berhasil dibuat dan telah melalui proses pengujian fungsionalitas 
+dan pengujian kepuasan pengguna dengan hasil yang berjalan baik.
+2) Alat SPOONYCAL mampu membaca berat objek makanan dan 
+menampilkannya pada aplikasi Spoonycal Mobile agar dapat dikalkulasikan 
+menjadi satuan kalori dengan perhitungan yang telah dipilih oleh pengguna.
+3) Aplikasi Spoonycal Mobile telah diuji baik pada dua sistem operasi dengan 
+spesifikasi yang berbeda yakni android versi 10.0 dan 11.0. Semua tampilan 
+dan fungsi dapat berjalan dengan baik.
+4) Aplikasi Spoonycal Mobile dilengkapi dengan pratinjau kalori 
+menggunakan foto berdasarkan citra makanan. Pengguna dapat melihat 
+pratinjau total kalori dari makanan pada isi piring mereka.
+5) Aplikasi Spoonycal Mobile dilengkapi dengan Warning System jika 
+pengguna menginputkan total kalori pada piring melebihi sisa kalori harian 
+pada hari ini, akan ditampilkan pop up warning dan harus mengurangi total 
+kalori.
+6) Aplikasi Spoonycal Mobile dapat merekap kalori yang telah dicatat oleh 
+pengguna, lalu menyimpan data tersebut ke database.
+Berdasarkan hasil pembuatan Tugas Akhir Sistem “SPOONYCAL : Penghitung Kalori Berbasis Citra Makanan Menggunakan Internet of Things (IoT) dan Deep Learning”, didapatkan kesimpulan sebagai berikut:
+1. SPOONYCAL yang dapat digunakan dengan aplikasi android berfungsi untuk membantu masyarakat dalam mengontrol jumlah asupan kalori pada makanan supaya tidak melebihi batas kebutuhan harian agar terhindar dari penyakit kronis dan obesitas.
+2. Alat SPOONYCAL mampu melakukan pengkalkulasian kalori makanan berdasarkan berat secara terintegritas.
+3. Aplikasi Spoonycal Mobile telah diuji bmenggunakan dua sistem operasi android dengan spesifikasi yang berbeda, yakni android versi 10.0 dan 11.0.
+4. Aplikasi Spoonycal Mobile dilengkapi dengan dua fitur untuk perhitungan kalori, diantaranya perhitungan kalori berbasis citra makanan (Object Detection) dan perhitungan kalori berbasis berat makanan menggunakan alat SPOONYCAL.
+5. Sistem SPOONYCAL dapat merekap kalori yang telah dicatat oleh pengguna, lalu menyimpan data tersebut ke database dan menampilkannya melalui aplikasi Sponnycal Mobile.
+97
+DAFTAR PUSTAKA
+Albawi, S., Mohammed, T. A., & Al-Zawi, S. (2017). Understanding of a 
+convolutional neural network. 2017 International Conference on Engineering 
+and Technology (ICET), 1–6. 
+https://doi.org/10.1109/ICEngTechnol.2017.8308186
+Amestica, O. E., Melin, P. E., Duran-Faundez, C. R., & Lagos, G. R. (2019). An 
+Experimental Comparison of Arduino IDE Compatible Platforms for Digital 
+Control and Data Acquisition Applications. 2019 IEEE CHILEAN Conference 
+on Electrical, Electronics Engineering, Information and Communication 
+Technologies (CHILECON), 1–6. 
+https://doi.org/10.1109/CHILECON47746.2019.8986865
+Anggraeni, N., Hakiem, N., & Ganesha, G. W. (2018). Calorie Counter Information 
+System Development for Weight Loss Program based on Android. 
+Proceedings of the 1st International Conference on Recent Innovations, 2540–
+2547. https://doi.org/10.5220/0009946025402547
+Bandyopadhyay, H. (2022, August 3). Image Classification Guide. V7lab. 
+https://www.v7labs.com/blog/image-classification-guide#h1
+Dandi, M., Fauzi Tsp, H., & Rizal, S. (2021). PERANCANGAN APLIKASI 
+PERHITUNGAN NUTRISI PADA MAKANAN BERBASIS ANDROID 
+DENGAN METODE CONVOLUTIONAL NEURAL NETWORK (CNN) 
+THE DESIGN OF NUTRITION CALCULATION APPLICATION FOR 
+ANDROID USING CONVOLUTIONAL NEURAL NETWORK (CNN) 
+METHOD. E-Proceeding of Engineering, 8(5), 5000–5008.
+Ferdi, Z. E., Putra, F., Ajie, H., Safitri, I. A., & Jakarta, U. N. (2021). Designing A 
+User Interface and User Experience from Piring Makanku Application by 
+Using Figma Application for Teens. International Journal of Information 
+System & Technology Akreditasi, 5(3), 308–315. 
+https://www.figma.com/design/
+98
+Grosso, G. (2021). Obesity during COVID-19: An underrated pandemic? 
+EClinicalMedicine, 39, 101062. https://doi.org/10.1016/S0140-6736(17)
+Hanif, I. F., & Sinambela, G. M. (2021). PEMBUATAN APLIKASI E-TATIB 
+BERBASIS ANDROID MENGGUNAKAN BAHASA PEMROGRAMAN 
+DART MAKING AN ANDROID-BASED E-TATIB APPLICATION 
+USING THE DART PROGRAMMING LANGUAGE. Jurnal Teknologi Dan 
+Terapan Bisnis (JTTB), 4(1), 1–7.
+Henny Afika. (2021). HUBUNGAN GAYA HIDUP DENGAN KEJADIAN 
+OBESITAS PADA REMAJA ERA MILENIAL DI KOTA MEDAN TESIS. 
+Universitas Sumatera Utara.
+Jantce, D. D., Sitinjak, T., Maman, & Suwita, J. (2020). ANALISA DAN 
+PERANCANGAN SISTEM INFORMASI ADMINISTRASI KURSUS
+BAHASA INGGRIS PADAINTENSIVE ENGLISH COURSE DI CILEDUG 
+TANGERANG. JURNAL IPSIKOM, 8(1).
+Kamakshi Priyaa, P., Sathyapriya, S., & Arockiam, L. (2019). Nutrition monitoring 
+and calorie estimation using internet of things (IoT). International Journal of 
+Innovative Technology and Exploring Engineering, 8(11), 2669–2672. 
+https://doi.org/10.35940/ijitee.K2072.0981119
+Machorro-Cano, I., Alor-Hernández, G., Paredes-Valverde, M. A., Ramos-Deonati, 
+U., Sánchez-Cervantes, J. L., & Rodríguez-Mazahua, L. (2019). PISIoT: A 
+machine learning and IoT-based smart health platform for overweight and 
+obesity control. Applied Sciences (Switzerland), 9(15). 
+https://doi.org/10.3390/app9153037
+Mbarushimana, J. C., Gustafson, C. R., Gitungwa, H., & Zeballos, E. (2021). The 
+relationship between bodyweight status and weight perception explains 
+differences in calories ordered in a food choice exercise. Nutrients, 13(6). 
+https://doi.org/10.3390/nu13061794
+99
+Mrs.D.Siva Senthil, M. E. (2021). IOT CALORIE MONITORING SYSTEM 
+USING WEIGHING SENSO. International Research Journal of Engineering 
+and Technology(IRJET, 08(04), 18–21.
+Rachakonda, L., Kothari, A., Mohanty, S. P., Kougianos, E., & Ganapathiraju, M. 
+(2019, March 6). Stress-Log: An IoT-based Smart System to Monitor Stress￾Eating. 2019 IEEE International Conference on Consumer Electronics, ICCE 
+2019. https://doi.org/10.1109/ICCE.2019.8661959
+Ramadhani, M. F. (2016). PEMBANGUNAN APLIKASI INFORMASI, 
+PENGADUAN, KRITIK, DAN SARAN SEPUTAR KOTA CIMAHI PADA 
+PLATFORM ANDROID. Jurnal Ilmiah Komputer Dan Informatika 
+(KOMPUTA), 11(1), 89–92.
+Raschka, S., Patterson, J., & Nolet, C. (2020). Machine learning in python: Main 
+developments and technology trends in data science, machine learning, and 
+artificial intelligence. In Information (Switzerland) (Vol. 11, Issue 4). MDPI 
+AG. https://doi.org/10.3390/info11040193
+Santoso, A. (2018). IMPLEMENTASI DEEP LEARNING BERBASIS KERAS 
+UNTUK PENGENALAN WAJAH.
+Santya, T., Eko Suharyanto, C., Simanjuntak, P., & Alfandianto, A. (2019). Sistem 
+Pakar Menentukan Maksimal Kalori Harian Berbasis Mobile. INNOVATICS, 
+1(2), 70–77.
+Shengyu Fu. (2022, February 16). Visual Studio. 2020. 
+https://devblogs.microsoft.com/visualstudio/typing-less-coding-more-how￾we-delivered-intellicode-whole-line-completions-with-a-transformer-model/
+Sherrell, L. (2013). Waterfall Model. In Encyclopedia of Sciences and Religions
+(pp. 2343–2344). Springer Netherlands. https://doi.org/10.1007/978-1-4020-
+8265-8_200285
+100
+Soebandi, Tendean, S., & Bujali, X. (2020). PERANCANGAN APLIKASI 
+PERHITUNGAN JUMLAH KEBUTUHAN KALORI HARIAN. INTEKSIS, 
+7(2).
+Sucipta, I., Simatupang, J. W., Kaswandi, C., & Purnama, I. (2021). Prototipe 
+Pemantauan Tetes Cairan Infus Berbasis IoT Terkoneksi Perangkat Android. 
+Jurnal Teknologi Elektro, 12(3), 113. 
+https://doi.org/10.22441/jte.2021.v12i3.003
+Thomas, G. (2019, December). What is Flutter and Why You Should Learn it in 
+2020. Http://Freecodecamp.Org/.
+Tim Riskesdas 2018. (2019). Laporan Nasional Riskesdas 2018.
+Varshitha, I., Ramudu, K., & Rama, D. B. (2021). ARDUINO WEIGHING 
+MACHINE USING LOAD CELL AND HX711 MODULE.
+Wahyudi Wahyudi, Rahman, A., & Nawawi, M. (2017). Perbandingan Nilai Ukur 
+Sensor Load Cell pada Alat Penyortir Buah Otomatis terhadap Timbangan 
+Manual. Jurnal ELKOMIKA, 5(2), 2459–9638.
+101
+LAMPIRAN
+102
+LAMPIRAN 1 DOKUMENTASI PENGUJIAN
+103
+ 
+Dokumentasi Pengujian Alat SPOONYCAL
+ 
+Dokumentasi Demo SPOONYCAL Dengan Masyarakat
+104
+LAMPIRAN 2 KUESIONER KEPUASAN PENGGUNA
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+LAMPIRAN 3 LEMBAR KONTROL BIMBINGAN
+121
+122
+123
+124
+125
+126
+127
+LAMPIRAN 4 FORM REVISI TUGAS AKHIR
+128
+129
+130
+131
+LAMPIRAN 5 SURAT KETERANGAN SELESAI 
+REVISI TUGAS AKHIR
+132
+133
+LAMPIRAN 6 KODE PROGRAM
+134
+KODE PROGRAM APLIKASI ANDROID
+calorie_model.dart
+import 'package:json_annotation/json_annotation.dart';
+CalorieModel _$CalorieModelFromJson(Map<String, dynamic> json) 
+=> CalorieModel(
+ (json['tempC'] as num).toDouble(),
+ (json['humi'] as num).toDouble(),
+ );
+Map<String, dynamic> _$CalorieModelToJson(CalorieModel instance) 
+=> <String, dynamic>{
+ 'tempC': instance.tempC,
+ 'humi': instance.humi,
+ };
+@JsonSerializable(explicitToJson: true)
+class CalorieModel {
+ CalorieModel(this.tempC, this.humi);
+ double tempC;
+ double humi;
+ factory CalorieModel.fromJson(Map<String, dynamic> json) =>
+ _$CalorieModelFromJson(json);
+ Map<String, dynamic> toJson() => _$CalorieModelToJson(this);
+}
+sign_in_page.dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tugasakhir_app/providers/auth_provider.dart';
+import 
+'package:tugasakhir_app/screens/Register%20and%20Login%20Scree
+ns/dont_have_an_account.dart';
+import 
+'package:tugasakhir_app/screens/main_screens/main_page.dart';
+import 'package:tugasakhir_app/styles.dart';
+class SignInPage extends StatefulWidget {
+ const SignInPage({Key? key}) : super(key: key);
+ @override
+ State<SignInPage> createState() => _SignInPageState();
+}
+class _SignInPageState extends State<SignInPage> {
+ TextEditingController emailController = 
+TextEditingController();
+ TextEditingController passwordController = 
+TextEditingController();
+ bool isLoading = false;
+135
+ @override
+ Widget build(BuildContext context) {
+ AuthProvider authProvider = 
+Provider.of<AuthProvider>(context);
+ 
+ handleSignIn() async {
+ setState(() {
+ isLoading = true;
+ });
+ FocusScope.of(context).requestFocus(FocusNode());
+ if (emailController.text == '' || 
+passwordController.text == '' )
+ {
+ ScaffoldMessenger.of(context).showSnackBar(
+ SnackBar(
+ backgroundColor: Styles.buttonAuthBg,
+ content: Text(
+ 'Email dan Password wajib diisi!',
+ ),
+ ),
+ );
+ }
+ else if (await authProvider.login(
+ email: emailController.text, password: 
+passwordController.text)) {
+ 
+ ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+ backgroundColor: Colors.green[400],
+ content: Text("Login Berhasil")));
+ Navigator.push(
+ context,
+ MaterialPageRoute<void>(
+ builder: (BuildContext context) => MainPage(
+ )));
+ // Navigator.pushNamed(context, '/main_page');
+ } else {
+ ScaffoldMessenger.of(context).showSnackBar(
+ SnackBar(
+ backgroundColor: Styles.buttonAuthBg,
+ content: Text(
+ 'Email/Password anda salah!',
+ ),
+ ),
+ );
+ }
+ setState(() {
+ isLoading = false;
+ });
+ }
+ return Scaffold(
+ backgroundColor: Styles.primaryColor,
+ body: Column(
+ mainAxisSize: MainAxisSize.max,
+136
+ mainAxisAlignment: MainAxisAlignment.center,
+ crossAxisAlignment: CrossAxisAlignment.center,
+ children: [
+ const Spacer(
+ flex: 1,
+ ),
+ Image(
+ image: AssetImage('assets/images/Spoonycal 
+Mobile.png'),
+ // width:
+ // height:
+ ),
+ SizedBox(height: Styles.defaultPadding * 2),
+ // Email
+ SizedBox(
+ width: MediaQuery.of(context).size.width * 0.8,
+ child: Padding(
+ padding: const EdgeInsets.all(4.0),
+ child: TextField(
+ controller: emailController,
+keyboardType: TextInputType.emailAddress,
+ textInputAction: TextInputAction.next,
+ cursorColor: Styles.cursorColorGreen,
+style: Styles.inputFieldText2,
+ decoration: InputDecoration(
+ filled: true,
+fillColor: Styles.textFormBg,
+enabledBorder: OutlineInputBorder(
+ borderSide:
+ BorderSide(color: 
+Colors.transparent, width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ focusedBorder: OutlineInputBorder(
+ borderSide: BorderSide(
+ color: Styles.cursorColorGreen, 
+width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ errorBorder: OutlineInputBorder(
+ borderSide: BorderSide(color: 
+Colors.red, width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ focusedErrorBorder: OutlineInputBorder(
+ borderSide:
+ BorderSide(color: 
+Colors.orangeAccent, width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ prefixIcon: Icon(
+ Icons.mail_outline,
+color: Colors.white,
+ ),
+hintText: "Email",
+ ),
+ ),
+137
+ ),
+ ),
+ SizedBox(
+ width: MediaQuery.of(context).size.width * 0.8,
+ child: Padding(
+ padding: const EdgeInsets.all(4.0),
+ child: TextField(
+ controller: passwordController,
+ textInputAction: TextInputAction.next,
+ obscureText: true,
+cursorColor: Styles.cursorColorGreen,
+ style: Styles.inputFieldText2,
+ decoration: InputDecoration(
+ filled: true,
+ fillColor: Styles.textFormBg,
+ enabledBorder: OutlineInputBorder(
+ borderSide:
+ BorderSide(color: 
+Colors.transparent, width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ focusedBorder: OutlineInputBorder(
+ borderSide: BorderSide(
+ color: Styles.cursorColorGreen, 
+width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ errorBorder: OutlineInputBorder(
+ borderSide: BorderSide(color: 
+Colors.red, width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ focusedErrorBorder: OutlineInputBorder(
+ borderSide:
+ BorderSide(color: 
+Colors.orangeAccent, width: 2.0),
+ borderRadius: 
+BorderRadius.circular(5.0)),
+ prefixIcon: Icon(
+ Icons.lock_outline,
+color: Colors.white,
+ ),
+hintText: "Password",
+ ),
+ ),
+ ),
+ ),
+ const SizedBox(height: Styles.defaultPadding),
+ SizedBox(
+ // tag: "login_btn",
+ width: MediaQuery.of(context).size.width * 0.78,
+ child: 
+ ElevatedButton.icon(
+ icon: isLoading ? const 
+CircularProgressIndicator(
+ color: Colors.white,
+ ) : const SizedBox.shrink(),
+ style: ElevatedButton.styleFrom(
+138
+ primary: Styles.buttonAuthBg,
+ minimumSize: const Size.fromHeight(50),
+shape: new RoundedRectangleBorder(
+ borderRadius: new 
+BorderRadius.circular(5.0),
+ ),
+ ),
+ onPressed: () {
+ isLoading ? null : handleSignIn();
+ },
+ label: Text(
+ isLoading ? '' : "Login".toUpperCase(),
+ style: Styles.buttonAuthText,
+ ),
+ ),
+ ),
+ const SizedBox(height: Styles.defaultPadding),
+ const Spacer(
+ flex: 1,
+ ),
+ DontHaveAnAccount(),
+ const SizedBox(height: Styles.defaultPadding),
+ ],
+ ),
+ );
+ }
+}
+main_page.dart
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:tugasakhir_app/model/catatan_model.dart';
+import 
+'package:tugasakhir_app/screens/main_screens/components_main/f
+ab.dart';
+import 
+'package:tugasakhir_app/screens/main_screens/home/home_appbar.
+dart';
+import 
+'package:tugasakhir_app/screens/main_screens/home/home_body.da
+rt';
+import 
+'package:tugasakhir_app/screens/main_screens/profile/profile_a
+ppbar.dart';
+import 
+'package:tugasakhir_app/screens/main_screens/profile/profile_b
+ody.dart';
+import 
+'package:tugasakhir_app/screens/main_screens/report/report_app
+bar.dart';
+import 
+'package:tugasakhir_app/screens/main_screens/report/report_bod
+y.dart';
+import 
+'package:tugasakhir_app/services/api_catatan_service.dart';
+139
+import 'package:tugasakhir_app/styles.dart';
+import 'package:http/http.dart' as http;
+class MainPage extends StatefulWidget {
+ const MainPage({Key? key}) : super(key: key);
+ @override
+ State<MainPage> createState() => _MainPageState();
+}
+class _MainPageState extends State<MainPage> {
+ final CatatanApiService _catatanModel = CatatanApiService();
+ late Future<List<Datum>>? dataFutureCatatan;
+ final isDialOpen = ValueNotifier(false);
+ int currentIndexBotNavBar = 0;
+ final screensAppBar = [
+ const HomeAppBar(),
+ const ReportAppBar(),
+ const ProfileAppBar(),
+ ];
+ final screensBody = [
+ const HomeBody(),
+ const ReportBody(),
+ const ProfileBody(),
+ ];
+ List appBarHeight = [
+ 120.0,
+ 80.0,
+ 0.0,
+ ];
+ Future<List<Datum>>? _loadData() async {
+ return await _catatanModel.getCatatanModel();
+ }
+ @override
+ void initState() {
+ super.initState();
+ dataFutureCatatan = _loadData();
+ }
+ @override
+ Widget build(BuildContext context) {
+ return WillPopScope(
+ onWillPop: () async {
+ if (isDialOpen.value) {
+ isDialOpen.value = false;
+ return false;
+ } else {
+ return true;
+ }
+ },
+ child: Scaffold(
+ backgroundColor: Styles.bgMainColor,
+ // ** APPBAR - DIFFERENT SCREENAPPBAR */
+140
+ appBar: PreferredSize(
+ preferredSize: 
+Size.fromHeight(appBarHeight[currentIndexBotNavBar]),
+ child: screensAppBar[currentIndexBotNavBar],
+ ),
+ // ** BODY - DIFFERENT SCREENBODY */
+ body: IndexedStack(
+ index: currentIndexBotNavBar,
+ children: screensBody,
+ ),
+ // ** FLOATING BUTTON ** //
+ floatingActionButton: const Fab(),
+ //** BOTTOM NAVIGATION BAR */
+ bottomNavigationBar: SizedBox(
+ height: 70,
+ child: BottomNavigationBar(
+ currentIndex: currentIndexBotNavBar,
+ onTap: (index) => setState(() {
+ currentIndexBotNavBar = index;
+ }),
+ selectedLabelStyle: 
+Styles.selectedBottomNavBarText,
+ unselectedLabelStyle: 
+Styles.unselectedBottomNavBarText,
+ selectedItemColor: Styles.appBarPrimaryColor,
+ unselectedItemColor: Styles.offGreyColor,
+ iconSize: 32,
+ items: const [
+ BottomNavigationBarItem(
+ icon: Icon(Icons.home),
+label: "Beranda",
+ ),
+BottomNavigationBarItem(
+ icon: Icon(Icons.auto_graph),
+label: "Laporan",
+backgroundColor: Colors.orange),
+ BottomNavigationBarItem(
+ icon: Icon(Icons.person),
+label: "Profile",
+backgroundColor: Colors.greenAccent),
+ ]),
+ ),
+ ),
+ );
+ }
+}
+api_catatan_model.dart
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+141
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tugasakhir_app/model/catatan_model.dart';
+import 'package:tugasakhir_app/model/makanan_model.dart';
+class CatatanApiService {
+ String finalToday = DateFormat('yyyy-MM￾dd').format(DateTime.now());
+ String urlList = " https://Spoonycal.ik3d.site/";
+ var data = [];
+ List<Datum> results = [];
+ Future<List<Datum>> getCatatanModel() async {
+ SharedPreferences prefs = await 
+SharedPreferences.getInstance();
+ String? token = prefs.getString("token");
+ try {
+ var response = await http.get(
+ Uri.parse(urlList),
+ headers: {
+ 'Content-Type': 'application/json',
+ 'Accept': 'application/json',
+ 'Authorization': '$token',
+ },
+ );
+ if (response.statusCode == 200) {
+ var data = json.decode(response.body)['data'];
+ results = (data as List).map((e) => 
+Datum.fromJson(e)).toList();
+ print(response.statusCode);
+ print(results);
+ } else {
+ print(token);
+ print(response.statusCode);
+ print("fetch error");
+ }
+ } on Exception catch (e) {
+ print('error: $e');
+ }
+ return results;
+ }
+ postCatatanModel({
+ required String tanggal,
+ required String waktu,
+ required num kalori_masuk,
+ required num target_kalori,
+ required double sisa_kalori,
+ }) async {
+ SharedPreferences prefs = await 
+SharedPreferences.getInstance();
+ String? token = prefs.getString("token");
+ try {
+ var response = await http.post(Uri.parse(urlList),
+ headers: {
+ 'Content-Type': 'application/json',
+ 'Accept': 'application/json',
+142
+ 'Authorization': '$token',
+ },
+ body: jsonEncode({
+ 'tanggal': tanggal,
+ 'waktu': waktu,
+ 'kalori_masuk': kalori_masuk,
+ 'target_kalori': target_kalori,
+ 'sisa_kalori': sisa_kalori,
+ }));
+ print(kalori_masuk);
+ print(target_kalori);
+ print(sisa_kalori);
+ print(response.statusCode);
+ print(response.body);
+ print(response.body);
+ if (response.statusCode == 200) {
+ print(token);
+ print("Berhasil mengirim catatan!");
+ } else {
+ print(token);
+ print(response.statusCode);
+ print("Gagal mengirim catatan!");
+ }
+ } on Exception catch (e) {
+ print('error: $e');
+ }
+ }
+}
+count_calorie.dart
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tugasakhir_app/model/calorie_model.dart';
+import 
+'package:tugasakhir_app/providers/favorite_food.dart';
+import 
+'package:tugasakhir_app/screens/Spoonycal_screens/search_sc
+reen.dart';
+import 'package:tugasakhir_app/styles.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:intl/intl.dart';
+const String espUrl = 'ws://192.168.43.56:81';
+// const String espUrl = 'ws://192.168.245.73:81';
+class CountCalorie extends StatefulWidget {
+ final String? finalMakanan;
+ final int? finalKaloriPerGram;
+ const CountCalorie({
+ Key? key,
+ @required this.finalMakanan,
+143
+ @required this.finalKaloriPerGram,
+ }) : super(key: key);
+ @override
+ State<CountCalorie> createState() => 
+_CountCalorieState();
+}
+class _CountCalorieState extends State<CountCalorie> {
+ bool isLoaded = false;
+ bool isEmpty = false;
+ double? tempBerat;
+ double? tempKalori;
+ double totalBerat = 0;
+ double totalKalori = 0;
+ String msg = '';
+ CalorieModel dht = CalorieModel(0, 0);
+ // double? resultKal;
+ final channel = IOWebSocketChannel.connect(espUrl);
+ @override
+ void initState() {
+ super.initState();
+ channel.stream.listen(
+ (message) {
+ channel.sink.add('Flutter received $message');
+ if (message == "connected") {
+ print('Received from MCU: $message');
+ setState(() {
+ msg = message;
+ });
+ } else {
+ print('Received from MCU: $message');
+ print('berhasil mengambil data');
+ // {'tempC':'30.50','humi':'64.00'}
+ Map<String, dynamic> json = jsonDecode(message);
+ setState(() {
+ dht = CalorieModel.fromJson(json);
+ // resultKal = dht.humi * finalKaloriHarian! * 
+0.01;
+ isLoaded = true;
+ });
+ }
+ //channel.sink.close(status.goingAway);
+ },
+ onDone: () {
+ //if WebSocket is disconnected
+ print("Web socket is closed");
+ setState(() {
+ msg = 'disconnected';
+ isLoaded = false;
+ });
+ },
+ onError: (error) {
+ print(error.toString());
+ },
+ );
+ }
+144
+ @override
+ Widget build(BuildContext context) {
+ ProviderFavoriteFood providerFavoriteFood =
+ Provider.of<ProviderFavoriteFood>(context);
+DateTime tempToday = DateTime.now();
+ String finalToday = DateFormat('yyyy-MM￾dd').format(tempToday);
+ Future<void> realBeratKalori() async {
+ tempBerat = dht.humi;
+ tempKalori = dht.humi * widget.finalKaloriPerGram! * 
+0.01;
+ totalBerat += dht.humi;
+ totalKalori += dht.humi * widget.finalKaloriPerGram! 
+* 0.01;
+ isEmpty = true;
+ }
+ Future<void> clearBeratKalori() async {
+ tempBerat = 0;
+ tempKalori = 0;
+ totalBerat = 0;
+ totalKalori = 0;
+ isEmpty = false;
+ }
+ return Scaffold(
+ appBar: AppBar(
+ toolbarHeight: 70.0,
+ backgroundColor: Styles.appBarPrimaryColor,
+ leading: IconButton(
+ icon: const Icon(Icons.arrow_back, color: 
+Colors.white),
+ onPressed: () => Navigator.of(context).pop(),
+ ),
+ centerTitle: false,
+title: RichText(
+ text: TextSpan(
+ text: 'Pilih makanan anda',
+ style: Styles.shareTitleAppbarText13,
+ children: [
+ TextSpan(
+ text: '\n' + '$finalToday',
+style: Styles.shareDateFont16,
+ )
+ ]),
+ ),
+ ),
+ body: !isLoaded
+ ? const Center(child: 
+CircularProgressIndicator())
+ : Column(
+ children: [
+ const SizedBox(
+ height: 30,
+145
+ ),
+ Container(
+ width: MediaQuery.of(context).size.width,
+padding: const 
+EdgeInsets.symmetric(horizontal: 30.0),
+ child: DecoratedBox(
+ decoration: BoxDecoration(
+ borderRadius: 
+BorderRadius.circular(15.0),
+ color: Colors.white,
+// ignore: 
+prefer_const_literals_to_create_immutables
+ boxShadow: [
+ const BoxShadow(
+ color: Colors.black12,
+offset: Offset(
+ 0.0,
+3.0,
+ ),
+blurRadius: 6.0,
+spreadRadius: 3.0,
+ ),
+ ],
+ ),
+child: Column(
+ children: [
+ Container(
+ width: 
+MediaQuery.of(context).size.width,
+ height: 50,
+padding: 
+EdgeInsets.symmetric(horizontal: 10.0),
+ child: DecoratedBox(
+ decoration: BoxDecoration(
+ borderRadius: 
+BorderRadius.circular(20.0),
+ color: 
+Styles.appBarPrimaryColor,
+ boxShadow: [
+ BoxShadow(
+ color: Colors.black12,
+offset: const Offset(
+ 0.0,
+3.0,
+ ),
+ blurRadius: 6.0,
+spreadRadius: 3.0,
+ ),
+ ],
+ ),
+ //** TEKS LAPORAN KALORI HARIAN 
+*/
+ child: const Center(
+ child: Text(
+ "SILAHKAN ANGKAT MAKANAN 
+ANDA",
+ style: Styles.shareFont8,
+146
+ textAlign: TextAlign.center,
+ )),
+ ),
+ ),
+ const SizedBox(
+ height: 10,
+ ),
+ Row(
+ mainAxisAlignment: 
+MainAxisAlignment.center,
+ // ignore: 
+prefer_const_literals_to_create_immutables
+ children: [
+ const Text(
+ "BERAT PADA SENDOK SAAT INI : 
+",
+ style: 
+Styles.shareBeratSendokFont14,
+ ),
+Text(
+ 
+'${dht.humi.toStringAsFixed(2)} gr',
+ style: 
+Styles.shareBeratSendokFont15,
+ ),
+ ],
+ ),
+Text(
+ "*menghitung berat 
+${widget.finalMakanan}",
+ style: 
+Styles.shareBeratSendokFont14,
+ ),
+ const SizedBox(
+ height: 15,
+ ),
+ // TOTAL BERAT //
+Row(
+ mainAxisAlignment: 
+MainAxisAlignment.center,
+ // ignore: 
+prefer_const_literals_to_create_immutables
+ children: [
+ const Text(
+ "Total berat : ",
+style: 
+Styles.amaranthCalorieText1,
+ ),
+Container(
+ width: 
+MediaQuery.of(context).size.width * 0.3,
+ color: Color(0xFFDCDCDC),
+child: Padding(
+ padding: const 
+147
+EdgeInsets.all(8.0),
+ child: !isEmpty
+ ? Text(
+ '0',
+style: 
+Styles.outfitCalorieText1,
+textAlign: 
+TextAlign.center,
+ )
+ : Text(
+ 
+'${totalBerat.toStringAsFixed(1)}',
+style: 
+Styles.outfitCalorieText1,
+textAlign: 
+TextAlign.center,
+ )),
+ ),
+const Text(
+ ' gr',
+style: 
+Styles.outfitCalorieText2,
+ ),
+ ],
+ ),
+ const SizedBox(
+ height: 10,
+ ),
+ // TOTAL KALORI //
+Row(
+ mainAxisAlignment: 
+MainAxisAlignment.center,
+ // ignore: 
+prefer_const_literals_to_create_immutables
+ children: [
+ const Text(
+ "Total kalori : ",
+style: 
+Styles.amaranthCalorieText1,
+ ),
+Container(
+ width: 
+MediaQuery.of(context).size.width * 0.3,
+ color: const 
+Color(0xFFDCDCDC),
+ child: Padding(
+ padding: const 
+EdgeInsets.all(8.0),
+ child: !isEmpty
+ ? Text(
+ '0'.toString(),
+// 
+'${resultKal}'.toString(),
+style: 
+Styles.outfitCalorieText1,
+textAlign: 
+148
+TextAlign.center,
+ )
+ : Text(
+ 
+'${totalKalori.toStringAsFixed(2)}',
+ // 
+'${resultKal}'.toString(),
+style: 
+Styles.outfitCalorieText1,
+ textAlign: 
+TextAlign.center,
+ )),
+ ),
+const Text(
+ ' kal',
+style: 
+Styles.outfitCalorieText2,
+ ),
+ ],
+ ),
+ const SizedBox(
+ height: 10,
+ ),
+ const Text(
+ "*anda bisa mengangkat makanan 
+anda sekarang",
+ style: 
+Styles.amaranthCalorieText2,
+ ),
+ const SizedBox(
+ height: 20,
+ ),
+ // TANGKAP KALORI //
+SizedBox(
+ width: 
+MediaQuery.of(context).size.width * 0.6,
+ child: ElevatedButton(
+ style: ButtonStyle(
+ backgroundColor:
+ 
+MaterialStateProperty.all<Color>(
+ 
+Color(0xFF54CC60)),
+ shape: 
+MaterialStateProperty.all(
+ 
+RoundedRectangleBorder(
+ borderRadius: 
+BorderRadius.circular(10.0),
+ ))),
+ onPressed: () {
+ realBeratKalori();
+ 
+providerFavoriteFood.addCart(
+149
+ makan: 
+widget.finalMakanan,
+kalori: 
+tempKalori?.toInt(),
+berat: 
+tempBerat?.toInt());
+ 
+ScaffoldMessenger.of(context).showSnackBar(
+ const SnackBar(
+ backgroundColor: 
+Color(0xFF54CC60),
+duration: 
+Duration(milliseconds: 1000),
+content:
+ Text("Berhasil 
+menangkap data!")));
+ },
+child: const Padding(
+ padding: 
+EdgeInsets.all(8.0),
+child: Text(
+ "TANGKAP KALORI",
+style: 
+Styles.bodyQuestion1,
+textAlign: 
+TextAlign.center,
+ ),
+ )),
+ ),
+ // CARI MAKANAN LAIN //
+ SizedBox(
+ width: 
+MediaQuery.of(context).size.width * 0.6,
+ child: ElevatedButton(
+ style: ButtonStyle(
+ backgroundColor:
+ 
+MaterialStateProperty.all<Color>(
+ 
+Color.fromARGB(255, 80, 196, 169)),
+ shape: 
+MaterialStateProperty.all(
+ 
+RoundedRectangleBorder(
+ borderRadius: 
+BorderRadius.circular(10.0),
+ ))),
+ onPressed: () => {
+ showDialog(
+ context: context,
+ builder: (context) 
+=> AlertDialog(
+ title: Text(
+ 
+'Perhatian!',
+style: 
+Styles.outfitDialogText3,
+150
+ ),
+ content: 
+Text(
+ 'Sudah 
+selesai menangkap kalori ${widget.finalMakanan}?',
+style: 
+Styles.outfitDialogText4,
+ ),
+actions: [
+ TextButton(
+ 
+onPressed: () {
+ 
+clearBeratKalori();
+Navigator.pop(context);
+ },
+ child: 
+const Text(
+ 
+'TIDAK',
+style: Styles
+ 
+.outfitDialogTidakText5,
+ )),
+ TextButton(
+ 
+onPressed: () {
+ 
+Navigator.pop(context);
+Navigator.pushReplacement(
+ 
+context,
+MaterialPageRoute(
+ 
+builder: (context) =>
+ 
+SearchScreen(),
+ ),
+ );
+ },
+ child: 
+const Text('YA',
+ 
+style: Styles
+ 
+.outfitDialogYaText6)),
+ ],
+ ))
+ },
+ child: const Padding(
+ padding: 
+EdgeInsets.all(8.0),
+child: Text(
+ "CARI MAKANAN LAIN",
+151
+ style: 
+Styles.bodyQuestion1,
+textAlign: 
+TextAlign.center,
+ ),
+ )),
+ ),
+ // HAPUS SEMUA KALORI //
+providerFavoriteFood.favoriteFood.isEmpty
+ ? const SizedBox.shrink()
+: SizedBox(
+ width: 
+MediaQuery.of(context).size.width * 0.6,
+child: ElevatedButton(
+ style: ButtonStyle(
+ backgroundColor:
+ 
+MaterialStateProperty.all<Color>(
+ 
+Color.fromARGB(
+ 255, 
+211, 81, 81)),
+ shape: 
+MaterialStateProperty.all(
+ 
+RoundedRectangleBorder(
+ borderRadius:
+ 
+BorderRadius.circular(10.0),
+ ))),
+ onPressed: () => {
+ 
+clearBeratKalori(),
+ 
+providerFavoriteFood.clearList(),
+ 
+ScaffoldMessenger.of(context)
+ 
+.showSnackBar(SnackBar(
+ 
+backgroundColor:
+ 
+Color.fromARGB(
+ 
+255, 206, 83, 81),
+ content: 
+Text(
+ 
+"Berhasil menghapus semua data kalori!")))
+ },
+ child: const Padding(
+ padding: 
+EdgeInsets.all(8.0),
+child: Text(
+ "HAPUS SEMUA 
+KALORI",
+152
+ style: 
+Styles.bodyQuestion1,
+ textAlign: 
+TextAlign.center,
+ ),
+ )),
+ ),
+ // SELESAI //
+providerFavoriteFood.favoriteFood.isEmpty
+ ? const SizedBox.shrink()
+: SizedBox(
+ width: 
+MediaQuery.of(context).size.width * 0.6,
+child: ElevatedButton(
+ style: ButtonStyle(
+ backgroundColor:
+ 
+MaterialStateProperty.all<Color>(
+ 
+Color.fromARGB(
+ 255, 
+210, 186, 67)),
+ shape: 
+MaterialStateProperty.all(
+ 
+RoundedRectangleBorder(
+ borderRadius:
+ 
+BorderRadius.circular(10.0),
+ ))),
+ onPressed: () => {
+ 
+Navigator.pushNamed(
+ context, 
+'/tampil_data')
+ },
+ child: const Padding(
+ padding: 
+EdgeInsets.all(8.0),
+ child: Text(
+ "SELESAI",
+style: 
+Styles.bodyQuestion1,
+ textAlign: 
+TextAlign.center,
+),
+ )),
+ ),
+ const SizedBox(
+ height: 10,
+ )
+ ],
+ ),
+ ),
+ ),
+153
+ ],
+ ),
+ );
+ }
+}
+KODE PROGRAM APLIKASI ARDUINO
+#include <Arduino.h>
+#include <WebSocketsServer.h> //import for websocket
+#include "HX711.h"
+#include <ArduinoJson.h> //data Json
+#include <ESP8266WiFi.h>
+#define DOUT 12
+#define CLK 13
+float calibration_factor = -945; // this calibration 
+factor is adjusted according to my load cell
+float units;
+float ounces;
+IPAddress ip_address;
+// Replace with your network credentials
+const char* ssid = "SPOONYCALL"; // Enter SSID here
+const char* password = "a12345678"; 
+WebSocketsServer webSocket = WebSocketsServer(81);
+unsigned long t_tick = 0;
+StaticJsonDocument<500> TempDoc;
+HX711 scale(DOUT, CLK);
+double weight;
+double calibration;
+void setup() {
+ // put your setup code here, to run once:
+ Serial.begin(9600);
+ delay(1000);
+ scale.set_scale();
+ scale.tare(); //Reset the scale to 0
+ long zero_factor = scale.read_average(); //Get a 
+baseline reading
+ Serial.print("Zero factor: "); //This can be used to 
+remove the need to tare the scale. Useful in permanent 
+scale projects.
+ Serial.println(zero_factor);
+ TempDoc["calibration"] = 0;
+ TempDoc["weight"] = 0;
+ Serial.println("Koneksi menuju WIFI");
+ WiFi.begin(ssid, password);
+ while (WiFi.status() != WL_CONNECTED) {
+154
+ delay(1000);
+ Serial.print(".");
+ }
+ Serial.println("");
+ Serial.println("WiFi connected..!");
+ Serial.print("Got IP: "); 
+ Serial.println(WiFi.localIP());
+ webSocket.begin(); //websocket Begin
+ webSocket.onEvent(webSocketEvent); //set Event for 
+websocket
+ Serial.println("Websocket is started");
+}
+void loop() {
+ // put your main code here, to run repeatedly:
+ webSocket.loop();
+ if (millis() - t_tick > 2000){
+ scale.set_scale(calibration_factor);
+ //Adjust to this calibration factor
+ Serial.print("Reading: ");
+ units = scale.get_units(), 10;
+ 
+ weight = scale.get_units(), 10;
+ ip_address = WiFi.localIP();
+ calibration = calibration_factor;
+ if(isnan(calibration) || isnan(weight)){
+ Serial.println("Gagal membaca sensor DHT");
+ return; 
+ }
+ Serial.print("Calibrasi Factor: ");
+ Serial.print(calibration);
+ Serial.print("Berat : ");
+ Serial.print(weight);
+ Serial.print("gr");
+ Serial.print(ip_address);
+ Serial.print('\n');
+ Serial.print('\n');
+ dhtEvent();
+ t_tick = millis();
+ }
+}
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * 
+payload, size_t length){
+ String cmd = "";
+ switch (type){
+ case WStype_DISCONNECTED:
+ Serial.println("Websocket terputus");
+ break;
+ case WStype_CONNECTED: {
+ Serial.println("Websocket tersambung");
+ Serial.println(webSocket.remoteIP(num).toString());
+ webSocket.sendTXT(num, "connected"); 
+ }
+ break;
+ case WStype_TEXT:
+ cmd = "";
+ for (int i = 0; i < length; i++) {
+155
+ cmd = cmd + (char) payload[i];
+ }
+ Serial.print("Data dari flutter:");
+ Serial.println(cmd);
+ break;
+ case WStype_FRAGMENT_TEXT_START:
+ break;
+ case WStype_FRAGMENT_BIN_START:
+ break;
+ case WStype_BIN:
+ hexdump(payload, length);
+ break;
+ default:
+ break;
+}
+}
+void dhtEvent(){
+ TempDoc["weight"] = weight;
+ TempDoc["calibration"] = calibration;
+ char msg[256];
+ serializeJson(TempDoc, msg);
+ webSocket.broadcastTXT(msg);
+}
+KODE PROGRAM PEMBUATAN API
+api.php
+<?php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+/*
+|---------------------------------------------------------
+-----------------
+| API Routes
+|---------------------------------------------------------
+-----------------
+|
+| Here is where you can register API routes for your 
+application. These
+| routes are loaded by the RouteServiceProvider within a 
+group which
+| is assigned the "api" middleware group. Enjoy building 
+your API!
+|
+*/
+Route::post('/register', 
+[App\Http\Controllers\AuthController::class, 'register']);
+156
+Route::post('/login', 
+[App\Http\Controllers\AuthController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum']], function 
+() {
+ Route::get('/profile', function(Request $request) {
+ return auth()->user();
+ });
+ Route::get('/myuser/{userid}', 
+[App\Http\Controllers\AuthController::class, 'myuser']);
+ Route::post('/editdata', 
+[App\Http\Controllers\AuthController::class, 'editdata']);
+ Route::resource('catatan', 
+App\Http\Controllers\CatatanController::class);
+ Route::resource('profile', 
+App\Http\Controllers\ProfilController::class);
+ Route::resource('kalori', 
+App\Http\Controllers\KaloriController::class);
+ Route::post('/logout', 
+[App\Http\Controllers\AuthController::class, 'logout']);
+ Route::resource('makanan', 
+App\Http\Controllers\MakananController::class);
+ Route::get('/myprofile', 
+[App\Http\Controllers\ProfilController::class, 
+'myprofil']);
+ 
+Route::get('/pilihmakanan/{makananid}',[App\Http\Controlle
+rs\MakananController::class, 'makanan']);
+});
+Route::get('/myprofiles', 
+[App\Http\Controllers\ProfilController::class, 
+'myprofil']);
+Route::middleware('auth:sanctum')->get('/user', function 
+(Request $request) {
+ return $request->user();
+});
+AuthController.php
+<?php
+namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+class AuthController extends Controller
+{
+ public function register(Request $request)
+157
+ {
+ $validator = Validator::make($request->all(),[
+ 'name' => 'required|string|max:255',
+ 'email' => 
+'required|string|email|max:255|unique:users',
+ 'password' => 'required|string|min:8',
+ 'umur' => 'required|numeric', 
+ 'gender' => 'required', 
+ 'tinggi' => 'required|numeric',
+ 'berat' => 'required|numeric',
+ 'kalori_harian' => 'required|numeric',
+ ]);
+ if($validator->fails()){
+ return response()->json($validator->errors()); 
+ }
+ $user = User::create([
+ 'name' => $request->name ,
+ 'email' => $request->email,
+ 'password' => Hash::make($request->password),
+ 'umur' => $request->umur, 
+ 'gender' => $request->gender, 
+ 'tinggi' =>($request->tinggi),
+ 'berat' => ($request->berat),
+ 'kalori_harian' => ($request->kalori_harian),
+ ]);
+ $token = $user->createToken('auth_token')-
+>plainTextToken;
+ return response()
+ ->json(['data' => $user,'access_token' => 
+$token, 'token_type' => 'Bearer']);
+ }
+ public function login(Request $request)
+ {
+ if (!Auth::attempt($request->only('email', 
+'password')))
+ {
+ return response()
+ ->json(['message' => 'Unauthorized'], 
+401);
+ }
+ $user = User::where('email', $request['email'])-
+>firstOrFail();
+ $token = $user->createToken('auth_token')-
+>plainTextToken;
+ return response()
+ ->json(['message' => 'Hi '.$user->name, 'User 
+ID'=> $user->id, 'data' => $user,'access_token' => $token, 
+'token_type' => 'Bearer' ]);
+ }
+ // method for user logout and delete token
+158
+ public function logout()
+ {
+ auth()->user()->tokens()->delete();
+ return [
+ 'message' => 'You have successfully logged out 
+and the token was successfully deleted'
+ ];
+ }
+ public function myuser($userid)
+ {
+ // $userInfo = Auth::user()->id;
+ // $user = User::where('user_id', $userInfo) -
+>firstorFail();
+ $user = User::find($userid);
+ $token = $user->createToken('auth_token')-
+>plainTextToken;
+ return response()->json(['message' => 'Ini data 
+profil anda', 'data' => $user, 'access_token' => $token, 
+'token_type' => 'Bearer' ]);
+ }
+ public function editdata(Request $request)
+ {
+ $user_id = Auth::user()->id;
+ $user = User::all()->find($user_id);
+ $validator = Validator::make($request->all(),[
+ 'name' => 'required|string|max:255',
+ 'umur' => 'required|numeric', 
+ 'tinggi' => 'required|numeric',
+ 'berat' => 'required|numeric',
+ 'kalori_harian' => 'required|numeric',
+ ]);
+ if($validator->fails()){
+ return response()->json($validator->errors()); 
+ }
+ $user -> name = $request->name ;
+ $user -> umur = $request->umur;
+ $user -> tinggi =$request->tinggi;
+ $user -> berat = $request->berat;
+ $user -> kalori_harian = $request-
+>kalori_harian;
+ $user->save();
+ $token = $user->createToken('auth_token')-
+>plainTextToken;
+ return response() ->json(['message' => 'Data 
+User Berhasil Diubah', 'data' => $user, 'access_token' => 
+$token, 'token_type' => 'Bearer' ]);
+ 
+ }
+}
+159
+CatatanController.php
+<?php
+namespace App\Http\Controllers;
+use App\Models\Catatan;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\CatatanResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+class CatatanController extends Controller
+{
+ public function index(){
+ $user_id = Auth::user()->id;
+ $catatan = Catatan::all()->where('user_id', 
+$user_id)->values();
+ $tanggal = $catatan->pluck('tanggal')->unique();
+ $data = [];
+ foreach ($tanggal as $tanggal) {
+ $isian = $catatan->where('tanggal',$tanggal)-
+>values();
+ array_push($data, [
+ 'date' => $tanggal,
+'catatan' => $isian,
+ ]);
+ };
+ //return new CatatanResource(true, 'Catatan Harian 
+ANda', $catatan);
+ // $catatan = Catatan::where('user_id', 
+Auth::user()->id) ->firstorFail();
+ return new CatatanResource(true, 'Catatan Harian 
+Anda', $data);
+ }
+ public function store(Request $request) {
+ Auth::user();
+ $validator = Validator::make($request->all(), [
+ 'tanggal' => 'required',
+ 'waktu' => 'required',
+ ]);
+ if ($validator->fails()) {
+ return response()->json($validator->errors(), 
+422);
+ }
+ $catatan = Catatan::create([
+ 'tanggal' => $request->tanggal,
+ 'waktu' => $request->waktu,
+ 'kalori_masuk' => $request->kalori_masuk,
+ 'sisa_kalori' => $request->sisa_kalori,
+ 'target_kalori' => $request->target_kalori,
+ 'user_id' => Auth::user()->id,
+ ]);
+160
+ return new CatatanResource(true, 'Catatan Baru 
+Berhasil Ditambahkan!', $catatan);
+ }
+ public function show(Catatan $catatan) {
+ $userInfo=auth('api')->user();
+ $catatan = Catatan::where('user_id', $userInfo) -
+>firstorFail();
+ return new CatatanResource(true, 'Catatan 
+Ditemukan!', $catatan);
+ }
+ public function update(Request $request, Catatan 
+$catatan)
+ {
+ /*
+ $validator = Validator::make($request->all(), [
+ 'tanggal' => 'required',
+ 'kalori' => 'required',
+ 'sisa_kalori' => 'required|numeric',
+ 'user_id' => 'required',
+ ]);
+ if ($validator->fails()) {
+ return response()->json($validator->errors(), 
+422);
+ }
+ $catatan->tanggal = $request->tanggal;
+ $catatan->kalori = $request->kalori;
+ $catatan->sisa_kalori = $request-
+>sisa_kalori;
+ $catatan->user_id == $request->user_id;
+ $catatan->save();
+ return new CatatanResource(true, 'Catatan Berhasil 
+Diubah!', $catatan);
+ */
+ }
+ public function destroy(Catatan $catatan)
+ {
+ $catatan->delete();
+ return new CatatanResource(true, 'Catatan Berhasil 
+Dihapus!', $catatan);
+ }
+}
+MakananController.php
+<?php
+namespace App\Http\Controllers;
+use App\Models\Makanan;
+use Illuminate\Http\Request;
+use App\Http\Resources\MakananResources;
+use Illuminate\Support\Facades\Validator;
+161
+class MakananController extends Controller
+{
+ /**
+ * Display a listing of the resource.
+ *
+ * @return \Illuminate\Http\Response
+ */
+ public function index()
+ {
+ $makanan = Makanan::latest()->get();
+ //return new CatatanResource(true, 'Catatan Harian 
+ANda', $catatan);
+ // $catatan = Catatan::where('user_id', 
+Auth::user()->id) ->firstorFail();
+ return new MakananResources(true, 'Makanan', 
+$makanan);
+ }
+ /**
+ * Show the form for creating a new resource.
+ *
+ * @return \Illuminate\Http\Response
+ */
+ public function create()
+ {
+ //
+ }
+ /**
+ * Store a newly created resource in storage.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @return \Illuminate\Http\Response
+ */
+ public function store(Request $request)
+ {
+ $validator = Validator::make($request->all(), [
+ 'makanan' => 'required',
+ 'kalori_per_gram' => 'required'
+ ]);
+ if ($validator->fails()) {
+ return response()->json($validator->errors(), 
+422);
+ }
+ $makanan = Makanan::create([
+ 'makanan' => $request->makanan,
+ 'kalori_per_gram' => $request->kalori_per_gram
+ ]);
+ return new MakananResources(true, 'Makanan Baru 
+Berhasil Ditambahkan!', $makanan);
+ }
+ /**
+ * Display the specified resource.
+ *
+ * @param \App\Models\Makanan $makanan
+162
+ * @return \Illuminate\Http\Response
+ */
+ public function show(Makanan $makanan)
+ {
+ $makan = Makanan::find($makanan);
+ return new MakananResources(true, 'Makanan 
+Ditemukan!', $makan);
+ }
+ /**
+ * Show the form for editing the specified resource.
+ *
+ * @param \App\Models\Makanan $makanan
+ * @return \Illuminate\Http\Response
+ */
+ public function edit(Makanan $makanan)
+ {
+ 
+ }
+ /**
+ * Update the specified resource in storage.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @param \App\Models\Makanan $makanan
+ * @return \Illuminate\Http\Response
+ */
+ public function update(Request $request, Makanan 
+$makanan)
+ {
+ $validator = Validator::make($request->all(), [
+ 'makanan' => 'required',
+ 'kalori_per_gram' => 'required',
+ ]);
+ if ($validator->fails()) {
+ return response()->json($validator->errors(), 
+422);
+ }
+ $makanan->makanan = $request->makanan;
+ $makanan->kalori_per_gram = $request-
+>kalori_per_gram;
+ $makanan->save();
+ return new MakananResources(true, 'Makanan Telah 
+di Update!', $makanan);
+ }
+ /**
+ * Remove the specified resource from storage.
+ *
+ * @param \App\Models\Makanan $makanan
+ * @return \Illuminate\Http\Response
+ */
+ public function destroy(Makanan $makanan)
+ {
+ $makanan->delete();
+163
+ return new MakananResources(true, 'Data Makanan 
+Telah DIhapus!', $makanan);
+ }
+ public function makanan($makananid)
+ {
+ // $userInfo = Auth::user()->id;
+ // $user = User::where('user_id', $userInfo) -
+>firstorFail();
+ $makanan = Makanan::find($makananid);
+ return new MakananResources(true, 'Makanan Telah 
+di Update!', $makanan);
+ }
+}
+2014_10_12_000000_create_users_table.php
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+class CreateUsersTable extends Migration
+{
+ /**
+ * Run the migrations.
+ *
+ * @return void
+ */
+ public function up()
+ {
+ Schema::create('users', function (Blueprint 
+$table) {
+ $table->id();
+ $table->string('name');
+ $table->string('email')->unique();
+ $table->timestamp('email_verified_at')-
+>nullable();
+ $table->string('password');
+ $table->double('umur');
+ $table->string('gender');
+ $table->double('tinggi');
+ $table->double('berat');
+ $table->double('kalori_harian');
+ $table->rememberToken();
+ $table->timestamps();
+ });
+ }
+ /**
+ * Reverse the migrations.
+ *
+ * @return void
+ */
+ public function down()
+ {
+ Schema::dropIfExists('users');
+164
+ }
+}
+2022_06_28_131754_create_catatan_table.php
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+class CreateCatatanTable extends Migration
+{
+ /**
+ * Run the migrations.
+ *
+ * @return void
+ */
+ public function up()
+ {
+ Schema::create('catatan', function (Blueprint 
+$table) {
+ $table->id();
+ $table->date('tanggal');
+ $table->time('waktu');
+ $table->double('kalori_masuk')->nullable();
+ $table->double('sisa_kalori')->nullable();
+ $table->double('target_kalori')->nullable();
+ $table->unsignedBigInteger('user_id');
+ $table->foreign('user_id')->references('id')-
+>on('users');
+ $table->timestamps();
+ });
+ }
+ /**
+ * Reverse the migrations.
+ *
+ * @return void
+ */
+ public function down()
+ {
+ Schema::dropIfExists('catatan');
+ }
+}
+2022_07_16_055132_create_makanans_table.php
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+class CreateMakanansTable extends Migration
+{
+ /**
+165
+ * Run the migrations.
+ *
+ * @return void
+ */
+ public function up()
+ {
+ Schema::create('makanans', function (Blueprint 
+$table) {
+ $table->id();
+ $table->string('makanan');
+ $table->double('kalori_per_gram');
+ $table->timestamps();
+ });
+ }
+ /**
+ * Reverse the migrations.
+ *
+ * @return void
+ */
+ public function down()
+ {
+ Schema::dropIfExists('makanans');
+ }
+}
