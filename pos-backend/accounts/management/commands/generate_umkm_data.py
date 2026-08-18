@@ -3,7 +3,7 @@ Generate UMKM Data -- Django Management Command (PostgreSQL / SQLite optimized)
 =====================================================================
 Jalankan: python manage.py generate_umkm_data
 
-Membuat 3 profil usaha dengan rentang data 1 tahun penuh (13 Agustus 2025 s.d. 13 Agustus 2026):
+Membuat 3 profil usaha dengan rentang data 1 tahun penuh (Dinamis: 365 hari yang lalu hingga HARI INI):
 1. Bisnis Ramai (Warung Kelontong - Toko Berkah Jaya)
    - Code: HBRPOI | Owner Code: FI52TX
    - Admin: admin_hbrpoi / admin123
@@ -40,6 +40,7 @@ from products.models import Product, Category, Supplier
 from inventory.models import ProductBatch, InventoryMovement, StockOpname, StockOpnameItem
 from transactions.models import Transaction, TransactionItem
 from payments.models import PaymentMethod
+from promotions.models import DiscountRule
 
 User = get_user_model()
 
@@ -60,6 +61,10 @@ BUSINESS_CONFIGS = [
         "kasir_username": "kasir_hbrpoi",
         "mode": "RAMAI",
         "daily_tx": (8, 18),
+        "discounts": [
+            {"name": "Promo Sembako Gajian (10%)", "type": "PERCENT", "value": 10.0, "min_qty": 2},
+            {"name": "Potongan Belanja Hemat (Rp 3.000)", "type": "NOMINAL", "value": 3000.0, "min_qty": 3},
+        ],
         "products": [
             {"code": "BRS01", "name": "Beras Premium 5kg",       "cat": "Sembako",        "buy": 62000, "sell": 68000, "unit": "karung",  "min_stock": 5,  "avg_daily": 1.5, "expiry_days": 180},
             {"code": "GLA01", "name": "Gula Pasir 1kg",           "cat": "Sembako",        "buy": 13500, "sell": 15500, "unit": "kg",      "min_stock": 10, "avg_daily": 3.0, "expiry_days": None},
@@ -98,36 +103,43 @@ BUSINESS_CONFIGS = [
         "kasir_username": "kasir_elektronik",
         "mode": "MENENGAH",
         "daily_tx": (2, 6),
+        "discounts": [
+            {"name": "Diskon Aksesoris Weekend (15%)", "type": "PERCENT", "value": 15.0, "min_qty": 1},
+            {"name": "Cashback Elektronik (Rp 10.000)", "type": "NOMINAL", "value": 10000.0, "min_qty": 1},
+        ],
         "products": [
-            {"code": "KBL01", "name": "Kabel USB-C Fast Charge 1m", "cat": "Kabel & Charger", "buy": 15000, "sell": 25000, "unit": "pcs", "min_stock": 5, "avg_daily": 1.5, "expiry_days": None},
-            {"code": "CHG01", "name": "Batok Charger 20W Type-C",   "cat": "Kabel & Charger", "buy": 35000, "sell": 60000, "unit": "pcs", "min_stock": 4, "avg_daily": 1.2, "expiry_days": None},
-            {"code": "PWR01", "name": "Powerbank 10000mAh Dual Port","cat": "Powerbank",       "buy": 85000, "sell": 135000,"unit": "pcs", "min_stock": 3, "avg_daily": 0.8, "expiry_days": None},
-            {"code": "HST01", "name": "Headset Bluetooth TWS i12",   "cat": "Audio",           "buy": 55000, "sell": 95000, "unit": "pcs", "min_stock": 3, "avg_daily": 0.7, "expiry_days": None},
-            {"code": "TG001", "name": "Tempered Glass Universal 6.5\"","cat": "Aksesori HP",   "buy": 5000,  "sell": 15000, "unit": "pcs", "min_stock": 10,"avg_daily": 2.0, "expiry_days": None},
-            {"code": "HLD01", "name": "Holder HP Mobil Dashboard",  "cat": "Aksesori HP",    "buy": 18000, "sell": 35000, "unit": "pcs", "min_stock": 4, "avg_daily": 0.9, "expiry_days": None},
-            {"code": "FD001", "name": "Flashdisk 32GB USB 3.0",     "cat": "Memori",          "buy": 40000, "sell": 65000, "unit": "pcs", "min_stock": 5, "avg_daily": 0.6, "expiry_days": None},
-            {"code": "SPK01", "name": "Speaker Bluetooth Portable",  "cat": "Audio",           "buy": 70000, "sell": 115000,"unit": "pcs", "min_stock": 2, "avg_daily": 0.4, "expiry_days": None},
-            {"code": "MSE01", "name": "Mouse Wireless Silent Click", "cat": "Aksesori Komputer","buy":30000, "sell": 55000, "unit": "pcs", "min_stock": 3, "avg_daily": 0.5, "expiry_days": None},
-            {"code": "OTG01", "name": "Adapter Type-C to USB 3.0",  "cat": "Kabel & Charger", "buy": 6000,  "sell": 15000, "unit": "pcs", "min_stock": 8, "avg_daily": 1.0, "expiry_days": None},
-            {"code": "EAR01", "name": "Earphone Extra Bass 3.5mm",  "cat": "Audio",           "buy": 12000, "sell": 25000, "unit": "pcs", "min_stock": 6, "avg_daily": 1.1, "expiry_days": None},
-            {"code": "BND01", "name": "Smartband Fitness Tracker",   "cat": "Gadget",          "buy": 120000,"sell": 195000,"unit": "pcs", "min_stock": 2, "avg_daily": 0.3, "expiry_days": None},
+            {"code": "KBL01", "name": "Kabel Data Type-C Fast Charging", "cat": "Aksesoris HP", "buy": 15000, "sell": 35000, "unit": "pcs", "min_stock": 10, "avg_daily": 1.5, "expiry_days": None},
+            {"code": "KBL02", "name": "Kabel Lightning iPhone 1m",        "cat": "Aksesoris HP", "buy": 20000, "sell": 45000, "unit": "pcs", "min_stock": 8,  "avg_daily": 1.0, "expiry_days": None},
+            {"code": "CHG01", "name": "Kepala Charger 20W QuickCharge",   "cat": "Aksesoris HP", "buy": 35000, "sell": 75000, "unit": "pcs", "min_stock": 5,  "avg_daily": 0.8, "expiry_days": None},
+            {"code": "PWB01", "name": "Powerbank 10000mAh Slim",         "cat": "Powerbank",     "buy": 75000, "sell": 135000,"unit": "unit","min_stock": 4,  "avg_daily": 0.5, "expiry_days": None},
+            {"code": "TWS01", "name": "Earphone TWS Bluetooth 5.3",       "cat": "Audio",         "buy": 60000, "sell": 120000,"unit": "unit","min_stock": 5,  "avg_daily": 0.7, "expiry_days": None},
+            {"code": "EAR01", "name": "Handsfree Kabel Jack 3.5mm",       "cat": "Audio",         "buy": 8000,  "sell": 20000, "unit": "pcs", "min_stock": 10, "avg_daily": 1.2, "expiry_days": None},
+            {"code": "FLS01", "name": "Flashdisk Sandisk 32GB USB 3.0",   "cat": "Storage",       "buy": 40000, "sell": 65000, "unit": "pcs", "min_stock": 6,  "avg_daily": 0.6, "expiry_days": None},
+            {"code": "MOU01", "name": "Mouse Wireless Silent Click",      "cat": "Komputer",      "buy": 30000, "sell": 55000, "unit": "pcs", "min_stock": 5,  "avg_daily": 0.5, "expiry_days": None},
+            {"code": "KBD01", "name": "Keyboard USB Standar Kantor",      "cat": "Komputer",      "buy": 45000, "sell": 75000, "unit": "pcs", "min_stock": 3,  "avg_daily": 0.3, "expiry_days": None},
+            {"code": "STP01", "name": "Stop Kontak Uticon 4 Lubang 3m",   "cat": "Kelistrikan",   "buy": 35000, "sell": 55000, "unit": "pcs", "min_stock": 4,  "avg_daily": 0.4, "expiry_days": None},
+            {"code": "LMP01", "name": "Lampu LED Philips 12W",            "cat": "Kelistrikan",   "buy": 28000, "sell": 40000, "unit": "pcs", "min_stock": 8,  "avg_daily": 0.9, "expiry_days": None},
+            {"code": "BAT01", "name": "Baterai AA Alkaline 4-Pack",       "cat": "Baterai",       "buy": 16000, "sell": 25000, "unit": "pack","min_stock": 12, "avg_daily": 1.0, "expiry_days": 1095},
         ]
     },
     {
         "code": "ANTK01",
         "name": "Galeri Antik Barokah",
-        "type": "Toko Antik",
-        "phone": "+6281776543210",
-        "address": "Jl. Malioboro No. 88",
-        "province": "DI Yogyakarta",
-        "city": "Kota Yogyakarta",
-        "district": "Danurejan",
-        "postal_code": "55213",
+        "type": "Toko Barang Antik & Seni",
+        "phone": "+6281357924680",
+        "address": "Jl. Kaliurang KM 9 No. 88",
+        "province": "D.I. Yogyakarta",
+        "city": "Kabupaten Sleman",
+        "district": "Ngaglik",
+        "postal_code": "55581",
         "owner_code": "AT77Y2",
         "admin_username": "admin_antik",
         "kasir_username": "kasir_antik",
         "mode": "SEPI",
         "daily_tx": (0, 2),  # Sepi: 15-25 tx / bulan (sekitar 0.6 tx/hari)
+        "discounts": [
+            {"name": "Diskon Kolektor Spesial (5%)", "type": "PERCENT", "value": 5.0, "min_qty": 1},
+        ],
         "products": [
             {"code": "JAM01", "name": "Jam Dinding Kuno kayu 1950", "cat": "Barang Antik", "buy": 450000, "sell": 850000, "unit": "unit", "min_stock": 1, "avg_daily": 0.05, "expiry_days": None},
             {"code": "LKS01", "name": "Lukisan Minyak Klasik Pemandangan", "cat": "Seni & Lukisan", "buy": 600000, "sell": 1200000, "unit": "unit", "min_stock": 1, "avg_daily": 0.04, "expiry_days": None},
@@ -145,6 +157,7 @@ BUSINESS_CONFIGS = [
 def is_ramadan(d):
     if d.year == 2025: return date(2025, 3, 1) <= d <= date(2025, 3, 30)
     if d.year == 2026: return date(2026, 2, 18) <= d <= date(2026, 3, 19)
+    if d.year == 2027: return date(2027, 2, 8) <= d <= date(2027, 3, 9)
     return False
 
 def is_payday(d):
@@ -155,14 +168,18 @@ def is_holiday(d):
 
 
 class Command(BaseCommand):
-    help = 'Generate 3 UMKM (Ramai, Menengah, Sepi) dengan data transaksi 1 tahun penuh (13 Aug 2025 s.d. 13 Aug 2026)'
+    help = 'Generate 3 UMKM (Ramai, Menengah, Sepi) dengan data transaksi 1 tahun penuh hingga hari ini'
 
     def handle(self, *args, **options):
         random.seed(42)
         np.random.seed(42)
 
+        # Tanggal dinamis: Hari ini dan 365 hari ke belakang
+        today = timezone.now().date()
+        start_date = today - timedelta(days=365)
+
         self.stdout.write("=" * 75)
-        self.stdout.write("GENERATE DATA -- 3 UMKM (Ramai, Menengah, Sepi) | Rentang 1 Tahun Penuh")
+        self.stdout.write(f"GENERATE DATA -- 3 UMKM (Ramai, Menengah, Sepi) | Rentang: {start_date} s.d. {today}")
         self.stdout.write("=" * 75)
 
         # ---------------------------------------------------------------------
@@ -190,6 +207,7 @@ class Command(BaseCommand):
         # ---------------------------------------------------------------------
         self.stdout.write("\n[1/5] Menghapus seluruh data lama (kecuali techdev)...")
         with db_transaction.atomic():
+            DiscountRule.objects.all().delete()
             PaymentMethod.objects.all().delete()
             StockOpnameItem.objects.all().delete()
             StockOpname.objects.all().delete()
@@ -208,10 +226,6 @@ class Command(BaseCommand):
             
             Business.objects.all().delete()
         self.stdout.write("  [OK] Database bersih 100%.")
-
-        # Rentang Waktu 1 Tahun Penuh (13 Agustus 2025 s.d. 13 Agustus 2026)
-        today = date(2026, 8, 13)
-        start_date = date(2025, 8, 13)
 
         # ---------------------------------------------------------------------
         # GENERASI DATA 3 UMKM
@@ -299,6 +313,7 @@ class Command(BaseCommand):
                     )
 
                 pmap = {}
+                created_products = []
                 for p in cfg["products"]:
                     prod = Product.objects.create(
                         business=biz,
@@ -311,6 +326,7 @@ class Command(BaseCommand):
                         unit=p["unit"],
                         min_stock=p["min_stock"],
                     )
+                    created_products.append(prod)
                     pmap[p["code"]] = {
                         "obj": prod,
                         "avg_daily": p["avg_daily"],
@@ -320,7 +336,21 @@ class Command(BaseCommand):
                     }
                 self.stdout.write(f"  Products        : {len(cfg['products'])} produk terdaftar")
 
-                # 5. Product Batches Awal (Stok Awal 13 Agustus 2025)
+                # 4b. Discount Rules (Aturan Diskon Mandiri)
+                for dcfg in cfg.get("discounts", []):
+                    drule = DiscountRule.objects.create(
+                        business=biz,
+                        name=dcfg["name"],
+                        discount_type=dcfg["type"],
+                        discount_value=Decimal(str(dcfg["value"])),
+                        min_quantity=dcfg["min_qty"],
+                        is_active=True,
+                    )
+                    # Sambungkan ke sebagian produk
+                    drule.products.set(created_products[:3])
+                self.stdout.write(f"  Discount Rules  : {len(cfg.get('discounts', []))} aturan diskon terdaftar")
+
+                # 5. Product Batches Awal (Stok Awal 365 Hari Lalu)
                 init_batches = []
                 for code, pd in pmap.items():
                     qty = max(10, int(pd["avg_daily"] * 60)) if cfg["mode"] != "SEPI" else random.randint(3, 8)
@@ -339,8 +369,8 @@ class Command(BaseCommand):
                     ))
                 ProductBatch.objects.bulk_create(init_batches)
 
-            # 6. Generate Transaksi 1 Tahun (Daily Loop: 13 Aug 2025 -> 13 Aug 2026)
-            self.stdout.write("  Generating transaksi 1 tahun...")
+            # 6. Generate Transaksi 1 Tahun (Daily Loop: start_date -> today)
+            self.stdout.write(f"  Generating transaksi 1 tahun ({start_date} s.d. {today})...")
             tx_buffer = []
             batch_buffer = []
             tx_counter = 0
@@ -467,11 +497,11 @@ class Command(BaseCommand):
             if first_batch:
                 so = StockOpname.objects.create(
                     business=biz,
-                    document_number=f"SO-{biz.business_code}-20260801",
+                    document_number=f"SO-{biz.business_code}-{today.strftime('%Y%m01')}",
                     created_by=f"Admin {cfg['name']}",
                     approved_by=f"Admin {cfg['name']}",
                     status='APPROVED',
-                    notes='Audit stok fisik bulanan Agustus 2026',
+                    notes=f"Audit stok fisik bulanan {today.strftime('%B %Y')}",
                 )
                 StockOpnameItem.objects.create(
                     opname=so,
@@ -480,7 +510,7 @@ class Command(BaseCommand):
                     actual_qty=first_batch.quantity,
                     difference=0,
                 )
-                self.stdout.write("  Stock Opname    : Sample dokumen SO-20260801 terbuat -> TERISI")
+                self.stdout.write("  Stock Opname    : Sample dokumen SO terbuat -> TERISI")
 
             self.stdout.write(f"  [SUCCESS] {biz.business_name}: {tx_counter} Transaksi, {batch_counter} Batches Generated.")
 
@@ -488,12 +518,13 @@ class Command(BaseCommand):
         # STEP 5: FINAL SUMMARY REPORT
         # ---------------------------------------------------------------------
         self.stdout.write("\n" + "=" * 75)
-        self.stdout.write("RINGKASAN DATABASE HASIL GENERASI DATA 1 TAHUN:")
+        self.stdout.write(f"RINGKASAN DATABASE HASIL GENERASI DATA 1 TAHUN ({start_date} s.d. {today}):")
         self.stdout.write("=" * 75)
         from django.db.models import Sum
         self.stdout.write(f"Total UMKM Bisnis  : {Business.objects.count()}")
         self.stdout.write(f"Total User Bisnis  : {BusinessUser.objects.count()}")
         self.stdout.write(f"Total Produk       : {Product.objects.count()}")
+        self.stdout.write(f"Total DiscountRule : {DiscountRule.objects.count()}")
         self.stdout.write(f"Total Batch Stok   : {ProductBatch.objects.count()}")
         self.stdout.write(f"Total Transaksi    : {Transaction.objects.count()}")
         self.stdout.write(f"Total Item TX      : {TransactionItem.objects.count()}")
@@ -517,4 +548,4 @@ class Command(BaseCommand):
                 self.stdout.write(f"    Admin User               : {cfg['admin_username']} / admin123")
                 self.stdout.write(f"    Kasir User               : {cfg['kasir_username']} / kasir123")
 
-        self.stdout.write("\nSELESAI 100%! Seluruh data 1 tahun terisi sempurna.")
+        self.stdout.write("\nSELESAI 100%! Seluruh data 1 tahun dinamis terisi sempurna.")
